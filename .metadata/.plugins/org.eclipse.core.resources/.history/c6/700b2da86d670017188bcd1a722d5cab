@@ -1,0 +1,19 @@
+package cn.aihama.sys.service;
+
+import java.util.List;
+
+import cn.aihama.core.frame.service.BaseService;
+import cn.aihama.sys.po.Position;
+import cn.aihama.sys.search.PositionSearch;
+import cn.aihama.sys.vo.PositionVo;
+
+public interface PositionService extends BaseService<Position,PositionSearch> {
+	
+	/**
+	 * 获取岗位最大级别
+	 * @param list
+	 * @return
+	 */
+	public Integer getMaxPostLevel(List<PositionVo> list);
+	
+}

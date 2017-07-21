@@ -1,0 +1,28 @@
+package cn.aihama.workflow.search;
+
+import cn.aihama.core.frame.search.BaseSearch;
+
+public class CommentSearch extends BaseSearch {
+
+	private static final long serialVersionUID = 7742117314084563722L;
+
+	//匹配查询
+	private String procInstId;                       //流程实例id
+	private String taskId;                           //任务id
+	
+	//模糊查询
+	public String getProcInstId() {
+		return procInstId;
+	}
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
+	public String getTaskId() {
+		return taskId;
+	}
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
+
+	
+}

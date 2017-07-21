@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.Attachment">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.AttachmentVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="sourceId" property="sourceId" jdbcType="INTEGER" />
+		<result column="attachAddress" property="attachAddress" jdbcType="VARCHAR" />
+		<result column="attachName" property="attachName" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="isLock" property="isLock" jdbcType="BIT" />
+		<result column="isEffect" property="isEffect" jdbcType="BIT" />
+		<result column="sourceType" property="sourceType" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_attachment.id,
+		sys_attachment.type,
+		sys_attachment.sourceId,
+		sys_attachment.attachAddress,
+		sys_attachment.attachName,
+		sys_attachment.createTime,
+		sys_attachment.remark,
+		sys_attachment.status,
+		sys_attachment.isLock,
+		sys_attachment.isEffect,
+		sys_attachment.sourceType
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_attachment.id = #{id}</if>
+				<if test="type != null">and sys_attachment.type = #{type}</if>
+				<if test="sourceId != null">and sys_attachment.sourceId = #{sourceId}</if>
+				<if test="status != null">and sys_attachment.status = #{status}</if>
+				<if test="isLock != null">and sys_attachment.isLock = #{isLock}</if>
+				<if test="isEffect != null">and sys_attachment.isEffect = #{isEffect}</if>
+				<if test="sourceType != null">and sys_attachment.sourceType = #{sourceType}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sys_attachment
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_attachment
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_attachment.id </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_attachment
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.Attachment">
+		insert into sys_attachment
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="type != null" > type, </if>
+		  <if test="sourceId != null" > sourceId, </if>
+		  <if test="attachAddress != null" > attachAddress, </if>
+		  <if test="attachName != null" > attachName, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="isLock != null" > isLock, </if>
+		  <if test="isEffect != null" > isEffect, </if>
+		  <if test="sourceType != null" > sourceType, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="type != null" > #{type}, </if>
+		  <if test="sourceId != null" > #{sourceId}, </if>
+		  <if test="attachAddress != null" > #{attachAddress}, </if>
+		  <if test="attachName != null" > #{attachName}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="isLock != null" > #{isLock}, </if>
+		  <if test="isEffect != null" > #{isEffect}, </if>
+		  <if test="sourceType != null" > #{sourceType}, </if>
+        </trim>
+	</insert>
+	
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into sys_attachment(
+			type,
+			sourceId,
+			sourceType,
+			attachAddress,
+			attachName,
+			createTime,
+			<!-- isLock,
+			isEffect, -->
+			remark
+		) 
+    	values   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	    (
+	    	#{item.type},
+			#{item.sourceId},
+			#{item.sourceType},
+			#{item.attachAddress},
+			#{item.attachName},
+			#{item.createTime},
+			<!-- #{item.isLock},
+			#{item.isEffect}, -->
+			#{item.remark}
+		)
+	    </foreach> 
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.Attachment">
+		update 
+			sys_attachment 
+		<set>
+			<if test="type != null"> type = #{type}, </if>
+			<if test="sourceId != null"> sourceId = #{sourceId}, </if>
+			<if test="attachAddress != null"> attachAddress = #{attachAddress}, </if>
+			<if test="attachName != null"> attachName = #{attachName}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="isLock != null"> isLock = #{isLock}, </if>
+			<if test="isEffect != null"> isEffect = #{isEffect}, </if>
+			<if test="sourceType != null"> sourceType = #{sourceType}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+	
+	<!-- 批量更新 -->
+	<update id="batchUpdate"  parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 
+				sys_attachment 
+			<set>
+				 <if test="item.type != null">type = #{item.type},</if>
+				 <if test="item.sourceId != null">sourceId = #{item.sourceId}, </if>
+				 <if test="item.createTime != null">createTime = #{item.createTime},</if>
+				 <if test="item.remark != null">remark = #{item.remark}, </if>
+				 <if test="item.status != null">status = #{item.status}, </if>
+				 <if test="item.attachAddress != null">attachAddress = #{item.attachAddress}, </if>
+				 <if test="item.attachName != null">attachName = #{item.attachName}, </if>
+				 <if test="item.isLock != null">isLock = #{item.isLock}, </if>
+				 <if test="item.isEffect != null">isEffect = #{item.isEffect}, </if>
+				 <if test="item.sourceType != null">sourceType = #{item.sourceType}, </if>
+			</set> 
+			 where id = #{item.id} 
+         </foreach>
+    </update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_attachment
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_attachment
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.Menu">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.MenuVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="parentId" property="parentId" jdbcType="INTEGER" />
+		<result column="seq" property="seq" jdbcType="INTEGER" />
+		<result column="iconUrl" property="iconUrl" jdbcType="VARCHAR" />
+		<result column="menuName" property="menuName" jdbcType="VARCHAR" />
+		<result column="src" property="src" jdbcType="VARCHAR" />
+		<result column="levelNum" property="levelNum" jdbcType="INTEGER" />
+		<result column="isLeaf" property="isLeaf" jdbcType="TINYINT" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="ck" property="ck" jdbcType="TINYINT" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_menu.id,
+		sys_menu.parentId,
+		sys_menu.seq,
+		sys_menu.iconUrl,
+		sys_menu.menuName,
+		sys_menu.src,
+		sys_menu.levelNum,
+		sys_menu.isLeaf,
+		sys_menu.remark,
+		sys_menu.type,
+		<!-- 1 as ck -->
+		EXISTS(select id from sys_role_menu WHERE roleId=#{roleId} and menuId=sys_menu.id) as ck
+ 	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null"> and sys_menu.id = #{id} </if>
+				<if test="parentId != null"> and sys_menu.parentId = #{parentId} </if>
+				<if test="menuName != null"> and sys_menu.menuName = #{menuName} </if>
+				<if test="isOnlyRoleMenu == true and roleId != null"> and EXISTS (	SELECT id FROM	sys_role_menu WHERE	roleId =#{roleId}	AND menuId = sys_menu.id) </if>
+				<if test="type != null"> and sys_menu.type = #{type} </if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sys_menu
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_menu
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_menu.seq </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+        <if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_menu
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.Menu">
+		insert into sys_menu
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="parentId != null" > parentId, </if>
+		  <if test="seq != null" > seq, </if>
+		  <if test="iconUrl != null" > iconUrl, </if>
+		  <if test="menuName != null" > menuName, </if>
+		  <if test="src != null" > src, </if>
+		  <if test="levelNum != null" > levelNum, </if>
+		  <if test="isLeaf != null" > isLeaf, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="type != null" > type, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+          <if test="parentId != null" > #{parentId}, </if>
+		  <if test="seq != null" > #{seq}, </if>
+		  <if test="iconUrl != null" > #{iconUrl}, </if>
+		  <if test="menuName != null" > #{menuName}, </if>
+		  <if test="src != null" > #{src}, </if>
+		  <if test="levelNum != null" > #{levelNum}, </if>
+		  <if test="isLeaf != null" > #{isLeaf}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="type != null" > #{type}, </if>
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.Menu">
+		update 
+			sys_menu 
+		<set>
+			<if test="parentId != null"> parentId = #{parentId}, </if>
+			<if test="seq != null"> seq = #{seq}, </if>
+			<if test="iconUrl != null"> iconUrl = #{iconUrl}, </if>
+			<if test="menuName != null"> menuName = #{menuName}, </if>
+			<if test="src != null"> src = #{src}, </if>
+			<if test="levelNum != null"> levelNum = #{levelNum}, </if>
+			<if test="isLeaf != null"> isLeaf = #{isLeaf}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="type != null"> type = #{type}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_menu
+		where id = #{id}
+	</delete>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_menu
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<!-- 批量插入角色菜单 -->
+	<insert id="batchInsertRoleMenu" parameterType="java.util.List">
+		insert into sys_role_menu(
+			roleId,
+			menuId
+		) values 
+		 <foreach collection="list" item="item" index="index" separator="," > 
+		(	#{item.roleId},
+			#{item.menuId}
+		)
+		 </foreach> 
+	</insert>	
+	
+	<!-- 删除角色菜单 根据角色id -->
+	<delete id="deleteRoleMenuByRoleId" parameterType="java.lang.Integer">
+		delete from sys_role_menu where roleId = #{roleId} 
+	</delete>	
+	
+	<!-- 删除角色菜单 -->
+	<delete id="deleteRoleMenu" parameterType="java.util.Map">
+		delete from sys_role_menu 
+		where 1 = 0
+		<if test="roleId != null"> or sys_role_menu.roleId = #{roleId} </if>
+		<if test="menuId != null"> or sys_role_menu.menuId = #{menuId} </if>
+	</delete>
+	
+	<!-- 根据用户获取配置菜单 -->
+	<select id="getUserRoleMenu" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+			<include refid="DB_Column_List" />
+		from 
+			sys_menu
+		where 
+		 EXISTS (
+				select DISTINCT menuId from sys_role_menu 
+						where EXISTS (select id from sys_role_user where userId = #{userId} and sys_role_menu.roleId = sys_role_user.roleId)
+				and sys_menu.id = sys_role_menu.menuId
+			) and  
+			sys_menu.parentId = #{parentId}
+		order by sys_menu.seq
+	</select>
+	
+</mapper>

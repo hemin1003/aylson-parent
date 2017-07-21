@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<applications xmlns="http://www.wabacus.com"
+			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			   xsi:schemaLocation="http://www.wabacus.com ../xsd/wabacus.applications.xsd">
+	<page id="market_statistics">
+		<report id="report1" title="营销部统计" pagesize="20" scrollstyle="image" scrollheight="300px" width="1000px" dataexport="richexcel">
+			<display>
+				<col column="{sequence:1}" label="序号"/>
+				<col column="source" label="部门" clickorderby="true"/>
+				<col column="staffName" label="店员姓名" clickorderby="true"/>
+				<col column="partnerCount" label="拓展合伙人数量" clickorderby="true"/>
+				<col column="orderCount" label="签单数量" clickorderby="true"/>
+				<col column="orderAmount" label="总销售金额" clickorderby="true"/>
+			</display>
+			<sql>
+				<value>
+					<![CDATA[
+						select 
+							sys_staff.source,
+							sys_staff.staffName,
+							ifnull(partnerAccountInfo.partnerCount,0) as partnerCount ,
+							ifnull(orderInfos.orderCount,0) as orderCount,
+							ifnull(orderInfos.orderAmount,0) as orderAmount
+							from 
+							(select source,staffName,staffPhone from sys_staff where sourceType = 1)sys_staff
+							left join 
+							(
+							select referralPhone,count(id) as partnerCount from 
+								(
+									select id,partnerName,mobilePhone,referralName,referralPhone,agentName,agentPhone,state 
+									from partner_account where state = 1
+									and { registerTime >= CONCAT( #createdatestart#,' 00:00:00' )}
+									and { registerTime <= CONCAT( #createdateend#,' 23:59:59' )}
+								)partner_account group by referralPhone
+							)partnerAccountInfo
+							on sys_staff.staffPhone = partnerAccountInfo.referralPhone
+							left join 
+							(
+								select 
+								orderInfo.referralPhone,
+								count(orderInfo.id) orderCount,
+								sum(orderInfo.salesAmount) as orderAmount
+								from 
+									(
+									select 
+									owner_order.id,
+									owner_order.partnerId,
+									owner_order.isSettle,
+									owner_quotation.salesAmount,
+									partner_account.referralName,
+									partner_account.referralPhone,
+									partner_account.agentName,
+									partner_account.agentPhone
+									from 
+									(select * from owner_order where partnerId is not null and isSettle = 1 and {#condition#} )owner_order 
+									inner join owner_quotation 
+									on owner_order.designId = owner_quotation.designId
+									inner join partner_account 
+									on owner_order.partnerId = partner_account.id and partner_account.state = 1
+									)orderInfo group by orderInfo.referralPhone
+							)orderInfos
+							on sys_staff.staffPhone = orderInfos.referralPhone
+					]]>
+				</value>
+					<condition name="createdatestart" label="从" labelposition = "left">
+					<inputbox type="datepicker" dateformat="yyyy-MM-dd"/>
+					<value>
+							<![CDATA[( createTime >= CONCAT( #data#,' 00:00:00' ))]]>
+					</value> 
+				</condition>
+				<condition name="createdateend" label="到" labelposition = "left" >
+					<inputbox type="datepicker" dateformat="yyyy-MM-dd"/>
+					<value>
+							<![CDATA[( createTime <= CONCAT( #data#,' 23:59:59' ) )]]>
+					</value> 
+				</condition>
+			</sql>
+		</report>
+	</page>
+</applications>

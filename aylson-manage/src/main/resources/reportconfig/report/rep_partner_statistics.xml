@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<applications xmlns="http://www.wabacus.com"
+			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			   xsi:schemaLocation="http://www.wabacus.com ../xsd/wabacus.applications.xsd">
+	<page id="partner_statistics">
+		<report id="report1" title="合伙人统计" pagesize="20" scrollstyle="image" scrollheight="300px" width="1000px" dataexport="richexcel">
+			<display>
+				<col column="{sequence:1}" label="序号"/>
+				<col column="partnerName" label="合伙人姓名" clickorderby="true"/>
+				<col column="clientCount" label="拓展客户数量" clickorderby="true"/>
+				<col column="applyTotal" label="已申请现金券" clickorderby="true"/>
+				<col column="couponUse" label="已使用现金券" clickorderby="true"/>
+				<col column="bonusTotal" label="已获得总分红" clickorderby="true"/>
+				<col column="bonusHad" label="已转账分红" clickorderby="true"/>
+			</display>
+			<sql>
+				<value>
+					<![CDATA[
+						select 
+							partner_account.partnerName,
+							ifnull(clientInfo.clientCount,0) as clientCount,
+							ifnull(clientInfo.applyTotal,0) as applyTotal,
+							ifnull(useCoupon.couponUse,0) as couponUse,
+							ifnull(bonusTotalInfo.bonusTotal,0) as bonusTotal,
+							ifnull(bonusHadInfo.bonusHad,0) as bonusHad
+							from 
+							(
+								select id,partnerName,mobilePhone,referralName,referralPhone,agentName,agentPhone,state 
+								from partner_account where state = 1
+							)partner_account
+							left join 
+							(
+									select 
+									applierId,
+									count(applierId) clientCount,
+									sum(applyNum) applyTotal
+									from partner_coupon_apply where state = 1 group by applierId	
+							)clientInfo on partner_account.id = clientInfo.applierId
+							left join 
+							(
+								select applierId,count(id) couponUse from partner_coupon where state = 1 group by applierId
+							)useCoupon on partner_account.id = useCoupon.applierId
+							left join 
+							(
+							select accountId,sum(wallet) bonusTotal from partner_wallet_detail where type = 1 group by accountId
+							)bonusTotalInfo on partner_account.id = bonusTotalInfo.accountId 
+							left join
+							(
+							select accountId,sum(wallet) bonusHad from partner_wallet_detail where type = -1 group by accountId 
+							)bonusHadInfo on partner_account.id = bonusHadInfo.accountId 
+					]]>
+				</value>
+			</sql>
+		</report>
+	</page>
+</applications>

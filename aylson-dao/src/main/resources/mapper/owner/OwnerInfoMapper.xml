@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.owner.po.OwnerInfo">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.owner.vo.OwnerInfoVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="decorateProject" property="decorateProject" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="belongIds" property="belongIds" jdbcType="VARCHAR" />
+		<result column="belongNames" property="belongNames" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="createrId" property="createrId" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="sourceType" property="sourceType" jdbcType="INTEGER" />
+		<result column="turnoverAmountTotal" property="turnoverAmountTotal" jdbcType="FLOAT" />
+		<result column="orderNum" property="orderNum" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		owner_info.id,
+		owner_info.`name`,
+		owner_info.mobilePhone,
+		owner_info.decorateProject,
+		owner_info.province,
+		owner_info.provinceId,
+		owner_info.city,
+		owner_info.cityId,
+		owner_info.area,
+		owner_info.areaId,
+		owner_info.address,
+		owner_info.remark,
+		owner_info.belongIds,
+		owner_info.belongNames,
+		owner_info.type,
+		owner_info.createrId,
+		owner_info.createTime,
+		owner_info.updateTime,
+		owner_info.sourceType,
+		ifnull(orderInfo.turnoverAmountTotal,0) turnoverAmountTotal,
+		ifnull(orderInfo.orderNum,0) orderNum
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and owner_info.id = #{id}</if>
+				<if test="sourceType != null">and owner_info.sourceType = #{sourceType}</if>
+				<if test="createrId != null">and owner_info.createrId = #{createrId}</if>
+				<!-- 模糊查询 -->
+				<if test="nameLike != null and nameLike != ''">and owner_info.name like CONCAT('%',#{nameLike},'%')</if>
+				<if test="mobilePhoneLike != null and mobilePhoneLike != ''">and owner_info.mobilePhone like CONCAT('%',#{mobilePhoneLike},'%')</if>
+				<if test="nameOrPhoneLike != null and nameOrPhoneLike != ''">and (owner_info.name like CONCAT('%',#{nameOrPhoneLike},'%') or owner_info.mobilePhone like CONCAT('%',#{nameOrPhoneLike},'%') )</if>
+				
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(owner_info.id) from owner_info
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from owner_info
+		left join 
+		(select mobilePhone,sum(turnoverAmount) turnoverAmountTotal ,count(id) orderNum from owner_order 
+		<if test="createrId != null">
+				<![CDATA[
+					where byAgentUserId = #{createrId} 
+				]]>
+		</if>
+		group by mobilePhone) orderInfo
+		on owner_info.mobilePhone = orderInfo.mobilePhone and owner_info.sourceType = 1
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by owner_info.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_info
+		left join 
+		(select mobilePhone,sum(turnoverAmount) turnoverAmountTotal ,count(id) orderNum from owner_order group by mobilePhone) orderInfo
+		on owner_info.mobilePhone = orderInfo.mobilePhone and owner_info.sourceType = 1
+		where owner_info.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.owner.po.OwnerInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into owner_info
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			id,
+		  <if test="name != null" > name, </if>
+		  <if test="mobilePhone != null" > mobilePhone, </if>
+		  <if test="decorateProject != null" > decorateProject, </if>
+		  <if test="province != null" > province, </if>
+		  <if test="provinceId != null" > provinceId, </if>
+		  <if test="city != null" > city, </if>
+		  <if test="cityId != null" > cityId, </if>
+		  <if test="area != null" > area, </if>
+		  <if test="areaId != null" > areaId, </if>
+		  <if test="address != null" > address, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="belongIds != null" > belongIds, </if>
+		  <if test="belongNames != null" > belongNames, </if>
+		  <if test="type != null" > type, </if>
+		  <if test="createrId != null" > createrId, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="updateTime != null" > updateTime, </if>
+		  <if test="sourceType != null" > sourceType, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        	#{id},
+		  <if test="name != null" > #{name}, </if>
+		  <if test="mobilePhone != null" > #{mobilePhone}, </if>
+		  <if test="decorateProject != null" > #{decorateProject}, </if>
+		  <if test="province != null" > #{province}, </if>
+		  <if test="provinceId != null" > #{provinceId}, </if>
+		  <if test="city != null" > #{city}, </if>
+		  <if test="cityId != null" > #{cityId}, </if>
+		  <if test="area != null" > #{area}, </if>
+		  <if test="areaId != null" > #{areaId}, </if>
+		  <if test="address != null" > #{address}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="belongIds != null" > #{belongIds}, </if>
+		  <if test="belongNames != null" > #{belongNames}, </if>
+		  <if test="type != null" > #{type}, </if>
+		  <if test="createrId != null" > #{createrId}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="updateTime != null" > #{updateTime}, </if>
+		  <if test="sourceType != null" > #{sourceType}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.owner.po.OwnerInfo">
+		update 
+			owner_info 
+		<set>
+			<if test="name != null"> name = #{name}, </if>
+			<if test="mobilePhone != null"> mobilePhone = #{mobilePhone}, </if>
+			<if test="decorateProject != null"> decorateProject = #{decorateProject}, </if>
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="area != null"> area = #{area}, </if>
+			<if test="areaId != null"> areaId = #{areaId}, </if>
+			<if test="address != null"> address = #{address}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="belongIds != null"> belongIds = #{belongIds}, </if>
+			<if test="belongNames != null"> belongNames = #{belongNames}, </if>
+			<if test="type != null"> type = #{type}, </if>
+			<if test="createrId != null"> createrId = #{createrId}, </if>
+			<if test="createTime != null"> createTime = #{createTime}, </if>
+			<if test="updateTime != null"> updateTime = #{updateTime}, </if>
+			<!-- <if test="sourceType != null"> sourceType = #{sourceType}, </if> -->
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from owner_info
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from owner_info
+		<include refid="Where_Condition" />
+	</delete>
+	
+	
+</mapper>

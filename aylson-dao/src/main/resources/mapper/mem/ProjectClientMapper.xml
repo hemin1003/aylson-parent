@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.ProjectClient">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.ProjectClientVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="memberId" property="memberId" jdbcType="INTEGER" />
+		<result column="clientId" property="clientId" jdbcType="INTEGER" />
+		<result column="sourceType" property="sourceType" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="projectId" property="projectId" jdbcType="INTEGER" />
+		<result column="clientName" property="clientName" jdbcType="VARCHAR" />
+		<result column="projectName" property="projectName" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="clientAddress" property="clientAddress" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="budgetRange" property="budgetRange" jdbcType="VARCHAR" />
+		<result column="budgetRangeValue" property="budgetRangeValue" jdbcType="INTEGER" />
+		<result column="budgetRangeId" property="budgetRangeId" jdbcType="INTEGER" />
+		<result column="byAgent" property="byAgent" jdbcType="VARCHAR" />
+		<result column="byAgentId" property="byAgentId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_project_client.id,
+		mem_project_client.memberId,
+		mem_project_client.clientId,
+		mem_project_client.sourceType,
+		mem_project_client.status,
+		mem_project_client.createTime,
+		mem_project_client.updateTime,
+		mem_project_client.projectId,
+		clientInfo.projectName,
+		clientInfo.clientName,
+		clientInfo.province,
+		clientInfo.provinceId,
+		clientInfo.city,
+		clientInfo.cityId,
+		clientInfo.area,
+		clientInfo.areaId,
+		clientInfo.clientAddress,
+		clientInfo.mobilePhone,
+		clientInfo.budgetRange,
+		clientInfo.budgetRangeId,
+		clientInfo.budgetRangeValue,
+		clientInfo.byAgent,
+		clientInfo.byAgentId
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_project_client.id = #{id}</if>
+				<if test="memberId != null">and mem_project_client.memberId = #{memberId}</if>
+				<if test="clientId != null">and mem_project_client.clientId = #{clientId}</if>
+				<if test="sourceType != null">and mem_project_client.sourceType = #{sourceType}</if>
+				<if test="status != null">and mem_project_client.status = #{status}</if>
+				<if test="projectId != null">and mem_project_client.projectId = #{projectId}</if>
+				<if test="createTime != null">and date_format(mem_project_client.createTime,'%Y-%m-%d') = #{createTime}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(mem_project_client.id) from mem_project_client
+		left join (
+		select id,projectName,clientName,province,provinceId,
+		city,cityId,area,areaId,clientAddress,mobilePhone,budgetRange,budgetRangeId,budgetRangeValue,1 as sourceType,
+		byAgent,byAgentId
+		 from mem_project_info where `status` = 3
+		and exists (select id from mem_account where memberType = 2 and `status` = 1 and id = memberId)
+		union all 
+		select id,projectName,clientName,province,provinceId,
+		city,cityId,area,areaId,address,mobilePhone,budgetRange,budgetRangeId,budgetRangeValue,2 as sourceType,agentName,agentId from agent_visit_sign
+		)clientInfo
+		on mem_project_client.sourceType = clientInfo.sourceType and mem_project_client.clientId = clientInfo.id
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from  mem_project_client
+		left join (
+		select id,projectName,clientName,province,provinceId,
+		city,cityId,area,areaId,clientAddress,mobilePhone,budgetRange,budgetRangeId,budgetRangeValue,1 as sourceType,
+		byAgent,byAgentId
+		 from mem_project_info where `status` = 3
+		and exists (select id from mem_account where memberType = 2 and `status` = 1 and id = memberId)
+		union all 
+		select id,projectName,clientName,province,provinceId,
+		city,cityId,area,areaId,address,mobilePhone,budgetRange,budgetRangeId,budgetRangeValue,2 as sourceType,agentName,agentId from agent_visit_sign
+		)clientInfo
+		on mem_project_client.sourceType = clientInfo.sourceType and mem_project_client.clientId = clientInfo.id
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_project_client.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from
+			mem_project_client
+		left join (
+		select id,projectName,clientName,province,provinceId,
+		city,cityId,area,areaId,clientAddress,mobilePhone,budgetRange,budgetRangeId,budgetRangeValue,1 as sourceType,
+		byAgent,byAgentId
+		 from mem_project_info where `status` = 3
+		and exists (select id from mem_account where memberType = 2 and `status` = 1 and id = memberId)
+		union all 
+		select id,projectName,clientName,province,provinceId,
+		city,cityId,area,areaId,address,mobilePhone,budgetRange,budgetRangeId,budgetRangeValue,2 as sourceType,agentName,agentId from agent_visit_sign
+		)clientInfo
+		on mem_project_client.sourceType = clientInfo.sourceType and mem_project_client.clientId = clientInfo.id
+		where mem_project_client.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.ProjectClient">
+		insert into mem_project_client
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="memberId != null" > memberId, </if>
+		  <if test="clientId != null" > clientId, </if>
+		  <if test="sourceType != null" > sourceType, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="projectId != null" > projectId, </if>
+		   createTime,
+		   updateTime, 
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="memberId != null" > #{memberId}, </if>
+		  <if test="clientId != null" > #{clientId}, </if>
+		  <if test="sourceType != null" > #{sourceType}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="projectId != null" > #{projectId}, </if>
+		  now(), 
+		  now(), 
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.ProjectClient">
+		update 
+			mem_project_client 
+		<set>
+			<if test="memberId != null"> memberId = #{memberId}, </if>
+			<if test="clientId != null"> clientId = #{clientId}, </if>
+			<if test="sourceType != null"> sourceType = #{sourceType}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="projectId != null"> projectId = #{projectId}, </if>
+			updateTime = now(),
+		</set>
+		 where id = #{id} 
+	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_project_client
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_project_client
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into mem_project_client(
+			memberId,
+			clientId,
+			sourceType,
+			status,
+			projectId,
+			createTime,
+			updateTime
+		) 
+    	values   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	    (
+	    	#{item.memberId},
+			#{item.clientId},
+			#{item.sourceType},
+			#{item.status},
+			#{item.projectId},
+			now(),
+			now()
+		)
+	    </foreach> 
+	</insert>
+	
+	<!-- 批量更新 -->
+	<update id="batchUpdate"  parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 
+				mem_project_client 
+			<set>
+				 <if test="item.memberId != null">memberId = #{item.memberId},</if>
+				 <if test="item.clientId != null">clientId = #{item.clientId},</if>
+				 <if test="item.status != null">status = #{item.status},</if>
+				 updateTime = now()
+			</set> 
+			 where id = #{item.id} 
+         </foreach>
+    </update>
+	
+	<!-- 待分配会员结果集 -->
+	<resultMap id="ResultMemMap" type="com.aylson.dc.mem.vo.MemAccountVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="accountName" property="accountName" jdbcType="VARCHAR" />
+		<result column="pwd" property="pwd" jdbcType="VARCHAR" />
+		<result column="realName" property="realName" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="registerTime" property="registerTime" jdbcType="TIMESTAMP" />
+		<result column="totalIntegral" property="totalIntegral" jdbcType="INTEGER" />
+		<result column="integralLevel" property="integralLevel" jdbcType="INTEGER" />
+		<result column="stillCount" property="stillCount" jdbcType="INTEGER" />
+	</resultMap>
+	<!-- 待分配业主资料 -->
+	<resultMap id="ResultClientMap" type="com.aylson.dc.mem.vo.ClientInfoVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="clientName" property="clientName" jdbcType="VARCHAR" />
+		<result column="projectName" property="projectName" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="clientAddress" property="clientAddress" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="budgetRange" property="budgetRange" jdbcType="VARCHAR" />
+		<result column="budgetRangeValue" property="budgetRangeValue" jdbcType="INTEGER" />
+		<result column="budgetRangeId" property="budgetRangeId" jdbcType="INTEGER" />
+		<result column="sourceType" property="sourceType" jdbcType="INTEGER" />
+		<result column="stillCount" property="stillCount" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<!-- 查询分配业主资料的会员列表 -->
+	<select id="selectDistributionMember" resultMap="ResultMemMap" parameterType="java.util.Map">
+		select 
+		id,accountName,realName,mobilePhone,province,provinceId,city,cityId,area,areaId,
+		integralLevel,totalIntegral,registerTime,round((ifnull(rate,1)-ifnull(distribution.distribuNum,0)))as stillCount
+		from (
+		select id,accountName,realName,mobilePhone,province,provinceId,city,cityId,area,areaId,integralLevel,totalIntegral,registerTime
+		from mem_account where memberType != 2 and `status` = 1)mem_account
+		left join 
+		(select integral,rate from sys_integral_config where type = 11)sys_integral_config
+		on mem_account.integralLevel = sys_integral_config.integral
+		left join 
+		(select memberId,count(id) as distribuNum from mem_project_client where `status` = 1 group by memberId)distribution
+		on mem_account.id = distribution.memberId
+		where round((ifnull(rate,1)-ifnull(distribution.distribuNum,0))) > 0
+		order by mem_account.totalIntegral desc, mem_account.registerTime 
+	</select>
+	
+	<!-- 查询分配业主资料的业主资料列表 -->
+	<select id="selectDistributionClient" resultMap="ResultClientMap" parameterType="java.util.Map">
+		select 
+			clientInfos.sourceType,
+			clientInfos.id,
+			clientInfos.projectName,
+			clientInfos.clientName,
+			clientInfos.province,
+			clientInfos.provinceId,
+			clientInfos.city,
+			clientInfos.cityId,
+			clientInfos.area,
+			clientInfos.areaId,
+			clientInfos.clientAddress,
+			clientInfos.mobilePhone,
+			clientInfos.budgetRange,
+			clientInfos.budgetRangeId,
+			clientInfos.budgetRangeValue,
+			(clientInfos.limitCount- ifnull(distribution.distribuNum,0)) as stillCount
+			from (
+			select ifnull(limitConfig.limitCount,3) as limitCount,
+			clientInfo.sourceType,clientInfo.id,clientInfo.projectName,clientInfo.clientName,clientInfo.province,clientInfo.provinceId,
+			clientInfo.city,clientInfo.cityId,clientInfo.area,clientInfo.areaId,clientInfo.clientAddress,
+			clientInfo.mobilePhone,clientInfo.budgetRange,clientInfo.budgetRangeId,clientInfo.budgetRangeValue
+			 from 
+			(
+			select id,projectName,clientName,province,provinceId,
+			city,cityId,area,areaId,clientAddress,mobilePhone,budgetRange,budgetRangeId,budgetRangeValue,1 as sourceType
+			 from mem_project_info where `status` = 3
+			and exists (select id from mem_account where memberType = 2 and `status` = 1 and id = memberId)
+			union all 
+			select id,projectName,clientName,province,provinceId,
+			city,cityId,area,areaId,address,mobilePhone,budgetRange,budgetRangeId,budgetRangeValue,2 as sourceType from agent_visit_sign
+			)clientInfo 
+			,(select integral as limitCount from sys_integral_config where type = 12) as limitConfig
+			)clientInfos
+			left join 
+			(select sourceType,clientId,count(id) as distribuNum from  mem_project_client 
+			where `status` = 1 or `status` = 2 group by sourceType,clientId)distribution
+			on clientInfos.sourceType = distribution.sourceType and clientInfos.id = distribution.clientId
+			where (clientInfos.limitCount- ifnull(distribution.distribuNum,0)) > 0
+			order by clientInfos.budgetRangeValue desc 
+	</select>
+	
+
+</mapper>

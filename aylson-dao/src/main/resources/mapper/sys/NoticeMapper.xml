@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.Notice">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.NoticeVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="noticeObj" property="noticeObj" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
+		<result column="isRead" property="isRead" jdbcType="TINYINT" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_notice.id,
+		sys_notice.title,
+		sys_notice.content,
+		sys_notice.state,
+		sys_notice.noticeObj,
+		sys_notice.createTime,
+		sys_notice.publishTime,
+		exists (select id from sys_notice_read where sys_notice_read.noticeId = sys_notice.id and sys_notice_read.readerId = #{readerId}) as isRead
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_notice.id = #{id}</if>
+				<if test="state != null">and sys_notice.state = #{state}</if>
+				<if test="noticeObj != null">and sys_notice.noticeObj = #{noticeObj}</if>
+				<if test="createTime != null and createTime != ''">and DATE_FORMAT(sys_notice.createTime ,'%Y-%m-%d') = #{createTime} </if>
+				<if test="publishTime != null and publishTime != ''">and DATE_FORMAT(sys_notice.publishTime ,'%Y-%m-%d') = #{publishTime} </if>
+				<!-- 模糊查询 -->
+				<if test="titleLike != null and titleLike != ''">and sys_notice.title like CONCAT('%',#{titleLike},'%')</if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(sys_notice.id) from sys_notice
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_notice
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_notice.createTime desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_notice
+		where sys_notice.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.Notice">
+		insert into sys_notice
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="title != null" > title, </if>
+		  <if test="content != null" > content, </if>
+		  <if test="state != null" > state, </if>
+		  <if test="noticeObj != null" > noticeObj, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="publishTime != null" > publishTime, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="title != null" > #{title}, </if>
+		  <if test="content != null" > #{content}, </if>
+		  <if test="state != null" > #{state}, </if>
+		  <if test="noticeObj != null" > #{noticeObj}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="publishTime != null" > #{publishTime}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.Notice">
+		update 
+			sys_notice 
+		<set>
+			<if test="title != null"> title = #{title}, </if>
+			<if test="content != null"> content = #{content}, </if>
+			<if test="state != null"> state = #{state}, </if>
+			<if test="noticeObj != null"> noticeObj = #{noticeObj}, </if>
+			<!-- <if test="createTime != null"> createTime = #{createTime}, </if> -->
+			<if test="publishTime != null"> publishTime = #{publishTime}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_notice
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_notice
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

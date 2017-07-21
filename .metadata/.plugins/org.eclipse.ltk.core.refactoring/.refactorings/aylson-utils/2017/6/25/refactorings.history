@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;QiniuUtils.java&apos; to &apos;aihama-utils/src/main/java/cn.aihama.utils&apos;&#x0D;&#x0A;- Original project: &apos;aylson-utils&apos;&#x0D;&#x0A;- Destination element: &apos;aihama-utils/src/main/java/cn.aihama.utils&apos;&#x0D;&#x0A;- Original element: &apos;com.aylson.utils.QiniuUtils.java&apos;" description="Copy compilation unit" destination="=aihama-utils/src\/main\/java&lt;cn.aihama.utils" element1="/src\/main\/java&lt;com.aylson.utils{QiniuUtils.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1497838353984" units="1" version="1.0"/>
+</session>

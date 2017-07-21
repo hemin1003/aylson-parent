@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.GiftSend">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.GiftSendVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="consignee" property="consignee" jdbcType="VARCHAR" />
+		<result column="consigneePhone" property="consigneePhone" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="accountType" property="accountType" jdbcType="INTEGER" />
+		<result column="accountPk" property="accountPk" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="billCode" property="billCode" jdbcType="VARCHAR" />
+		<result column="channel" property="channel" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_gift_send.id,
+		mem_gift_send.consignee,
+		mem_gift_send.consigneePhone,
+		mem_gift_send.province,
+		mem_gift_send.provinceId,
+		mem_gift_send.city,
+		mem_gift_send.cityId,
+		mem_gift_send.area,
+		mem_gift_send.areaId,
+		mem_gift_send.address,
+		mem_gift_send.state,
+		mem_gift_send.remark,
+		mem_gift_send.accountType,
+		mem_gift_send.accountPk,
+		mem_gift_send.createTime,
+		mem_gift_send.updateTime,
+		mem_gift_send.billCode,
+		mem_gift_send.channel
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_gift_send.id = #{id}</if>
+				<if test="channel != null">and mem_gift_send.channel = #{channel}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from mem_gift_send
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from mem_gift_send
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_gift_send.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from mem_gift_send
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.GiftSend" useGeneratedKeys="true" keyProperty="id">
+		insert into mem_gift_send
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="consignee != null" > consignee, </if>
+		  <if test="consigneePhone != null" > consigneePhone, </if>
+		  <if test="province != null" > province, </if>
+		  <if test="provinceId != null" > provinceId, </if>
+		  <if test="city != null" > city, </if>
+		  <if test="cityId != null" > cityId, </if>
+		  <if test="area != null" > area, </if>
+		  <if test="areaId != null" > areaId, </if>
+		  <if test="address != null" > address, </if>
+		  <if test="state != null" > state, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="accountType != null" > accountType, </if>
+		  <if test="accountPk != null" > accountPk, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="updateTime != null" > updateTime, </if>
+		  <if test="billCode != null" > billCode, </if>
+		  <if test="channel != null" > channel, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="consignee != null" > #{consignee}, </if>
+		  <if test="consigneePhone != null" > #{consigneePhone}, </if>
+		  <if test="province != null" > #{province}, </if>
+		  <if test="provinceId != null" > #{provinceId}, </if>
+		  <if test="city != null" > #{city}, </if>
+		  <if test="cityId != null" > #{cityId}, </if>
+		  <if test="area != null" > #{area}, </if>
+		  <if test="areaId != null" > #{areaId}, </if>
+		  <if test="address != null" > #{address}, </if>
+		  <if test="state != null" > #{state}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="accountType != null" > #{accountType}, </if>
+		  <if test="accountPk != null" > #{accountPk}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="updateTime != null" > #{updateTime}, </if>
+		  <if test="billCode != null" > #{billCode}, </if>
+		  <if test="channel != null" > #{channel}, </if>
+        </trim>
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.GiftSend">
+		update 
+			mem_gift_send 
+		<set>
+			<if test="consignee != null"> consignee = #{consignee}, </if>
+			<if test="consigneePhone != null"> consigneePhone= #{consigneePhone}, </if>
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="area != null"> area = #{area}, </if>
+			<if test="areaId != null"> areaId = #{areaId}, </if>
+			<if test="address != null"> address = #{address}, </if>
+			<if test="state != null"> state = #{state}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="accountType != null"> accountType = #{accountType}, </if>
+			<if test="accountPk != null"> accountPk = #{accountPk}, </if>
+			<if test="createTime != null"> createTime = #{createTime}, </if>
+			<if test="updateTime != null"> updateTime = #{updateTime}, </if>
+			<if test="channel != null"> channel = #{channel}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_gift_send
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_gift_send
+		<include refid="Where_Condition" />
+	</delete>
+	
+</mapper>

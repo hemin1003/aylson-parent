@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.Feedback">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.FeedbackVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="describe" property="describe" jdbcType="VARCHAR" />
+		<result column="feedbacker" property="feedbacker" jdbcType="VARCHAR" />
+		<result column="feedbackerId" property="feedbackerId" jdbcType="INTEGER" />
+		<result column="feedbackPhone" property="feedbackPhone" jdbcType="VARCHAR" />
+		<result column="feedbackTime" property="feedbackTime" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_feedback.id,
+		sys_feedback.title,
+		sys_feedback.`describe`,
+		sys_feedback.feedbacker,
+		sys_feedback.feedbackerId,
+		sys_feedback.feedbackPhone,
+		sys_feedback.feedbackTime,
+		sys_feedback.`status`
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_feedback.id = #{id}</if>
+				<if test="feedbackerId != null">and sys_feedback.feedbackerId = #{feedbackerId}</if>
+				<if test="status != null">and sys_feedback.`status` = #{status}</if>
+				<if test="feedbackTime != null">and DATE_FORMAT(sys_feedback.feedbackTime,'%Y-%m-%d') = #{feedbackTime}</if>
+				<!-- 模糊查询 -->
+				<if test="titleLike != null and titleLike != ''">and sys_feedback.title like CONCAT('%',#{titleLike},'%')</if>
+				<if test="feedbackerLike != null and feedbackerLike != ''">and sys_feedback.feedbacker like CONCAT('%',#{feedbackerLike},'%')</if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sys_feedback
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_feedback
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_feedback.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_feedback
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.Feedback">
+		insert into sys_feedback
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="title != null" > title, </if>
+		  <if test="describe != null" > `describe`, </if>
+		  <if test="feedbacker != null" > feedbacker, </if>
+		  <if test="feedbackerId != null" > feedbackerId, </if>
+		  <if test="feedbackPhone != null" > feedbackPhone, </if>
+		  <if test="feedbackTime != null" > feedbackTime, </if>
+		  <if test="status != null" > `status`, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="title != null" > #{title}, </if>
+		  <if test="describe != null" > #{describe}, </if>
+		  <if test="feedbacker != null" > #{feedbacker}, </if>
+		  <if test="feedbackerId != null" > #{feedbackerId}, </if>
+		  <if test="feedbackPhone != null" > #{feedbackPhone}, </if>
+		  <if test="feedbackTime != null" > #{feedbackTime}, </if>
+		  <if test="status != null" > #{status}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.Feedback">
+		update 
+			sys_feedback 
+		<set>
+			<if test="title != null"> title = #{title}, </if>
+			<if test="describe != null"> describe = #{describe}, </if>
+			<if test="feedbacker != null"> feedbacker = #{feedbacker}, </if>
+			<if test="feedbackerId != null"> feedbackerId = #{feedbackerId}, </if>
+			<if test="feedbackPhone != null"> feedbackPhone = #{feedbackPhone}, </if>
+			<if test="feedbackTime != null"> feedbackTime = #{feedbackTime}, </if>
+			<if test="status != null"> status = #{status}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_feedback
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_feedback
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

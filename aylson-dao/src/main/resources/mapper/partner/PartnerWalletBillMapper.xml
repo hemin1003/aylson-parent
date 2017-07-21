@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.partner.po.PartnerWalletBill">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.partner.vo.PartnerWalletBillVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="accountId" property="accountId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="wallet" property="wallet" jdbcType="FLOAT" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="sourceType" property="sourceType" jdbcType="INTEGER" />
+		<result column="sourceId" property="sourceId" jdbcType="INTEGER" />
+		<result column="attachUrl" property="attachUrl" jdbcType="VARCHAR" />
+		<result column="agentUserId" property="agentUserId" jdbcType="INTEGER" />
+		
+		<result column="orderId" property="orderId" jdbcType="INTEGER" />
+		<result column="orderState" property="orderState" jdbcType="INTEGER" />
+		<result column="orderTime" property="orderTime" jdbcType="TIMESTAMP" />
+		<result column="contractAmount" property="contractAmount" jdbcType="FLOAT" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		partner_wallet_detail.id,
+		partner_wallet_detail.accountId,
+		partner_wallet_detail.type,
+		partner_wallet_detail.wallet,
+		partner_wallet_detail.createTime,
+		partner_wallet_detail.description,
+		partner_wallet_detail.sourceType,
+		partner_wallet_detail.sourceId,
+		partner_wallet_detail.attachUrl,
+		partner_wallet_detail.agentUserId,
+		a.state as orderState,
+		a.orderTime,
+		a.turnoverAmount as contractAmount
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and partner_wallet_detail.id = #{id}</if>
+				<if test="accountId != null">and partner_wallet_detail.accountId = #{accountId}</if>
+				<if test="type != null">and partner_wallet_detail.type = #{type}</if>
+				<if test="sourceType != null">and partner_wallet_detail.sourceType = #{sourceType}</if>
+				<if test="sourceId != null">and partner_wallet_detail.sourceId = #{sourceId}</if>
+				<if test="agentUserId != null">and partner_wallet_detail.agentUserId = #{agentUserId}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(partner_wallet_detail.id) from partner_wallet_detail
+		left join (
+		select * from owner_order where partnerId is not null)a
+		on partner_wallet_detail.sourceId = a.id
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from partner_wallet_detail
+				left join (
+		select * from owner_order where partnerId is not null)a
+		on partner_wallet_detail.sourceId = a.id
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by partner_wallet_detail.createTime desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from partner_wallet_detail
+		left join (
+		select * from owner_order where partnerId is not null)a
+		on partner_wallet_detail.sourceId = a.id
+		where partner_wallet_detail.id = #{id}
+	</select>
+	
+	<select id="selectSum" resultType="java.lang.Float"
+		parameterType="java.util.Map">
+		select sum(partner_wallet_detail.wallet) from partner_wallet_detail
+		<include refid="Where_Condition" />
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.partner.po.PartnerWalletBill">
+		insert into partner_wallet_detail
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="accountId != null" > accountId, </if>
+		  <if test="type != null" > type, </if>
+		  <if test="wallet != null" > wallet, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="description != null" > description, </if>
+		  <if test="sourceType != null" > sourceType, </if>
+		  <if test="sourceId != null" > sourceId, </if>
+		  <if test="attachUrl != null" > attachUrl, </if>
+		  <if test="agentUserId != null" > agentUserId, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="accountId != null" > #{accountId}, </if>
+		  <if test="type != null" > #{type}, </if>
+		  <if test="wallet != null" > #{wallet}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="description != null" > #{description}, </if>
+		  <if test="sourceType != null" > #{sourceType}, </if>
+		  <if test="sourceId != null" > #{sourceId}, </if>
+		  <if test="attachUrl != null" > #{attachUrl}, </if>
+		  <if test="agentUserId != null" > #{agentUserId}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.partner.po.PartnerWalletBill">
+		update 
+			partner_wallet_detail 
+		<set>
+			<if test="accountId != null"> accountId = #{accountId}, </if>
+			<if test="type != null"> type = #{type}, </if>
+			<if test="wallet != null"> wallet = #{wallet}, </if>
+			<if test="createTime != null"> createTime = #{createTime}, </if>
+			<if test="description != null"> description = #{description}, </if>
+			<if test="sourceType != null"> sourceType = #{sourceType}, </if>
+			<if test="sourceId != null"> sourceId = #{sourceId}, </if>
+			<if test="attachUrl != null"> attachUrl = #{attachUrl}, </if>
+			<if test="agentUserId != null"> agentUserId = #{agentUserId}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from partner_wallet_detail
+		where partner_wallet_detail.id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from partner_wallet_detail
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

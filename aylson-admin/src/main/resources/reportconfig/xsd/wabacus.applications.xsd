@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+				targetNamespace="http://www.wabacus.com"
+				xmlns:wxs="http://www.wabacus.com"
+				elementFormDefault="qualified">
+	 <xs:include schemaLocation="wabacus.util.xsd"/>
+	 <xs:include schemaLocation="wabacus.resources.xsd"/>
+	 
+	 <xs:element name="applications">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:group ref="wxs:otherconfig"/>
+    			<xs:element name="page" type="wxs:pageType" maxOccurs="unbounded"/>
+    		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
+	 
+	 <xs:group name="otherconfig">
+	 	<xs:sequence>
+	 		<xs:element ref="wxs:local-resources" minOccurs="0"/>
+    		<xs:element ref="wxs:local-jsfiles" minOccurs="0"/>
+    		<xs:element ref="wxs:local-cssfiles" minOccurs="0"/>
+	 	</xs:sequence>
+	 </xs:group>
+	 
+	 <xs:element name="local-resources">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element name="resource-file" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    			<xs:element ref="wxs:resources" minOccurs="0">
+    			</xs:element>
+    		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
+    
+    <xs:element name="local-jsfiles">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element name="js-file" minOccurs="0" maxOccurs="unbounded">
+    				<xs:complexType mixed="true">
+						<xs:attribute name="loadorder" type="xs:integer"/>
+					</xs:complexType>
+    			</xs:element>
+    		</xs:sequence>
+    	</xs:complexType>
+   </xs:element>
+    			
+   <xs:element name="local-cssfiles">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element name="css-file" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    		</xs:sequence>
+    	</xs:complexType>
+   </xs:element>
+   
+   
+   <xs:complexType name="pageType">
+   	<xs:sequence>
+   		<xs:element name="interceptor" minOccurs="0" maxOccurs="1">
+   			<xs:complexType>
+   				<xs:all>
+   					<xs:element ref="wxs:imports" minOccurs="0"/>
+   					<xs:element name="preaction" minOccurs="0" type="xs:string"/>
+   					<xs:element name="postaction" minOccurs="0" type="xs:string"/>
+   				</xs:all>
+   			</xs:complexType>
+   		</xs:element>
+   		<xs:group ref="wxs:containerChildren"/>
+   	</xs:sequence>
+   	<xs:attributeGroup ref="wxs:componentCommonAttributes"/>
+   	<xs:attributeGroup ref="wxs:containerCommonAttributes"/>
+    	<xs:attribute name="js" type="xs:string"/>
+    	<xs:attribute name="css" type="xs:string"/>
+    	<xs:attribute name="checkpermission" type="wxs:booleanType"/>
+    	<xs:attribute name="interceptor" type="xs:string"/>
+    	<xs:attribute name="personalizeclass" type="xs:string"/>
+   </xs:complexType>
+   
+   <xs:element name="panel">
+   	<xs:complexType>
+   		<xs:group ref="wxs:containerChildren"/>
+   		<xs:attributeGroup ref="wxs:componentCommonAttributes"/>
+   		<xs:attributeGroup ref="wxs:containerCommonAttributes"/>
+   	</xs:complexType>
+   </xs:element>
+   <xs:element name="framepanel">
+   	<xs:complexType>
+   		<xs:group ref="wxs:containerChildren"/>
+   		<xs:attributeGroup ref="wxs:componentCommonAttributes"/>
+   		<xs:attributeGroup ref="wxs:containerCommonAttributes"/>
+   	</xs:complexType>
+   </xs:element>
+   <xs:element name="tabpanel">
+   	<xs:complexType>
+   		<xs:group ref="wxs:containerChildren"/>
+   		<xs:attributeGroup ref="wxs:componentCommonAttributes"/>
+   		<xs:attributeGroup ref="wxs:containerCommonAttributes"/>
+   		<xs:attribute name="titlewidth" type="xs:string"/>
+   		<xs:attribute name="titlestyle">
+   			<xs:simpleType>
+   				<xs:restriction base="xs:integer">
+   					<xs:enumeration value="1"/>
+   					<xs:enumeration value="2"/>
+   				</xs:restriction>
+   			</xs:simpleType>
+   		</xs:attribute>
+   		<xs:attribute name="asyn" type="wxs:booleanType"/>
+   		<xs:attribute name="switchbeforecallback" type="xs:string"/>
+   	</xs:complexType>
+   </xs:element>
+   <xs:element name="vpanel">
+   	<xs:complexType>
+   		<xs:group ref="wxs:containerChildren"/>
+   		<xs:attributeGroup ref="wxs:componentCommonAttributes"/>
+   		<xs:attributeGroup ref="wxs:containerCommonAttributes"/>
+   	</xs:complexType>
+   </xs:element>
+   <xs:element name="hpanel">
+   	<xs:complexType>
+   		<xs:group ref="wxs:containerChildren"/>
+   		<xs:attributeGroup ref="wxs:componentCommonAttributes"/>
+   		<xs:attributeGroup ref="wxs:containerCommonAttributes"/>
+   	</xs:complexType>
+   </xs:element>
+      
+   <xs:element name="html">
+   	<xs:complexType mixed="true">
+   		<xs:attributeGroup ref="wxs:componentCommonAttributes"/>
+   		<xs:attribute name="belongto" type="xs:string"/>
+   	</xs:complexType>
+   </xs:element>
+      
+   <xs:element name="jsp">
+   	<xs:complexType mixed="true">
+   		<xs:attributeGroup ref="wxs:componentCommonAttributes"/>
+   		<xs:attribute name="belongto" type="xs:string"/>
+   		<xs:attribute name="iframe" type="wxs:booleanType"/>
+   		<xs:attribute name="iframestyleproperty" type="xs:string"/>
+   	</xs:complexType>
+   </xs:element>
+      
+   <xs:element name="report">
+   	<xs:complexType>
+   		<xs:all>
+   			<xs:element ref="wxs:interceptor" minOccurs="0"/>
+   			<xs:element name="outerheader" type="wxs:headerfooter" minOccurs="0"/>
+   			<xs:element name="header" type="wxs:headerfooter" minOccurs="0"/>
+   			<xs:element name="display" type="wxs:displayType" minOccurs="0"/>
+   			<xs:element ref="wxs:subdisplay" minOccurs="0"/>
+   			<xs:element name="footer" type="wxs:headerfooter" minOccurs="0"/>
+   			<xs:element name="outerfooter" type="wxs:headerfooter" minOccurs="0"/>
+   			<xs:element ref="wxs:sql" minOccurs="0"/>
+   			<xs:element ref="wxs:buttons" minOccurs="0"/>
+   			<xs:element ref="wxs:print" minOccurs="0"/>
+   			<xs:element ref="wxs:dataexports" minOccurs="0"/>
+   			<xs:element name="format" type="wxs:formatType" minOccurs="0"/>
+   		</xs:all>
+    		<xs:attributeGroup ref="wxs:componentCommonAttributes"/>
+    		<xs:attribute name="extends" type="xs:string"/>
+    		<xs:attribute name="type" type="xs:string"/>
+    		<xs:attribute name="pojoclass" type="xs:string"/>
+    		<xs:attribute name="formatclass" type="xs:string"/>
+    		<xs:attribute name="pagesize" type="xs:string"/>
+    		<xs:attribute name="navigate_reportid" type="xs:string"/>
+    		<xs:attribute name="navigate" type="xs:string"/>
+    		<xs:attribute name="fixedcols" type="xs:nonNegativeInteger"/>
+    		<xs:attribute name="fixedrows" type="xs:string"/>
+    		<xs:attribute name="depends" type="xs:string"/>
+    		<xs:attribute name="dependstype">
+    			<xs:simpleType>
+    				<xs:restriction base="xs:string">
+    					<xs:enumeration value="display"/>
+    					<xs:enumeration value="hidden"/>
+    				</xs:restriction>
+    			</xs:simpleType>
+    		</xs:attribute>
+    		<xs:attribute name="dependsparams" type="xs:string"/>
+    		<xs:attribute name="cellresize">
+    			<xs:simpleType>
+    				<xs:restriction base="xs:integer">
+    					<xs:enumeration value="0"/>
+    					<xs:enumeration value="1"/>
+    					<xs:enumeration value="2"/>
+  					</xs:restriction>
+    			</xs:simpleType>
+    		</xs:attribute>
+    		<xs:attribute name="celldrag">
+    			<xs:simpleType>
+    				<xs:restriction base="xs:integer">
+    					<xs:enumeration value="0"/>
+    					<xs:enumeration value="1"/>
+  					</xs:restriction>
+    			</xs:simpleType>
+    		</xs:attribute>
+    		<xs:attribute name="servervalidateclass" type="xs:string"/>
+    		<xs:attribute name="onload" type="xs:string"/>
+    		<xs:attribute name="border">
+    			<xs:simpleType>
+    				<xs:restriction base="xs:string">
+    					<xs:enumeration value="none0"/>
+    					<xs:enumeration value="none1"/>
+    					<xs:enumeration value="horizontal0"/>
+    					<xs:enumeration value="horizontal1"/>
+    					<xs:enumeration value="horizontal2"/>
+    					<xs:enumeration value="vertical"/>
+    					<xs:enumeration value="all"/>
+  					</xs:restriction>
+    			</xs:simpleType>
+    		</xs:attribute>
+    		<xs:attribute name="scrollwidth" type="xs:string"/>
+    		<xs:attribute name="scrollheight" type="xs:string"/>
+    		<xs:attribute name="interceptor" type="xs:string"/>
+    		<xs:attribute name="template" type="xs:string"/>
+    		<xs:attribute name="rowselect">
+    			<xs:simpleType>
+    				<xs:restriction base="xs:string">
+    					<xs:enumeration value="none"/>
+    					<xs:enumeration value="single"/>
+    					<xs:enumeration value="multiple"/>
+    					<xs:enumeration value="checkbox"/>
+    					<xs:enumeration value="radiobox"/>
+    					<xs:enumeration value="single-radiobox"/>
+    					<xs:enumeration value="multiple-checkbox"/>
+    					
+    					<xs:enumeration value="single|true"/>
+    					<xs:enumeration value="multiple|true"/>
+    					<xs:enumeration value="checkbox|true"/>
+    					<xs:enumeration value="radiobox|true"/>
+    					<xs:enumeration value="single-radiobox|true"/>
+    					<xs:enumeration value="multiple-checkbox|true"/>
+    					
+    					<xs:enumeration value="single|false"/>
+    					<xs:enumeration value="multiple|false"/>
+    					<xs:enumeration value="checkbox|false"/>
+    					<xs:enumeration value="radiobox|false"/>
+    					<xs:enumeration value="single-radiobox|false"/>
+    					<xs:enumeration value="multiple-checkbox|false"/>
+  					</xs:restriction>
+    			</xs:simpleType>
+    		</xs:attribute>
+    		<xs:attribute name="selectcallback" type="xs:string"/>
+    		<xs:attribute name="rowordertype" type="xs:string"/>
+    		<xs:attribute name="roworderclass" type="xs:string"/>
+    		<xs:attribute name="personalizeclass" type="xs:string"/>
+    		<xs:attribute name="refreshid" type="xs:string"/>
+    		<xs:attribute name="pagelazyloadata" type="xs:integer"/>
+    		<xs:attribute name="dataexportlazyloadata" type="xs:integer"/>
+    		<xs:attribute name="batchouputcount" type="xs:integer"/>
+    		<xs:attribute name="checkdirtydata" type="wxs:booleanType"/>
+    		<xs:attribute name="savedatatype">
+    			<xs:simpleType>
+    				<xs:restriction base="xs:string">
+    					<xs:enumeration value="all"/>
+    					<xs:enumeration value="changed"/>
+  					</xs:restriction>
+    			</xs:simpleType>
+    		</xs:attribute>
+    		<xs:attribute name="datatype">
+    			<xs:simpleType>
+    				<xs:restriction base="xs:string">
+    					<xs:enumeration value="xml"/>
+    					<xs:enumeration value="xmlurl"/>
+    					<xs:enumeration value="xmlurl-servlet"/>
+  					</xs:restriction>
+    			</xs:simpleType>
+    		</xs:attribute>
+    		<xs:attribute name="chartype" type="xs:string"/>
+    		<xs:attribute name="linkchart" type="wxs:booleanType"/>
+    		<xs:attribute name="chartstyleproperty" type="xs:string"/>
+    		<xs:attribute name="chartwidth" type="xs:string"/>
+    		<xs:attribute name="chartheight" type="xs:string"/>
+    		<xs:attribute name="debugmode" type="xs:string"/>
+    		<xs:attribute name="registerwithjs" type="xs:string"/>
+   	</xs:complexType>
+   </xs:element>
+   
+   <xs:complexType name="headerfooter">
+   	<xs:simpleContent>
+   		<xs:extension base="xs:string"/>
+   	</xs:simpleContent>
+   </xs:complexType>
+   
+   <!-- 组件通用属性 -->
+   <xs:attributeGroup name="componentCommonAttributes">
+   	<xs:attribute name="id" type="wxs:idType" use="required"/>
+   	<xs:attribute name="dataexport" type="xs:string"/>
+   	<xs:attribute name="bordercolor" type="xs:string"/>
+   	<xs:attribute name="left" type="xs:string"/>
+   	<xs:attribute name="right" type="xs:string"/>
+   	<xs:attribute name="top" type="xs:string"/>
+   	<xs:attribute name="bottom" type="xs:string"/>
+   	<xs:attribute name="width" type="xs:string"/>
+   	<xs:attribute name="printwidth" type="xs:string"/>
+   	<xs:attribute name="height" type="xs:string"/>
+   	<xs:attribute name="align">
+   		<xs:simpleType>
+    			<xs:restriction base="xs:string">
+    				<xs:enumeration value="left"/>
+    				<xs:enumeration value="center"/>
+    				<xs:enumeration value="right"/>
+  				</xs:restriction>
+    		</xs:simpleType>
+   	</xs:attribute>
+   	<xs:attribute name="valign">
+   		<xs:simpleType>
+    			<xs:restriction base="xs:string">
+    				<xs:enumeration value="top"/>
+    				<xs:enumeration value="middle"/>
+    				<xs:enumeration value="bottom"/>
+  				</xs:restriction>
+    		</xs:simpleType>
+   	</xs:attribute>
+   	<xs:attribute name="title" type="xs:string"/>
+   	<xs:attribute name="titlealign">
+   		<xs:simpleType>
+    			<xs:restriction base="xs:string">
+    				<xs:enumeration value="top"/>
+    				<xs:enumeration value="middle"/>
+    				<xs:enumeration value="bottom"/>
+    				<xs:enumeration value="left"/>
+    				<xs:enumeration value="center"/>
+    				<xs:enumeration value="right"/>
+  				</xs:restriction>
+    		</xs:simpleType>
+   	</xs:attribute>
+   	<xs:attribute name="subtitle" type="xs:string"/>
+   	<xs:attribute name="parenttitle" type="xs:string"/>
+   	<xs:attribute name="parentsubtitle" type="xs:string"/>
+   	<xs:attribute name="scrollstyle">
+    		<xs:simpleType>
+    			<xs:restriction base="xs:string">
+    				<xs:enumeration value="normal"/>
+    				<xs:enumeration value="image"/>
+  				</xs:restriction>
+    		</xs:simpleType>
+    	</xs:attribute>
+    	<xs:attribute name="contextmenu" type="wxs:booleanType"/>
+   </xs:attributeGroup>
+   
+   <!-- 容器通用属性 -->
+   <xs:attributeGroup name="containerCommonAttributes">
+   	<xs:attribute name="border" type="xs:nonNegativeInteger"/>
+   	<xs:attribute name="margin" type="xs:string"/>
+   	<xs:attribute name="margin_left" type="xs:string"/>
+   	<xs:attribute name="margin_right" type="xs:string"/>
+   	<xs:attribute name="margin_top" type="xs:string"/>
+   	<xs:attribute name="margin_bottom" type="xs:string"/>
+   	<xs:attribute name="titleposition">
+   		<xs:simpleType>
+    			<xs:restriction base="xs:string">
+    				<xs:enumeration value="top"/>
+    				<xs:enumeration value="bottom"/>
+    				<xs:enumeration value="left"/>
+    				<xs:enumeration value="right"/>
+  				</xs:restriction>
+    		</xs:simpleType>
+   	</xs:attribute>
+   	<xs:attribute name="scrollX" type="wxs:booleanType"/>
+   	<xs:attribute name="scrollY" type="wxs:booleanType"/>
+   	<xs:attribute name="onload" type="xs:string"/>
+   </xs:attributeGroup>
+   
+   <!-- 容器的子标签集合 -->
+   <xs:group name="containerChildren">
+      <xs:sequence><!-- 套上sequence是为了choice可以指定maxOccurs="unbounded" -->
+   		<xs:choice minOccurs="0"  maxOccurs="unbounded">
+				<xs:element ref="wxs:report" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="wxs:html" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="wxs:jsp" minOccurs="0" maxOccurs="unbounded"/>
+   			<xs:element ref="wxs:panel" minOccurs="0" maxOccurs="unbounded"/>
+   			<xs:element ref="wxs:framepanel" minOccurs="0" maxOccurs="unbounded"/>
+   			<xs:element ref="wxs:tabpanel" minOccurs="0" maxOccurs="unbounded"/>
+   			<xs:element ref="wxs:vpanel" minOccurs="0" maxOccurs="unbounded"/>
+   			<xs:element ref="wxs:hpanel" minOccurs="0" maxOccurs="unbounded"/>
+   			<xs:element ref="wxs:buttons" minOccurs="0"/>
+   			<xs:element ref="wxs:print" minOccurs="0"/>
+   			<xs:element ref="wxs:dataexports" minOccurs="0"/>
+   			<xs:element name="outerheader" type="wxs:headerfooter" minOccurs="0"/>
+   			<xs:element name="header" type="wxs:headerfooter" minOccurs="0"/>
+   			<xs:element name="footer" type="wxs:headerfooter" minOccurs="0"/>
+   			<xs:element name="outerfooter" type="wxs:headerfooter" minOccurs="0"/>
+   		</xs:choice>
+   	</xs:sequence>
+   </xs:group>
+   
+   <xs:element name="print">
+   	<xs:complexType mixed="true">
+   	  <xs:sequence>
+   			<xs:element name="subpage" minOccurs="0" maxOccurs="unbounded">
+  					<xs:complexType>
+  						 <xs:simpleContent>
+  						 	 <xs:extension base="xs:string">
+  						 	 	<xs:attribute name="mergeup" type="wxs:booleanType"/>
+								<xs:attribute name="splitprintreport" type="xs:string"/>
+								<xs:attribute name="minpagecount" type="xs:integer"/>
+								<xs:attribute name="maxpagecount" type="xs:integer"/>
+  						 	 </xs:extension>
+  						 </xs:simpleContent>
+  					</xs:complexType>
+  				</xs:element>
+  				<xs:element name="pageinfo" minOccurs="0" type="xs:string"/>
+   		</xs:sequence>
+   		<xs:attribute name="type">
+	 	 		<xs:simpleType>
+	 	 			<xs:restriction base="xs:string">
+	 	 				<xs:enumeration value="default"/>
+	 	 				<xs:enumeration value="pdf"/>
+	 	 				<xs:enumeration value="lodop"/>
+	 	 				<xs:enumeration value="none"/>
+	 	 			</xs:restriction>
+	 	 		</xs:simpleType>
+	 	 	</xs:attribute>
+	 	 	<xs:attribute name="preview" type="wxs:booleanType"/>
+	 	 	<xs:attribute name="setting" type="wxs:booleanType"/>
+	 	 	<xs:attribute name="include" type="xs:string"/>
+	 	 	<xs:attribute name="button" type="xs:string"/>
+	 	 	<xs:attribute name="previewbutton" type="xs:string"/>
+	 	 	<xs:attribute name="settingbutton" type="xs:string"/>
+	 	 	<xs:attribute name="jobname" type="xs:string"/>
+	 	 	<xs:attribute name="paperstyleproperty" type="xs:string"/>
+	 	 	<xs:attribute name="printpagesize" type="xs:string"/>
+	 	 	<!-- 下面的属性用于PDF打印时的配置 -->
+	 	 	<xs:attribute name="pagesize" type="xs:integer"/>
+	 	 	<xs:attribute name="fullpagesplit" type="wxs:booleanType"/>
+    		<xs:attribute name="titlefontsize" type="xs:string"/>
+    		<xs:attribute name="dataheaderfontsize" type="xs:string"/>
+    		<xs:attribute name="datafontsize" type="xs:string"/>
+    		<xs:attribute name="interceptor" type="xs:string"/>
+   	</xs:complexType>
+   </xs:element>
+   
+   <xs:element name="dataexports">
+   	<xs:complexType>
+   	  <xs:sequence>
+   			<xs:element name="dataexport" minOccurs="0" maxOccurs="unbounded">
+  					<xs:complexType>
+  						 <xs:simpleContent>
+	  						 <xs:extension base="xs:string">
+		  						 <xs:attribute name="type" type="xs:string" use="required"/>
+		  						 <xs:attribute name="template" type="xs:string"/>
+		  						 <xs:attribute name="interceptor" type="xs:string"/>
+		  						 <xs:attribute name="include" type="xs:string"/>
+		  						 <xs:attribute name="filename" type="xs:string"/>
+		  						 <xs:attribute name="rowselect" type="xs:string"/>
+		  						 <xs:attribute name="plainexceltitle">
+					    			<xs:simpleType>
+					    				<xs:restriction base="xs:string">
+					    					<xs:enumeration value="none"/>
+					    					<xs:enumeration value="label"/>
+					    					<xs:enumeration value="column"/>
+					    				</xs:restriction>
+					    			</xs:simpleType>
+					    		</xs:attribute>
+					    		<xs:attribute name="sheetsize" type="xs:integer"/>
+					    		<xs:attribute name="pagesize" type="xs:integer"/>
+					    		<xs:attribute name="printpagesize" type="xs:string"/>
+					    		<xs:attribute name="width" type="xs:string"/>
+					    		<xs:attribute name="fullpagesplit" type="wxs:booleanType"/>
+					    		<xs:attribute name="titlefontsize" type="xs:string"/>
+					    		<xs:attribute name="dataheaderfontsize" type="xs:string"/>
+					    		<xs:attribute name="datafontsize" type="xs:string"/>
+					    		<xs:attribute name="localstorage" type="wxs:booleanType"/>
+					    		<xs:attribute name="download" type="wxs:booleanType"/>
+					    		<xs:attribute name="autodelete" type="wxs:booleanType"/>
+					    		<xs:attribute name="zip" type="wxs:booleanType"/>
+					    		<xs:attribute name="directorydateformat" type="xs:string"/>
+				    		</xs:extension>
+			    		</xs:simpleContent>
+  					</xs:complexType>
+  				</xs:element>
+   		</xs:sequence>
+	 	 	<xs:attribute name="filename" type="xs:string"/>
+   	</xs:complexType>
+   </xs:element>
+   
+</xs:schema>

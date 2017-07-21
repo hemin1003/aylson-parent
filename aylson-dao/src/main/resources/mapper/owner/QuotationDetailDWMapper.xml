@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.owner.po.QuotationDetailDW">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.owner.vo.QuotationDetailDWVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="appointId" property="appointId" jdbcType="INTEGER" />
+		<result column="quotationId" property="quotationId" jdbcType="INTEGER" />
+		<result column="seq" property="seq" jdbcType="INTEGER" />
+		<result column="productNo" property="productNo" jdbcType="VARCHAR" />
+		<result column="productName" property="productName" jdbcType="VARCHAR" />
+		<result column="holeSizeW" property="holeSizeW" jdbcType="INTEGER" />
+		<result column="holeSizeH" property="holeSizeH" jdbcType="INTEGER" />
+		<result column="productSizeW" property="productSizeW" jdbcType="INTEGER" />
+		<result column="productSizeH" property="productSizeH" jdbcType="INTEGER" />
+		<result column="wallThick" property="wallThick" jdbcType="INTEGER" />
+		<result column="colorIn" property="colorIn" jdbcType="VARCHAR" />
+		<result column="colorOut" property="colorOut" jdbcType="VARCHAR" />
+		<result column="glass" property="glass" jdbcType="VARCHAR" />
+		<result column="shutter" property="shutter" jdbcType="VARCHAR" />
+		<result column="pruductNum" property="pruductNum" jdbcType="INTEGER" />
+		<result column="areas" property="areas" jdbcType="FLOAT" />
+		<result column="unitPrice" property="unitPrice" jdbcType="FLOAT" />
+		<result column="amount" property="amount" jdbcType="FLOAT" />
+		<result column="rails" property="rails" jdbcType="VARCHAR" />
+		<result column="handColor" property="handColor" jdbcType="VARCHAR" />
+		<result column="salesUnitPrice" property="salesUnitPrice" jdbcType="FLOAT" />
+		<result column="salesUnitAmount" property="salesUnitAmount" jdbcType="FLOAT" />
+		<result column="goodsAmount" property="goodsAmount" jdbcType="FLOAT" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="goodNames" property="goodNames" jdbcType="VARCHAR" />
+		<result column="goodAmounts" property="goodAmounts" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		owner_quotation_detail_dw.id,
+		owner_quotation_detail_dw.appointId,
+		owner_quotation_detail_dw.quotationId,
+		owner_quotation_detail_dw.seq,
+		owner_quotation_detail_dw.productNo,
+		owner_quotation_detail_dw.productName,
+		owner_quotation_detail_dw.holeSizeW,
+		owner_quotation_detail_dw.holeSizeH,
+		owner_quotation_detail_dw.productSizeW,
+		owner_quotation_detail_dw.productSizeH,
+		owner_quotation_detail_dw.wallThick,
+		owner_quotation_detail_dw.colorIn,
+		owner_quotation_detail_dw.colorOut,
+		owner_quotation_detail_dw.glass,
+		owner_quotation_detail_dw.shutter,
+		owner_quotation_detail_dw.pruductNum,
+		owner_quotation_detail_dw.areas,
+		owner_quotation_detail_dw.unitPrice,
+		owner_quotation_detail_dw.amount,
+		owner_quotation_detail_dw.rails,
+		owner_quotation_detail_dw.handColor,
+		owner_quotation_detail_dw.salesUnitPrice,
+		owner_quotation_detail_dw.salesUnitAmount,
+		owner_quotation_detail_dw.goodsAmount,
+		owner_quotation_detail_dw.remark,
+		owner_quotation_detail_dw.goodNames,
+		owner_quotation_detail_dw.goodAmounts
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and owner_quotation_detail_dw.id = #{id}</if>
+				<if test="appointId != null">and owner_quotation_detail_dw.appointId = #{appointId}</if>
+				<if test="quotationId != null">and owner_quotation_detail_dw.quotationId = #{quotationId}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from owner_quotation_detail_dw
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from owner_quotation_detail_dw
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by owner_quotation_detail_dw.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_quotation_detail_dw
+		where id = #{id}
+	</select>
+	
+	 <!-- 根据ID查询 -->
+	<select id="selectByQuotationId" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_quotation_detail_dw
+		where quotationId = #{quotationId}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.owner.po.QuotationDetailDW">
+		insert into owner_quotation_detail_dw
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="appointId != null" > appointId, </if>
+		  <if test="quotationId != null" > quotationId, </if>
+		  <if test="seq != null" > seq, </if>
+		  <if test="productNo != null" > productNo, </if>
+		  <if test="productName != null" > productName, </if>
+		  <if test="holeSizeW != null" > holeSizeW, </if>
+		  <if test="holeSizeH != null" > holeSizeH, </if>
+		  <if test="productSizeW != null" > productSizeW, </if>
+		  <if test="productSizeH != null" > productSizeH, </if>
+		  <if test="wallThick != null" > wallThick, </if>
+		  <if test="colorIn != null" > colorIn, </if>
+		  <if test="colorOut != null" > colorOut, </if>
+		  <if test="glass != null" > glass, </if>
+		  <if test="shutter != null" > shutter, </if>
+		  <if test="pruductNum != null" > pruductNum, </if>
+		  <if test="areas != null" > areas, </if>
+		  <if test="unitPrice != null" > unitPrice, </if>
+		  <if test="amount != null" > amount, </if>
+		  <if test="rails != null" > rails, </if>
+		  <if test="handColor != null" > handColor, </if>
+		  <if test="salesUnitPrice != null" > salesUnitPrice, </if>
+		  <if test="salesUnitAmount != null" > salesUnitAmount, </if>
+		  <if test="goodsAmount != null" > goodsAmount, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="goodNames != null" > goodNames, </if>
+		  <if test="goodAmounts != null" > goodAmounts, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="appointId != null" > #{appointId}, </if>
+		  <if test="appointId != null" > #{appointId}, </if>
+		  <if test="seq != null" > #{seq}, </if>
+		  <if test="productNo != null" > #{productNo}, </if>
+		  <if test="productName != null" > #{productName}, </if>
+		  <if test="holeSizeW != null" > #{holeSizeW}, </if>
+		  <if test="holeSizeH != null" > #{holeSizeH}, </if>
+		  <if test="productSizeW != null" > #{productSizeW}, </if>
+		  <if test="productSizeH != null" > #{productSizeH}, </if>
+		  <if test="wallThick != null" > #{wallThick}, </if>
+		  <if test="colorIn != null" > #{colorIn}, </if>
+		  <if test="colorOut != null" > #{colorOut}, </if>
+		  <if test="glass != null" > #{glass}, </if>
+		  <if test="shutter != null" > #{shutter}, </if>
+		  <if test="pruductNum != null" > #{pruductNum}, </if>
+		  <if test="areas != null" > #{areas}, </if>
+		  <if test="unitPrice != null" > #{unitPrice}, </if>
+		  <if test="amount != null" > #{amount}, </if>
+		  <if test="rails != null" > #{rails}, </if>
+		  <if test="handColor != null" > #{handColor}, </if>
+		  <if test="salesUnitPrice != null" > #{salesUnitPrice}, </if>
+		  <if test="salesUnitAmount != null" > #{salesUnitAmount}, </if>
+		  <if test="goodsAmount != null" > #{goodsAmount}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="goodNames != null" > #{goodNames}, </if>
+		  <if test="goodAmounts != null" > #{goodAmounts}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.owner.po.QuotationDetailDW">
+		update 
+			owner_quotation_detail_dw 
+		<set>
+			<if test="appointId != null"> appointId = #{appointId}, </if>
+			<if test="quotationId != null"> quotationId = #{quotationId}, </if>
+			<if test="seq != null"> seq = #{seq}, </if>
+			<if test="productNo != null"> productNo = #{productNo}, </if>
+			<if test="productName != null"> productName = #{productName}, </if>
+			<if test="holeSizeW != null"> holeSizeW = #{holeSizeW}, </if>
+			<if test="holeSizeH != null"> holeSizeH = #{holeSizeH}, </if>
+			<if test="productSizeW != null"> productSizeW = #{productSizeW}, </if>
+			<if test="productSizeH != null"> productSizeH = #{productSizeH}, </if>
+			<if test="wallThick != null"> wallThick = #{wallThick}, </if>
+			<if test="colorIn != null"> colorIn = #{colorIn}, </if>
+			<if test="colorOut != null"> colorOut = #{colorOut}, </if>
+			<if test="glass != null"> glass = #{glass}, </if>
+			<if test="shutter != null"> shutter = #{shutter}, </if>
+			<if test="pruductNum != null"> pruductNum = #{pruductNum}, </if>
+			<if test="areas != null"> areas = #{areas}, </if>
+			<if test="unitPrice != null"> unitPrice = #{unitPrice}, </if>
+			<if test="amount != null"> amount = #{amount}, </if>
+			<if test="rails != null"> rails = #{rails}, </if>
+			<if test="handColor != null"> handColor = #{handColor}, </if>
+			<if test="salesUnitPrice != null"> salesUnitPrice = #{salesUnitPrice}, </if>
+			<if test="salesUnitAmount != null"> salesUnitAmount = #{salesUnitAmount}, </if>
+			<if test="goodsAmount != null"> goodsAmount = #{goodsAmount}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="goodNames != null"> goodNames = #{goodNames}, </if>
+			<if test="goodAmounts != null"> goodAmounts = #{goodAmounts}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from owner_quotation_detail_dw
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from owner_quotation_detail_dw
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into owner_quotation_detail_dw(
+			appointId,
+			quotationId,
+			seq,
+			productNo,
+			productName,
+			productSizeW,
+			productSizeH,
+			wallThick,
+			colorIn,
+			colorOut,
+			glass,
+			shutter,
+			pruductNum,
+			areas,
+			unitPrice,
+			amount,
+			rails,
+			handColor,
+			salesUnitPrice,
+			salesUnitAmount,
+			goodsAmount,
+			remark,
+			goodNames,
+			goodAmounts
+		) 
+    	values   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	    (
+			#{item.appointId},
+			#{item.quotationId},
+			#{item.seq},
+			#{item.productNo},
+			#{item.productName},
+			#{item.productSizeW},
+			#{item.productSizeH},
+			#{item.wallThick},
+			#{item.colorIn},
+			#{item.colorOut},
+			#{item.glass},
+			#{item.shutter},
+			#{item.pruductNum},
+			#{item.areas},
+			#{item.unitPrice},
+			#{item.amount},
+			#{item.rails},
+			#{item.handColor},
+			#{item.salesUnitPrice},
+			#{item.salesUnitAmount},
+			#{item.goodsAmount},
+			#{item.remark},
+			#{item.goodNames},
+			#{item.goodAmounts}
+		)
+	    </foreach> 
+	</insert>
+	
+	<!-- 批量更新 -->
+	<update id="batchUpdate"  parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 
+				owner_quotation_detail_dw 
+			<set>
+				<if test="item.appointId != null"> appointId = #{item.appointId}, </if>
+				<if test="item.quotationId != null"> quotationId = #{item.quotationId}, </if>
+				<if test="item.seq != null"> seq = #{item.seq}, </if>
+				<if test="item.productNo != null"> productNo = #{item.productNo}, </if>
+				<if test="item.productName != null"> productName = #{item.productName}, </if>
+				<if test="item.holeSizeW != null"> holeSizeW = #{item.holeSizeW}, </if>
+				<if test="item.holeSizeH != null"> holeSizeH = #{item.holeSizeH}, </if>
+				<if test="item.productSizeW != null"> productSizeW = #{item.productSizeW}, </if>
+				<if test="item.productSizeH != null"> productSizeH = #{item.productSizeH}, </if>
+				<if test="item.wallThick != null"> wallThick = #{item.wallThick}, </if>
+				<if test="item.colorIn != null"> colorIn = #{item.colorIn}, </if>
+				<if test="item.colorOut != null"> colorOut = #{item.colorOut}, </if>
+				<if test="item.glass != null"> glass = #{item.glass}, </if>
+				<if test="item.shutter != null"> shutter = #{item.shutter}, </if>
+				<if test="item.pruductNum != null"> pruductNum = #{item.pruductNum}, </if>
+				<if test="item.areas != null"> areas = #{item.areas}, </if>
+				<if test="item.unitPrice != null"> unitPrice = #{item.unitPrice}, </if>
+				<if test="item.amount != null"> amount = #{item.amount}, </if>
+				<if test="item.rails != null"> rails = #{item.rails}, </if>
+				<if test="item.handColor != null"> handColor = #{item.handColor}, </if>
+				<if test="item.salesUnitPrice != null"> salesUnitPrice = #{item.salesUnitPrice}, </if>
+				<if test="item.salesUnitAmount != null"> salesUnitAmount = #{item.salesUnitAmount}, </if>
+				<if test="item.goodsAmount != null"> goodsAmount = #{item.goodsAmount}, </if>
+				<if test="item.remark != null"> remark = #{item.remark}, </if>
+				<if test="item.goodNames != null"> goodNames = #{item.goodNames}, </if>
+				<if test="item.goodAmounts != null"> goodAmounts = #{item.goodAmounts}, </if>
+			</set> 
+			 where id = #{item.id} 
+         </foreach>
+    </update>
+
+</mapper>

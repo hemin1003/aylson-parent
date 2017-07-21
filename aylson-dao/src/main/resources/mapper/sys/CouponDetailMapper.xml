@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.CouponDetail">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.CouponDetailVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="couponName" property="couponName" jdbcType="VARCHAR" />
+		<result column="couponType" property="couponType" jdbcType="INTEGER" />
+		<result column="couponValue" property="couponValue" jdbcType="INTEGER" />
+		<result column="ruleDesc" property="ruleDesc" jdbcType="VARCHAR" />
+		<result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="notice" property="notice" jdbcType="VARCHAR" />
+		<result column="serviceTel" property="serviceTel" jdbcType="VARCHAR" />
+		<result column="comments" property="comments" jdbcType="VARCHAR" />
+		<result column="isEnabled" property="isEnabled" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_coupon_details.id,
+		sys_coupon_details.couponName,
+		sys_coupon_details.couponType, 
+		sys_coupon_details.couponValue,
+		sys_coupon_details.ruleDesc,
+		sys_coupon_details.startTime,
+		sys_coupon_details.endTime,
+		sys_coupon_details.notice,
+		sys_coupon_details.serviceTel,
+		sys_coupon_details.comments,
+		sys_coupon_details.isEnabled
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_coupon_details.id = #{id}</if>
+				<if test="couponType != null">and sys_coupon_details.couponType = #{couponType}</if>
+				<if test="isEnabled != null">and sys_coupon_details.isEnabled = #{isEnabled}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sys_coupon_details
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_coupon_details
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_coupon_details.createdTime desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_coupon_details
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.CouponDetail" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_coupon_details
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="couponName != null" > couponName, </if>
+		  <if test="couponType != null" > couponType, </if>
+		  <if test="couponValue != null" > couponValue, </if>
+		  <if test="ruleDesc != null" > ruleDesc, </if>
+		  <if test="startTime != null" > startTime, </if>
+		  <if test="endTime != null" > endTime, </if>
+		  <if test="notice != null" > notice, </if>
+		  <if test="serviceTel != null" > serviceTel, </if>
+		  <if test="comments != null" > comments, </if>
+		  <if test="isEnabled == null" > isEnabled, </if>
+		  <if test="createdTime != null" > createdTime, </if>
+		  <if test="createdBy != null" > createdBy, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="couponName != null" > #{couponName}, </if>
+		  <if test="couponType != null" > #{couponType}, </if>
+		  <if test="couponValue != null" > #{couponValue}, </if>
+		  <if test="ruleDesc != null" > #{ruleDesc}, </if>
+		  <if test="startTime != null" > #{startTime}, </if>
+		  <if test="endTime != null" > #{endTime}, </if>
+		  <if test="notice != null" > #{notice}, </if>
+		  <if test="serviceTel != null" > #{serviceTel}, </if>
+		  <if test="comments != null" > #{comments}, </if>
+		  <if test="isEnabled == null" > 1, </if>	<!-- 默认启用 -->
+		  <if test="createdTime != null" > #{createdTime}, </if>
+		  <if test="createdBy != null" > #{createdBy}, </if>
+		  
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.CouponDetail">
+		update 
+			sys_coupon_details 
+		<set>
+			<if test="couponName != null"> couponName = #{couponName}, </if>
+			<if test="couponType != null"> couponType = #{couponType}, </if>
+			<if test="couponValue != null"> couponValue = #{couponValue}, </if>
+			<if test="ruleDesc != null"> ruleDesc = #{ruleDesc}, </if>
+			<if test="startTime != null"> startTime = #{startTime}, </if>
+			<if test="endTime != null"> endTime = #{endTime}, </if>
+			<if test="notice != null"> notice = #{notice}, </if>
+			<if test="serviceTel != null"> serviceTel = #{serviceTel}, </if>
+			<if test="comments != comments"> comments = #{comments}, </if>
+			<if test="isEnabled != null"> isEnabled = #{isEnabled}, </if>
+			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
+			<if test="updatedTime != null"> updatedTime = #{updatedTime}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+	
+	<sql id="DB_Column_List_Relation">
+		a.id,a.userId,a.userName,a.phoneNum,a.activityFkid,a.couponFkid,a.isUsed,
+		date_format(a.usedTime,'%Y-%m-%d %H:%i:%s') as usedTime,
+		b.couponName,b.couponValue,b.ruleDesc,
+		date_format(b.startTime,'%Y-%m-%d %H:%i:%s') as startTime,
+		date_format(b.endTime,'%Y-%m-%d %H:%i:%s') as endTime,
+		b.notice,b.serviceTel,b.comments
+		from sys_coupon_user_relations a inner join sys_coupon_details b on a.couponFkid=b.id
+	</sql>
+	
+	<!-- 查询-会员关系对应优惠券明细数据 -->
+	<select id="selectCouponDetails" resultType="java.util.Map" parameterType="java.util.Map">
+		select 
+		<include refid="DB_Column_List_Relation" />
+			and b.id in 
+ 		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+  			#{item}  
+ 		</foreach>
+ 		<!-- 未使用 -->
+ 		<if test="isUsed == 0">
+			<![CDATA[
+				and b.endtime>=SYSDATE() and a.isUsed=0
+			]]>
+		</if>
+		<!-- 已使用 -->
+		<if test="isUsed == 1">
+			and a.isUsed=1
+		</if>
+		<!-- 已过期 -->
+		<if test="isUsed == -1">
+			<![CDATA[
+				and b.endtime < SYSDATE()
+			]]>
+		</if>
+		<!-- 已过期 -->
+		<if test="phoneNum != null and phoneNum != ''">
+			<![CDATA[
+				and a.phoneNum =  #{phoneNum} 
+			]]>
+		</if>
+	</select>
+	
+</mapper>

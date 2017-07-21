@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.partner.po.PartnerAccount">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.partner.vo.PartnerAccountVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="partnerName" property="partnerName" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="pwd" property="pwd" jdbcType="VARCHAR" />
+		<result column="photo" property="photo" jdbcType="VARCHAR" />
+		<result column="industryType" property="industryType" jdbcType="INTEGER" />
+		<result column="storeBrand" property="storeBrand" jdbcType="VARCHAR" />
+		<result column="referralName" property="referralName" jdbcType="VARCHAR" />
+		<result column="referralPhone" property="referralPhone" jdbcType="VARCHAR" />
+		<result column="agentName" property="agentName" jdbcType="VARCHAR" />
+		<result column="agentPhone" property="agentPhone" jdbcType="VARCHAR" />
+		<result column="registerTime" property="registerTime" jdbcType="TIMESTAMP" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="wxNickName" property="wxNickName" jdbcType="VARCHAR" />
+		<result column="wxOpenId" property="wxOpenId" jdbcType="VARCHAR" />
+		<result column="wxHeadPhoto" property="wxHeadPhoto" jdbcType="VARCHAR" />
+		<result column="wxUnionId" property="wxUnionId" jdbcType="VARCHAR" />
+		<result column="wallet" property="wallet" jdbcType="FLOAT" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="cardID" property="cardID" jdbcType="VARCHAR" />
+		<result column="bankName" property="bankName" jdbcType="VARCHAR" />
+		<result column="bankNo" property="bankNo" jdbcType="VARCHAR" />
+		<result column="bankAccountName" property="bankAccountName" jdbcType="VARCHAR" />
+		<result column="walletGet" property="walletGet" jdbcType="FLOAT" />
+		<result column="walletHad" property="walletHad" jdbcType="FLOAT" />
+		<result column="qrCode" property="qrCode" jdbcType="VARCHAR" />
+		<result column="referralId" property="referralId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		partner_account.id,
+		partner_account.partnerName,
+		partner_account.mobilePhone,
+		partner_account.pwd,
+		partner_account.photo,
+		partner_account.industryType,
+		partner_account.storeBrand,
+		partner_account.referralName,
+		partner_account.referralPhone,
+		partner_account.agentName,
+		partner_account.agentPhone,
+		partner_account.registerTime,
+		partner_account.province,
+		partner_account.provinceId,
+		partner_account.city,
+		partner_account.cityId,
+		partner_account.wxNickName,
+		partner_account.wxOpenId,
+		partner_account.wxHeadPhoto,
+		partner_account.wxUnionId,
+		partner_account.wallet,
+		partner_account.state,
+		partner_account.cardID,
+		partner_account.bankName,
+		partner_account.bankNo,
+		partner_account.bankAccountName,
+		partner_account.qrCode,
+		partner_account.referralId,
+		bonusInfo.walletGet,
+		bonusInfo.walletHad
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and partner_account.id = #{id}</if>
+				<if test="state != null">and partner_account.state = #{state}</if>
+				<if test="registerTime != null and registerTime != ''">and DATE_FORMAT(partner_account.registerTime ,'%Y-%m-%d') = #{registerTime} </if>
+				<if test="industryType != null">and partner_account.industryType = #{industryType}</if>
+				<if test="wxOpenId != null">and partner_account.wxOpenId = #{wxOpenId}</if>
+				<if test="referralId != null">and partner_account.referralId = #{referralId}</if>
+				<!-- <if test="userId != null">and exists (select id from sys_agentuser_info where partner_account.agentPhone = sys_agentuser_info.contactPhone and sys_agentuser_info.userId = #{userId})</if> -->
+				<!-- 模糊查询 -->
+				<if test="partnerNameLike != null and partnerNameLike != ''">and partner_account.partnerName like CONCAT('%',#{partnerNameLike},'%')</if>
+				<if test="mobilePhoneLike != null and mobilePhoneLike != ''">and partner_account.mobilePhone like CONCAT('%',#{mobilePhoneLike},'%')</if>
+				<if test="referralNameLike != null and referralNameLike != ''">and partner_account.referralName like CONCAT('%',#{referralNameLike},'%')</if>
+				<if test="referralPhoneLike != null and referralPhoneLike != ''">and partner_account.referralPhone like CONCAT('%',#{referralPhoneLike},'%')</if>
+				<if test="agentNameLike != null and agentNameLike != ''">and partner_account.agentName like CONCAT('%',#{agentNameLike},'%')</if>
+				<if test="agentPhoneLike != null and agentPhoneLike != ''">and partner_account.agentPhone like CONCAT('%',#{agentPhoneLike},'%')</if>
+				<if test="userId != null">and bonusInfo.walletGet > 0</if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(partner_account.id) from partner_account
+		left join (
+			select accountId,
+			ifnull(sum(case when type =1 then wallet end ),0) walletGet,
+			ifnull(sum(case when type =-1 then wallet end ),0) walletHad 
+			from partner_wallet_detail where 1=1
+			<if test="userId != null">
+				<![CDATA[
+					and agentUserId = #{userId} 
+				]]>
+			</if> 
+			group by accountId 
+		) bonusInfo
+		on partner_account.id = bonusInfo.accountId
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from partner_account
+		left join (
+		select accountId,
+		ifnull(sum(case when type =1 then wallet end ),0) walletGet,
+		ifnull(sum(case when type =-1 then wallet end ),0) walletHad 
+		from partner_wallet_detail where 1=1
+		<if test="userId != null">
+			<![CDATA[
+				and agentUserId = #{userId} 
+			]]>
+		</if> 
+		group by accountId 
+		) bonusInfo
+		on partner_account.id = bonusInfo.accountId
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by partner_account.state,partner_account.registerTime desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from partner_account
+		left join (
+			select accountId,
+			ifnull(sum(case when type =1 then wallet end ),0) walletGet,
+			ifnull(sum(case when type =-1 then wallet end ),0) walletHad 
+			from partner_wallet_detail where 1=1
+			group by accountId 
+		) bonusInfo
+		on partner_account.id = bonusInfo.accountId
+		where partner_account.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.partner.po.PartnerAccount">
+		insert into partner_account
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="partnerName != null" > partnerName, </if>
+		  <if test="mobilePhone != null" > mobilePhone, </if>
+		  <if test="pwd != null" > pwd, </if>
+		  <if test="photo != null" > photo, </if>
+		  <if test="industryType != null" > industryType, </if>
+		  <if test="storeBrand != null" > storeBrand, </if>
+		  <if test="referralName != null" > referralName, </if>
+		  <if test="referralPhone != null" > referralPhone, </if>
+		  <if test="agentName != null" > agentName, </if>
+		  <if test="agentPhone != null" > agentPhone, </if>
+		  <if test="registerTime != null" > registerTime, </if>
+		  <if test="province != null" > province, </if>
+		  <if test="provinceId != null" > provinceId, </if>
+		  <if test="city != null" > city, </if>
+		  <if test="cityId != null" > cityId, </if>
+		  <if test="wxNickName != null" > wxNickName, </if>
+		  <if test="wxOpenId != null" > wxOpenId, </if>
+		  <if test="wxHeadPhoto != null" > wxHeadPhoto, </if>
+		  <if test="wxUnionId != null" > wxUnionId, </if>
+		  <if test="wallet != null" > wallet, </if>
+		  <if test="state != null" > state, </if>
+		  <if test="cardID != null" > cardID, </if>
+		  <if test="bankName != null" > bankName, </if>
+		  <if test="bankNo != null" > bankNo, </if>
+		  <if test="bankAccountName != null" > bankAccountName, </if>
+		  <if test="qrCode != null" > qrCode, </if>
+		  <if test="referralId != null" > referralId, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="partnerName != null" > #{partnerName}, </if>
+		  <if test="mobilePhone != null" > #{mobilePhone}, </if>
+		  <if test="pwd != null" > #{pwd}, </if>
+		  <if test="photo != null" > #{photo}, </if>
+		  <if test="industryType != null" > #{industryType}, </if>
+		  <if test="storeBrand != null" > #{storeBrand}, </if>
+		  <if test="referralName != null" > #{referralName}, </if>
+		  <if test="referralPhone != null" > #{referralPhone}, </if>
+		  <if test="agentName != null" > #{agentName}, </if>
+		  <if test="agentPhone != null" > #{agentPhone}, </if>
+		  <if test="registerTime != null" > #{registerTime}, </if>
+		  <if test="province != null" > #{province}, </if>
+		  <if test="provinceId != null" > #{provinceId}, </if>
+		  <if test="city != null" > #{city}, </if>
+		  <if test="cityId != null" > #{cityId}, </if>
+		  <if test="wxNickName != null" > #{wxNickName}, </if>
+		  <if test="wxOpenId != null" > #{wxOpenId}, </if>
+		  <if test="wxHeadPhoto != null" > #{wxHeadPhoto}, </if>
+		  <if test="wxUnionId != null" > #{wxUnionId}, </if>
+		  <if test="wallet != null" > #{wallet}, </if>
+		  <if test="state != null" > #{state}, </if>
+		  <if test="cardID != null" > #{cardID}, </if>
+		  <if test="bankName != null" > #{bankName}, </if>
+		  <if test="bankNo != null" > #{bankNo}, </if>
+		  <if test="bankAccountName != null" > #{bankAccountName}, </if>
+		  <if test="qrCode != null" > #{qrCode}, </if>
+		  <if test="referralId != null" > #{referralId}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.partner.po.PartnerAccount">
+		update 
+			partner_account 
+		<set>
+			<if test="partnerName != null"> partnerName = #{partnerName}, </if>
+			<if test="mobilePhone != null"> mobilePhone = #{mobilePhone}, </if>
+			<if test="pwd != null"> pwd = #{pwd}, </if>
+			<if test="photo != null"> photo = #{photo}, </if>
+			<if test="industryType != null"> industryType = #{industryType}, </if>
+			<if test="storeBrand != null"> storeBrand = #{storeBrand}, </if>
+			<if test="referralName != null"> referralName = #{referralName}, </if>
+			<if test="referralPhone != null"> referralPhone = #{referralPhone}, </if>
+			<if test="agentName != null"> agentName = #{agentName}, </if>
+			<if test="agentPhone != null"> agentPhone = #{agentPhone}, </if>
+			<!-- <if test="registerTime != null"> registerTime = #{registerTime}, </if> -->
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="wxNickName != null"> wxNickName = #{wxNickName}, </if>
+			<if test="wxOpenId != null"> wxOpenId = #{wxOpenId}, </if>
+			<if test="wxHeadPhoto != null"> wxHeadPhoto = #{wxHeadPhoto}, </if>
+			<if test="wxUnionId != null"> wxUnionId = #{wxUnionId}, </if>
+			<if test="wallet != null"> wallet = #{wallet}, </if>
+			<if test="state != null"> state = #{state}, </if>
+			<if test="cardID != null"> cardID = #{cardID}, </if>
+			<if test="bankName != null"> bankName = #{bankName}, </if>
+			<if test="bankNo != null"> bankNo = #{bankNo}, </if>
+			<if test="bankAccountName != null"> bankAccountName = #{bankAccountName}, </if>
+			<if test="qrCode != null"> qrCode = #{qrCode}, </if>
+			<!-- <if test="referralId != null"> referralId = #{referralId}, </if> -->
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from partner_account
+		where partner_account.id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from partner_account
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<select id="selectSumResult" resultType="java.lang.Float" parameterType="java.lang.Integer">
+		-- 已获得总分红
+		(
+		select ifnull(sum(wallet),0) as sumResult from partner_wallet_detail 
+		where type=1 and accountId = #{accountId}
+		)
+		-- 已转账分红
+		union all 
+		(
+		select ifnull(sum(wallet),0) as sumResult from partner_wallet_detail 
+		where type=-1 and accountId = #{accountId}
+		)
+		-- 成单数量
+		union all 
+		(
+		select ifnull(count(1),0) from owner_order where partnerId = #{accountId}
+		)
+		-- 申请现金券的总数量
+		union all 
+		(
+		select ifnull(count(1),0) from partner_coupon where applierId = #{accountId}
+		)
+		-- 已使用的现金券数量
+		union all 
+		(
+		select ifnull(count(1),0) from partner_coupon where applierId = #{accountId} and state = 1
+		)
+		-- 我的客户数量
+		union all 
+		(
+		select count(distinct partner_coupon_apply.ownerPhone) from partner_coupon_apply where applierId = #{accountId} and state = 1
+		)
+		-- 未激活的客户数量
+		union all 
+		(
+		select ifnull(count(distinct partner_coupon_apply.ownerPhone),0) from partner_coupon_apply where applierId = #{accountId} and state != 1
+		)
+		-- 使用过优惠券下单的客户数量
+		union all 
+		(
+			select count(DISTINCT(mobilePhone)) from owner_order  
+			where 1=1
+			and flowState != 0 
+			and partnerId = #{accountId}
+			<!-- and (
+				exists (select id from partner_coupon where state = 1 and partner_coupon.applierId = #{accountId}  
+				and owner_order.id = partner_coupon.orderId and  left(partner_coupon.orderCode,2)  = 'DD')
+				or exists (select id from partner_coupon where state = 1 and partner_coupon.applierId = #{accountId} 
+				and  owner_order.appointId = partner_coupon.orderId and left(partner_coupon.orderCode,2)  = 'AD')
+			) -->
+		)
+		-- 待使用的现金券数量
+		union all 
+		(
+		select ifnull(count(1),0) from partner_coupon where applierId = #{accountId} and state = 0
+		)
+		-- 已失效的现金券数量
+		union all 
+		(
+		select ifnull(count(1),0) from partner_coupon where applierId = #{accountId} and state = 2
+		)
+	</select>
+	
+	<select id="selectPCSummaryInfo" resultType="java.lang.Float" parameterType="java.lang.Integer">
+		-- 公告未读数
+		(
+		select count(1) sumResult from sys_notice
+		where state = 1 
+		and not exists (select id from sys_notice_read where sys_notice_read.noticeId = sys_notice.id
+		and sys_notice_read.readerId = #{accountId})
+		)
+		union all 
+		-- 申诉未读数
+		(
+		select count(1) from mem_feedback where feedbackerType = 5 and state != 4 and state != 1 and feedbackerId = #{accountId}
+		)
+	</select>
+	
+
+</mapper>

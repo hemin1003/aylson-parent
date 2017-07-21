@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.Org">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.OrgVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="parentId" property="parentId" jdbcType="INTEGER" />
+		<result column="seq" property="seq" jdbcType="INTEGER" />
+		<result column="orgName" property="orgName" jdbcType="VARCHAR" />
+		<result column="orgCode" property="orgCode" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="levelNum" property="levelNum" jdbcType="INTEGER" />
+		<result column="isLeaf" property="isLeaf" jdbcType="TINYINT" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_org.id,
+		sys_org.parentId,
+		sys_org.seq,
+		sys_org.orgName,
+		sys_org.orgCode,
+		sys_org.status,
+		sys_org.remark,
+		sys_org.levelNum,
+		sys_org.isLeaf
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null"> and sys_org.id = #{id} </if>
+				<if test="parentId != null"> and sys_org.parentId = #{parentId} </if>
+				<if test="orgName != null"> and sys_org.orgName = #{orgName} </if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sys_org
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_org
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_org.seq </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+        <if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_org
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.Org">
+		insert into sys_org
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="parentId != null" > parentId, </if>
+		  <if test="seq != null" > seq, </if>
+		  <if test="orgName != null" > orgName, </if>
+		  <if test="orgCode != null" > orgCode, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="levelNum != null" > levelNum, </if>
+		  <if test="isLeaf != null" > isLeaf, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+          <if test="parentId != null" > #{parentId}, </if>
+		  <if test="seq != null" > #{seq}, </if>
+		  <if test="orgName != null" > #{orgName}, </if>
+		  <if test="orgCode != null" > #{orgCode}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="levelNum != null" > #{levelNum}, </if>
+		  <if test="isLeaf != null" > #{isLeaf}, </if>
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.Org">
+		update 
+			sys_org 
+		<set>
+			<if test="parentId != null"> parentId = #{parentId}, </if>
+			<if test="seq != null"> seq = #{seq}, </if>
+			<if test="orgName != null"> orgName = #{orgName}, </if>
+			<if test="orgCode != null"> orgCode = #{orgCode}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="levelNum != null"> levelNum = #{levelNum}, </if>
+			<if test="isLeaf != null"> isLeaf = #{isLeaf}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_org
+		where id = #{id}
+	</delete>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_org
+		<include refid="Where_Condition" />
+	</delete>
+	
+	
+</mapper>

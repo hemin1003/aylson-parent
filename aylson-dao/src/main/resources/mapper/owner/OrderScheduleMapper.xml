@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.owner.po.OrderSchedule">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.owner.vo.OrderScheduleVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="orderId" property="orderId" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		owner_order_schedule.id,
+		owner_order_schedule.orderId,
+		owner_order_schedule.createTime,
+		owner_order_schedule.remark,
+		owner_order_schedule.state
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and owner_order_schedule.id = #{id}</if>
+				<if test="state != null">and owner_order_schedule.state = #{state}</if>
+				<if test="orderId != null">and owner_order_schedule.orderId = #{orderId}</if>
+				<if test="createTimeStr != null and createTimeStr != ''">and DATE_FORMAT(owner_order_schedule.createTime ,'%Y-%m-%d') = #{createTimeStr}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(owner_order_schedule.id) from owner_order_schedule
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from owner_order_schedule
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by owner_order_schedule.state </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_order_schedule
+		where owner_order_schedule.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.owner.po.OrderSchedule" >
+		insert into owner_order_schedule
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="orderId != null" > orderId, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="state != null" > state, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="orderId != null" > #{orderId}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="state != null" > #{state}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.owner.po.OrderSchedule">
+		update 
+			owner_order_schedule 
+		<set>
+			<if test="orderId != null"> orderId = #{orderId}, </if>
+			<if test="createTime != null"> createTime = #{createTime}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="state != null"> state = #{state}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from owner_order_schedule
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from owner_order_schedule
+		<include refid="Where_Condition" />
+	</delete>
+	
+
+</mapper>

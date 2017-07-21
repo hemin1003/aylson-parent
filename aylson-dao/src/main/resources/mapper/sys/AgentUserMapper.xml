@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.AgentUser">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.AgentUserVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="userId" property="userId" jdbcType="INTEGER" />
+		<result column="agentName" property="agentName" jdbcType="VARCHAR" />
+		<result column="agentCode" property="agentCode" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="contacter" property="contacter" jdbcType="VARCHAR" />
+		<result column="contactPhone" property="contactPhone" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="BIT" />
+		<result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+		<result column="certificateNo" property="certificateNo" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="products" property="products" jdbcType="VARCHAR" />
+		<result column="productIds" property="productIds" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="pwd" property="pwd" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="roleId" property="roleId" jdbcType="INTEGER" />
+		<result column="roleName" property="roleName" jdbcType="VARCHAR" />
+		<result column="wxQrcodeTicket" property="wxQrcodeTicket" jdbcType="VARCHAR" />
+		<result column="isAgent" property="isAgent" jdbcType="BIT" />
+		<result column="wxOwnQrcodeTicket" property="wxOwnQrcodeTicket" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="DB_Column_List">
+		sys_agentuser_info.id,
+		sys_agentuser_info.userId,
+		sys_agentuser_info.agentName,
+		sys_agentuser_info.agentCode,
+		sys_agentuser_info.province,
+		sys_agentuser_info.provinceId,
+		sys_agentuser_info.city,
+		sys_agentuser_info.cityId,
+		sys_agentuser_info.area,
+		sys_agentuser_info.areaId,
+		sys_agentuser_info.contacter,
+		sys_agentuser_info.contactPhone,
+		sys_agentuser_info.sex,
+		sys_agentuser_info.birthday,
+		sys_agentuser_info.certificateNo,
+		sys_agentuser_info.address,
+		sys_agentuser_info.products,
+		sys_agentuser_info.productIds,
+		sys_agentuser_info.createTime,
+		sys_agentuser_info.wxQrcodeTicket,
+		sys_agentuser_info.isAgent,
+		sys_agentuser_info.wxOwnQrcodeTicket,
+		sys_user.userName,
+		sys_user.pwd,
+		sys_user.type,
+		sys_user.`status`,
+		sys_user.roleId,
+		sys_user.roleName
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null"> and sys_user.id = #{id} </if>
+				<if test="status != null"> and sys_user.status = #{status} </if>
+				<if test="roleId != null"> and sys_user.roleId = #{roleId} </if>
+				<if test="provinceId != null"> and sys_agentuser_info.provinceId = #{provinceId} </if>
+				<if test="cityId != null"> and sys_agentuser_info.cityId = #{cityId} </if>
+				<if test="areaId != null"> and sys_agentuser_info.areaId = #{areaId} </if>
+				<if test="isAgent != null"> and sys_agentuser_info.isAgent = #{isAgent} </if>
+				<!-- 模糊查询 -->
+				<if test="userNameLike != null and userNameLike != ''"> and sys_user.userName like CONCAT('%',#{userNameLike},'%') </if>
+				<if test="agentNameLike != null and agentNameLike != ''"> and sys_agentuser_info.agentName like CONCAT('%',#{agentNameLike},'%') </if>
+				<if test="contactPhoneLike != null and contactPhoneLike != ''"> and sys_agentuser_info.contactPhone like CONCAT('%',#{contactPhoneLike},'%') </if>
+				<if test="addressLike != null and addressLike != ''">and (sys_agentuser_info.address like CONCAT('%',#{addressLike},'%')
+				 or sys_agentuser_info.province like CONCAT('%',#{addressLike},'%')
+				 or sys_agentuser_info.city like CONCAT('%',#{addressLike},'%')
+				 or sys_agentuser_info.area like CONCAT('%',#{addressLike},'%')
+				)
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(sys_agentuser_info.id) from sys_agentuser_info
+		inner join sys_user on sys_agentuser_info.userId = sys_user.id
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_agentuser_info
+		inner join sys_user on sys_agentuser_info.userId = sys_user.id
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_user.`status` desc,sys_agentuser_info.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_agentuser_info
+		inner join sys_user on sys_agentuser_info.userId = sys_user.id
+		where sys_agentuser_info.id = #{id}
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectByUserId" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_agentuser_info
+		inner join sys_user on sys_agentuser_info.userId = sys_user.id
+		where sys_agentuser_info.userId = #{userId}
+	</select>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.AgentUser" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_agentuser_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null"> userId, </if>
+			<if test="agentName != null"> agentName, </if>
+			<if test="agentCode != null"> agentCode, </if>
+			<if test="province != null"> province, </if>
+			<if test="provinceId != null"> provinceId, </if>
+			<if test="city != null"> city, </if>
+			<if test="cityId != null"> cityId, </if>
+			<if test="area != null"> area, </if>
+			<if test="areaId != null"> areaId, </if>
+			<if test="contacter != null"> contacter, </if>
+			<if test="contactPhone != null"> contactPhone, </if>
+			<if test="sex != null"> sex, </if>
+			<if test="birthday != null"> birthday, </if>
+			<if test="certificateNo != null"> certificateNo, </if>
+			<if test="address != null"> address, </if>
+			<if test="products != null"> products, </if>
+			<if test="productIds != null"> productIds, </if>
+			<if test="createTime != null"> createTime, </if>
+			<if test="wxQrcodeTicket != null"> wxQrcodeTicket, </if>
+			<if test="isAgent != null"> isAgent, </if>
+			<if test="wxOwnQrcodeTicket != null"> wxOwnQrcodeTicket, </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null"> #{userId}, </if>
+			<if test="agentName != null"> #{agentName}, </if>
+			<if test="agentCode != null"> #{agentCode}, </if>
+			<if test="province != null"> #{province}, </if>
+			<if test="provinceId != null"> #{provinceId}, </if>
+			<if test="city != null"> #{city}, </if>
+			<if test="cityId != null"> #{cityId}, </if>
+			<if test="area != null"> #{area}, </if>
+			<if test="areaId != null"> #{areaId}, </if>
+			<if test="contacter != null"> #{contacter}, </if>
+			<if test="contactPhone != null"> #{contactPhone}, </if>
+			<if test="sex != null"> #{sex}, </if>
+			<if test="birthday != null"> #{birthday}, </if>
+			<if test="certificateNo != null"> #{certificateNo}, </if>
+			<if test="address != null"> #{address}, </if>
+			<if test="products != null"> #{products}, </if>
+			<if test="productIds != null"> #{productIds}, </if>
+			<if test="createTime != null"> #{createTime}, </if>
+			<if test="wxQrcodeTicket != null"> #{wxQrcodeTicket}, </if>
+			<if test="isAgent != null"> #{isAgent}, </if>
+			<if test="wxOwnQrcodeTicket != null"> #{wxOwnQrcodeTicket}, </if>
+		</trim>
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.AgentUser">
+		update
+			sys_agentuser_info
+		<set>
+			<if test="userId != null"> userId = #{userId}, </if>
+			<if test="agentName != null"> agentName = #{agentName}, </if>
+			<if test="agentCode != null"> agentCode = #{agentCode}, </if>
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="area != null"> area = #{area}, </if>
+			<if test="areaId != null"> areaId = #{areaId}, </if>
+			<if test="contacter != null"> contacter = #{contacter}, </if>
+			<if test="contactPhone != null"> contactPhone = #{contactPhone}, </if>
+			<if test="sex != null"> sex = #{sex}, </if>
+			<if test="birthday != null"> birthday = #{birthday}, </if>
+			<if test="certificateNo != null"> certificateNo = #{certificateNo}, </if>
+			<if test="address != null"> address = #{address}, </if>
+			<if test="products != null"> products = #{products}, </if>
+			<if test="productIds != null"> productIds = #{productIds}, </if>
+			<if test="wxQrcodeTicket != null"> wxQrcodeTicket = #{wxQrcodeTicket}, </if>
+			<if test="isAgent != null"> isAgent = #{isAgent}, </if>
+			<if test="isAgent != null"> wxOwnQrcodeTicket = #{wxOwnQrcodeTicket}, </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_agentuser_info where id = #{id}
+	</delete>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_agentuser_info
+		<include refid="Where_Condition" />
+	</delete>
+	
+</mapper>

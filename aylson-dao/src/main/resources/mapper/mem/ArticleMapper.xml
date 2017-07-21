@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.Article">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.ArticleVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
+		<result column="publisher" property="publisher" jdbcType="VARCHAR" />
+		<result column="publisherId" property="publisherId" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="isRead" property="isRead" jdbcType="TINYINT" />
+		<result column="channel" property="channel" jdbcType="INTEGER" />
+		<result column="thumb" property="thumb" jdbcType="VARCHAR" />
+		<result column="summary" property="summary" jdbcType="VARCHAR" />
+		<result column="photo" property="photo" jdbcType="VARCHAR" />
+		<result column="readCount" property="readCount" jdbcType="INTEGER" />
+		<result column="replyCount" property="replyCount" jdbcType="INTEGER" />
+		<result column="praiseCount" property="praiseCount" jdbcType="INTEGER" />
+		<result column="shareCount" property="shareCount" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_article.id,
+		mem_article.title,
+		mem_article.content,
+		mem_article.createTime,
+		mem_article.publishTime,
+		mem_article.publisher,
+		mem_article.publisherId,
+		mem_article.`status`,
+		mem_article.channel,
+		mem_article.thumb,
+		mem_article.summary,
+		mem_account.photo,
+		IFNULL(readInfo.readCount,0) as readCount,
+		IFNULL(replyInfo.replyCount,0) as replyCount,
+		mem_article.praiseCount,
+		mem_article.shareCount,
+		exists (select id from mem_article_read where mem_article_read.articleId = mem_article.id) as isRead
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_article.id = #{id}</if>
+				<if test="publisherId != null">and mem_article.publisherId = #{publisherId}</if>
+				<if test="status != null">and mem_article.status = #{status}</if>
+				<if test="channel != null">and mem_article.channel = #{channel}</if>
+				<!-- 模糊查询 -->
+				<if test="titleLike != null and titleLike != ''">and mem_article.title like CONCAT('%',#{titleLike},'%')</if>
+				<if test="publisherLike != null and publisherLike != ''">and mem_article.title like CONCAT('%',#{publisherLike},'%')</if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(mem_article.id) from mem_article
+		inner join 
+			mem_account 
+		on 
+			mem_article.publisherId = mem_account.id
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from 
+			mem_article
+		inner join 
+			mem_account 
+		on 
+			mem_article.publisherId = mem_account.id
+		left join 
+			(select articleId,count(articleId) as readCount from mem_article_read group by articleId)readInfo
+		on 
+			readInfo.articleId = mem_article.id
+		left join 
+			(select articleId,count(articleId) as replyCount from mem_article_reply group by articleId)replyInfo
+		on 
+			replyInfo.articleId = mem_article.id
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_article.publishTime desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from
+			mem_article
+		inner join 
+			mem_account 
+		on 
+			mem_article.publisherId = mem_account.id
+		left join 
+			(select articleId,count(articleId) as readCount from mem_article_read group by articleId)readInfo
+		on 
+			readInfo.articleId = mem_article.id
+		left join 
+			(select articleId,count(articleId) as replyCount from mem_article_reply group by articleId)replyInfo
+		on 
+			replyInfo.articleId = mem_article.id
+		where mem_article.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.Article">
+		insert into mem_article
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="title != null" > title, </if>
+		  <if test="content != null" > content, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="publishTime != null" > publishTime, </if>
+		  <if test="publisher != null" > publisher, </if>
+		  <if test="publisherId != null" > publisherId, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="channel != null" > channel, </if>
+		  <if test="thumb != null" > thumb, </if>
+		  <if test="summary != null" > summary, </if>
+		  <if test="praiseCount != null" > praiseCount, </if>
+		  <if test="shareCount != null" > shareCount, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="title != null" > #{title}, </if>
+		  <if test="content != null" > #{content}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="publishTime != null" > #{publishTime}, </if>
+		  <if test="publisher != null" > #{publisher}, </if>
+		  <if test="publisherId != null" > #{publisherId}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="channel != null" > #{channel}, </if>
+		  <if test="thumb != null" > #{thumb}, </if>
+		  <if test="summary != null" > #{summary}, </if>
+		  <if test="praiseCount != null" > #{praiseCount}, </if>
+		  <if test="shareCount != null" > #{shareCount}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.Article">
+		update 
+			mem_article 
+		<set>
+			<if test="title != null"> title = #{title}, </if>
+			<if test="content != null"> content = #{content}, </if>
+			<if test="createTime != null"> createTime = #{createTime}, </if>
+			<if test="publishTime != null"> publishTime = #{publishTime}, </if>
+			<if test="publisher != null"> publisher = #{publisher}, </if>
+			<if test="publisherId != null"> publisherId = #{publisherId}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="channel != null"> channel = #{channel}, </if>
+			<if test="thumb != null"> thumb = #{thumb}, </if>
+			<if test="summary != null"> summary = #{summary}, </if>
+			<if test="praiseCount != null"> praiseCount = #{praiseCount}, </if>
+			<if test="shareCount != null"> shareCount = #{shareCount}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+	
+	<!-- 更新点赞数量 -->
+	<update id="updatePraiseCount" parameterType="java.lang.Integer">
+		update 
+			mem_article 
+		set 
+			praiseCount = praiseCount + 1
+		where mem_article.id = #{id} 
+	</update>
+	
+	<!-- 更新分享数量 -->
+	<update id="updateShareCount" parameterType="java.lang.Integer">
+		update 
+			mem_article 
+		set 
+			shareCount = shareCount + 1
+		where mem_article.id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_article
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_article
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<!-- 文章读取情况   start -->
+	<!--  对应结果集 -->
+	<resultMap id="ArticleReadResultMap" type="com.aylson.dc.mem.vo.ArticleReadVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="articleId" property="articleId" jdbcType="INTEGER" />
+		<result column="readTime" property="readTime" jdbcType="TIMESTAMP" />
+		<result column="reader" property="reader" jdbcType="VARCHAR" />
+		<result column="readerId" property="readerId" jdbcType="INTEGER" />
+		<result column="photo" property="photo" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- db 对应字段 -->
+		<sql id="DB_Column_ArticleReadInfo">
+			mem_article_read.id,
+			mem_article_read.articleId,
+			mem_article_read.readTime,
+			mem_article_read.reader,
+			mem_article_read.readerId,
+			mem_account.photo
+		</sql>
+		
+		<!-- 查询读取情况总数 -->
+		<select id="selectReadCount" resultType="java.lang.Long" parameterType="java.util.Map">
+			select
+				count(mem_article_read.id)
+			FROM  
+				mem_article_read where 1=1
+			<if test="id != null">and  mem_article_read.id = #{id}</if>
+			<if test="articleId != null">and  mem_article_read.articleId = #{articleId}</if>
+		</select>
+
+	<!-- 查询 -->
+	<select id="selectReadInfo" resultMap="ArticleReadResultMap" parameterType="java.util.Map">
+		select
+			<include refid="DB_Column_ArticleReadInfo" />
+		FROM  
+			mem_article_read 
+		inner join mem_account on mem_article_read.readerId = mem_account.id
+		where 1=1
+		<if test="id != null">and  mem_article_read.id = #{id}</if>
+		<if test="articleId != null">and  mem_article_read.articleId = #{articleId}</if>
+		<if test="readerId != null">and  mem_article_read.readerId = #{readerId}</if>
+		<if test="sort == null">order by mem_article_read.readTime</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 插入 -->
+	<insert id="insertReadInfo" parameterType="com.aylson.dc.mem.po.ArticleRead">
+		insert into mem_article_read
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			 <if test="articleId != null">articleId,   </if>
+			 <if test="readTime != null">readTime,   </if>
+			 <if test="reader != null">reader,  </if>
+			 <if test="readerId != null">readerId,  </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="articleId != null">#{articleId},</if>
+			<if test="readTime != null">#{readTime},</if>
+			<if test="reader != null">#{reader},</if>
+			<if test="readerId != null">#{readerId},</if>
+		</trim>
+	</insert>
+	<!-- 文章读取情况   end -->
+	
+	<!-- 文章回复情况   start -->
+	<!--  对应结果集 -->
+	<resultMap id="ArticleReplyResultMap" type="com.aylson.dc.mem.vo.ArticleReplyVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="articleId" property="articleId" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="replyTime" property="replyTime" jdbcType="TIMESTAMP" />
+		<result column="replier" property="replier" jdbcType="VARCHAR" />
+		<result column="replierId" property="replierId" jdbcType="INTEGER" />
+		<result column="photo" property="photo" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- db 对应字段 -->
+		<sql id="DB_Column_ArticleReplyInfo">
+			mem_article_reply.id,
+			mem_article_reply.articleId,
+			mem_article_reply.content,
+			mem_article_reply.replyTime,
+			mem_article_reply.replier,
+			mem_article_reply.replierId,
+			mem_account.photo
+		</sql>
+		
+		<!-- 查询读取情况总数 -->
+		<select id="selectReplyCount" resultType="java.lang.Long" parameterType="java.util.Map">
+			select
+				count(mem_article_reply.id)
+			FROM  
+				mem_article_reply 
+			inner join mem_account on mem_article_reply.replierId = mem_account.id
+			where 1=1
+			<if test="id != null">and  mem_article_reply.id = #{id}</if>
+			<if test="articleId != null">and  mem_article_reply.articleId = #{articleId}</if>
+		</select>
+
+	<!-- 查询 -->
+	<select id="selectReplyInfo" resultMap="ArticleReplyResultMap" parameterType="java.util.Map">
+		select
+			<include refid="DB_Column_ArticleReplyInfo" />
+		FROM  
+			mem_article_reply 
+		inner join mem_account on mem_article_reply.replierId = mem_account.id
+		where 1=1
+		<if test="id != null">and  mem_article_reply.id = #{id}</if>
+		<if test="articleId != null">and  mem_article_reply.articleId = #{articleId}</if>
+		<if test="replierId != null">and  mem_article_reply.replierId = #{replierId}</if>
+		<if test="sort == null">order by mem_article_reply.replyTime</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 插入 -->
+	<insert id="insertReplyInfo" parameterType="com.aylson.dc.mem.po.ArticleReply">
+		insert into mem_article_reply
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			 <if test="articleId != null">articleId,   </if>
+			 <if test="content != null">content,   </if>
+			 <if test="replyTime != null">replyTime,   </if>
+			 <if test="replier != null">replier,  </if>
+			 <if test="replierId != null">replierId,  </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="articleId != null">#{articleId},</if>
+			<if test="content != null">#{content},</if>
+			<if test="replyTime != null">#{replyTime},</if>
+			<if test="replier != null">#{replier},</if>
+			<if test="replierId != null">#{replierId},</if>
+		</trim>
+	</insert>
+	<!-- 文章回复情况   end -->
+
+</mapper>

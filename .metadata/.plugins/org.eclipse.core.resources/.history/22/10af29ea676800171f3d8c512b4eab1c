@@ -1,0 +1,26 @@
+package cn.aihama.busi.search;
+
+public class PurchaseSearch extends BusiModelSearch {
+
+	private static final long serialVersionUID = -1484736096536457668L;
+	
+	private Integer payId;                //付款申请单id
+	private String[] ids;                 //id集合
+	private Boolean isChoosePurchase = false ;     //是否采购单可选明细
+
+	public Integer getPayId() {
+		return payId;
+	}
+	public void setPayId(Integer payId) {
+		this.payId = payId;
+	}
+	
+	public String[] getIds() {
+		return ids;
+	}
+	public void setIds(String[] ids) {
+		this.ids = ids;
+	}
+	
+	
+}

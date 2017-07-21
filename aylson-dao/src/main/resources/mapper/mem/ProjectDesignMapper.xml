@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.ProjectDesign">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.ProjectDesignVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="projectId" property="projectId" jdbcType="INTEGER" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="productTypes" property="productTypes" jdbcType="VARCHAR" />
+		<result column="productTypeIds" property="productTypeIds" jdbcType="VARCHAR" />
+		<result column="autoSys" property="autoSys" jdbcType="VARCHAR" />
+		<result column="autoSysIds" property="autoSysIds" jdbcType="VARCHAR" />
+		<result column="isPay" property="isPay" jdbcType="BIT" />
+		<result column="evalScore" property="evalScore" jdbcType="INTEGER" />
+		<result column="evalContent" property="evalContent" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="amount" property="amount" jdbcType="FLOAT" />
+		<result column="gold" property="gold" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_project_design.id,
+		mem_project_design.projectId,
+		mem_project_design.description,
+		mem_project_design.productTypes,
+		mem_project_design.productTypeIds,
+		mem_project_design.autoSys,
+		mem_project_design.autoSysIds,
+		mem_project_design.isPay,
+		mem_project_design.evalScore,
+		mem_project_design.evalContent,
+		mem_project_design.remark,
+		mem_project_design.amount,
+		mem_project_design.gold
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_project_design.id = #{id}</if>
+				<if test="projectId != null">and mem_project_design.projectId = #{projectId}</if>
+				<if test="productTypes != null">and mem_project_design.productTypes = #{productTypes}</if>
+				<if test="productTypeIds != null">and mem_project_design.productTypeIds = #{productTypeIds}</if>
+				<if test="autoSys != null">and mem_project_design.autoSys = #{autoSys}</if>
+				<if test="autoSysIds != null">and mem_project_design.autoSysIds = #{autoSysIds}</if>
+				<if test="isPay != null">and mem_project_design.isPay = #{isPay}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from mem_project_design
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from mem_project_design
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_project_design.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from mem_project_design
+		where id = #{id}
+	</select>
+	
+	<!-- 根据projectId查询 -->
+	<select id="selectByProjectId" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from mem_project_design
+		where projectId = #{projectId}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.ProjectDesign" useGeneratedKeys="true" keyProperty="id">
+		insert into mem_project_design
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			id,
+		  <if test="projectId != null" > projectId, </if>
+		  <if test="description != null" > description, </if>
+		  <if test="productTypes != null" > productTypes, </if>
+		  <if test="productTypeIds != null" > productTypeIds, </if>
+		  <if test="autoSys != null" > autoSys, </if>
+		  <if test="autoSysIds != null" > autoSysIds, </if>
+		  <if test="isPay != null" > isPay, </if>
+		  <if test="evalScore != null" > evalScore, </if>
+		  <if test="evalContent != null" > evalContent, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="amount != null" > amount, </if>
+		  <if test="gold != null" > gold, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        	#{id},
+		  <if test="projectId != null" > #{projectId}, </if>
+		  <if test="description != null" > #{description}, </if>
+		  <if test="productTypes != null" > #{productTypes}, </if>
+		  <if test="productTypeIds != null" > #{productTypeIds}, </if>
+		  <if test="autoSys != null" > #{autoSys}, </if>
+		  <if test="autoSysIds != null" > #{autoSysIds}, </if>
+		  <if test="isPay != null" > #{isPay}, </if>
+		  <if test="evalScore != null" > #{evalScore}, </if>
+		  <if test="evalContent != null" > #{evalContent}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="amount != null" > #{amount}, </if>
+		  <if test="gold != null" > #{gold}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.ProjectDesign">
+		update 
+			mem_project_design 
+		<set>
+			<if test="projectId != null"> projectId = #{projectId}, </if>
+			<if test="description != null"> description = #{description}, </if>
+			<if test="productTypes != null"> productTypes = #{productTypes}, </if>
+			<if test="productTypeIds != null"> productTypeIds = #{productTypeIds}, </if>
+			<if test="autoSys != null"> autoSys = #{autoSys}, </if>
+			<if test="autoSysIds != null"> autoSysIds = #{autoSysIds}, </if>
+			<if test="isPay != null"> isPay = #{isPay}, </if>
+			<if test="evalScore != null"> evalScore = #{evalScore}, </if>
+			<if test="evalContent != null"> evalContent = #{evalContent}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="amount != null"> amount = #{amount}, </if>
+			<if test="gold != null"> gold = #{gold}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_project_design
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_project_design
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

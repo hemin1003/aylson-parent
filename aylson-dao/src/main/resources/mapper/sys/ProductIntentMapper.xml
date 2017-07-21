@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.ProductIntent">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.ProductIntentVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="productType" property="productType" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_product_intent.id,
+		sys_product_intent.`name`,
+		sys_product_intent.mobilePhone,
+		sys_product_intent.remark,
+		sys_product_intent.productType,
+		sys_product_intent.state,
+		sys_product_intent.createTime,
+		sys_product_intent.updateTime
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_product_intent.id = #{id}</if>
+				<if test="state != null">and sys_product_intent.state = #{state}</if>
+				<if test="productType != null">and sys_product_intent.productType = #{productType}</if>
+				<if test="createTime != null and createTime != ''">and DATE_FORMAT(sys_product_intent.createTime ,'%Y-%m-%d') = #{createTime} </if>
+				<if test="updateTime != null and updateTime != ''">and DATE_FORMAT(sys_product_intent.updateTime ,'%Y-%m-%d') = #{updateTime} </if>
+				<!-- 模糊查询 -->
+				<if test="nameLike != null and nameLike != ''">and sys_product_intent.name like CONCAT('%',#{nameLike},'%')</if>
+				<if test="mobilePhoneLike != null and mobilePhoneLike != ''">and sys_product_intent.mobilePhone like CONCAT('%',#{mobilePhoneLike},'%')</if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(sys_product_intent.id) from sys_product_intent
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_product_intent
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_product_intent.state, sys_product_intent.createTime </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_product_intent
+		where sys_product_intent.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.ProductIntent">
+		insert into sys_product_intent
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="name != null" > name, </if>
+		  <if test="mobilePhone != null" > mobilePhone, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="productType != null" > productType, </if>
+		  <if test="state != null" > state, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="updateTime != null" > updateTime, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="name != null" > #{name}, </if>
+		  <if test="mobilePhone != null" > #{mobilePhone}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="productType != null" > #{productType}, </if>
+		  <if test="state != null" > #{state}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="updateTime != null" > #{updateTime}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.ProductIntent">
+		update 
+			sys_product_intent 
+		<set>
+			<if test="name != null"> name = #{name}, </if>
+			<if test="mobilePhone != null"> mobilePhone = #{mobilePhone}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="productType != null"> productType = #{productType}, </if>
+			<if test="state != null"> state = #{state}, </if>
+			<!-- <if test="createTime != null"> createTime = #{createTime}, </if> -->
+			<if test="updateTime != null"> updateTime = #{updateTime}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_product_intent
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_product_intent
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<update id="accessCountDW" >
+		update 
+			sys_dictionary 
+		set dicValue = dicValue+1 
+		where dicGroup = 'doorWindow_access'
+	</update>
+	
+	<update id="accessCountHK">
+		update 
+			sys_dictionary 
+		set dicValue = dicValue+1 
+		where dicGroup = 'healthKitchen_access'
+	</update>
+	
+	
+
+</mapper>

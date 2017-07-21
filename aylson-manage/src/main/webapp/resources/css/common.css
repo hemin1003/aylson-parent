@@ -1,0 +1,61 @@
+@CHARSET "UTF-8";
+
+html,body {
+	height: 100%;
+}
+
+.warp {
+	min-height: 100%;
+	padding: 70px 0 60px;
+	margin: 0 auto -60px;
+}
+
+#footer {
+	height: 60px;
+	background-color: #f5f5f5;
+}
+
+#footer p {
+	margin: 20px 0;
+	text-align: center;
+	font-size: 12px;
+}
+
+.pointer-cursor {
+	cursor: pointer;
+}
+
+/* 面板头设置  */
+.panel-heading>span {
+	font-size: 18px;
+}
+
+.panel-heading>.option-group {
+	float: right;
+}
+
+/*按钮图标组*/
+ul.option-group a {
+	padding: 0 4px;
+	font-size: 14px;
+}
+
+ul.option-group {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.option-group>li {
+	display: inline-block;
+}
+
+/**logo*/
+.logo {
+	width: 50px;
+	height: 40px;
+	margin-right: 3px;
+}
+.top-margin-10{
+	margin-top: -10px;
+}

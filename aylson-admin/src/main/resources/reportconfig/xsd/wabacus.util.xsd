@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+				targetNamespace="http://www.wabacus.com"
+				xmlns:wxs="http://www.wabacus.com"
+				elementFormDefault="qualified">
+				
+    <xs:simpleType name="keyType">
+	 	<xs:restriction base="xs:string">
+    		<xs:pattern value="([a-zA-Z0-9_\-.$])+"/>
+  		</xs:restriction>
+	 </xs:simpleType>
+	 
+	 <xs:simpleType name="idType">
+	 	<xs:restriction base="xs:string">
+	 		<xs:pattern value="([a-zA-Z0-9_])+"/>
+	 	</xs:restriction>
+	 </xs:simpleType>
+	 
+	 <xs:simpleType name="alignType">
+    	<xs:restriction base="xs:string">
+    		<xs:enumeration value="left"/>
+    		<xs:enumeration value="center"/>
+    		<xs:enumeration value="right"/>
+  		</xs:restriction>
+    </xs:simpleType>
+	 
+	 <!-- 因为标准的boolean类型可以取值为0和1，这不符合wabacus的要求，所以单独定义 -->
+	 <xs:simpleType name="booleanType">
+    	<xs:restriction base="xs:string">
+    		<xs:enumeration value="true"/>
+    		<xs:enumeration value="false"/>
+  		</xs:restriction>
+    </xs:simpleType>
+    
+    <!-- wabacus支持的输入框类型 -->
+	 <xs:simpleType name="wabacusInputboxType">
+    	<xs:restriction base="xs:string">
+    		<xs:enumeration value="textbox"/>
+    		<xs:enumeration value="textareabox"/>
+    		<xs:enumeration value="checkbox"/>
+    		<xs:enumeration value="selectbox"/>
+    		<xs:enumeration value="combox"/>
+    		<xs:enumeration value="radiobox"/>
+    		<xs:enumeration value="datepicker"/>
+    		<xs:enumeration value="datepicker2"/>
+    		<xs:enumeration value="passwordbox"/>
+    		<xs:enumeration value="file"/>
+    		<xs:enumeration value="popupbox"/>
+    		<xs:enumeration value="richtextbox"/>
+    		<xs:enumeration value="customized"/>
+  		</xs:restriction>
+    </xs:simpleType>
+    
+     <!-- wabacus支持的统计类型 -->
+	 <xs:simpleType name="statisticType">
+    	<xs:restriction base="xs:string">
+    		<xs:enumeration value="avg"/>
+    		<xs:enumeration value="max"/>
+    		<xs:enumeration value="min"/>
+    		<xs:enumeration value="count"/>
+    		<xs:enumeration value="sum"/>
+  		</xs:restriction>
+    </xs:simpleType>
+    
+     <!-- wabacus支持的页面类型 ，不能配置为这个类型，因为<page/>的type属性支持class{}格式指定页面类型-->
+	 <!-- xs:simpleType name="wabacusPageType">
+    	<xs:restriction base="xs:string">
+    		<xs:enumeration value="single"/>
+    		<xs:enumeration value="vertical"/>
+    		<xs:enumeration value="horizontal"/>
+    		<xs:enumeration value="tabs"/>
+    		<xs:enumeration value="radiotabs"/>
+    		<xs:enumeration value="selectboxtabs"/>
+    		<xs:enumeration value="grid"/>
+    		<xs:enumeration value="forwardpage"/>
+  		</xs:restriction>
+    </xs:simpleType-->
+    
+    <!-- wabacus支持的报表/表单类型 不能配置为这个类型，因为<report/>的type属性支持class{}格式指定报表类型-->
+	 <!-- xs:simpleType name="wabacusReportType">
+    	<xs:restriction base="xs:string">
+    		<xs:enumeration value="simplelist"/>
+    		<xs:enumeration value="list"/>
+    		<xs:enumeration value="crosslist"/>
+    		<xs:enumeration value="detail"/>
+    		<xs:enumeration value="form"/>
+    		<xs:enumeration value="editabledetail"/>
+    		<xs:enumeration value="editabledetail2"/>
+    		<xs:enumeration value="listform"/>
+    		<xs:enumeration value="editablelist2"/>
+  		</xs:restriction>
+    </xs:simpleType-->
+    
+    <!-- wabacus支持的数据类型 不能配置为这个类型，因为有的数据可以配置为“类型名{类型信息}”，比如日期类型-->
+	 <!--wxs:simpleType name="wabacusDataType">
+    	<xs:restriction base="xs:string">
+    		<xs:enumeration value="byte"/>
+    		<xs:enumeration value="boolean"/>
+    		<xs:enumeration value="short"/>
+    		<xs:enumeration value="int"/>
+    		<xs:enumeration value="long"/>
+    		<xs:enumeration value="float"/>
+    		<xs:enumeration value="double"/>
+    		<xs:enumeration value="bigdecimal"/>
+    		<xs:enumeration value="varchar"/>
+    		<xs:enumeration value="clob"/>
+    		<xs:enumeration value="blob"/>
+    		<xs:enumeration value="date"/>
+    		<xs:enumeration value="time"/>
+    		<xs:enumeration value="timestamp"/>
+    		<xs:enumeration value="cdate"/>
+    		<xs:enumeration value="ctime"/>
+    		<xs:enumeration value="ctimestamp"/>
+  		</xs:restriction>
+    </xs:simpleType-->
+</xs:schema>

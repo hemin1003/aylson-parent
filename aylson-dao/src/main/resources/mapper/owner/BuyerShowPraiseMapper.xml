@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.owner.po.BuyerShowPraise">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.owner.vo.BuyerShowPraiseVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="buyershowId" property="buyershowId" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="operater" property="operater" jdbcType="VARCHAR" />
+		<result column="isPraise" property="isPraise" jdbcType="BIT" />
+		<result column="operateTime" property="operateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		owner_buyershow_praise.id,
+		owner_buyershow_praise.buyershowId,
+		owner_buyershow_praise.createTime,
+		owner_buyershow_praise.operater,
+		owner_buyershow_praise.operateTime,
+		owner_buyershow_praise.isPraise
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and owner_buyershow_praise.id = #{id}</if>
+				<if test="buyershowId != null">and owner_buyershow_praise.buyershowId = #{buyershowId}</if>
+				<if test="operater != null">and owner_buyershow_praise.operater = #{operater}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(owner_buyershow_praise.id) from owner_buyershow_praise
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from owner_buyershow_praise
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by owner_buyershow_praise.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_buyershow_praise
+		where owner_buyershow_praise.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.owner.po.BuyerShowPraise" >
+		insert into owner_buyershow_praise
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="buyershowId != null" > buyershowId, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="operater != null" > operater, </if>
+		  <if test="isPraise != null" > isPraise, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="buyershowId != null" > #{buyershowId}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="operater != null" > #{operater}, </if>
+		  <if test="isPraise != null" > #{isPraise}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.owner.po.BuyerShowPraise">
+		update 
+			owner_buyershow_praise 
+		<set>
+			<if test="buyershowId != null"> buyershowId = #{buyershowId}, </if>
+			<!-- <if test="createTime != null"> createTime = #{createTime}, </if> -->
+			<if test="operater != null"> operater = #{operater}, </if>
+			<if test="isPraise != null"> isPraise = #{isPraise}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from owner_buyershow_praise
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from owner_buyershow_praise
+		<include refid="Where_Condition" />
+	</delete>
+	
+</mapper>

@@ -1,0 +1,283 @@
+TABLE {
+	MARGIN: 0px;
+}
+TD {
+	FONT-SIZE: 13px;
+}
+
+/*各容器的默认样式*/
+.cls-page-content{
+	border:0;
+}
+
+.cls-panel-content{
+	border:0;
+}
+
+.cls-framepanel-content{
+	border:solid 1px #C0C0C0;
+}
+
+.cls-tabpanel-content{
+	border:solid 1px #C0C0C0;
+}
+
+.cls-vpanel-content{
+	border:0;
+}
+
+.cls-hpanel-content{
+	border:0;
+}
+
+.cls-title-table{/*容器标题所属<table/>的样式*/
+	margin:0px;
+	border:0;
+}
+
+.cls-title{/*容器标题的样式*/
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+}
+
+.cls-subtitle{/*容器副标题的样式*/
+	text-align:center;
+	vertical-align:middle;
+}
+
+/*下面是关于tab容器的样式*/
+.cls-tabtitle-top-table{/*显示在顶部的标题所属<table/>的样式*/
+	margin:0px;
+	border-top:0;border-left:0;border-right:0;
+	border-bottom:solid 2px #8795de;/*底部边框颜色*/
+}
+.cls-tabtitle-bottom-table{/*显示在底部的标题所属<table/>的样式*/
+	margin:0px;
+	border-bottom:0;border-left:0;border-right:0;
+	border-top:solid 2px #8795de;/*顶部边框颜色*/
+}
+
+.cls-tabtitle-left-table{/*显示在左侧的标题所属<table/>的样式*/
+	margin:0px;
+	border:0;
+}
+.cls-tabtitle-right-table{/*显示在右侧的标题所属<table/>的样式*/
+	margin:0px;
+	border:0;
+}
+
+.cls-tabtitle-left-parenttd{/*显示在左侧的标题所属<table/>所在<td/>的样式*/
+	margin:0px;
+	border-top:0;border-left:0;border-bottom:0;
+	border-right:solid 2px #8795de;/*右边边框颜色*/
+}
+.cls-tabtitle-right-parenttd{/*显示在右侧的标题所属<table/>所在<td/>的样式*/
+	margin:0px;
+	border-top:0;border-right:0;border-bottom:0;
+	border-left:solid 2px #8795de;/*左边边框颜色*/
+}
+
+/*tab标题显示在上端时标签标题样式*/
+.cls-tabtitle-top-selected {
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#ffffff; 
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	height:23px;
+	/*width:100px;*/
+	BACKGROUND-IMAGE: url(images/title_selected.gif);
+	/*background-color:#2882C6;*/ 
+	LINE-HEIGHT: 18px; 
+}
+.cls-tabtitle-top-deselected {
+	cursor:pointer;
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#00246B; 
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	height:23px;
+	BACKGROUND-IMAGE: url(images/title_deselected.gif);
+	/*background-color:#81C1E4;*/ 
+	LINE-HEIGHT: 18px; 
+}
+.cls-tabtitle-top-disabled {
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#a0a0a0; 
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	height:23px;
+	BACKGROUND-IMAGE: url(images/title_deselected.gif);
+	/*background-color:#81C1E4;*/ 
+	LINE-HEIGHT: 18px; 	
+}
+
+/*tab标题显示在顶部，且titlestyle为2的标签标题样式*/
+.cls-tabtitle-top3-selected {
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#ffffff; 
+	background-color:rgb(91, 102, 204);
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	PADDING-TOP: 1px; 
+	PADDING-BOTTOM: 1px; 
+}
+.cls-tabtitle-top3-deselected {
+	cursor:pointer;
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	color: rgb(114, 110, 121); 
+	background-color:rgb(181, 183, 195); 
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	PADDING-TOP: 1px; 
+	PADDING-BOTTOM: 1px; 
+}
+.cls-tabtitle-top3-disabled {
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#a0a0a0; 
+	background-color:#b9c6f0;
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	PADDING-TOP: 1px; 
+	PADDING-BOTTOM: 1px; 
+}
+
+/*tab标题显示在顶部，且titlestyle为2的标签标题样式*/
+.cls-tabtitle-top2-selected {
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#ffffff; 
+	background-color:#8795de;
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	PADDING-TOP: 1px; 
+	PADDING-BOTTOM: 1px; 
+}
+.cls-tabtitle-top2-deselected {
+	cursor:pointer;
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#00246B; 
+	background-color:#b9c6f0; 
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	PADDING-TOP: 1px; 
+	PADDING-BOTTOM: 1px; 
+}
+.cls-tabtitle-top2-disabled {
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#a0a0a0; 
+	background-color:#b9c6f0;
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	PADDING-TOP: 1px; 
+	PADDING-BOTTOM: 1px; 
+}
+
+/*tab标题显示在下端时标签标题样式*/
+.cls-tabtitle-bottom-selected {
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#ffffff; 
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	height:23px;
+	/*width:100px;*/
+	background-color:#8795de;
+	LINE-HEIGHT: 18px; 
+}
+.cls-tabtitle-bottom-deselected {
+	cursor:pointer;
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#00246B; 
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	height:23px;
+	background-color:#b9c6f0;
+	LINE-HEIGHT: 18px; 
+}
+.cls-tabtitle-bottom-disabled {
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#a0a0a0; 
+	PADDING-RIGHT: 3px; 
+	PADDING-LEFT: 3px; 
+	height:23px;
+	background-color:#b9c6f0;
+	LINE-HEIGHT: 18px; 	
+}
+
+/*tab标题显示在左右两侧时标签标题样式*/
+.cls-tabtitle-leftright-selected {
+	background-color:#8795de;
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#ffffff; 
+	PADDING: 3px;
+}
+.cls-tabtitle-leftright-deselected {
+	cursor:pointer;
+	text-align:center;
+	vertical-align:middle;
+	COLOR:#00246B;
+	background:#b9c6f0; 
+	font-weight:bold;
+	PADDING: 3px;
+}
+
+.cls-tabtitle-leftright-disabled {
+	COLOR:#a0a0a0;
+	text-align:center;
+	vertical-align:middle;
+	background:#b9c6f0; 
+	font-weight:bold;
+	PADDING: 3px;
+}
+/*tab标题显示在左右两侧且titlestyle为2时标签标题样式*/
+.cls-tabtitle-leftright2-selected {
+	background-color:#8795de;
+	text-align:center;
+	vertical-align:middle;
+	font-weight:bold;
+	COLOR:#ffffff; 
+	PADDING: 3px;
+}
+.cls-tabtitle-leftright2-deselected {
+	cursor:pointer;
+	text-align:center;
+	vertical-align:middle;
+	COLOR:#00246B;
+	background:#b9c6f0; 
+	font-weight:bold;
+	PADDING: 3px;
+}
+
+.cls-tabtitle-leftright2-disabled {
+	COLOR:#a0a0a0;
+	text-align:center;
+	vertical-align:middle;
+	background:#b9c6f0; 
+	font-weight:bold;
+	PADDING: 3px;
+}

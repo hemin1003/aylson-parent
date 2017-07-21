@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.NoticeRead">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.NoticeReadVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="noticeId" property="noticeId" jdbcType="INTEGER" />
+		<result column="readerId" property="readerId" jdbcType="INTEGER" />
+		<result column="readTime" property="readTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_notice_read.id,
+		sys_notice_read.noticeId,
+		sys_notice_read.readerId,
+		sys_notice_read.readTime
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_notice_read.id = #{id}</if>
+				<if test="noticeId != null">and sys_notice_read.noticeId = #{noticeId}</if>
+				<if test="readerId != null">and sys_notice_read.readerId = #{readerId}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(sys_notice_read.id) from sys_notice_read
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_notice_read
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_notice_read.id </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_notice_read
+		where sys_notice_read.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.NoticeRead">
+		insert into sys_notice_read
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="noticeId != null" > noticeId, </if>
+		  <if test="readerId != null" > readerId, </if>
+		  <if test="readTime != null" > readTime, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="noticeId != null" > #{noticeId}, </if>
+		  <if test="readerId != null" > #{readerId}, </if>
+		  <if test="readTime != null" > #{readTime}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.NoticeRead">
+		update 
+			sys_notice_read 
+		<set>
+			<if test="noticeId != null"> noticeId = #{noticeId}, </if>
+			<if test="readerId != null"> readerId = #{readerId}, </if>
+			<if test="readTime != null"> readTime = #{readTime}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_notice_read
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_notice_read
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

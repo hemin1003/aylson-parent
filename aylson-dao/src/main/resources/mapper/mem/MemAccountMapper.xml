@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.MemAccount">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.MemAccountVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="accountName" property="accountName" jdbcType="VARCHAR" />
+		<result column="pwd" property="pwd" jdbcType="VARCHAR" />
+		<result column="realName" property="realName" jdbcType="VARCHAR" />
+		<result column="photo" property="photo" jdbcType="VARCHAR" />
+		<result column="referralId" property="referralId" jdbcType="INTEGER" />
+		<result column="referralName" property="referralName" jdbcType="VARCHAR" />
+		<result column="companyName" property="companyName" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
+		<result column="registerTime" property="registerTime" jdbcType="TIMESTAMP" />
+		<result column="integral" property="integral" jdbcType="INTEGER" />
+		<result column="gold" property="gold" jdbcType="INTEGER" />
+		<result column="level" property="level" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="wxNickName" property="wxNickName" jdbcType="VARCHAR" />
+		<result column="wxOpenId" property="wxOpenId" jdbcType="VARCHAR" />
+		<result column="wxHeadPhoto" property="wxHeadPhoto" jdbcType="VARCHAR" />
+		<result column="wxUnionId" property="wxUnionId" jdbcType="VARCHAR" />
+		<result column="wxQrcodeTicket" property="wxQrcodeTicket" jdbcType="VARCHAR" />
+		<result column="memberType" property="memberType" jdbcType="INTEGER" />
+		<result column="totalIntegral" property="totalIntegral" jdbcType="INTEGER" />
+		<result column="integralLevel" property="integralLevel" jdbcType="INTEGER" />
+		<result column="byAgentUserId" property="byAgentUserId" jdbcType="INTEGER" />
+		<result column="byAgent" property="byAgent" jdbcType="VARCHAR" />
+		<result column="wallet" property="wallet" jdbcType="FLOAT" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_account.id,
+		mem_account.accountName,
+		mem_account.pwd,
+		mem_account.realName,
+		mem_account.photo,
+		mem_account.referralId,
+		mem_account.referralName,
+		mem_account.companyName,
+		mem_account.province,
+		mem_account.provinceId,
+		mem_account.city,
+		mem_account.cityId,
+		mem_account.area,
+		mem_account.areaId,
+		mem_account.address,
+		mem_account.mobilePhone,
+		mem_account.email,
+		mem_account.qq,
+		mem_account.registerTime,
+		mem_account.integral,
+		mem_account.gold,
+		mem_account.`level`,
+		mem_account.`status`,
+		mem_account.wxNickName,
+		mem_account.wxOpenId,
+		mem_account.wxHeadPhoto,
+		mem_account.wxUnionId,
+		mem_account.memberType,
+		mem_account.totalIntegral,
+		mem_account.wxQrcodeTicket,
+		mem_account.integralLevel,
+		mem_account.byAgentUserId,
+		mem_account.byAgent,
+		mem_account.wallet
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_account.id = #{id}</if>
+				<if test="accountName != null">and mem_account.accountName = #{accountName}</if>
+				<if test="realName != null">and mem_account.realName = #{realName}</if>
+				<if test="referralId != null">and mem_account.referralId = #{referralId}</if>
+				<if test="referralName != null">and mem_account.referralName = #{referralName}</if>
+				<if test="companyName != null">and mem_account.companyName = #{companyName}</if>
+				<if test="province != null">and mem_account.province = #{province}</if>
+				<if test="provinceId != null">and mem_account.provinceId = #{provinceId}</if>
+				<if test="city != null">and mem_account.city = #{city}</if>
+				<if test="cityId != null">and mem_account.cityId = #{cityId}</if>
+				<if test="area != null">and mem_account.area = #{area}</if>
+				<if test="areaId != null">and mem_account.areaId = #{areaId}</if>
+				<if test="mobilePhone != null">and mem_account.mobilePhone = #{mobilePhone}</if>
+				<if test="email != null">and mem_account.email = #{email}</if>
+				<if test="qq != null">and mem_account.qq = #{qq}</if>
+				<if test="level != null">and mem_account.level = #{level}</if>
+				<if test="status != null">and mem_account.status = #{status}</if>
+				<if test="wxOpenId != null">and mem_account.wxOpenId = #{wxOpenId}</if>
+				<if test="wxUnionId != null">and mem_account.wxUnionId = #{wxUnionId}</if>
+				<if test="memberType != null">and mem_account.memberType = #{memberType}</if>
+				<if test="byAgentUserId != null">and mem_account.byAgentUserId = #{byAgentUserId}</if>
+				<!-- 模糊查询 -->
+				<if test="addressLike != null and addressLike != ''">and mem_account.address like CONCAT('%',#{addressLike},'%')</if>
+				<if test="accountNameLike != null and accountNameLike != ''">and mem_account.accountName like CONCAT('%',#{accountNameLike},'%')</if>
+				<if test="realNameLike != null and realNameLike != ''">and mem_account.realName like CONCAT('%',#{realNameLike},'%')</if>
+				<if test="mobilePhoneLike != null and mobilePhoneLike != ''">and mem_account.mobilePhone like CONCAT('%',#{mobilePhoneLike},'%')</if>
+				<if test="referralNameLike != null and referralNameLike != ''">and mem_account.referralName like CONCAT('%',#{referralNameLike},'%')</if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from mem_account
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from mem_account
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_account.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from mem_account
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.MemAccount" useGeneratedKeys="true" keyProperty="id">
+		insert into mem_account
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			id,
+		  <if test="accountName != null" > accountName, </if>
+		  <if test="pwd != null" > pwd, </if>
+		  <if test="realName != null" > realName, </if>
+		  <if test="photo != null" > photo, </if>
+		  <if test="referralId != null" > referralId, </if>
+		  <if test="referralName != null" > referralName, </if>
+		  <if test="companyName != null" > companyName, </if>
+		  <if test="province != null" > province, </if>
+		  <if test="provinceId != null" > provinceId, </if>
+		  <if test="city != null" > city, </if>
+		  <if test="cityId != null" > cityId, </if>
+		  <if test="area != null" > area, </if>
+		  <if test="areaId != null" > areaId, </if>
+		  <if test="address != null" > address, </if>
+		  <if test="mobilePhone != null" > mobilePhone, </if>
+		  <if test="email != null" > email, </if>
+		  <if test="qq != null" > qq, </if>
+		  <if test="registerTime != null" > registerTime, </if>
+		  <if test="integral != null" > integral, </if>
+		  <if test="gold != null" > gold, </if>
+		  <if test="level != null" > level, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="wxNickName != null" > wxNickName, </if>
+		  <if test="wxOpenId != null" > wxOpenId, </if>
+		  <if test="wxHeadPhoto != null" > wxHeadPhoto, </if>
+		  <if test="wxUnionId != null" > wxUnionId, </if>
+		  <if test="memberType != null" > memberType, </if>
+		  <if test="totalIntegral != null" > totalIntegral, </if>
+		  <if test="wxQrcodeTicket != null" > wxQrcodeTicket, </if>
+		  <if test="integralLevel != null" > integralLevel, </if>
+		  <if test="byAgentUserId != null" > byAgentUserId, </if>
+		  <if test="byAgent != null" > byAgent, </if>
+		  <if test="wallet != null" > wallet, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        	#{id},
+		  <if test="accountName != null" > #{accountName}, </if>
+		  <if test="pwd != null" > #{pwd}, </if>
+		  <if test="realName != null" > #{realName}, </if>
+		  <if test="photo != null" > #{photo}, </if>
+		  <if test="referralId != null" > #{referralId}, </if>
+		  <if test="referralName != null" > #{referralName}, </if>
+		  <if test="companyName != null" > #{companyName}, </if>
+		  <if test="province != null" > #{province}, </if>
+		  <if test="provinceId != null" > #{provinceId}, </if>
+		  <if test="city != null" > #{city}, </if>
+		  <if test="cityId != null" > #{cityId}, </if>
+		  <if test="area != null" > #{area}, </if>
+		  <if test="areaId != null" > #{areaId}, </if>
+		  <if test="address != null" > #{address}, </if>
+		  <if test="mobilePhone != null" > #{mobilePhone}, </if>
+		  <if test="email != null" > #{email}, </if>
+		  <if test="qq != null" > #{qq}, </if>
+		  <if test="registerTime != null" > #{registerTime}, </if>
+		  <if test="integral != null" > #{integral}, </if>
+		  <if test="gold != null" > #{gold}, </if>
+		  <if test="level != null" > #{level}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="wxNickName != null" > #{wxNickName}, </if>
+		  <if test="wxOpenId != null" > #{wxOpenId}, </if>
+		  <if test="wxHeadPhoto != null" > #{wxHeadPhoto}, </if>
+		  <if test="wxUnionId != null" > #{wxUnionId}, </if>
+		  <if test="memberType != null" > #{memberType}, </if>
+		  <if test="totalIntegral != null" > #{totalIntegral}, </if>
+		  <if test="wxQrcodeTicket != null" > #{wxQrcodeTicket}, </if>
+		  <if test="integralLevel != null" > #{integralLevel}, </if>
+		  <if test="byAgentUserId != null" > #{byAgentUserId}, </if>
+		  <if test="byAgent != null" > #{byAgent}, </if>
+		  <if test="wallet != null" > #{wallet}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.MemAccount">
+		update 
+			mem_account 
+		<set>
+			<if test="accountName != null"> accountName = #{accountName}, </if>
+			<if test="pwd != null"> pwd = #{pwd}, </if>
+			<if test="realName != null"> realName = #{realName}, </if>
+			<if test="photo != null"> photo = #{photo}, </if>
+			<if test="referralId != null"> referralId = #{referralId}, </if>
+			<if test="referralName != null"> referralName = #{referralName}, </if>
+			<if test="companyName != null"> companyName = #{companyName}, </if>
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="area != null"> area = #{area}, </if>
+			<if test="areaId != null"> areaId = #{areaId}, </if>
+			<if test="address != null"> address = #{address}, </if>
+			<if test="mobilePhone != null"> mobilePhone = #{mobilePhone}, </if>
+			<if test="email != null"> email = #{email}, </if>
+			<if test="qq != null"> qq = #{qq}, </if>
+			<if test="registerTime != null"> registerTime = #{registerTime}, </if>
+			<if test="integral != null"> integral = #{integral}, </if>
+			<if test="gold != null"> gold = #{gold}, </if>
+			<if test="level != null"> level = #{level}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="wxNickName != null"> wxNickName = #{wxNickName}, </if>
+			<if test="wxOpenId != null"> wxOpenId = #{wxOpenId}, </if>
+			<if test="wxHeadPhoto != null"> wxHeadPhoto = #{wxHeadPhoto}, </if>
+			<if test="wxUnionId != null"> wxUnionId = #{wxUnionId}, </if>
+			<if test="memberType != null"> memberType = #{memberType}, </if>
+			<if test="totalIntegral != null"> totalIntegral = #{totalIntegral}, </if>
+			<if test="wxQrcodeTicket != null"> wxQrcodeTicket = #{wxQrcodeTicket}, </if>
+			<if test="integralLevel != null"> integralLevel = #{integralLevel}, </if>
+			<if test="byAgentUserId != null"> byAgentUserId = #{byAgentUserId}, </if>
+			<if test="byAgent != null"> byAgent = #{byAgent}, </if>
+			<if test="wallet != null"> wallet = #{wallet}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_account
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_account
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<!-- 插入推荐人微信用户关系 -->
+	<insert id="insertReferralWxUser" parameterType="com.aylson.dc.mem.po.MemAccount" >
+		insert into mem_referral_wxuser(
+			referralId,
+			channel,
+			wxOpenId
+		) values 
+		(	
+			#{referralId},
+			#{channel},
+			#{wxOpenId}
+		)
+	</insert>
+	
+	<!-- 根据wxOpenId查询 -->
+	<select id="selectRelationByWxOpenId" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+			mem_referral_wxuser.id,
+			mem_referral_wxuser.referralId,
+			mem_referral_wxuser.channel,
+			mem_referral_wxuser.wxOpenId
+		from mem_referral_wxuser
+			where wxOpenId = #{wxOpenId}
+	</select>
+	
+	<!-- 根据组合条件查询 -->
+	<select id="selectRelation" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+			mem_referral_wxuser.id,
+			mem_referral_wxuser.referralId,
+			mem_referral_wxuser.channel,
+			mem_referral_wxuser.wxOpenId
+		from mem_referral_wxuser
+			where 1 = 1 
+			<if test="id != null">and mem_referral_wxuser.id = #{id}</if>
+			<if test="referralId != null">and mem_referral_wxuser.referralId = #{referralId}</if>
+			<if test="wxOpenId != null">and mem_referral_wxuser.wxOpenId = #{wxOpenId}</if>
+			<if test="channel != null">and mem_referral_wxuser.channel = #{channel}</if>
+	</select>
+	
+	<!-- 根据id -->
+	<delete id="deleteRelationById" parameterType="java.lang.Integer">
+		delete from mem_referral_wxuser
+		where id = #{id}
+	</delete>
+	
+	<!-- 查询 -->
+	<select id="selectWxOpenId" resultType="java.lang.String" >
+		select DISTINCT wxOpenId from mem_wx_share 
+		where not exists (select id  from mem_account where memberType = 4 and mem_wx_share.wxOpenId = mem_account.wxOpenId)
+	</select>
+	
+
+</mapper>

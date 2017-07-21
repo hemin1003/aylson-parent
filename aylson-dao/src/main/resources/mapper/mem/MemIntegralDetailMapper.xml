@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.MemIntegralDetail">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.MemIntegralDetailVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="memberId" property="memberId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="integral" property="integral" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="sourceType" property="sourceType" jdbcType="INTEGER" />
+		<result column="sourceId" property="sourceId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_integral_detail.id,
+		mem_integral_detail.memberId,
+		mem_integral_detail.type,
+		mem_integral_detail.integral,
+		mem_integral_detail.createTime,
+		mem_integral_detail.description,
+		mem_integral_detail.sourceType,
+		mem_integral_detail.sourceId
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_integral_detail.id = #{id}</if>
+				<if test="memberId != null">and mem_integral_detail.memberId = #{memberId}</if>
+				<if test="type != null">and mem_integral_detail.type = #{type}</if>
+				<if test="sourceType != null">and mem_integral_detail.sourceType = #{sourceType}</if>
+				<if test="sourceId != null">and mem_integral_detail.sourceId = #{sourceId}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from mem_integral_detail
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from mem_integral_detail
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_integral_detail.createTime desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from mem_integral_detail
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.MemIntegralDetail">
+		insert into mem_integral_detail
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="memberId != null" > memberId, </if>
+		  <if test="type != null" > type, </if>
+		  <if test="integral != null" > integral, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="description != null" > description, </if>
+		  <if test="sourceType != null" > sourceType, </if>
+		  <if test="sourceId != null" > sourceId, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="memberId != null" > #{memberId}, </if>
+		  <if test="type != null" > #{type}, </if>
+		  <if test="integral != null" > #{integral}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="description != null" > #{description}, </if>
+		  <if test="sourceType != null" > #{sourceType}, </if>
+		  <if test="sourceId != null" > #{sourceId}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.MemIntegralDetail">
+		update 
+			mem_integral_detail 
+		<set>
+			<if test="memberId != null"> memberId = #{memberId}, </if>
+			<if test="type != null"> type = #{type}, </if>
+			<if test="integral != null"> integral = #{integral}, </if>
+			<if test="createTime != null"> createTime = #{createTime}, </if>
+			<if test="description != null"> description = #{description}, </if>
+			<if test="sourceType != null"> sourceType = #{sourceType}, </if>
+			<if test="sourceId != null"> sourceId = #{sourceId}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_integral_detail
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_integral_detail
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

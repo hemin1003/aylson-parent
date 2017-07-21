@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.FeedBack">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.FeedBackVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="feedbackerId" property="feedbackerId" jdbcType="INTEGER" />
+		<result column="feedbackTime" property="feedbackTime" jdbcType="TIMESTAMP" />
+		<result column="replyTime" property="replyTime" jdbcType="TIMESTAMP" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="feedbackerType" property="feedbackerType" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_feedback.id,
+		mem_feedback.title,
+		mem_feedback.content,
+		mem_feedback.feedbackerId,
+		mem_feedback.feedbackTime,
+		mem_feedback.replyTime,
+		mem_feedback.state,
+		mem_feedback.feedbackerType
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_feedback.id = #{id}</if>
+				<if test="state != null">and mem_feedback.state = #{state}</if>
+				<if test="feedbackerId != null">and mem_feedback.feedbackerId = #{feedbackerId}</if>
+				<if test="feedbackTimeStr != null and feedbackTimeStr != ''">and  DATE_FORMAT(mem_feedback.feedbackTime ,'%Y-%m-%d') = #{feedbackTimeStr}</if>
+				<if test="feedbackTimeBegin != null and feedbackTimeBegin != ''">and mem_feedback.feedbackTime &gt;= #{feedbackTimeBegin}</if>
+                <if test="feedbackTimeEnd != null and feedbackTimeEnd != ''">and mem_feedback.feedbackTime &lt;= CONCAT(#{feedbackTimeEnd},' 23:59:59')</if>
+				<if test="feedbackerType != null">and mem_feedback.feedbackerType = #{feedbackerType}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from mem_feedback
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from mem_feedback
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_feedback.replyTime desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from mem_feedback
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.FeedBack">
+		insert into mem_feedback
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="title != null" > title, </if>
+		  <if test="content != null" > content, </if>
+		  <if test="feedbackerId != null" > feedbackerId, </if>
+		  <if test="feedbackTime != null" > feedbackTime, </if>
+		  <if test="replyTime != null" > replyTime, </if>
+		  <if test="state != null" > state, </if>
+		  <if test="feedbackerType != null" > feedbackerType, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="title != null" > #{title}, </if>
+		  <if test="content != null" > #{content}, </if>
+		  <if test="feedbackerId != null" > #{feedbackerId}, </if>
+		  <if test="feedbackTime != null" > #{feedbackTime}, </if>
+		  <if test="replyTime != null" > #{replyTime}, </if>
+		  <if test="state != null" > #{state}, </if>
+		  <if test="feedbackerType != null" > #{feedbackerType}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.FeedBack">
+		update 
+			mem_feedback 
+		<set>
+			<if test="title != null"> title = #{title}, </if>
+			<if test="content != null"> content = #{content}, </if>
+			<if test="feedbackerId != null"> feedbackerId = #{feedbackerId}, </if>
+			<if test="feedbackTime != null"> feedbackTime = #{feedbackTime}, </if>
+			<if test="replyTime != null"> feedbackTime = #{replyTime}, </if>
+			<if test="state != null"> state = #{state}, </if>
+			<if test="feedbackerType != null"> feedbackerType = #{feedbackerType}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_feedback
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_feedback
+		<include refid="Where_Condition" />
+	</delete>
+	
+
+</mapper>

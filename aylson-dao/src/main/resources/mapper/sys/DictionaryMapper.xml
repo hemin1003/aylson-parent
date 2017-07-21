@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.Dictionary">
+	<!-- 数据库字段与实体对象对应关系 -->
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.DictionaryVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="parentId" property="parentId" jdbcType="INTEGER" />
+		<result column="seq" property="seq" jdbcType="INTEGER" />
+		<result column="dicName" property="dicName" jdbcType="VARCHAR" />
+		<result column="dicValue" property="dicValue" jdbcType="VARCHAR" />
+		<result column="dicType" property="dicType" jdbcType="VARCHAR" />
+		<result column="dicGroup" property="dicGroup" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="levelNum" property="levelNum" jdbcType="INTEGER" />
+		<result column="isLeaf" property="isLeaf" jdbcType="TINYINT" />
+		<result column="isVisible" property="isVisible" jdbcType="TINYINT" />
+	</resultMap>
+
+	<!-- 数据库字段列表 -->
+	<sql id="DB_Column_List">
+		sys_dictionary.id,
+		sys_dictionary.parentId,
+		sys_dictionary.seq,
+		sys_dictionary.dicName,
+		sys_dictionary.dicValue,
+		sys_dictionary.dicType,
+		sys_dictionary.dicGroup,
+		sys_dictionary.remark,
+		sys_dictionary.levelNum,
+		sys_dictionary.isLeaf,
+		sys_dictionary.isVisible
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null"> and id = #{id} </if>
+				<if test="parentId != null"> and parentId = #{parentId} </if>
+				<if test="dicName != null"> and dicName = #{dicName} </if>
+				<if test="dicValue != null"> and dicValue = #{dicValue} </if>
+				<if test="dicType != null"> and dicType = #{dicType} </if>
+				<if test="dicGroup != null"> and dicGroup = #{dicGroup} </if>
+				<if test="isVisible != null"> and isVisible = #{isVisible} </if>
+				<!-- 模糊查询 -->
+				<if test="dicNameLike != null and dicNameLike != ''"> and dicName like CONCAT("%",#{dicNameLike},"%") </if>
+				<if test="dicTypeLike != null and dicTypeLike != ''"> and dicType like CONCAT("%",#{dicTypeLike},"%") </if>
+				<if test="dicGroupLike != null and dicGroupLike != ''"> and dicGroup like CONCAT("%",#{dicGroupLike},"%") </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		select count(id) from sys_dictionary
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_dictionary
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_dictionary.seq </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+        <if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_dictionary
+		where id = #{id}
+	</select>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.Dictionary">
+		insert into sys_dictionary
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="parentId != null" > parentId, </if>
+		  <if test="seq != null" > seq, </if>
+		  <if test="dicName != null" > dicName, </if>
+		  <if test="dicValue != null" > dicValue, </if>
+		  <if test="dicType != null" > dicType, </if>
+		  <if test="dicGroup != null" > dicGroup, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="levelNum != null" > levelNum, </if>
+		  <if test="isLeaf != null" > isLeaf, </if>
+		  <if test="isVisible != null" > isVisible, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+          <if test="parentId != null" > #{parentId}, </if>
+		  <if test="seq != null" > #{seq}, </if>
+		  <if test="dicName != null" > #{dicName}, </if>
+		  <if test="dicValue != null" > #{dicValue}, </if>
+		  <if test="dicType != null" > #{dicType}, </if>
+		  <if test="dicGroup != null" > #{dicGroup}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="levelNum != null" > #{levelNum}, </if>
+		  <if test="isLeaf != null" > #{isLeaf}, </if>
+		  <if test="isVisible != null" > #{isVisible}, </if>
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.Dictionary">
+		update 
+			sys_dictionary 
+		<set>
+			<if test="parentId != null"> parentId = #{parentId}, </if>
+			<if test="seq != null"> seq = #{seq}, </if>
+			<if test="dicName != null"> dicName = #{dicName}, </if>
+			<if test="dicValue != null"> dicValue = #{dicValue}, </if>
+			<if test="dicType != null"> dicType = #{dicType}, </if>
+			<if test="dicGroup != null"> dicGroup = #{dicGroup}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="levelNum != null"> levelNum = #{levelNum}, </if>
+			<if test="isLeaf != null"> isLeaf = #{isLeaf}, </if>
+			<if test="isVisible != null"> isVisible = #{isVisible}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_dictionary
+		where id = #{id}
+	</delete>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_dictionary
+		<include refid="Where_Condition" />
+	</delete>
+	
+
+</mapper>

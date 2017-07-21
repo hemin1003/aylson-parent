@@ -1,0 +1,130 @@
+package cn.aihama.workflow.vo;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import cn.aihama.utils.JsonDateTimeSerializer;
+/**
+ * 待办任务对应model
+ * @author Administrator
+ *
+ */
+public class TaskVo implements Serializable {
+	
+	
+	private static final long serialVersionUID = -9036859288903596492L;
+	
+	
+	private String applyName;                        //申请人姓名
+	private String busiCode;                         //业务单号
+	private String flowName;                         //流程名称
+	private Date applyTime;                          //创建/申请时间
+	private String procDefId;                        //流程定义id
+	private String procInstId;                       //流程实例id
+	private String nodeName;                         //当前节点名称/当前阶段
+	private Date receiveTime;                        //接收时间
+	private Date auditTime;                          //审批时间
+	private Integer state;                           //状态：
+	private String auditerName;                      //审核人姓名
+	private String approvalOpinion;                  //审批意见
+	private Integer busiId;                          //业务id
+	private String taskId;                           //任务id
+	
+	public String getApplyName() {
+		return applyName;
+	}
+	public void setApplyName(String applyName) {
+		this.applyName = applyName;
+	}
+
+	public String getBusiCode() {
+		return busiCode;
+	}
+	public void setBusiCode(String busiCode) {
+		this.busiCode = busiCode;
+	}
+	
+	public String getFlowName() {
+		return flowName;
+	}
+	public void setFlowName(String flowName) {
+		this.flowName = flowName;
+	}
+	
+	@JsonSerialize(using = JsonDateTimeSerializer.class)
+	public Date getApplyTime() {
+		return applyTime;
+	}
+	public void setApplyTime(Date applyTime) {
+		this.applyTime = applyTime;
+	}
+	
+	public String getProcDefId() {
+		return procDefId;
+	}
+	public void setProcDefId(String procDefId) {
+		this.procDefId = procDefId;
+	}
+	
+	public String getProcInstId() {
+		return procInstId;
+	}
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
+	
+	public String getNodeName() {
+		return nodeName;
+	}
+	public void setNodeName(String nodeName) {
+		this.nodeName = nodeName;
+	}
+	
+	@JsonSerialize(using = JsonDateTimeSerializer.class)
+	public Date getReceiveTime() {
+		return receiveTime;
+	}
+	public void setReceiveTime(Date receiveTime) {
+		this.receiveTime = receiveTime;
+	}
+	
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
+	
+	@JsonSerialize(using = JsonDateTimeSerializer.class)
+	public Date getAuditTime() {
+		return auditTime;
+	}
+	public void setAuditTime(Date auditTime) {
+		this.auditTime = auditTime;
+	}
+	
+	public String getAuditerName() {
+		return auditerName;
+	}
+	public void setAuditerName(String auditerName) {
+		this.auditerName = auditerName;
+	}
+	
+	public String getApprovalOpinion() {
+		return approvalOpinion;
+	}
+	public void setApprovalOpinion(String approvalOpinion) {
+		this.approvalOpinion = approvalOpinion;
+	}
+	
+	public Integer getBusiId() {
+		return busiId;
+	}
+	public void setBusiId(Integer busiId) {
+		this.busiId = busiId;
+	}
+	
+	
+}

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.OrgUser">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.OrgUserVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="userId" property="userId" jdbcType="INTEGER" />
+		<result column="realName" property="realName" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="BIT" />
+		<result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+		<result column="orgName" property="orgName" jdbcType="VARCHAR" />
+		<result column="orgId" property="orgId" jdbcType="INTEGER" />
+		<result column="fixedPhone" property="fixedPhone" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="pwd" property="pwd" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="roleId" property="roleId" jdbcType="INTEGER" />
+		<result column="roleName" property="roleName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="DB_Column_List">
+		sys_orguser_info.id,
+		sys_orguser_info.userId,
+		sys_orguser_info.realName,
+		sys_orguser_info.sex,
+		sys_orguser_info.birthday,
+		sys_orguser_info.orgName,
+		sys_orguser_info.orgId,
+		sys_orguser_info.fixedPhone,
+		sys_orguser_info.mobilePhone,
+		sys_orguser_info.email,
+		sys_orguser_info.qq,
+		sys_orguser_info.createTime,
+		sys_user.userName,
+		sys_user.pwd,
+		sys_user.type,
+		sys_user.`status`,
+		sys_user.roleId,
+		sys_user.roleName
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null"> and sys_orguser_info.id = #{id} </if>
+				<if test="orgId != null"> and sys_orguser_info.orgId = #{orgId} </if>
+				<if test="status != null"> and sys_user.status = #{status} </if>
+				<if test="roleId != null"> and sys_user.roleId = #{roleId} </if>
+				<!-- 模糊查询 -->
+				<if test="userNameLike != null and userNameLike != ''"> and sys_user.userName like CONCAT('%',#{userNameLike},'%') </if>
+				<if test="realNameLike != null and realNameLike != ''"> and sys_orguser_info.realName like CONCAT('%',#{realNameLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(sys_orguser_info.id) from sys_orguser_info
+		inner join sys_user on sys_orguser_info.userId = sys_user.id
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_orguser_info
+		inner join sys_user on sys_orguser_info.userId = sys_user.id
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_orguser_info.id </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+        <if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_orguser_info
+		inner join sys_user on sys_orguser_info.userId = sys_user.id
+		where sys_orguser_info.id = #{id}
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectByUserId" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_orguser_info
+		inner join sys_user on sys_orguser_info.userId = sys_user.id
+		where sys_orguser_info.userId = #{userId}
+	</select>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.OrgUser" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_orguser_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null"> userId, </if>
+			<if test="realName != null"> realName, </if>
+			<if test="sex != null"> sex, </if>
+			<if test="birthday != null"> birthday, </if>
+			<if test="orgName != null"> orgName, </if>
+			<if test="orgId != null"> orgId, </if>
+			<if test="fixedPhone != null"> fixedPhone, </if>
+			<if test="mobilePhone != null"> mobilePhone, </if>
+			<if test="email != null"> email, </if>
+			<if test="qq != null"> qq, </if>
+			<if test="createTime != null"> createTime, </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null"> #{userId}, </if>
+			<if test="realName != null"> #{realName}, </if>
+			<if test="sex != null"> #{sex}, </if>
+			<if test="birthday != null"> #{birthday}, </if>
+			<if test="orgName != null"> #{orgName}, </if>
+			<if test="orgId != null"> #{orgId}, </if>
+			<if test="fixedPhone != null"> #{fixedPhone}, </if>
+			<if test="mobilePhone != null"> #{mobilePhone}, </if>
+			<if test="email != null"> #{email}, </if>
+			<if test="qq != null"> #{qq}, </if>
+			<if test="createTime != null"> #{createTime}, </if>
+		</trim>
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.OrgUser">
+		update
+			sys_orguser_info
+		<set>
+			<if test="realName != null"> realName = #{realName}, </if>
+			<if test="orgName != null"> orgName = #{orgName}, </if>
+			<if test="sex != null"> sex = #{sex}, </if>
+			<if test="birthday != null"> birthday = #{birthday}, </if>
+			<if test="orgId != null"> orgId = #{orgId}, </if>
+			<if test="fixedPhone != null"> fixedPhone = #{fixedPhone}, </if>
+			<if test="mobilePhone != null"> mobilePhone = #{mobilePhone}, </if>
+			<if test="email != null"> email = #{email}, </if>
+			<if test="qq != null"> qq = #{qq}, </if>
+			<if test="createTime != null"> createTime = #{createTime}, </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_orguser_info where id = #{id}
+	</delete>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_orguser_info
+		<include refid="Where_Condition" />
+	</delete>
+	
+</mapper>

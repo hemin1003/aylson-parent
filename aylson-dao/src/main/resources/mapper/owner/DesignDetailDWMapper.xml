@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.owner.po.DesignDetailDW">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.owner.vo.DesignDetailDWVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="appointId" property="appointId" jdbcType="INTEGER" />
+		<result column="designId" property="designId" jdbcType="INTEGER" />
+		<result column="productNo" property="productNo" jdbcType="VARCHAR" />
+		<result column="productName" property="productName" jdbcType="VARCHAR" />
+		<result column="installLocation" property="installLocation" jdbcType="VARCHAR" />
+		<result column="frameNum" property="frameNum" jdbcType="INTEGER" />
+		<result column="metalParts" property="metalParts" jdbcType="VARCHAR" />
+		<result column="railsTypeD" property="railsTypeD" jdbcType="VARCHAR" />
+		<result column="wallThick" property="wallThick" jdbcType="INTEGER" />
+		<result column="holeSizeW" property="holeSizeW" jdbcType="INTEGER" />
+		<result column="holeSizeH" property="holeSizeH" jdbcType="INTEGER" />
+		<result column="productSizeW" property="productSizeW" jdbcType="INTEGER" />
+		<result column="productSizeH" property="productSizeH" jdbcType="INTEGER" />
+		<result column="colorIn" property="colorIn" jdbcType="VARCHAR" />
+		<result column="colorOut" property="colorOut" jdbcType="VARCHAR" />
+		<result column="glass" property="glass" jdbcType="VARCHAR" />
+		<result column="shutter" property="shutter" jdbcType="VARCHAR" />
+		<result column="pack" property="pack" jdbcType="VARCHAR" />
+		<result column="isHaveSafeSys" property="isHaveSafeSys" jdbcType="TINYINT" />
+		<result column="attachUrls" property="attachUrls" jdbcType="VARCHAR" />
+		<result column="openFanNumW" property="openFanNumW" jdbcType="INTEGER" />
+		<result column="sillHeightW" property="sillHeightW" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		owner_design_detail_dw.id,
+		owner_design_detail_dw.appointId,
+		owner_design_detail_dw.designId,
+		owner_design_detail_dw.productNo,
+		owner_design_detail_dw.productName,
+		owner_design_detail_dw.installLocation,
+		owner_design_detail_dw.frameNum,
+		owner_design_detail_dw.metalParts,
+		owner_design_detail_dw.railsTypeD,
+		owner_design_detail_dw.wallThick,
+		owner_design_detail_dw.holeSizeW,
+		owner_design_detail_dw.holeSizeH,
+		owner_design_detail_dw.productSizeW,
+		owner_design_detail_dw.productSizeH,
+		owner_design_detail_dw.colorIn,
+		owner_design_detail_dw.colorOut,
+		owner_design_detail_dw.glass,
+		owner_design_detail_dw.shutter,
+		owner_design_detail_dw.pack,
+		owner_design_detail_dw.isHaveSafeSys,
+		owner_design_detail_dw.attachUrls,
+		owner_design_detail_dw.openFanNumW,
+		owner_design_detail_dw.sillHeightW
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and owner_design_detail_dw.id = #{id}</if>
+				<if test="appointId != null">and owner_design_detail_dw.appointId = #{appointId}</if>
+				<if test="designId != null">and owner_design_detail_dw.designId = #{designId}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from owner_design_detail_dw
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from owner_design_detail_dw
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by owner_design_detail_dw.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_design_detail_dw
+		where id = #{id}
+	</select>
+	
+	<select id="selectByDesignId" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_design_detail_dw
+		where owner_design_detail_dw.designId = #{designId}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.owner.po.DesignDetailDW">
+		insert into owner_design_detail_dw
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="appointId != null" > appointId, </if>
+		  <if test="designId != null" > designId, </if>
+		  <if test="productNo != null" > productNo, </if>
+		  <if test="productName != null" > productName, </if>
+		  <if test="installLocation != null" > installLocation, </if>
+		  <if test="frameNum != null" > frameNum, </if>
+		  <if test="metalParts != null" > metalParts, </if>
+		  <if test="railsTypeD != null" > railsTypeD, </if>
+		  <if test="wallThick != null" > wallThick, </if>
+		  <if test="holeSizeW != null" > holeSizeW, </if>
+		  <if test="holeSizeH != null" > holeSizeH, </if>
+		  <if test="productSizeW != null" > productSizeW, </if>
+		  <if test="productSizeH != null" > productSizeH, </if>
+		  <if test="colorIn != null" > colorIn, </if>
+		  <if test="colorOut != null" > colorOut, </if>
+		  <if test="glass != null" > glass, </if>
+		  <if test="shutter != null" > shutter, </if>
+		  <if test="pack != null" > pack, </if>
+		  <if test="isHaveSafeSys != null" > isHaveSafeSys, </if>
+		  <if test="attachUrls != null" > attachUrls, </if>
+		  <if test="openFanNumW != null" > openFanNumW, </if>
+		  <if test="sillHeightW != null" > sillHeightW, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="appointId != null" > #{appointId}, </if>
+		  <if test="designId != null" > #{designId}, </if>
+		  <if test="productNo != null" > #{productNo}, </if>
+		  <if test="productName != null" > #{productName}, </if>
+		  <if test="installLocation != null" > #{installLocation}, </if>
+		  <if test="frameNum != null" > #{frameNum}, </if>
+		  <if test="metalParts != null" > #{metalParts}, </if>
+		  <if test="railsTypeD != null" > #{railsTypeD}, </if>
+		  <if test="wallThick != null" > #{wallThick}, </if>
+		  <if test="holeSizeW != null" > #{holeSizeW}, </if>
+		  <if test="holeSizeH != null" > #{holeSizeH}, </if>
+		  <if test="productSizeW != null" > #{productSizeW}, </if>
+		  <if test="productSizeH != null" > #{productSizeH}, </if>
+		  <if test="colorIn != null" > #{colorIn}, </if>
+		  <if test="colorOut != null" > #{colorOut}, </if>
+		  <if test="glass != null" > #{glass}, </if>
+		  <if test="shutter != null" > #{shutter}, </if>
+		  <if test="pack != null" > #{pack}, </if>
+		  <if test="isHaveSafeSys != null" > #{isHaveSafeSys}, </if>
+		  <if test="attachUrls != null" > #{attachUrls}, </if>
+		  <if test="openFanNumW != null" > #{openFanNumW}, </if>
+		  <if test="sillHeightW != null" > #{sillHeightW}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.owner.po.DesignDetailDW">
+		update 
+			owner_design_detail_dw 
+		<set>
+			<if test="appointId != null"> appointId = #{appointId}, </if>
+			<if test="designId != null"> designId = #{designId}, </if>
+			<if test="productNo != null"> productNo = #{productNo}, </if>
+			<if test="productName != null"> productName = #{productName}, </if>
+			<if test="installLocation != null"> installLocation = #{installLocation}, </if>
+			<if test="frameNum != null"> frameNum = #{frameNum}, </if>
+			<if test="metalParts != null"> metalParts = #{metalParts}, </if>
+			<if test="railsTypeD != null"> railsTypeD = #{railsTypeD}, </if>
+			<if test="wallThick != null"> wallThick = #{wallThick}, </if>
+			<if test="holeSizeW != null"> holeSizeW = #{holeSizeW}, </if>
+			<if test="holeSizeH != null"> holeSizeH = #{holeSizeH}, </if>
+			<if test="productSizeW != null"> productSizeW = #{productSizeW}, </if>
+			<if test="productSizeH != null"> productSizeH = #{productSizeH}, </if>
+			<if test="colorIn != null"> colorIn = #{colorIn}, </if>
+			<if test="colorOut != null"> colorOut = #{colorOut}, </if>
+			<if test="glass != null"> glass = #{glass}, </if>
+			<if test="shutter != null"> shutter = #{shutter}, </if>
+			<if test="pack != null"> pack = #{pack}, </if>
+			<if test="isHaveSafeSys != null"> isHaveSafeSys = #{isHaveSafeSys}, </if>
+			<if test="attachUrls != null"> attachUrls = #{attachUrls}, </if>
+			<if test="openFanNumW != null"> openFanNumW = #{openFanNumW}, </if>
+			<if test="sillHeightW != null"> sillHeightW = #{sillHeightW}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from owner_design_detail_dw
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from owner_design_detail_dw
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into owner_design_detail_dw(
+			appointId,
+			designId,
+			productNo,
+			productName,
+			installLocation,
+			frameNum,
+			metalParts,
+			railsTypeD,
+			wallThick,
+			holeSizeW,
+			holeSizeH,
+			productSizeW,
+			productSizeH,
+			colorIn,
+			colorOut,
+			glass,
+			shutter,
+			pack,
+			isHaveSafeSys,
+			attachUrls,
+			openFanNumW,
+			sillHeightW
+		) 
+    	values   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	    (
+			#{item.appointId},
+			#{item.designId},
+			#{item.productNo},
+			#{item.productName},
+			#{item.installLocation},
+			#{item.frameNum},
+			#{item.metalParts},
+			#{item.railsTypeD},
+			#{item.wallThick},
+			#{item.holeSizeW},
+			#{item.holeSizeH},
+			#{item.productSizeW},
+			#{item.productSizeH},
+			#{item.colorIn},
+			#{item.colorOut},
+			#{item.glass},
+			#{item.shutter},
+			#{item.pack},
+			#{item.isHaveSafeSys},
+			#{item.attachUrls},
+			#{item.openFanNumW},
+			#{item.sillHeightW}
+		)
+	    </foreach> 
+	</insert>
+	
+	<!-- 批量更新 -->
+	<update id="batchUpdate"  parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 
+				owner_design_detail_dw 
+			<set>
+				<if test="item.appointId != null"> appointId = #{item.appointId}, </if>
+				<if test="item.designId != null"> designId = #{item.designId}, </if>
+				<if test="item.productNo != null"> productNo = #{item.productNo}, </if>
+				<if test="item.productName != null"> productName = #{item.productName}, </if>
+				<if test="item.installLocation != null"> installLocation = #{item.installLocation}, </if>
+				<if test="item.frameNum != null"> frameNum = #{item.frameNum}, </if>
+				<if test="item.metalParts != null"> metalParts = #{item.metalParts}, </if>
+				<if test="item.railsTypeD != null"> railsTypeD = #{item.railsTypeD}, </if>
+				<if test="item.wallThick != null"> wallThick = #{item.wallThick}, </if>
+				<if test="item.holeSizeW != null"> holeSizeW = #{item.holeSizeW}, </if>
+				<if test="item.holeSizeH != null"> holeSizeH = #{item.holeSizeH}, </if>
+				<if test="item.productSizeW != null"> productSizeW = #{item.productSizeW}, </if>
+				<if test="item.productSizeH != null"> productSizeH = #{item.productSizeH}, </if>
+				<if test="item.colorIn != null"> colorIn = #{item.colorIn}, </if>
+				<if test="item.colorOut != null"> colorOut = #{item.colorOut}, </if>
+				<if test="item.glass != null"> glass = #{item.glass}, </if>
+				<if test="item.shutter != null"> shutter = #{item.shutter}, </if>
+				<if test="item.pack != null"> pack = #{item.pack}, </if>
+				<if test="item.isHaveSafeSys != null"> isHaveSafeSys = #{item.isHaveSafeSys}, </if>
+				<if test="item.attachUrls != null"> attachUrls = #{item.attachUrls}, </if>
+				<if test="item.openFanNumW != null"> openFanNumW = #{item.openFanNumW}, </if>
+				<if test="item.sillHeightW != null"> sillHeightW = #{item.sillHeightW}, </if>
+			</set> 
+			 where id = #{item.id} 
+         </foreach>
+    </update>
+
+</mapper>

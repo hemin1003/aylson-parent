@@ -1,0 +1,43 @@
+package cn.aihama.sys.service.impl;
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import cn.aihama.core.frame.dao.BaseDao;
+import cn.aihama.core.frame.service.impl.BaseServiceImpl;
+import cn.aihama.sys.dao.PositionDao;
+import cn.aihama.sys.po.Position;
+import cn.aihama.sys.search.PositionSearch;
+import cn.aihama.sys.service.PositionService;
+import cn.aihama.sys.vo.PositionVo;
+
+
+
+@Service
+public class PositionServiceImpl extends BaseServiceImpl<Position,PositionSearch> implements PositionService {
+
+	@Autowired
+	private PositionDao positionDao;
+
+	@Override
+	protected BaseDao<Position,PositionSearch> getBaseDao() {
+		return positionDao;
+	}
+
+	@Override
+	public Integer getMaxPostLevel(List<PositionVo> list) {
+		Integer maxPostLevel = 0;
+		if(list != null){
+			for(PositionVo positionVo:list){
+				if(positionVo != null && positionVo.getPostLevel().intValue() > maxPostLevel)
+			}
+		}
+		
+		return maxPostLevel;
+	}
+	
+
+}

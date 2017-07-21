@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.Help">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.HelpVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="seq" property="seq" jdbcType="INTEGER" />
+		<result column="question" property="question" jdbcType="VARCHAR" />
+		<result column="answer" property="answer" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_help.id,
+		sys_help.seq,
+		sys_help.question, 
+		sys_help.answer,
+		sys_help.type
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_help.id = #{id}</if>
+				<if test="type != null">and sys_help.type = #{type}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sys_help
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_help
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by if(isnull(sys_help.seq),1,0),sys_help.seq </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_help
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.Help">
+		insert into sys_help
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="seq != null" > seq, </if>
+		  <if test="question != null" > question, </if>
+		  <if test="answer != null" > answer, </if>
+		  <if test="type != null" > type, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="seq != null" > #{seq}, </if>
+		  <if test="question != null" > #{question}, </if>
+		  <if test="answer != null" > #{answer}, </if>
+		  <if test="type != null" > #{type}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.Help">
+		update 
+			sys_help 
+		<set>
+			<if test="seq != null"> seq = #{seq}, </if>
+			<if test="question != null"> question = #{question}, </if>
+			<if test="answer != null"> answer = #{answer}, </if>
+			<if test="type != null"> type = #{type}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_help
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_help
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

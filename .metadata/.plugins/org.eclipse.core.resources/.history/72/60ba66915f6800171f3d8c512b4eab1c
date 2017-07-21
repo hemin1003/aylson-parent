@@ -1,0 +1,305 @@
+package cn.aihama.sys.constant;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 
+ * @author wwx
+ * @since  2016-08
+ * @version v1.0
+ * 用于存放web模块常用变量，便于管理
+ *
+ */
+public interface BusiConstant {
+	
+	/**
+	 * 发布状态
+	 * @author Administrator
+	 *
+	 */
+	public abstract class  PublishState{
+		/*** 草稿 */
+		public static final int DRAFT = 0;
+		/*** 已发布*/
+		public static final int PUBLISH = 1;
+		/*** 已下线*/
+		public static final int OFFLINE = 2;
+		
+		public static Map<Integer, String> PublishStateMap = new HashMap<Integer, String>();
+		static {
+			PublishStateMap.put(DRAFT, "草稿");
+			PublishStateMap.put(PUBLISH, "已发布");
+			PublishStateMap.put(OFFLINE, "转账失败 ");
+		}
+	}
+	
+	/**
+	 * 附件来源
+	 * @author Administrator
+	 *
+	 */
+	public abstract class  AttachSource{
+		/*** 知识点  */
+		public static final int KNOWLEDGE = 1;
+		/*** 预算申请 */
+		public static final int BUDGET = 2;
+		/*** 漏打卡申请 */
+		public static final int MISS_CLOCK = 3;
+		/*** 请假申请 */
+		public static final int LEAVE = 4;
+		/*** 加班申请 */
+		public static final int OVERTIME = 5;
+		/*** 合同审批 */
+		public static final int CONTRACT = 6;
+		/*** 离职申请 */
+		public static final int DIMISSION = 7;
+		/*** 公告通知 */
+		public static final int NOTICE = 8;
+		/*** 付款申请 */
+		public static final int PAYMENT = 9;
+		/*** 采购申请 */
+		public static final int PURCHASE = 10;
+		/*** 申购申请 */
+		public static final int PURCHASE_APPLY = 11;
+		/*** 招聘申请 */
+		public static final int RECRUIT = 12;
+		/*** 转正申请*/
+		public static final int REGULAR = 13;
+		/*** 费用报销申请*/
+		public static final int REIMBURSE = 14;
+		/*** 调薪申请*/
+		public static final int SALARY_CHANGE = 15;
+		/*** 出差申请 */
+		public static final int TRAVEL = 16;
+		/*** 出差报销申请*/
+		public static final int TRAVEL_REIMBURSE = 17;
+		/*** 用车申请*/
+		public static final int USE_CAR = 18;
+		
+		public static Map<Integer, String> AttachSourceMap = new HashMap<Integer, String>();
+		static {
+			AttachSourceMap.put(KNOWLEDGE, "busi_knowledge");
+			AttachSourceMap.put(BUDGET, "busi_budget");
+			AttachSourceMap.put(MISS_CLOCK, "busi_miss_clock");
+			AttachSourceMap.put(LEAVE, "busi_leave");
+			AttachSourceMap.put(OVERTIME, "busi_overtime");
+			AttachSourceMap.put(CONTRACT, "busi_contract");
+			AttachSourceMap.put(DIMISSION, "busi_dimission");
+			AttachSourceMap.put(NOTICE, "busi_notice");
+			AttachSourceMap.put(PAYMENT, "busi_payment");
+			AttachSourceMap.put(PURCHASE, "busi_purchase");
+			AttachSourceMap.put(PURCHASE_APPLY, "busi_purchase_apply");
+			AttachSourceMap.put(RECRUIT, "busi_recruit");
+			AttachSourceMap.put(REGULAR, "busi_regular");
+			AttachSourceMap.put(REIMBURSE, "busi_reimburse");
+			AttachSourceMap.put(SALARY_CHANGE, "busi_salary_change");
+			AttachSourceMap.put(TRAVEL, "busi_travel");
+			AttachSourceMap.put(TRAVEL_REIMBURSE, "busi_travel_reimburse");
+			AttachSourceMap.put(USE_CAR, "busi_use_car");
+		}
+		
+		public static Map<Integer, String> AttachSourceRemarkMap = new HashMap<Integer, String>();
+		static {
+			AttachSourceRemarkMap.put(KNOWLEDGE, "知识点附件");
+			AttachSourceRemarkMap.put(BUDGET, "申请单附件");
+			AttachSourceRemarkMap.put(MISS_CLOCK, "漏打卡申请单附件");
+			AttachSourceRemarkMap.put(LEAVE, "请假申请单附件");
+			AttachSourceRemarkMap.put(OVERTIME, "加班申请单附件");
+			AttachSourceRemarkMap.put(CONTRACT, "合同审批单附件");
+			AttachSourceRemarkMap.put(DIMISSION, "离职申请单附件");
+			AttachSourceRemarkMap.put(NOTICE, "通知公告申请单附件");
+			AttachSourceRemarkMap.put(PAYMENT, "付款申请单附件");
+			AttachSourceRemarkMap.put(PURCHASE, "采购申请单附件");
+			AttachSourceRemarkMap.put(PURCHASE_APPLY, "申购单附件");
+			AttachSourceRemarkMap.put(RECRUIT, "招聘申请单附件");
+			AttachSourceRemarkMap.put(REGULAR, "转正申请单附件");
+			AttachSourceRemarkMap.put(REIMBURSE, "费用报销单附件");
+			AttachSourceRemarkMap.put(SALARY_CHANGE, "调薪申请单附件");
+			AttachSourceRemarkMap.put(TRAVEL, "出差外勤申请单附件");
+			AttachSourceRemarkMap.put(TRAVEL_REIMBURSE, "出差报销单附件");
+			AttachSourceRemarkMap.put(USE_CAR, "用车申请单附件");
+		}
+	}
+	
+	/**
+	 * 附件状态
+	 * @author Administrator
+	 *
+	 */
+	public abstract class AttachState{
+		/*** 作废 */
+		public static final int CANCEL = 0;
+		/*** 有效 */
+		public static final int EFFECTIVE = 1;
+		
+		public static Map<Integer, String> AttachStateMap = new HashMap<Integer, String>();
+		static {
+			AttachStateMap.put(CANCEL, "作废");
+			AttachStateMap.put(EFFECTIVE, "有效 ");
+		}
+	}
+	
+	/**
+	 * 业务状态
+	 * @author Administrator
+	 *
+	 */
+	public abstract class BusiState{
+		/*** 草稿 */
+		public static final int DRAFT = 0;
+		/*** 退回修改 */
+		public static final int REBACK = -1;
+		/*** 待完善资料 */
+		public static final int WAIT_PERFECT_DATA = -2;
+		/*** 审核中 */
+		public static final int AUDIT_IN = 1;
+		/*** 审核通过 */
+		public static final int AUDIT_OK = 2;
+		/*** 审核不通过 */
+		public static final int AUDIT_NOT = 3;
+		/*** 审核通过并完善资料 */
+		public static final int AUDIT_OK_PERFECT = 4;
+		
+		public static Map<Integer, String> AttachStateMap = new HashMap<Integer, String>();
+		static {
+			AttachStateMap.put(DRAFT, "草稿");
+			AttachStateMap.put(REBACK, "退回修改");
+			AttachStateMap.put(AUDIT_IN, "审核中");
+			AttachStateMap.put(AUDIT_OK, "审核通过 ");
+			AttachStateMap.put(AUDIT_NOT, "审核不通过 ");
+			AttachStateMap.put(AUDIT_OK_PERFECT, "审核通过并完善资料 ");
+		}
+	}
+	
+	/**
+	 * 流程操作类型
+	 * @author Administrator
+	 * 0 结束：            不同意并结束，审核不通过
+	 *	1 同意：            同意并下发，流程未结束
+	 *	2 同意并办结：      同意并结束，审核通过  
+	 *	3 退回上一步：      退回上个任务节点
+	 *	4 退回申请人修改：  退回申请人修改，更新业务状态
+	 *	5 重新申请：        更新业务状态
+	 *
+	 */
+	public abstract class ActionType{
+		/*** 结束 */
+		public static final int APPROVE_NOT = 0;
+		/*** 同意 */
+		public static final int APPROVE = 1;
+		/*** 同意并办结 */
+		public static final int APPROVE_END = 2;
+		/*** 退回上一步 */
+		public static final int BACK_PREVIOUS = 3;
+		/*** 退回申请人修改 */
+		public static final int BACK_APPLICANT = 4;
+		/*** 重新申请 */
+		public static final int APPLY_AGAIN = 5;
+		/*** 完善资料并办结 */
+		public static final int APPROVE_PERFECT = 6;
+		
+		public static Map<Integer, String> ActionTypeMap = new HashMap<Integer, String>();
+		static {
+			ActionTypeMap.put(APPROVE_NOT, "结束");
+			ActionTypeMap.put(APPROVE, "同意");
+			ActionTypeMap.put(APPROVE_END, "同意并办结 ");
+			ActionTypeMap.put(BACK_PREVIOUS, "退回上一步 ");
+			ActionTypeMap.put(BACK_APPLICANT, "退回申请人修改 ");
+			ActionTypeMap.put(APPLY_AGAIN, "重新申请 ");
+			ActionTypeMap.put(APPROVE_PERFECT, "完善资料并办结 ");
+		}
+	}
+	
+	/**
+	 * 单号前缀
+	 * @author Administrator
+	 *
+	 */
+	public abstract class CodePrefix{
+		/*** 预算申请单 */
+		public static final String BUDGET = "BD";
+		/*** 漏打卡申请单 */
+		public static final String MISS_CLOCK = "MC";
+		/*** 请假申请单 */
+		public static final String LEAVE = "LE";
+		/*** 加班申请单 */
+		public static final String OVERTIME = "OT";
+		/*** 合同审批 */
+		public static final String CONTRACT = "CT";
+		/*** 离职申请 */
+		public static final String DIMISSION = "DN";
+		/*** 公告通知 */
+		public static final String NOTICE = "NE";
+		/*** 付款申请 */
+		public static final String PAYMENT = "PT";
+		/*** 采购申请 */
+		public static final String PURCHASE = "PE";
+		/*** 申购申请 */
+		public static final String PURCHASE_APPLY = "PA";
+		/*** 招聘申请 */
+		public static final String RECRUIT = "RT";
+		/*** 转正申请*/
+		public static final String REGULAR = "RR";
+		/*** 费用报销申请*/
+		public static final String REIMBURSE = "RE";
+		/*** 调薪申请*/
+		public static final String SALARY_CHANGE = "SC";
+		/*** 出差申请 */
+		public static final String TRAVEL = "TL";
+		/*** 出差报销申请*/
+		public static final String TRAVEL_REIMBURSE = "TR";
+		/*** 用车申请*/
+		public static final String USE_CAR = "UC";
+
+		
+		public static Map<String, String> CodePrefixMap = new HashMap<String, String>();
+		static {
+			CodePrefixMap.put(BUDGET, "预算单");
+			CodePrefixMap.put(MISS_CLOCK, "漏打卡申请单 ");
+			CodePrefixMap.put(LEAVE, "请假申请单 ");
+			CodePrefixMap.put(OVERTIME, "加班申请单 ");
+			CodePrefixMap.put(CONTRACT, "合同审批单 ");
+			CodePrefixMap.put(DIMISSION, "离职申请单 ");
+			CodePrefixMap.put(NOTICE, "公告通知单 ");
+			CodePrefixMap.put(PAYMENT, "付款申请单 ");
+			CodePrefixMap.put(PURCHASE, "采购申请单 ");
+			CodePrefixMap.put(PURCHASE_APPLY, "申购单 ");
+			CodePrefixMap.put(RECRUIT, "招聘申请单 ");
+			CodePrefixMap.put(REGULAR, "转正申请单 ");
+			CodePrefixMap.put(REIMBURSE, "费用报销申请单 ");
+			CodePrefixMap.put(SALARY_CHANGE, "调薪申请单 ");
+			CodePrefixMap.put(TRAVEL, "出差外勤申请单 ");
+			CodePrefixMap.put(TRAVEL_REIMBURSE, "出差报销申请单 ");
+			CodePrefixMap.put(USE_CAR, "用车申请单 ");
+		}
+		
+		/**
+		 * 订单对应的流程定义key
+		 */
+		public static Map<String, String> CodePrefixFlowKeyMap = new HashMap<String, String>();
+		static {
+			CodePrefixFlowKeyMap.put(BUDGET, "Budget");
+			CodePrefixFlowKeyMap.put(MISS_CLOCK, "MissClock");
+			CodePrefixFlowKeyMap.put(LEAVE, "Leave");
+			CodePrefixFlowKeyMap.put(OVERTIME, "Overtime");
+			CodePrefixFlowKeyMap.put(CONTRACT, "Contract");
+			CodePrefixFlowKeyMap.put(DIMISSION, "Dimission");
+			CodePrefixFlowKeyMap.put(NOTICE, "Notice");
+			CodePrefixFlowKeyMap.put(PAYMENT, "Payment");
+			CodePrefixFlowKeyMap.put(PURCHASE, "Purchase");
+			CodePrefixFlowKeyMap.put(PURCHASE_APPLY, "PurchaseApply");
+			CodePrefixFlowKeyMap.put(RECRUIT, "Recruit");
+			CodePrefixFlowKeyMap.put(REGULAR, "Regular");
+			CodePrefixFlowKeyMap.put(REIMBURSE, "Reimburse");
+			CodePrefixFlowKeyMap.put(SALARY_CHANGE, "SalaryChange");
+			CodePrefixFlowKeyMap.put(TRAVEL, "Travel");
+			CodePrefixFlowKeyMap.put(TRAVEL_REIMBURSE, "TravelReimburse");
+			CodePrefixFlowKeyMap.put(USE_CAR, "UseCar");
+		}
+		
+	}
+	
+	
+	
+}

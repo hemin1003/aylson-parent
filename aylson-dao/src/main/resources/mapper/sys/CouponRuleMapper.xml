@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.CouponRule">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.CouponRuleVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="couponFkid" property="couponFkid" jdbcType="INTEGER" />
+		<result column="startPrice" property="startPrice" jdbcType="INTEGER" />
+		<result column="endPrice" property="endPrice" jdbcType="INTEGER" />
+		<result column="deratePrice" property="deratePrice" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_coupon_rules.id,
+		sys_coupon_rules.couponFkid,
+		sys_coupon_rules.startPrice, 
+		sys_coupon_rules.endPrice,
+		sys_coupon_rules.deratePrice
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_coupon_rules.id = #{id}</if>
+				<if test="couponType != null">and sys_coupon_rules.couponType = #{couponType}</if>
+				<if test="couponFkid != null">and sys_coupon_rules.couponFkid = #{couponFkid}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sys_coupon_rules
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_coupon_rules
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_coupon_rules.createdTime desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_coupon_rules
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.CouponRule">
+		insert into sys_coupon_rules
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="couponFkid != null" > couponFkid, </if>
+		  <if test="startPrice != null" > startPrice, </if>
+		  <if test="endPrice != null" > endPrice, </if>
+		  <if test="deratePrice != null" > deratePrice, </if>
+		  <if test="createdTime != null" > createdTime, </if>
+		  <if test="createdBy != null" > createdBy, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="couponFkid != null" > #{couponFkid}, </if>
+		  <if test="startPrice != null" > #{startPrice}, </if>
+		  <if test="endPrice != null" > #{endPrice}, </if>
+		  <if test="deratePrice != null" > #{deratePrice}, </if>
+		  <if test="createdTime != null" > #{createdTime}, </if>
+		  <if test="createdBy != null" > #{createdBy}, </if>
+		  
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.CouponRule">
+		update 
+			sys_coupon_rules 
+		<set>
+			<if test="startPrice != null"> startPrice = #{startPrice}, </if>
+			<if test="endPrice != null"> endPrice = #{endPrice}, </if>
+			<if test="deratePrice != null"> deratePrice = #{deratePrice}, </if>
+			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
+			<if test="updatedTime != null"> updatedTime = #{updatedTime}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+	
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into sys_coupon_rules(
+			couponFkid,
+			startPrice,
+			endPrice,
+			deratePrice
+		) 
+    	values   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	    (
+	    	#{item.couponFkid},
+			#{item.startPrice},
+			#{item.endPrice},
+			#{item.deratePrice}
+		)
+	    </foreach> 
+	</insert>
+	
+	<!-- 批量更新 -->
+	<update id="batchUpdate"  parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 
+				sys_coupon_rules 
+			<set>
+				 <if test="item.startPrice != null">startPrice = #{item.startPrice},</if>
+				 <if test="item.endPrice != null">endPrice = #{item.endPrice}, </if>
+				 <if test="item.deratePrice != null">deratePrice = #{item.deratePrice}, </if>
+			</set> 
+			 where id = #{item.id}
+         </foreach>
+    </update>
+	
+</mapper>

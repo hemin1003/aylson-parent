@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.CouponUserRelations">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.CouponUserRelationsVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="phoneNum" property="phoneNum" jdbcType="VARCHAR" />
+		<result column="activityFkid" property="activityFkid" jdbcType="INTEGER" />
+		<result column="couponFkid" property="couponFkid" jdbcType="INTEGER" />
+		<result column="createdTime" property="createdTime" jdbcType="TIMESTAMP" />
+		<result column="isUsed" property="isUsed" jdbcType="INTEGER" />
+		<result column="usedTime" property="usedTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_coupon_user_relations.id,
+		sys_coupon_user_relations.userId,
+		sys_coupon_user_relations.userName, 
+		sys_coupon_user_relations.phoneNum,
+		sys_coupon_user_relations.activityFkid,
+		sys_coupon_user_relations.couponFkid,
+		sys_coupon_user_relations.createdTime,
+		sys_coupon_user_relations.isUsed,
+		sys_coupon_user_relations.usedTime
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_coupon_user_relations.id = #{id}</if>
+				<if test="userId != null">and sys_coupon_user_relations.userId = #{userId}</if>
+				<if test="phoneNum != null">and sys_coupon_user_relations.phoneNum = #{phoneNum}</if>
+				<if test="isUsed != null">and sys_coupon_user_relations.isUsed = #{isUsed}</if>
+				<if test="activityFkid != null">and sys_coupon_user_relations.activityFkid = #{activityFkid}</if>
+				<if test="couponFkid != null">and sys_coupon_user_relations.couponFkid = #{couponFkid}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sys_coupon_user_relations
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_coupon_user_relations
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_coupon_user_relations.createdTime desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_coupon_user_relations
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.CouponUserRelations">
+		insert into sys_coupon_user_relations
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="userId != null" > userId, </if>
+		  <if test="userName != null" > userName, </if>
+		  <if test="phoneNum != null" > phoneNum, </if>
+		  <if test="activityFkid != null" > activityFkid, </if>
+		  <if test="couponFkid != null" > couponFkid, </if>
+		  <if test="createdTime != null" > createdTime, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="userId != null" > #{userId}, </if>
+		  <if test="userName != null" > #{userName}, </if>
+		  <if test="phoneNum != null" > #{phoneNum}, </if>
+		  <if test="activityFkid != null" > #{activityFkid}, </if>
+		  <if test="couponFkid != null" > #{couponFkid}, </if>
+		  <if test="createdTime != null" > #{createdTime}, </if>
+		  
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.CouponUserRelations">
+		update 
+			sys_coupon_user_relations 
+		<set>
+			<if test="isUsed != null"> isUsed = #{isUsed}, </if>
+			<if test="usedTime != null"> usedTime = #{usedTime}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+	
+</mapper>

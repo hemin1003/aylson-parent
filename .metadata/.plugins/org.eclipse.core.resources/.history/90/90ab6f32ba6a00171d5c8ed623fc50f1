@@ -1,0 +1,27 @@
+package cn.aihama.busi.service;
+
+import cn.aihama.busi.po.Budget;
+import cn.aihama.busi.search.BudgetSearch;
+import cn.aihama.busi.vo.BudgetVo;
+import cn.aihama.core.frame.domain.Result;
+import cn.aihama.core.frame.service.BaseService;
+
+public interface BudgetService extends BaseService<Budget,BudgetSearch> {
+
+	/**
+	 * 保存
+	 * @param budgetVo
+	 * @return
+	 */
+	public Result save(BudgetVo budgetVo);
+
+	/**
+	 * 根据id查询
+	 * @param id
+	 * @return
+	 */
+	public BudgetVo getVoById(Integer id);
+
+	public Result delById(Integer id);
+	
+}

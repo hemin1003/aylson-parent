@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>打印设计</title>
+<LINK rel="stylesheet" type="text/css" href="../../../webresources/skin/vista/ymPrompt.css"/>
+<link rel="STYLESHEET" type="text/css" href="../../../webresources/skin/vista/wabacus_system.css">
+<script language="javascript" src="LodopFuncs.js"></script>
+<script src="../../../webresources/script/ymPrompt.js" type="text/javascript"></script>
+<script src="../../../webresources/script/wabacus_api.js" type="text/javascript"></script>
+<script src="../../../wxtmpfiles/js/generate_system.js" type="text/javascript"></script>
+<object id="LODOP_OBJECT" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0> 
+	<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0 pluginspage="install_lodop.exe"></embed>
+</object>
+</head>
+<body bgcolor="#eeeeee">
+<div align="center">
+<table border="0" cellspacing="3px" style="border:0 #ACCCFF;BORDER-COLLAPSE:collapse;width:850px" align="center">
+	<tr>
+		<td align="left">
+			<b><font size="2">打印脚本</font></b>
+		</td>
+		<td align="right"><input type="button" value="打印设计" onclick="print_design()" class="cls-button2">&nbsp;&nbsp;
+			<input type="button" value="打印预览" onclick="print_preview()" class="cls-button2">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<font size="2"><textarea id="print_content" style="width:850px;height:550px;" class="cls-inputbox-normal"></textarea></font>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="left">
+			<font color="blue" size="2"><b>使用说明：</b><br>
+
+				&nbsp;&nbsp;&nbsp;&nbsp;1、使用此页面可以重新设计一个打印内容，也可以对已有的打印内容进行修改，如果要修改已有的打印内容，需要先将打印内容粘贴到输入框中再点击“打印设计”；<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;2、点击“打印设计”按钮弹出设计界面后开始设计打印内容，设计完后直接关闭设计界面，系统会自动将打印内容回填到此页面的输入框中；<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;3、只有输入框有打印脚本代码时，才能点击“打印预览”对输入框的打印内容进行预览
+			</font>
+		</td>
+	</tr>
+</table>
+</div>
+</body>
+<script language="javascript" type="text/javascript"> 
+	var LODOP_OBJ;
+	function print_design() 
+	{		
+		LODOP_OBJ=getLodop(document.getElementById('LODOP_OBJECT'),document.getElementById('LODOP_EM')); 	
+		var oldcontent=document.getElementById('print_content').value;
+		if(oldcontent!=null&&oldcontent!='')
+		{
+			try
+			{
+				eval(oldcontent);
+			}catch(e)
+			{
+				wx_alert('设计的打印代码有语法错误');
+				throw e;
+			}
+		}
+		var newcontent=LODOP_OBJ.PRINT_DESIGN();
+		if(newcontent==null) newcontent='';
+		//下面将lodop.替换为lodop_obj.
+		var idx=newcontent.indexOf('LODOP.');
+		while(idx>=0)
+		{
+			newcontent=newcontent.substring(0,idx)+'LODOP_OBJ.'+newcontent.substring(idx+6);
+			idx=newcontent.indexOf('LODOP.');
+		}
+		document.getElementById('print_content').value=newcontent;
+	};	
+	function print_preview() 
+	{
+		var oldcontent=document.getElementById('print_content').value;
+		if(oldcontent==null||oldcontent=='')
+		{
+			wx_alert('没有需要预览的打印内容');
+			return;
+		}
+		LODOP_OBJ=getLodop(document.getElementById('LODOP_OBJECT'),document.getElementById('LODOP_EM')); 
+		try
+		{
+			eval(oldcontent); 
+		}catch(e)
+		{
+			wx_alert('预览的打印代码有语法错误');
+			throw e;
+		}
+		LODOP_OBJ.PREVIEW();
+	};
+</script> 
+</html>

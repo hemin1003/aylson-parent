@@ -1,0 +1,139 @@
+package cn.aihama.workflow.service;
+
+import java.io.InputStream;
+import java.util.List;
+
+import cn.aihama.core.frame.base.Page;
+import cn.aihama.core.frame.domain.Result;
+import cn.aihama.workflow.search.DeploymentSearch;
+import cn.aihama.workflow.search.ProcessDefinitionSearch;
+import cn.aihama.workflow.search.TaskSearch;
+import cn.aihama.workflow.vo.CommentVo;
+import cn.aihama.workflow.vo.DeploymentVo;
+import cn.aihama.workflow.vo.ProcessDefinitionVo;
+import cn.aihama.workflow.vo.TaskVo;
+
+/**
+ * 工作流服务接口
+ * @author Administrator
+ *
+ */
+public interface WorkflowService {
+
+	/**
+	 * 部署流程定义
+	 * @param in
+	 * @param fileName
+	 * @return
+	 */
+	public Result deploy(InputStream in, String fileName, String category);
+
+	/**
+	 * 获取流程部署列表-分页
+	 * @param deploymentSearch
+	 * @return
+	 */
+	public Page<DeploymentVo> getDeployPage(DeploymentSearch deploymentSearch);
+	
+
+	/**
+	 * 查询流程定义列表
+	 * @return
+	 */
+	public Page<ProcessDefinitionVo> getProcessDefinitionPage(ProcessDefinitionSearch processDefinitionSearch);
+	
+	/**
+	 * 根据部署id获取流程定义图
+	 * @param deployId
+	 * @return
+	 */
+	public Result getDiagramByDeployId(String deployId);
+	
+	/**
+	 * 根据定义id获取流程定义图
+	 * @param deployId
+	 * @return
+	 */
+	public Result getDiagram(String procDefId, String procInstId);
+	
+	/**
+	 * 启动流程
+	 * @param processDefinitionKey
+	 * @param busiCode
+	 * @param busiId
+	 * @param nextTaskUserId
+	 * @return
+	 */
+	public Result startProcess(String processDefinitionKey, String busiCode, Integer busiId, Integer nextTaskUserId);
+	
+	/**
+	 * 启动流程
+	 * @param busiCode
+	 * @param busiId
+	 * @param nextTaskUserId
+	 * @return
+	 */
+	public Result startProcess(String busiCode, Integer busiId, Integer nextTaskUserId);
+	
+	/**
+	 * 获取待办任务列表-分页
+	 * @param taskToDoSearch
+	 * @return
+	 */
+	public Page<TaskVo> getTaskToDoPage(TaskSearch taskSearch);
+	
+	/**
+	 * 获取已办任务列表-分页
+	 * @param taskToDoSearch
+	 * @return
+	 */
+	public Page<TaskVo> getTaskDonePage(TaskSearch taskSearch);
+	
+	/**
+	 * 获取归档任务列表-分页
+	 * @param taskToDoSearch
+	 * @return
+	 */
+	public Page<TaskVo> getTaskFiledPage(TaskSearch taskSearch);
+
+	/**
+	 * 根据任务id获取任务详情
+	 * @param taskId
+	 * @return
+	 */
+	public Result getTaskInfo(String taskId);
+
+	/**
+	 * 审核
+	 * @param taskId
+	 * @param busiCode
+	 * @param busiId
+	 * @param approvalOpinion
+	 * @param outCome
+	 * @param auditUserId
+	 * @return
+	 */
+	public Result audit(String taskId, String busiCode, Integer busiId, String approvalOpinion, Integer outCome, Integer auditUserId);
+
+	/**
+	 * 根据实例id获取批注列表信息
+	 * @param procInstId
+	 * @return
+	 */
+	public List<CommentVo> getCommentListByProcInstId(String procInstId);
+	
+	/**
+	 * 根据业务key获取流程图
+	 * @param businessKey
+	 * @return
+	 */
+	public Result getDiagramByBusinessKey(String businessKey);
+	
+	/**
+	 * 根据业务key获取批注列表信息
+	 * @param businessKey
+	 * @return
+	 */
+	public Result getCommentListByBusinessKey(String businessKey);
+	
+}

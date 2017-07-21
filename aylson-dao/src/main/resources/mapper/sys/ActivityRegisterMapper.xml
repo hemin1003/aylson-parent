@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.ActivityRegister">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.ActivityRegisterVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="actId" property="actId" jdbcType="INTEGER" />
+		<result column="registerName" property="registerName" jdbcType="VARCHAR" />
+		<result column="registerPhone" property="registerPhone" jdbcType="VARCHAR" />
+		<result column="workUnit" property="workUnit" jdbcType="VARCHAR" />
+		<result column="registerTime" property="registerTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_activity_register.id,
+		sys_activity_register.actId,
+		sys_activity_register.registerName,
+		sys_activity_register.registerPhone,
+		sys_activity_register.workUnit,
+		sys_activity_register.registerTime
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_activity_register.id = #{id}</if>
+				<if test="actId != null">and sys_activity_register.actId = #{actId}</if>
+				<if test="registerPhone != null">and sys_activity_register.registerPhone = #{registerPhone}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sys_activity_register
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_activity_register
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_activity_register.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_activity_register
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.ActivityRegister">
+		insert into sys_activity_register
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="actId != null" > actId, </if>
+		  <if test="registerName != null" > registerName, </if>
+		  <if test="registerPhone != null" > registerPhone, </if>
+		  <if test="workUnit != null" > workUnit, </if>
+		  <if test="registerTime != null" > registerTime, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="actId != null" > #{actId}, </if>
+		  <if test="registerName != null" > #{registerName}, </if>
+		  <if test="registerPhone != null" > #{registerPhone}, </if>
+		  <if test="workUnit != null" > #{workUnit}, </if>
+		  <if test="registerTime != null" > #{registerTime}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.ActivityRegister">
+		update 
+			sys_activity_register 
+		<set>
+			<if test="actId != null"> actId = #{actId}, </if>
+			<if test="registerName != null"> registerName = #{registerName}, </if>
+			<if test="registerPhone != null"> registerPhone = #{registerPhone}, </if>
+			<if test="workUnit != null"> workUnit = #{workUnit}, </if>
+			<if test="registerTime != null"> registerTime = #{registerTime}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_activity_register
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_activity_register
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

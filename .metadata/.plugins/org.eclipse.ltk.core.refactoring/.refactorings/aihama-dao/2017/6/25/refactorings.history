@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;MissClockSearch.java&apos; to &apos;cn.aihama.busi.search.MissClockSearch.java&apos;&#x0D;&#x0A;- Original project: &apos;aihama-dao&apos;&#x0D;&#x0A;- Destination element: &apos;cn.aihama.busi.search.MissClockSearch.java&apos;&#x0D;&#x0A;- Original element: &apos;cn.aihama.busi.search.MissClockSearch.java&apos;" description="Copy compilation unit" destination="/src\/main\/java&lt;cn.aihama.busi.search{MissClockSearch.java" element1="/src\/main\/java&lt;cn.aihama.busi.search{MissClockSearch.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1498034146381" units="1" version="1.0"/>
+</session>

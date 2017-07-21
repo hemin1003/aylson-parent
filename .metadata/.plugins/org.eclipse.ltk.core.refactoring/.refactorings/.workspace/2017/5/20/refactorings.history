@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;aylson-manage/src/main/webapp/webresources/skin/aylson&apos;" deleteContents="false" description="Delete resource &apos;aylson-manage/src/main/webapp/webresources/skin/aylson&apos;" element1="/aylson-manage/src/main/webapp/webresources/skin/aylson" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1495012552389"/>
+</session>

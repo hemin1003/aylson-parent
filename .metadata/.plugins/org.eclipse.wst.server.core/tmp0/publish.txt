@@ -1,0 +1,6 @@
+#Tomcat publish data
+#Mon Jul 17 10:22:57 CST 2017
+org.eclipse.jst.j2ee.server\:aihama-utils=WEB-INF/lib/aihama-utils-0.0.1-SNAPSHOT.jar
+org.eclipse.jst.j2ee.server\:aihama-service=WEB-INF/lib/aihama-service-0.0.1-SNAPSHOT.jar
+org.eclipse.jst.j2ee.server\:aihama-core=WEB-INF/lib/aihama-core-0.0.1-SNAPSHOT.jar
+org.eclipse.jst.j2ee.server\:aihama-dao=WEB-INF/lib/aihama-dao-0.0.1-SNAPSHOT.jar

@@ -1,0 +1,57 @@
+.scrollgeneric {
+	FONT-SIZE: 1px; LEFT: 0px; LINE-HEIGHT: 1px; POSITION: absolute; TOP: 0px
+}
+.vscrollerbase {
+	BACKGROUND: hsla(0,0%,89%,0); WIDTH: 8px;border-radius:4px; 
+}
+.vscrollerbase_hidden {
+	BACKGROUND: hsla(0,0%,89%,0); WIDTH: 8px; VISIBILITY: hidden! important; HEIGHT: 0px
+}
+.vscrollerbar {
+	BACKGROUND: #ccc; WIDTH: 8px;border-radius:4px;
+}
+.hscrollerbase {
+	BACKGROUND: url(images/horizontalbar.png) #d7ebdf repeat-x 0px -15px; HEIGHT: 15px;
+}
+.hscrollerbase_hidden{
+	BACKGROUND: url(images/horizontalbar.png) #d7ebdf repeat-x 0px -15px; HEIGHT: 0px;visibility:hidden !important;
+}
+.hscrollerbar {
+	BACKGROUND: url(images/horizontalbar.png) #99cbcb repeat-x 0px -30px; HEIGHT: 15px
+}
+.vscrollerbar {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; Z-INDEX: 2; PADDING-BOTTOM: 10px; PADDING-TOP: 10px
+}
+.hscrollerbar {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; Z-INDEX: 2; PADDING-BOTTOM: 10px; PADDING-TOP: 10px
+}
+.vscrollerbarbeg {
+	BACKGROUND: hsla(0,0%,89%,0); WIDTH: 8px; HEIGHT: 8px;
+}
+.vscrollerbarend {
+	BACKGROUND: hsla(0,0%,89%,0); WIDTH: 8px; HEIGHT: 8px;
+}
+.hscrollerbarbeg {
+	BACKGROUND: hsla(0,0%,89%,0); WIDTH: 8px; HEIGHT: 8px;
+}
+.hscrollerbarend {
+	BACKGROUND: hsla(0,0%,89%,0); WIDTH: 8px; HEIGHT: 8px;
+}
+.scrollerjogbox {
+	RIGHT: 0px; BACKGROUND: url(images/horizontalbar.png) #4e727c 0px 0px; LEFT: auto; WIDTH: 15px; BOTTOM: 0px; TOP: auto; HEIGHT: 15px
+}
+.vscrollerbasebeg {
+	BACKGROUND: hsla(0,0%,89%,0); WIDTH: 8px; HEIGHT: 8px;
+}
+.vscrollerbaseend {
+	BACKGROUND: hsla(0,0%,89%,0); WIDTH: 8px; HEIGHT: 8px;
+}
+.hscrollerbasebeg {
+	BACKGROUND: hsla(0,0%,89%,0); WIDTH: 8px; HEIGHT: 8px;
+}
+.hscrollerbaseend {
+	BACKGROUND: hsla(0,0%,89%,0); WIDTH: 8px; HEIGHT: 8px;
+}
+.scrollerjogbox:hover {
+	BACKGROUND:  #5e828c;
+}

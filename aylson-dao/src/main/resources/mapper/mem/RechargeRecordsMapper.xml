@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.RechargeRecords">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.RechargeRecordsVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="memberId" property="memberId" jdbcType="INTEGER" />
+		<result column="chargeId" property="chargeId" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="orderNo" property="orderNo" jdbcType="VARCHAR" />
+		<result column="amount" property="amount" jdbcType="FLOAT" />
+		<result column="busiType" property="busiType" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="gold" property="gold" jdbcType="INTEGER" />
+		<result column="busiId" property="busiId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_recharge_records.id,
+		mem_recharge_records.memberId,
+		mem_recharge_records.chargeId,
+		mem_recharge_records.createTime,
+		mem_recharge_records.orderNo,
+		mem_recharge_records.amount,
+		mem_recharge_records.busiType,
+		mem_recharge_records.`status`,
+		mem_recharge_records.description,
+		mem_recharge_records.gold,
+		mem_recharge_records.busiId
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_recharge_records.id = #{id}</if>
+				<if test="memberId != null">and mem_recharge_records.memberId = #{memberId}</if>
+				<if test="chargeId != null">and mem_recharge_records.chargeId = #{chargeId}</if>
+				<if test="status != null">and mem_recharge_records.status = #{status}</if>
+				<if test="busiType != null">and mem_recharge_records.busiType = #{busiType}</if>
+				<if test="orderNo != null">and mem_recharge_records.orderNo = #{orderNo}</if>
+				<if test="busiId != null">and mem_recharge_records.busiId = #{busiId}</if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from mem_recharge_records
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from mem_recharge_records
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_recharge_records.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from mem_recharge_records
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.RechargeRecords">
+		insert into mem_recharge_records
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="memberId != null" > memberId, </if>
+		  <if test="chargeId != null" > chargeId, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="orderNo != null" > orderNo, </if>
+		  <if test="amount != null" > amount, </if>
+		  <if test="busiType != null" > busiType, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="description != null" > description, </if>
+		  <if test="gold != null" > gold, </if>
+		  <if test="busiId != null" > busiId, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="memberId != null" > #{memberId}, </if>
+		  <if test="chargeId != null" > #{chargeId}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="orderNo != null" > #{orderNo}, </if>
+		  <if test="amount != null" > #{amount}, </if>
+		  <if test="busiType != null" > #{busiType}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="description != null" > #{description}, </if>
+		  <if test="gold != null" > #{gold}, </if>
+		  <if test="busiId != null" > #{busiId}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.RechargeRecords">
+		update 
+			mem_recharge_records 
+		<set>
+			<if test="memberId != null"> memberId = #{memberId}, </if>
+			<if test="chargeId != null"> chargeId = #{chargeId}, </if>
+			<if test="orderNo != null"> orderNo = #{orderNo}, </if>
+			<if test="amount != null"> amount = #{amount}, </if>
+			<if test="busiType != null"> busiType = #{busiType}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="description != null"> description = #{description}, </if>
+			<if test="gold != null"> gold = #{gold}, </if>
+			<if test="busiId != null"> busiId = #{busiId}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_recharge_records
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_recharge_records
+		<include refid="Where_Condition" />
+	</delete>
+	
+
+</mapper>

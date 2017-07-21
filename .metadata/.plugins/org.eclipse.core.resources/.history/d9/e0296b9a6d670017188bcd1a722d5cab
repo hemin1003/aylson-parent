@@ -1,0 +1,12 @@
+package cn.aihama.sys.service;
+
+import cn.aihama.core.frame.service.BaseService;
+import cn.aihama.sys.po.Position;
+import cn.aihama.sys.search.PositionSearch;
+
+public interface PositionService extends BaseService<Position,PositionSearch> {
+	
+	
+	
+	
+}

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.owner.po.Quotation">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.owner.vo.QuotationVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="appointId" property="appointId" jdbcType="INTEGER" />
+		<result column="designId" property="designId" jdbcType="INTEGER" />
+		<result column="clientName" property="clientName" jdbcType="VARCHAR" />
+		<result column="clientAddress" property="clientAddress" jdbcType="VARCHAR" />
+		<result column="clientPhone" property="clientPhone" jdbcType="VARCHAR" />
+		<result column="orderTime" property="orderTime" jdbcType="TIMESTAMP" />
+		<result column="salesDep" property="salesDep" jdbcType="VARCHAR" />
+		<result column="areaLeader" property="areaLeader" jdbcType="VARCHAR" />
+		<result column="shopPhone" property="shopPhone" jdbcType="VARCHAR" />
+		<result column="shopContacter" property="shopContacter" jdbcType="VARCHAR" />
+		<result column="orderNo" property="orderNo" jdbcType="VARCHAR" />
+		<result column="orderAmount" property="orderAmount" jdbcType="FLOAT" />
+		<result column="realAmount" property="realAmount" jdbcType="FLOAT" />
+		<result column="benefitAmount" property="benefitAmount" jdbcType="FLOAT" />
+		<result column="deposit" property="deposit" jdbcType="FLOAT" />
+		<result column="salesAmount" property="salesAmount" jdbcType="FLOAT" />
+		<result column="payMode" property="payMode" jdbcType="VARCHAR" />
+		<result column="deliveryTime" property="deliveryTime" jdbcType="TIMESTAMP" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="originator" property="originator" jdbcType="VARCHAR" />
+		<result column="auditer" property="auditer" jdbcType="VARCHAR" />
+		<result column="confirmer" property="confirmer" jdbcType="VARCHAR" />
+		<result column="financer" property="financer" jdbcType="VARCHAR" />
+		<result column="salesType" property="salesType" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="couponValue" property="couponValue" jdbcType="INTEGER" />
+		<result column="couponId" property="couponId" jdbcType="INTEGER" />
+		<result column="remainAmount" property="remainAmount" jdbcType="FLOAT" />
+		<result column="billCode" property="billCode" jdbcType="VARCHAR" />
+		<result column="partnerCouponValue" property="partnerCouponValue" jdbcType="INTEGER" />
+		<!-- 对应设计信息 -->
+		<result column="designState" property="designState" jdbcType="INTEGER" />
+		<result column="designType" property="designType" jdbcType="INTEGER" />
+		<result column="drawUrl" property="drawUrl" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		owner_quotation.id,
+		owner_quotation.appointId,
+		owner_quotation.designId,
+		owner_quotation.clientName,
+		owner_quotation.clientPhone,
+		owner_quotation.clientAddress,
+		owner_quotation.orderTime,
+		owner_quotation.salesDep,
+		owner_quotation.areaLeader,
+		owner_quotation.shopPhone,
+		owner_quotation.shopContacter,
+		owner_quotation.orderNo,
+		owner_quotation.orderAmount,
+		owner_quotation.realAmount,
+		owner_quotation.benefitAmount,
+		owner_quotation.deposit,
+		owner_quotation.salesAmount,
+		owner_quotation.payMode,
+		owner_quotation.deliveryTime,
+		owner_quotation.remark,
+		owner_quotation.originator,
+		owner_quotation.auditer,
+		owner_quotation.confirmer,
+		owner_quotation.financer,
+		owner_quotation.salesType,
+		owner_quotation.state,
+		owner_quotation.couponValue,
+		owner_quotation.couponId,
+		owner_quotation.remainAmount,
+		owner_quotation.billCode,
+		owner_quotation.partnerCouponValue,
+		owner_design.state as designState,
+		owner_design.designType,
+		owner_design.drawUrl
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and owner_quotation.id = #{id}</if>
+				<if test="state != null">and owner_quotation.state = #{state}</if>
+				<if test="appointId != null">and owner_quotation.appointId = #{appointId}</if>
+				<if test="designId != null">and owner_quotation.designId = #{designId}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(owner_quotation.id) from owner_quotation
+		inner join owner_design on owner_quotation.designId = owner_design.id
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from owner_quotation
+		inner join owner_design on owner_quotation.designId = owner_design.id
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by owner_quotation.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_quotation
+		inner join owner_design on owner_quotation.designId = owner_design.id
+		where owner_quotation.id = #{id}
+	</select>
+	
+    <!-- 根据designId查询 -->
+	<select id="selectByDesignId" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_quotation
+		inner join owner_design on owner_quotation.designId = owner_design.id
+		where owner_quotation.designId = #{designId}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.owner.po.Quotation" useGeneratedKeys="true" keyProperty="id">
+		insert into owner_quotation
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			id,
+		  <if test="appointId != null" > appointId, </if>
+		  <if test="designId != null" > designId, </if>
+		  <if test="clientName != null" > clientName, </if>
+		  <if test="clientPhone != null" > clientPhone, </if>
+		  <if test="clientAddress != null" > clientAddress, </if>
+		  <if test="orderTime != null" > orderTime, </if>
+		  <if test="salesDep != null" > salesDep, </if>
+		  <if test="areaLeader != null" > areaLeader, </if>
+		  <if test="shopPhone != null" > shopPhone, </if>
+		  <if test="shopContacter != null" > shopContacter, </if>
+		  <if test="orderNo != null" > orderNo, </if>
+		  <if test="orderAmount != null" > orderAmount, </if>
+		  <if test="realAmount != null" > realAmount, </if>
+		  <if test="benefitAmount != null" > benefitAmount, </if>
+		  <if test="deposit != null" > deposit, </if>
+		  <if test="salesAmount != null" > salesAmount, </if>
+		  <if test="payMode != null" > payMode, </if>
+		  <if test="deliveryTime != null" > deliveryTime, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="originator != null" > originator, </if>
+		  <if test="auditer != null" > auditer, </if>
+		  <if test="confirmer != null" > confirmer, </if>
+		  <if test="financer != null" > financer, </if>
+		  <if test="salesType != null" > salesType, </if>
+		  <if test="state != null" > state, </if>
+		  <if test="billCode != null" > billCode, </if>
+		  <if test="couponValue != null" > couponValue, </if>
+		  <if test="couponId != null" > couponId, </if>
+		  <if test="remainAmount != null" > remainAmount, </if>
+		 <!--  <if test="partnerCouponValue != null" > partnerCouponValue, </if> -->
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        	#{id},
+		  <if test="appointId != null" > #{appointId}, </if>
+		  <if test="designId != null" > #{designId}, </if>
+		  <if test="clientName != null" > #{clientName}, </if>
+		  <if test="clientPhone != null" > #{clientPhone}, </if>
+		  <if test="clientAddress != null" > #{clientAddress}, </if>
+		  <if test="orderTime != null" > #{orderTime}, </if>
+		  <if test="salesDep != null" > #{salesDep}, </if>
+		  <if test="areaLeader != null" > #{areaLeader}, </if>
+		  <if test="shopPhone != null" > #{shopPhone}, </if>
+		  <if test="shopContacter != null" > #{shopContacter}, </if>
+		  <if test="orderNo != null" > #{orderNo}, </if>
+		  <if test="orderAmount != null" > #{orderAmount}, </if>
+		  <if test="realAmount != null" > #{realAmount}, </if>
+		  <if test="benefitAmount != null" > #{benefitAmount}, </if>
+		  <if test="deposit != null" > #{deposit}, </if>
+		  <if test="salesAmount != null" > #{salesAmount}, </if>
+		  <if test="payMode != null" > #{payMode}, </if>
+		  <if test="deliveryTime != null" > #{deliveryTime}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="originator != null" > #{originator}, </if>
+		  <if test="auditer != null" > #{auditer}, </if>
+		  <if test="confirmer != null" > #{confirmer}, </if>
+		  <if test="financer != null" > #{financer}, </if>
+		  <if test="salesType != null" > #{salesType}, </if>
+		  <if test="state != null" > #{state}, </if>
+		  <if test="billCode != null" > #{billCode}, </if>
+		  <if test="couponValue != null" > #{couponValue}, </if>
+		  <if test="couponId != null" > #{couponId}, </if>
+		  <if test="remainAmount != null" > #{remainAmount}, </if>
+		  <!-- <if test="partnerCouponValue != null" > #{partnerCouponValue}, </if> -->
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.owner.po.Quotation">
+		update 
+			owner_quotation 
+		<set>
+			<if test="appointId != null"> appointId = #{appointId}, </if>
+			<if test="designId != null"> designId = #{designId}, </if>
+			<if test="clientName != null"> clientName = #{clientName}, </if>
+			<if test="clientPhone != null"> clientPhone = #{clientPhone}, </if>
+			<if test="clientAddress != null"> clientAddress = #{clientAddress}, </if>
+			<if test="orderTime != null"> orderTime = #{orderTime}, </if>
+			<if test="salesDep != null"> salesDep = #{salesDep}, </if>
+			<if test="areaLeader != null"> areaLeader = #{areaLeader}, </if>
+			<if test="shopPhone != null"> shopPhone = #{shopPhone}, </if>
+			<if test="shopContacter != null"> shopContacter = #{shopContacter}, </if>
+			<if test="orderNo != null"> orderNo = #{orderNo}, </if>
+			<if test="orderAmount != null"> orderAmount = #{orderAmount}, </if>
+			<if test="realAmount != null"> realAmount = #{realAmount}, </if>
+			<if test="benefitAmount != null"> benefitAmount = #{benefitAmount}, </if>
+			<if test="deposit != null"> deposit = #{deposit}, </if>
+			<if test="salesAmount != null"> salesAmount = #{salesAmount}, </if>
+			<if test="payMode != null"> payMode = #{payMode}, </if>
+			<if test="deliveryTime != null"> deliveryTime = #{deliveryTime}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="originator != null"> originator = #{originator}, </if>
+			<if test="auditer != null"> auditer = #{auditer}, </if>
+			<if test="confirmer != null"> confirmer = #{confirmer}, </if>
+			<if test="financer != null"> financer = #{financer}, </if>
+			<if test="salesType != null"> salesType = #{salesType}, </if>
+			<if test="state != null"> state = #{state}, </if>
+			<if test="couponValue != null"> couponValue = #{couponValue}, </if>
+			<if test="couponId != null"> couponId = #{couponId}, </if>
+			<if test="remainAmount != null"> remainAmount = #{remainAmount}, </if>
+			<if test="partnerCouponValue != null"> partnerCouponValue = #{partnerCouponValue}, </if>
+			
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from owner_quotation
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from owner_quotation
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<!-- 批量更新 -->
+	<update id="batchUpdate"  parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 
+				owner_quotation 
+			<set>
+				<if test="item.appointId != null"> appointId = #{item.appointId}, </if>
+				<if test="item.designId != null"> designId = #{item.designId}, </if>
+				<if test="item.clientName != null"> clientName = #{item.clientName}, </if>
+				<if test="item.clientPhone != null"> clientPhone = #{item.clientPhone}, </if>
+				<if test="item.clientAddress != null"> clientAddress = #{item.clientAddress}, </if>
+				<if test="item.orderTime != null"> orderTime = #{item.orderTime}, </if>
+				<if test="item.salesDep != null"> salesDep = #{item.salesDep}, </if>
+				<if test="item.areaLeader != null"> areaLeader = #{item.areaLeader}, </if>
+				<if test="item.shopPhone != null"> shopPhone = #{item.shopPhone}, </if>
+				<if test="item.shopContacter != null"> shopContacter = #{item.shopContacter}, </if>
+				<if test="item.orderNo != null"> orderNo = #{item.orderNo}, </if>
+				<if test="item.orderAmount != null"> orderAmount = #{item.orderAmount}, </if>
+				<if test="item.realAmount != null"> realAmount = #{item.realAmount}, </if>
+				<if test="item.benefitAmount != null"> benefitAmount = #{item.benefitAmount}, </if>
+				<if test="item.deposit != null"> deposit = #{item.deposit}, </if>
+				<if test="item.salesAmount != null"> salesAmount = #{item.salesAmount}, </if>
+				<if test="item.payMode != null"> payMode = #{item.payMode}, </if>
+				<if test="item.deliveryTime != null"> deliveryTime = #{item.deliveryTime}, </if>
+				<if test="item.remark != null"> remark = #{item.remark}, </if>
+				<if test="item.originator != null"> originator = #{item.originator}, </if>
+				<if test="item.auditer != null"> auditer = #{item.auditer}, </if>
+				<if test="item.confirmer != null"> confirmer = #{item.confirmer}, </if>
+				<if test="item.financer != null"> financer = #{item.financer}, </if>
+				<if test="item.salesType != null"> salesType = #{item.salesType}, </if>
+				<if test="item.state != null"> state = #{item.state}, </if>
+				<if test="item.couponValue != null"> couponValue = #{item.couponValue}, </if>
+				<if test="item.couponId != null"> couponId = #{item.couponId}, </if>
+				<if test="item.remainAmount != null"> remainAmount = #{item.remainAmount}, </if>
+				<if test="item.partnerCouponValue != null"> partnerCouponValue = #{item.partnerCouponValue}, </if>
+			</set> 
+			 where id = #{item.id} 
+         </foreach>
+    </update>
+
+</mapper>

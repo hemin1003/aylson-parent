@@ -1,0 +1,9 @@
+anonymizeMessages=false
+anonymizeStackTraces=true
+debugEnabled=false
+eclipse.preferences.version=1
+reporterEmail=
+reporterName=
+resetSendMode=KEEP
+resetSendModeOn=0
+sendMode=NOTIFY

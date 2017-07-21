@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wabacus-config xmlns="http://www.wabacus.com"
+			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			   xsi:schemaLocation="http://www.wabacus.com xsd/wabacus.cfg.xsd">
+	<system>
+		<item name="webroot" value="/manage"/><!-- 应用的根URL -->
+		<item name="webroot-abspath" value=""/><!-- 默认为context.getRealPath("/")获取的值，可以直接配置根路径 -->
+		<item name="showreport-url" value="/ShowReport.wx"/><!--显示报表数据的URL，就是在web.xml中配置的<url-pattern/>的值可以带参数-->
+		<item name="encode" value="UTF-8"/>
+		<item name="show-sql" value="true"/><!-- 是否显示执行的SQL语句或存储过程 -->
+		<item name="default-cellresize" value="2"/><!-- 指定整个项目中所有单行表头的数据自动列表报表的表格单元格默认可移动性 -->
+		<item name="default-condition-labelposition" value="inner"/><!-- 查询条件提示标签的显示位置 -->
+		<item name="server-validate-class" value=""/><!-- 自己开发的服务器端校验类 -->
+		<item name="skin" value="vista"/><!-- 皮肤样式 -->
+		<item name="default-checkpermission" value="true"/><!-- 本应用是否要检查权限，如果在不需要检查权限的应用中关闭它，可以改善性能 -->
+		<item name="prompt-dialog-type" value="artdialog"/><!-- 提示组件类型 ymprompt;artdialog-->
+	</system>
+	
+	<datasources default="ds_mysql">
+		<datasource name="ds_mysql" type="com.wabacus.config.database.datasource.C3P0DataSource"
+			dbtype="com.wabacus.config.database.type.MySql">
+			<property name="driver">com.mysql.jdbc.Driver</property>
+			<property name="url"><![CDATA[jdbc:mysql://localhost:3306/aylson_partner?useUnicode=true&autoReconnect=true&allowMultiQueries=true]]></property>
+			<property name="user">root</property>
+			<property name="password">root</property>
+			<!-- 阿里云服务器信息 -->
+			<!-- 	
+			<property name="url"><![CDATA[jdbc:mysql://rm-wz9q6a026816xd14io.mysql.rds.aliyuncs.com:3306/aylson_dc_v1?useUnicode=true&autoReconnect=true&allowMultiQueries=true]]></property>
+			<property name="user">aylson</property>
+			<property name="password">Aylson2013</property>
+			 -->
+			<property name="max_size">20</property>   
+  			<property name="min_size">5</property>   
+  			<property name="timeout">100</property>   
+  			<property name="max_statements">100</property>   
+  			<property name="idle_test_period">50</property>   
+  			<property name="acquire_increment">2</property>  
+		</datasource>
+	</datasources>
+
+	<inputbox-types/>
+	
+	<!-- 配置本项目中所有报表页面都必须包含的js文件 -->
+	<global-jsfiles/>
+	
+	<!-- 配置本项目中所有报表页面都必须包含的css文件 -->
+	<global-cssfiles/>
+		
+	<i18n-resources file="resources/i18n/ApplicationResources.xml"/>
+	
+	<!-- 注册所有全局资源文件 -->
+	<global-resources/>
+	
+	<!-- 注册所有报表配置文件 -->
+	<report-files>
+  		<report-file>report/report.xml</report-file>
+  		<report-file>report/rep_partner_statistics.xml</report-file><!-- 合伙人统计 -->
+  		<report-file>report/rep_agent_statistics.xml</report-file><!-- 经销商统计 -->
+  		<report-file>report/rep_market_statistics.xml</report-file><!-- 营销部统计 -->
+	</report-files>
+</wabacus-config>

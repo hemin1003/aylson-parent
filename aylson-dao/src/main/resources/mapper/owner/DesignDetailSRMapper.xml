@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.owner.po.DesignDetailSR">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.owner.vo.DesignDetailSRVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="appointId" property="appointId" jdbcType="INTEGER" />
+		<result column="designId" property="designId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="colorIn" property="colorIn" jdbcType="VARCHAR" />
+		<result column="colorOut" property="colorOut" jdbcType="VARCHAR" />
+		<result column="length1" property="length1" jdbcType="INTEGER" />
+		<result column="length2" property="length2" jdbcType="INTEGER" />
+		<result column="length3" property="length3" jdbcType="INTEGER" />
+		<result column="length4" property="length4" jdbcType="INTEGER" />
+		<result column="length5" property="length5" jdbcType="INTEGER" />
+		<result column="length6" property="length6" jdbcType="INTEGER" />
+		<result column="width1" property="width1" jdbcType="INTEGER" />
+		<result column="width2" property="width2" jdbcType="INTEGER" />
+		<result column="partial" property="partial" jdbcType="FLOAT" />
+		<result column="height" property="height" jdbcType="INTEGER" />
+		<result column="roof" property="roof" jdbcType="VARCHAR" />
+		<result column="rootIsHollow" property="rootIsHollow" jdbcType="TINYINT" />
+		<result column="real" property="real" jdbcType="VARCHAR" />
+		<result column="realIsHollow" property="realIsHollow" jdbcType="TINYINT" />
+		<result column="rearGlass" property="rearGlass" jdbcType="VARCHAR" />
+		<result column="rearGlassIsHollow" property="rearGlassIsHollow" jdbcType="TINYINT" />
+		<result column="roofGlassColor" property="roofGlassColor" jdbcType="VARCHAR" />
+		<result column="realGlassColor" property="realGlassColor" jdbcType="VARCHAR" />
+		<result column="rearGlassColor" property="rearGlassColor" jdbcType="VARCHAR" />
+		<result column="styleSettingUrl" property="styleSettingUrl" jdbcType="VARCHAR" />
+		<result column="hollowShutterConMode" property="hollowShutterConMode" jdbcType="VARCHAR" />
+		<result column="isHaveSunVisorSys" property="isHaveSunVisorSys" jdbcType="TINYINT" />
+		<result column="isHaveSafeSys" property="isHaveSafeSys" jdbcType="TINYINT" />
+		<result column="otherRequire" property="otherRequire" jdbcType="VARCHAR" />
+		<result column="attachUrls" property="attachUrls" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		owner_design_detail_sr.id,
+		owner_design_detail_sr.appointId,
+		owner_design_detail_sr.designId,
+		owner_design_detail_sr.type,
+		owner_design_detail_sr.colorIn,
+		owner_design_detail_sr.colorOut,
+		owner_design_detail_sr.length1,
+		owner_design_detail_sr.length2,
+		owner_design_detail_sr.length3,
+		owner_design_detail_sr.length4,
+		owner_design_detail_sr.length5,
+		owner_design_detail_sr.length6,
+		owner_design_detail_sr.width1,
+		owner_design_detail_sr.width2,
+		owner_design_detail_sr.partial,
+		owner_design_detail_sr.height,
+		owner_design_detail_sr.roof,
+		owner_design_detail_sr.rootIsHollow,
+		owner_design_detail_sr.real,
+		owner_design_detail_sr.realIsHollow,
+		owner_design_detail_sr.rearGlass,
+		owner_design_detail_sr.rearGlassIsHollow,
+		owner_design_detail_sr.roofGlassColor,
+		owner_design_detail_sr.realGlassColor,
+		owner_design_detail_sr.rearGlassColor,
+		owner_design_detail_sr.styleSettingUrl,
+		owner_design_detail_sr.hollowShutterConMode,
+		owner_design_detail_sr.isHaveSunVisorSys,
+		owner_design_detail_sr.isHaveSafeSys,
+		owner_design_detail_sr.otherRequire,
+		owner_design_detail_sr.attachUrls
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and owner_design_detail_sr.id = #{id}</if>
+				<if test="appointId != null">and owner_design_detail_sr.appointId = #{appointId}</if>
+				<if test="designId != null">and owner_design_detail_sr.designId = #{designId}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from owner_design_detail_sr
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from owner_design_detail_sr
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by owner_design_detail_sr.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_design_detail_sr
+		where id = #{id}
+	</select>
+	
+    <!-- 根据designId查询 -->
+	<select id="selectByDesignId" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_design_detail_sr
+		where designId = #{designId}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.owner.po.DesignDetailSR">
+		insert into owner_design_detail_sr
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="appointId != null" > appointId, </if>
+		  <if test="designId != null" > designId, </if>
+		  <if test="type != null" > type, </if>
+		  <if test="colorIn != null" > colorIn, </if>
+		  <if test="colorOut != null" > colorOut, </if>
+		  <if test="length1 != null" > length1, </if>
+		  <if test="length2 != null" > length2, </if>
+		  <if test="length3 != null" > length3, </if>
+		  <if test="length4 != null" > length4, </if>
+		  <if test="length5 != null" > length5, </if>
+		  <if test="length6 != null" > length6, </if>
+		  <if test="width1 != null" > width1, </if>
+		  <if test="width2 != null" > width2, </if>
+		  <if test="partial != null" > partial, </if>
+		  <if test="height != null" > height, </if>
+		  <if test="roof != null" > roof, </if>
+		  <if test="rootIsHollow != null" > rootIsHollow, </if>
+		  <if test="real != null" > `real`, </if>
+		  <if test="realIsHollow != null" > realIsHollow, </if>
+		  <if test="rearGlass != null" >rearGlass,</if>
+		  <if test="rearGlassIsHollow != null" > rearGlassIsHollow, </if>
+		  <if test="roofGlassColor != null" > roofGlassColor, </if>
+		  <if test="realGlassColor != null" > realGlassColor, </if>
+		  <if test="rearGlassColor != null" > rearGlassColor, </if>
+		  <if test="styleSettingUrl != null" > styleSettingUrl, </if>
+		  <if test="hollowShutterConMode != null" > hollowShutterConMode, </if>
+		  <if test="isHaveSunVisorSys != null" > isHaveSunVisorSys, </if>
+		  <if test="isHaveSafeSys != null" > isHaveSafeSys, </if>
+		  <if test="otherRequire != null" > otherRequire, </if>
+		  <if test="attachUrls != null" > attachUrls, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="appointId != null" > #{appointId}, </if>
+		  <if test="designId != null" > #{designId}, </if>
+		  <if test="type != null" > #{type}, </if>
+		  <if test="colorIn != null" > #{colorIn}, </if>
+		  <if test="colorOut != null" > #{colorOut}, </if>
+		  <if test="length1 != null" > #{length1}, </if>
+		  <if test="length2 != null" > #{length2}, </if>
+		  <if test="length3 != null" > #{length3}, </if>
+		  <if test="length4 != null" > #{length4}, </if>
+		  <if test="length5 != null" > #{length5}, </if>
+		  <if test="length6 != null" > #{length6}, </if>
+		  <if test="width1 != null" > #{width1}, </if>
+		  <if test="width2 != null" > #{width2}, </if>
+		  <if test="partial != null" > #{partial}, </if>
+		  <if test="height != null" > #{height}, </if>
+		  <if test="roof != null" > #{roof}, </if>
+		  <if test="rootIsHollow != null" > #{rootIsHollow}, </if>
+		  <if test="real != null" > #{real}, </if>
+		  <if test="realIsHollow != null" > #{realIsHollow}, </if>
+		  <if test="rearGlass != null" > #{rearGlass}, </if>
+		  <if test="rearGlassIsHollow != null" > #{rearGlassIsHollow}, </if>
+		  <if test="roofGlassColor != null" > #{roofGlassColor}, </if>
+		  <if test="realGlassColor != null" > #{realGlassColor}, </if>
+		  <if test="rearGlassColor != null" > #{rearGlassColor}, </if>
+		  <if test="styleSettingUrl != null" > #{styleSettingUrl}, </if>
+		  <if test="hollowShutterConMode != null" > #{hollowShutterConMode}, </if>
+		  <if test="isHaveSunVisorSys != null" > #{isHaveSunVisorSys}, </if>
+		  <if test="isHaveSafeSys != null" > #{isHaveSafeSys}, </if>
+		  <if test="otherRequire != null" > #{otherRequire}, </if>
+		  <if test="attachUrls != null" > #{attachUrls}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.owner.po.DesignDetailSR">
+		update 
+			owner_design_detail_sr 
+		<set>
+			<if test="appointId != null"> appointId = #{appointId}, </if>
+			<if test="designId != null"> designId = #{designId}, </if>
+			<if test="type != null"> type = #{type}, </if>
+			<if test="colorIn != null"> colorIn = #{colorIn}, </if>
+			<if test="colorOut != null"> colorOut = #{colorOut}, </if>
+			<if test="length1 != null"> length1 = #{length1}, </if>
+			<if test="length2 != null"> length2 = #{length2}, </if>
+			<if test="length3 != null"> length3 = #{length3}, </if>
+			<if test="length4 != null"> length4 = #{length4}, </if>
+			<if test="length5 != null"> length5 = #{length5}, </if>
+			<if test="length6 != null"> length6 = #{length6}, </if>
+			<if test="partial != null"> partial = #{partial}, </if>
+			<if test="height != null"> height = #{height}, </if>
+			<if test="roof != null"> roof = #{roof}, </if>
+			<if test="rootIsHollow != null"> rootIsHollow = #{rootIsHollow}, </if>
+			<if test="real != null"> real = #{real}, </if>
+			<if test="realIsHollow != null"> realIsHollow = #{realIsHollow}, </if>
+			<if test="rearGlass != null"> rearGlass = #{rearGlass}, </if>
+			<if test="rearGlassIsHollow != null"> rearGlassIsHollow = #{rearGlassIsHollow}, </if>
+			<if test="roofGlassColor != null"> roofGlassColor = #{roofGlassColor}, </if>
+			<if test="realGlassColor != null"> realGlassColor = #{realGlassColor}, </if>
+			<if test="rearGlassColor != null"> rearGlassColor = #{rearGlassColor}, </if>
+			<if test="styleSettingUrl != null"> styleSettingUrl = #{styleSettingUrl}, </if>
+			<if test="hollowShutterConMode != null"> hollowShutterConMode = #{hollowShutterConMode}, </if>
+			<if test="isHaveSunVisorSys != null"> isHaveSunVisorSys = #{isHaveSunVisorSys}, </if>
+			<if test="isHaveSafeSys != null"> isHaveSafeSys = #{isHaveSafeSys}, </if>
+			<if test="otherRequire != null"> otherRequire = #{otherRequire}, </if>
+			<if test="attachUrls != null"> attachUrls = #{attachUrls}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from owner_design_detail_sr
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from owner_design_detail_sr
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

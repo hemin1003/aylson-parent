@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.partner.po.Coupon">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.partner.vo.CouponVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="applyId" property="applyId" jdbcType="INTEGER" />
+		<result column="configId" property="configId" jdbcType="INTEGER" />
+		<result column="applierId" property="applierId" jdbcType="INTEGER" />
+		<result column="couponCode" property="couponCode" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="orderId" property="orderId" jdbcType="INTEGER" />
+		<result column="orderCode" property="orderCode" jdbcType="VARCHAR" />
+		<result column="effectTime" property="effectTime" jdbcType="TIMESTAMP" />
+		<!-- partner_account -->
+		<result column="applier" property="applier" jdbcType="VARCHAR" />
+		<result column="applierPhone" property="applierPhone" jdbcType="VARCHAR" />
+		<!-- partner_coupon_apply -->
+		<result column="applyCouponName" property="applyCouponName" jdbcType="VARCHAR" />
+		<result column="ownerName" property="ownerName" jdbcType="VARCHAR" />
+		<result column="ownerPhone" property="ownerPhone" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="street" property="street" jdbcType="VARCHAR" />
+		<result column="unit" property="unit" jdbcType="VARCHAR" />
+		<!-- partner_coupon_config -->
+		<result column="couponValue" property="couponValue" jdbcType="INTEGER" />
+		<result column="achieveMoney" property="achieveMoney" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		partner_coupon.id,
+		partner_coupon.applyId,
+		partner_coupon.configId,
+		partner_coupon.applierId,
+		partner_coupon.couponCode,
+		partner_coupon.createTime,
+		partner_coupon.updateTime,
+		partner_coupon.state,
+		partner_coupon.orderId,
+		partner_coupon.orderCode,
+		partner_coupon.effectTime,
+		partner_coupon_apply.applyCouponName,
+		partner_coupon_apply.ownerName,
+		partner_coupon_apply.ownerPhone,
+		partner_coupon_apply.province,
+		partner_coupon_apply.provinceId,
+		partner_coupon_apply.city,
+		partner_coupon_apply.cityId,
+		partner_coupon_apply.area,
+		partner_coupon_apply.areaId,
+		partner_coupon_apply.street,
+		partner_coupon_apply.unit,
+		partner_account.partnerName as applier,
+		partner_account.mobilePhone as applierPhone,
+		partner_coupon_config.couponValue,
+		partner_coupon_config.achieveMoney
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and partner_coupon.id = #{id}</if>
+				<if test="state != null">and partner_coupon.state = #{state}</if>
+				<if test="orderId != null">and partner_coupon.orderId = #{orderId}</if>
+				<if test="orderCode != null and orderCode != ''">and partner_coupon.orderCode = #{orderCode}</if>
+				<if test="applyId != null">and partner_coupon.applyId = #{applyId}</if>
+				<if test="isClientCoupon == false and ownerPhone != null and ownerPhone != '' ">and partner_coupon_apply.ownerPhone = #{ownerPhone} </if>
+				<if test="ids != null">and partner_coupon.id in
+                    <foreach item="item" index="index" collection="ids"
+                             open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="isClientCoupon == true and ownerPhone != null and ownerPhone != '' and applierId != null">
+                and exists (select id from partner_coupon_apply where  partner_coupon_apply.id = partner_coupon.applyId and applierId = #{applierId} and ownerPhone = #{ownerPhone})
+                </if>
+                <if test="updateTime != null and updateTime != ''">and DATE_FORMAT(partner_coupon.updateTime ,'%Y-%m-%d') = #{updateTime} </if>
+                
+				<!-- 模糊查询 -->
+				<if test="couponCodeLike != null and couponCodeLike != '' ">and partner_coupon.couponCode like CONCAT('%',#{couponCodeLike},'%')</if>
+			    <if test="ownerNameLike != null and ownerNameLike != '' ">and partner_coupon_apply.ownerName like CONCAT('%',#{ownerNameLike},'%')</if>
+			    <if test="ownerPhoneLike != null and ownerPhoneLike != '' ">and partner_coupon_apply.ownerPhone like CONCAT('%',#{ownerPhoneLike},'%')</if>
+			    <if test="applyCouponNameLike != null and applyCouponNameLike != '' ">and partner_coupon_apply.applyCouponName like CONCAT('%',#{applyCouponNameLike},'%')</if>
+				<if test="applierLike != null and applierLike != '' ">and partner_account.partnerName like CONCAT('%',#{applierLike},'%')</if>
+			    <if test="applierPhoneLike != null and applierPhoneLike != '' ">and partner_account.mobilePhone  like CONCAT('%',#{applierPhoneLike},'%')</if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(partner_coupon.id) from partner_coupon
+		left join partner_coupon_apply 
+		on partner_coupon.applyId = partner_coupon_apply.id
+		left join partner_account
+		on partner_coupon.applierId = partner_account.id
+		left join partner_coupon_config
+		on partner_coupon.configId = partner_coupon_config.id
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from partner_coupon
+		left join partner_coupon_apply 
+		on partner_coupon.applyId = partner_coupon_apply.id
+		left join partner_account
+		on partner_coupon.applierId = partner_account.id
+		left join partner_coupon_config
+		on partner_coupon.configId = partner_coupon_config.id
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by partner_coupon.id</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from partner_coupon
+		left join partner_coupon_apply 
+		on partner_coupon.applyId = partner_coupon_apply.id
+		left join partner_account
+		on partner_coupon.applierId = partner_account.id
+		left join partner_coupon_config
+		on partner_coupon.configId = partner_coupon_config.id
+		where partner_coupon.id = #{id}
+	</select>
+	
+	 <!-- 获取最大id订单号 -->
+    <select id="selectLastCouponCode" resultType="java.lang.String">
+        select couponCode from partner_coupon where id= (select max(id) from partner_coupon)
+    </select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.partner.po.Coupon">
+		insert into partner_coupon
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="applyId != null" > applyId, </if>
+		  <if test="configId != null" > configId, </if>
+		  <if test="applierId != null" > applierId, </if>
+		  <if test="couponCode != null" > couponCode, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="updateTime != null" > updateTime, </if>
+		  <if test="state != null" > state, </if>
+		  <if test="orderId != null" > orderId, </if>
+		  <if test="orderCode != null" > orderCode, </if>
+		  <if test="effectTime != null" > effectTime, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="applyId != null" > #{applyId}, </if>
+		  <if test="configId != null" > #{configId}, </if>
+		  <if test="applierId != null" > #{applierId}, </if>
+		  <if test="couponCode != null" > #{couponCode}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="updateTime != null" > #{updateTime}, </if>
+		  <if test="state != null" > #{state}, </if>
+		  <if test="orderId != null" > #{orderId}, </if>
+		  <if test="orderCode != null" > #{orderCode}, </if>
+		  <if test="effectTime != null" > #{effectTime}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.partner.po.Coupon">
+		update 
+			partner_coupon 
+		<set>
+			<if test="applyId != null"> applyId = #{applyId}, </if>
+			<if test="configId != null"> configId = #{configId}, </if>
+			<if test="applierId != null"> applierId = #{applierId}, </if>
+			<if test="couponCode != null"> couponCode = #{couponCode}, </if>
+			<if test="createTime != null"> createTime = #{createTime}, </if>
+			<if test="updateTime != null"> updateTime = #{updateTime}, </if>
+			<if test="state != null"> state = #{state}, </if>
+			<if test="orderId != null"> orderId = #{orderId}, </if>
+			<if test="orderCode != null"> orderCode = #{orderCode}, </if>
+			<if test="effectTime != null"> effectTime = #{effectTime}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from partner_coupon
+		where partner_coupon.id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from partner_coupon
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into partner_coupon(
+			id,
+			applyId,
+			configId,
+			applierId,
+			couponCode,
+			createTime,
+			effectTime
+		) 
+    	values   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	    (
+	    	#{item.id},
+			#{item.applyId},
+			#{item.configId},
+			#{item.applierId},
+			#{item.couponCode},
+			#{item.createTime},
+			#{item.effectTime}
+		)
+	    </foreach> 
+	</insert>
+	
+	<!-- 批量更新 -->
+	<update id="batchUpdate"  parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 
+				partner_coupon 
+			<set>
+				<if test="item.applyId != null"> applyId = #{item.applyId}, </if>
+				<if test="item.configId != null"> configId = #{item.configId}, </if>
+				<if test="item.applierId != null"> applierId = #{item.applierId}, </if>
+				<if test="item.couponCode != null"> couponCode = #{item.couponCode}, </if>
+				<!-- <if test="item.createTime != null"> createTime = #{item.createTime}, </if> -->
+				<if test="item.updateTime != null"> updateTime = #{item.updateTime}, </if>
+				<if test="item.state != null"> state = #{item.state}, </if>
+				<if test="item.orderId != null"> orderId = #{item.orderId}, </if>
+				<if test="item.orderCode != null"> orderCode = #{item.orderCode}, </if>
+				<if test="item.effectTime != null"> effectTime = #{item.effectTime}, </if>
+			</set> 
+			 where id = #{item.id} 
+         </foreach>
+    </update>
+    
+	<!-- 更新 -->
+	<update id="updateCouponInvalid">
+		update partner_coupon set state = 2,updateTime = now() 
+		where state = 0 and effectTime &lt; now()
+	</update>
+	
+	<!-- 更新 -->
+	<update id="unbundCouponApply">
+		update partner_coupon_apply set isBind = 0
+		where partner_coupon_apply.state = 1 and partner_coupon_apply.isBind = 1 and 
+		exists (select partner_coupon.id from partner_coupon where partner_coupon_apply.id = partner_coupon.applyId
+		and partner_coupon.effectTime &lt; now())
+	</update>
+
+</mapper>

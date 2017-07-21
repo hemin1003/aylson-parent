@@ -1,0 +1,89 @@
+package cn.aihama.workflow.dao;
+
+import java.util.List;
+
+import cn.aihama.workflow.search.CommentSearch;
+import cn.aihama.workflow.search.DeploymentSearch;
+import cn.aihama.workflow.search.ProcessDefinitionSearch;
+import cn.aihama.workflow.search.TaskSearch;
+import cn.aihama.workflow.vo.CommentVo;
+import cn.aihama.workflow.vo.DeploymentVo;
+import cn.aihama.workflow.vo.ProcessDefinitionVo;
+import cn.aihama.workflow.vo.TaskVo;
+
+public interface WorkflowDao {
+	
+	/**
+	 * 查询流程部署列表
+	 * @param deploymentSearch
+	 * @return
+	 */
+	public List<DeploymentVo> selectDeployList(DeploymentSearch deploymentSearch);
+
+	/**
+	 * 查询流程部署列表数量
+	 * @param deploymentSearch
+	 * @return
+	 */
+	public Long selectDeployCount(DeploymentSearch deploymentSearch);
+
+	/**
+	 * 查询流程定义列表
+	 * @param processDefinitionSearch
+	 * @return
+	 */
+	public List<ProcessDefinitionVo> selectProcessDefinitionList(ProcessDefinitionSearch processDefinitionSearch);
+
+	/**
+	 * 查询流程定义列表数量
+	 * @param processDefinitionSearch
+	 * @return
+	 */
+	public Long selectProcessDefinitionCount(ProcessDefinitionSearch processDefinitionSearch);
+	
+	/**
+	 * 查询待办任务列表
+	 * @param taskSearch
+	 * @return
+	 */
+	public List<TaskVo> selectTaskToDoList(TaskSearch taskSearch);
+	
+	/**
+	 * 查询待办任务列表数量
+	 * @param taskSearch
+	 * @return
+	 */
+	public Long selectTaskToDoCount(TaskSearch taskSearch);
+	
+	/**
+	 * 查询已办任务列表
+	 * @param taskSearch
+	 * @return
+	 */
+	public List<TaskVo> selectTaskDoneList(TaskSearch taskSearch);
+	
+	/**
+	 * 查询已办任务列表数量
+	 * @param taskSearch
+	 * @return
+	 */
+	public Long selectTaskDoneCount(TaskSearch taskSearch);
+	
+	/**
+	 * 查询归档任务列表
+	 * @param taskSearch
+	 * @return
+	 */
+	public List<TaskVo> selectTaskFiledList(TaskSearch taskSearch);
+	
+	/**
+	 * 查询归档任务列表数量
+	 * @param taskSearch
+	 * @return
+	 */
+	public Long selectTaskFiledCount(TaskSearch taskSearch);
+	
+	public List<CommentVo> selectCommentList(CommentSearch commentSearch);
+
+	
+}

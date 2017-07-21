@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns="http://www.wabacus.com"
+			  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			  xsi:schemaLocation="http://www.wabacus.com ../../../src/defaultconfig/xsd/wabacus.resources.xsd"> 
+  	<resource key="search.button.default.label">i18n{search.button.i18n}</resource><!-- 搜索按钮 --> 
+  	<resource key="add.button.default.label">i18n{add.button.i18n}</resource><!-- 添加按钮 -->
+  	<resource key="modify.button.default.label">i18n{modify.button.i18n}</resource><!-- 修改按钮 -->
+  	<resource key="delete.button.default.label">i18n{delete.button.i18n}</resource><!-- 删除按钮 -->
+  	<resource key="save.button.default.label">i18n{save.button.i18n}</resource><!-- 保存按钮 -->
+  	<resource key="cancel.button.default.label">i18n{cancel.button.i18n}</resource><!-- 取消按钮 -->
+  	<resource key="reset.button.default.label">i18n{reset.button.i18n}</resource><!-- 重置按钮 -->
+  	<resource key="back.button.default.label">i18n{back.button.i18n}</resource><!-- 返回按钮 -->
+	
+	<resource key="add.menu.default.label">i18n{add.menu.i18n}</resource><!-- 添加右键菜单 -->
+  	<resource key="modify.menu.default.label">i18n{modify.menu.i18n}</resource><!-- 修改右键菜单 -->
+  	<resource key="delete.menu.default.label">i18n{delete.menu.i18n}</resource><!-- 删除右键菜单 -->
+  	<resource key="save.menu.default.label">i18n{save.menu.i18n}</resource><!-- 保存右键菜单 -->
+  	<resource key="cancel.menu.default.label">i18n{cancel.menu.i18n}</resource><!-- 取消右键菜单 -->
+  	<resource key="reset.menu.default.label">i18n{reset.menu.i18n}</resource><!-- 重置右键菜单 -->
+  	<resource key="back.menu.default.label">i18n{back.menu.i18n}</resource><!-- 返回右键菜单 -->
+   <resource key="print.label">i18n{print.label.i18n}</resource>
+  	<resource key="printpreview.label">i18n{printpreview.label.i18n}</resource>
+  	<resource key="printsetting.label">i18n{printsetting.label.i18n}</resource>
+  
+  
+   <!-- 对可编辑报表进行增、删、改操作时的提示信息 -->
+   <!-- 对可编辑报表只有某一类操作时的提示信息 -->
+   <resource key="insert.success.prompt">i18n{insert.success.prompt.i18n}</resource>
+   <resource key="insert.failed.prompt">i18n{insert.failed.prompt.i18n}</resource>
+   <resource key="update.success.prompt">i18n{update.success.prompt.i18n}</resource>
+   <resource key="update.failed.prompt">i18n{update.failed.prompt.i18n}</resource>
+   <resource key="delete.success.prompt">i18n{delete.success.prompt.i18n}</resource>
+   <resource key="delete.failed.prompt">i18n{delete.failed.prompt.i18n}</resource>
+   <!-- 当本次操作即有添加、又有修改操作时的提示信息 -->
+   <resource key="save.success.prompt">i18n{save.success.prompt.i18n}</resource>
+   <resource key="save.failed.prompt">i18n{save.failed.prompt.i18n}</resource>
+   <!-- 当本次操作同时有增、删、改记录的操作时的提示信息 -->
+   <resource key="operate.success.prompt">i18n{operate.success.prompt.i18n}</resource>
+   <resource key="operate.failed.prompt">i18n{operate.failed.prompt.i18n}</resource>
+  	<!-- 删除报表数据时的确认提示 -->
+  	<resource key="delete.confirm.prompt">i18n{delete.confirm.prompt.i18n}</resource>
+  
+  	<resource key="fileupload.label">i18n{fileupload.label.i18n}</resource>
+   <resource key="dataimport.label">i18n{dataimport.label.i18n}</resource>
+  	<resource key="nodata.mess">i18n{nodata.mess.i18n}</resource>
+  	<resource key="word.label">i18n{word.label.i18n}</resource>
+  	<resource key="richexcel.label">i18n{richexcel.label.i18n}</resource>
+  	<resource key="plainexcel.label">i18n{plainexcel.label.i18n}</resource>
+  	<resource key="pdf.label">i18n{pdf.label.i18n}</resource>
+  	<!-- 下面为默认的加载报表数据出错的提示信息 -->
+  	<resource key="load.error.mess">i18n{load.error.mess.i18n}</resource>
+  	<resource key="navigate.alldata.label">i18n{navigate.alldata.label.i18n}</resource>
+  	<resource key="listreport.navigate.default">i18n{listreport.navigate.i18n}</resource><!-- 数据自动列表报表翻页导航栏 -->
+  	<resource key="detailreport.navigate.default">i18n{detailreport.navigate.i18n}</resource><!-- 数据细览报表翻页导航栏 -->
+  	<resource key="richtextbox.params.default">i18n{richtextbox.params.i18n}</resource>
+  	
+  <resource key="roworder.arrow.label">i18n{roworder.arrow.label.i18n}</resource><!-- 箭头排序列标题 -->
+  <resource key="roworder.top.label">i18n{roworder.top.label.i18n}</resource><!-- 置顶排序列标题 -->		
+  <resource key="roworder.inputbox.label">i18n{roworder.inputbox.label.i18n}</resource><!-- 输入框排序列标题 -->
+  
+  <resource key="editablelist.editcol.label">i18n{editablelist.editcol.label.i18n}</resource><!-- editablelist报表类型的行编辑列标题 -->
+</resources>

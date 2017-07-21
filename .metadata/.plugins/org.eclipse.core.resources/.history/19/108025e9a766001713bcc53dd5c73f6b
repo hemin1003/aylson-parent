@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.aihama.workflow.vo">
+	<!-- 流程部署查询结果集 -->
+	<resultMap id="DeploymentVoResultMap" type="cn.aihama.workflow.vo.DeploymentVo">
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="deploymentTime" property="deploymentTime" jdbcType="TIMESTAMP" />
+		<result column="category" property="category" jdbcType="VARCHAR" />
+		<result column="tenantId" property="tenantId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 查询条件 -->
+	<sql id="Where_Deployment_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null"> and act_re_deployment.ID_ = #{id} </if>
+				<if test="name != null"> and act_re_deployment.NAME_= #{name} </if>
+				<if test="category != null"> and act_re_deployment.CATEGORY_ = #{category} </if>
+				<if test="deploymentTime != null and deploymentTime != ''"> and DATE_FORMAT(act_re_deployment.DEPLOY_TIME_,'%Y-%m-%d') = #{deploymentTime} </if>
+				<!-- 模糊查询 -->
+				<if test="nameLike != null and nameLike != ''"> and act_re_deployment.NAME_ like CONCAT('%',#{nameLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+	
+	<!-- 流程部署 start -->
+	
+	<!-- 查询流程部署列表数量 -->
+	<select id="selectDeployCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select 
+			count(act_re_deployment.ID_)
+		from 
+			act_re_deployment
+		<include refid="Where_Deployment_Condition" />
+	</select>
+	
+	<!-- 查询流程部署列表 -->
+	<select id="selectDeployList" resultMap="DeploymentVoResultMap" parameterType="java.util.Map">
+		select 
+			act_re_deployment.ID_ id,
+			act_re_deployment.NAME_ name ,
+			act_re_deployment.DEPLOY_TIME_ deploymentTime,
+			act_re_deployment.CATEGORY_ category,
+			act_re_deployment.TENANT_ID_ tenantId
+		from 
+			act_re_deployment
+		<include refid="Where_Deployment_Condition" />
+		<if test="sort == null">order by act_re_deployment.DEPLOY_TIME_ </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+        <if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 流程部署 end -->
+	<!-- ########################################################################################### -->
+	
+	<!-- 流程定义查询结果集 -->
+	<resultMap id="ProcessDefinitionVoResultMap" type="cn.aihama.workflow.vo.ProcessDefinitionVo">
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="category" property="category" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="key" property="key" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="INTEGER" />
+		<result column="resourceName" property="resourceName" jdbcType="VARCHAR" />
+		<result column="deploymentId" property="deploymentId" jdbcType="VARCHAR" />
+		<result column="diagramResourceName" property="diagramResourceName" jdbcType="VARCHAR" />
+		<result column="hasStartFormKey" property="hasStartFormKey" jdbcType="TINYINT" />
+		<result column="hasGraphicalNotation" property="hasGraphicalNotation" jdbcType="TINYINT" />
+		<result column="tenantId" property="tenantId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- 查询条件 -->
+	<sql id="Where_PD_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null"> and act_re_procdef.ID_ = #{id} </if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+	
+	<!-- 流程定义 start -->
+	
+	<!-- 查询流程定义列表数量 -->
+	<select id="selectProcessDefinitionCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select 
+			count(act_re_procdef.ID_)
+		from 
+			act_re_procdef
+	</select>
+	
+	<!-- 查询流程部署列表 -->
+	<select id="selectProcessDefinitionList" resultMap="ProcessDefinitionVoResultMap" parameterType="java.util.Map">
+		select 
+			act_re_procdef.ID_ id,
+			act_re_procdef.CATEGORY_ category,
+			act_re_procdef.NAME_ name,
+			act_re_procdef.KEY_ `key`,
+			act_re_procdef.DESCRIPTION_ description,
+			act_re_procdef.VERSION_ version, 
+			act_re_procdef.RESOURCE_NAME_ resourceName,
+			act_re_procdef.DEPLOYMENT_ID_ deploymentId,
+			act_re_procdef.DGRM_RESOURCE_NAME_ diagramResourceName,
+			act_re_procdef.HAS_START_FORM_KEY_ hasStartFormKey,
+			act_re_procdef.HAS_GRAPHICAL_NOTATION_ hasGraphicalNotation,
+			<!-- act_re_procdef.SUSPENSION_STATE_ , -->
+			act_re_procdef.TENANT_ID_ tenantId
+		from 
+		act_re_procdef
+		<if test="sort == null">order by act_re_procdef.ID_ </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+        <if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 流程定义 end -->
+	<!-- ########################################################################################### -->
+	<!-- 任务查询结果集 -->
+	<resultMap id="TaskVoResultMap" type="cn.aihama.workflow.vo.TaskVo">
+		<result column="applyName" property="applyName" jdbcType="VARCHAR" />
+		<result column="busiCode" property="busiCode" jdbcType="VARCHAR" />
+		<result column="flowName" property="flowName" jdbcType="VARCHAR" />
+		<result column="applyTime" property="applyTime" jdbcType="TIMESTAMP" />
+		<result column="procDefId" property="procDefId" jdbcType="VARCHAR" />
+		<result column="procInstId" property="procInstId" jdbcType="VARCHAR" />
+		<result column="receiveTime" property="receiveTime" jdbcType="TIMESTAMP" />
+		<result column="auditTime" property="auditTime" jdbcType="TIMESTAMP" />
+		<result column="nodeName" property="nodeName" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="auditerName" property="auditerName" jdbcType="VARCHAR" />
+		<result column="approvalOpinion" property="approvalOpinion" jdbcType="VARCHAR" />
+		<result column="busiId" property="busiId" jdbcType="INTEGER" />
+		<result column="taskId" property="taskId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="Where_Task_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="state != null"> and v_busi_info.state= #{state} </if>
+				<if test="applyTime != null and applyTime != ''"> and DATE_FORMAT(act_hi_procinst.START_TIME_,'%Y-%m-%d') = #{applyTime} </if>
+				<if test="applyTimeStart != null and applyTimeStart != ''"> and act_hi_procinst.START_TIME_ &gt;= #{applyTimeStart} </if>
+				<if test="applyTimeEnd != null and applyTimeEnd != ''">  and act_hi_procinst.START_TIME_ &lt;= #{applyTimeEnd} </if>
+				
+				<if test="receiveTime != null and receiveTime != ''"> and DATE_FORMAT(act_ru_task.CREATE_TIME_,'%Y-%m-%d') = #{receiveTime} </if>
+				<if test="receiveTimeStart != null and receiveTimeStart != ''"> and act_ru_task.CREATE_TIME_ &gt;= #{receiveTimeStart} </if>
+				<if test="receiveTimeEnd != null and receiveTimeEnd != ''"> and act_ru_task.CREATE_TIME_ &lt;= #{receiveTimeEnd} </if>
+				
+				<if test="auditTime != null and auditTime != ''">  and DATE_FORMAT(lastTaskInfo.END_TIME_,'%Y-%m-%d') = #{auditTime} </if>
+				<if test="auditTimeStart != null and auditTimeStart != ''"> and lastTaskInfo.END_TIME_ &gt;= #{auditTimeStart} </if>
+				<if test="auditTimeEnd != null and auditTimeEnd != ''"> and lastTaskInfo.END_TIME_ &lt;= #{auditTimeEnd} </if>
+				<!-- 模糊查询 -->
+				<if test="applyNameLike != null and applyNameLike != ''"> and applier.realName like CONCAT('%',#{applyNameLike},'%') </if>
+				<if test="busiCodeLike != null and busiCodeLike != ''"> and v_busi_info.`code` like CONCAT('%',#{busiCodeLike},'%') </if>
+				<if test="flowNameLike != null and flowNameLike != ''"> and act_re_procdef.NAME_ like CONCAT('%',#{flowNameLike},'%') </if>
+				<if test="auditerNameLike != null and auditerNameLike != ''"> and dealier.realName like CONCAT('%',#{auditerNameLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+	<!--================================================================================-->
+	<!-- 待办列表 start -->
+	
+	<!-- 查询待办列表总数 -->
+	<select id="selectTaskToDoCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select
+			count(act_ru_task.ID_)
+		from 
+			(select * from act_ru_task where ASSIGNEE_ =  #{userId} ) act_ru_task
+		inner join act_hi_procinst on act_hi_procinst.ID_ = act_ru_task.PROC_INST_ID_
+		inner join act_re_procdef on act_re_procdef.ID_ = act_hi_procinst.PROC_DEF_ID_
+		inner join v_busi_info on v_busi_info.businessKey = act_hi_procinst.BUSINESS_KEY_
+		inner join sys_employee on sys_employee.userId = v_busi_info.userId
+		<include refid="Where_Task_Condition" />
+	</select>
+	
+	<!-- 查询待办列表 -->
+	<select id="selectTaskToDoList" resultMap="TaskVoResultMap" parameterType="java.util.Map">
+		select
+			applier.realName applyName,
+			v_busi_info.`code` busiCode,
+			act_re_procdef.NAME_ flowName,
+			act_hi_procinst.START_TIME_ applyTime,
+			act_hi_procinst.PROC_DEF_ID_ procDefId,
+			act_hi_procinst.PROC_INST_ID_ procInstId,
+			act_ru_task.CREATE_TIME_ receiveTime,
+			act_ru_task.NAME_ nodeName,
+			v_busi_info.state, 
+			v_busi_info.id busiId,
+			act_ru_task.ID_ taskId
+		from 
+			(select * from act_ru_task where ASSIGNEE_ =  #{userId})act_ru_task
+		inner join 	act_hi_procinst on act_hi_procinst.ID_ = act_ru_task.PROC_INST_ID_
+		inner join 	act_re_procdef 	on act_re_procdef.ID_ = act_hi_procinst.PROC_DEF_ID_
+		inner join 	v_busi_info 	on v_busi_info.businessKey = act_hi_procinst.BUSINESS_KEY_
+		inner join 	sys_employee applier	on applier.userId = v_busi_info.userId
+		<include refid="Where_Task_Condition" />
+		<if test="sort == null">order by act_hi_procinst.START_TIME_ </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+        <if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 待办列表 end -->
+	<!--================================================================================-->
+	<!-- 已办任务 start -->
+	
+	<!-- 查询待办列表总数 -->
+	<select id="selectTaskDoneCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select 
+			count(act_hi_procinst.ID_)
+		from 
+		act_hi_procinst
+		inner join act_re_procdef on act_hi_procinst.PROC_DEF_ID_ = act_re_procdef.ID_
+		inner join 
+		(select * from act_hi_taskinst group by PROC_INST_ID_) lastTaskInfo
+		on act_hi_procinst.ID_ = lastTaskInfo.PROC_INST_ID_
+		inner join v_busi_info on v_busi_info.businessKey = act_hi_procinst.BUSINESS_KEY_
+		inner join sys_employee on sys_employee.userId = lastTaskInfo.ASSIGNEE_
+		<include refid="Where_Task_Condition" />
+	</select>
+	
+	<!-- 查询待办列表 -->
+	<select id="selectTaskDoneList" resultMap="TaskVoResultMap" parameterType="java.util.Map">
+		select 
+			v_busi_info.`code` busiCode,
+			act_re_procdef.NAME_ flowName,
+			act_hi_procinst.START_TIME_ applyTime,
+			act_hi_procinst.PROC_DEF_ID_ procDefId,
+			act_hi_procinst.PROC_INST_ID_ procInstId,
+			lastTaskInfo.NAME_ nodeName,
+			dealier.realName auditerName,
+			lastTaskInfo.END_TIME_ auditTime,
+			v_busi_info.id busiId,
+			lastTaskInfo.ID_ taskId
+		from 
+		(
+			select * from act_hi_procinst
+			where exists (
+			select 1 from act_hi_taskinst where ASSIGNEE_ = #{userId} 
+			and END_TIME_ is not null
+			and act_hi_taskinst.PROC_INST_ID_ = act_hi_procinst.ID_)
+		 )act_hi_procinst
+		inner join act_re_procdef on act_hi_procinst.PROC_DEF_ID_ = act_re_procdef.ID_
+		inner join 
+		(select * from act_hi_taskinst group by PROC_INST_ID_) lastTaskInfo
+		on act_hi_procinst.ID_ = lastTaskInfo.PROC_INST_ID_
+		inner join v_busi_info on v_busi_info.businessKey = act_hi_procinst.BUSINESS_KEY_
+		inner join sys_employee dealier on dealier.userId = lastTaskInfo.ASSIGNEE_
+		<include refid="Where_Task_Condition" />
+		<if test="sort == null">order by act_hi_procinst.START_TIME_ </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+        <if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 已办任务 end -->
+	<!--================================================================================-->
+	<!-- 归档流程 start -->
+	
+	<!-- 查询待办列表总数 -->
+	<select id="selectTaskFiledCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select
+			count(act_hi_procinst.ID_)
+		from 
+			(select * from act_hi_procinst where END_TIME_ is not null) act_hi_procinst
+		inner join act_re_procdef on act_hi_procinst.PROC_DEF_ID_ = act_re_procdef.ID_
+		inner join 
+		(select * from act_hi_taskinst group by PROC_INST_ID_) lastTaskInfo
+		on act_hi_procinst.PROC_INST_ID_ = lastTaskInfo.PROC_INST_ID_
+		inner join v_busi_info on v_busi_info.businessKey = act_hi_procinst.BUSINESS_KEY_
+		inner join sys_employee applier on applier.userId = v_busi_info.userId
+		inner join sys_employee dealier on dealier.userId = lastTaskInfo.ASSIGNEE_
+		inner join act_hi_comment on act_hi_comment.TASK_ID_ = lastTaskInfo.ID_
+		<include refid="Where_Task_Condition" />
+	</select>
+	
+	<!-- 查询待办列表 -->
+	<select id="selectTaskFiledList" resultMap="TaskVoResultMap" parameterType="java.util.Map">
+		select 
+			v_busi_info.`code` busiCode,
+			applier.realName applyName,
+			act_re_procdef.NAME_ flowName,
+			act_hi_procinst.START_TIME_ applyTime,
+			act_hi_procinst.PROC_DEF_ID_ procDefId,
+			act_hi_procinst.PROC_INST_ID_ procInstId,
+			lastTaskInfo.END_TIME_ auditTime,
+			dealier.realName auditerName,
+			act_hi_comment.MESSAGE_ approvalOpinion,
+			v_busi_info.id busiId,
+			lastTaskInfo.ID_ taskId
+		from 
+			(select * from act_hi_procinst where END_TIME_ is not null) act_hi_procinst
+		inner join act_re_procdef on act_hi_procinst.PROC_DEF_ID_ = act_re_procdef.ID_
+		inner join 
+		(select * from act_hi_taskinst group by PROC_INST_ID_) lastTaskInfo
+		on act_hi_procinst.PROC_INST_ID_ = lastTaskInfo.PROC_INST_ID_
+		inner join v_busi_info on v_busi_info.businessKey = act_hi_procinst.BUSINESS_KEY_
+		inner join sys_employee applier on applier.userId = v_busi_info.userId
+		inner join sys_employee dealier on dealier.userId = lastTaskInfo.ASSIGNEE_
+		inner join act_hi_comment on act_hi_comment.TASK_ID_ = lastTaskInfo.ID_
+		<include refid="Where_Task_Condition" />
+		<if test="sort == null">order by act_hi_procinst.START_TIME_ </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+        <if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 归档流程 end -->
+	
+	<!-- ########################################################################################### -->
+	<!-- 任务查询结果集 -->
+	<resultMap id="CommentVoResultMap" type="cn.aihama.workflow.vo.CommentVo">
+		<result column="procInstId" property="procInstId" jdbcType="VARCHAR" />
+		<result column="receiveTime" property="receiveTime" jdbcType="TIMESTAMP" />
+		<result column="finishTime" property="finishTime" jdbcType="TIMESTAMP" />
+		<result column="nodeName" property="nodeName" jdbcType="VARCHAR" />
+		<result column="auditerName" property="auditerName" jdbcType="VARCHAR" />
+		<result column="approvalOpinion" property="approvalOpinion" jdbcType="VARCHAR" />
+		<result column="taskId" property="taskId" jdbcType="VARCHAR" />
+		<result column="duration" property="duration" jdbcType="LONG" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="Where_Task_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+	
+	
+	
+</mapper>

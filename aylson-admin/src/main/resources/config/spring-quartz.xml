@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <!-- ================================ 1、定义定时任务逻辑实现 ================================================= -->
+	<!-- 集成方式：JobDetailFactoryBean，并且任务类需要继承QuartzJobBean -->
+	<!-- 业主资料分配 -->
+	<bean id="clientInfoAssignedJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+	    <property name="jobClass" value="com.aylson.dc.base.quartz.ClientInfoAssignedQuartzJob" />
+	</bean>
+	<!-- 业主资料忽略 -->
+	<bean id="clientInfoIgnoredJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+	    <property name="jobClass" value="com.aylson.dc.base.quartz.ClientInfoIgnoredQuartzJob" />
+	</bean>
+	<!-- 优惠券过期失效 -->
+	<bean id="couponInvalidJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+	    <property name="jobClass" value="com.aylson.dc.base.quartz.CouponInvalidQuartzJob" />
+	</bean>
+
+
+	<!-- ================================ 2、定义触发器 ================================================= -->
+	<!-- 
+		   一个Quartz的CronTrigger表达式分为七项子表达式，其中每一项以空格隔开，
+	             从左到右分别是：秒，分，时，月的某天，月，星期的某天，年；其中年不是必须的，也就是说任何一个表达式最少需要六项！ 
+                       例：0 0 12 ? * WED 表示每个星期三的12点执行，这里没有“年”这项！ 
+    -->
+	<!-- 业主资料分配 -->
+	<bean id="clientInfoAssignedJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	    <property name="jobDetail" ref="clientInfoAssignedJob" />
+	    <property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+	<!-- 业主资料分配 -->
+	<bean id="clientInfoIgnoredJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	    <property name="jobDetail" ref="clientInfoIgnoredJob" />
+	    <property name="cronExpression" value="0 0 23 * * ?" />
+	</bean>
+	<!-- 优惠券过期失效 -->
+	<bean id="couponInvalidJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	    <property name="jobDetail" ref="couponInvalidJob" />
+	    <property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+
+	<!-- ================================ 3、定义定时任务启动列表 ================================================= -->
+	<!-- 定义核心调度器  -->
+	 <bean id="scheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="clientInfoAssignedJobTrigger"/> <!-- 业主资料分配 -->
+				<ref bean="clientInfoIgnoredJobTrigger"/>  <!-- 业主资料忽略 -->
+				<ref bean="couponInvalidJobTrigger"/>      <!-- 优惠券过期失效 -->
+			</list>
+		</property>
+	</bean> 
+	 
+</beans>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.IntegralConfig">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.IntegralConfigVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="rangeBegin" property="rangeBegin" jdbcType="INTEGER" />
+		<result column="rangeEnd" property="rangeEnd" jdbcType="INTEGER" />
+		<result column="rate" property="rate" jdbcType="FLOAT" />
+		<result column="integral" property="integral" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_integral_config.id,
+		sys_integral_config.type,
+		sys_integral_config.rangeBegin,
+		sys_integral_config.rangeEnd,
+		sys_integral_config.rate,
+		sys_integral_config.integral
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_integral_config.id = #{id}</if>
+				<if test="type != null">and sys_integral_config.type = #{type}</if>
+				<if test="rangeBegin != null">and sys_integral_config.rangeBegin = #{rangeBegin}</if>
+				<if test="rangeEnd != null">and sys_integral_config.rangeEnd = #{rangeEnd}</if>
+				<if test="isIntegralLevelConfig == true">and (sys_integral_config.type = 11 or sys_integral_config.type = 12)</if>
+				<if test="isIntegralLevelConfig == false">and sys_integral_config.type != 11 and sys_integral_config.type != 12</if>
+				<if test="bigType == 0">and sys_integral_config.type between 7 and 10 </if>
+				<if test="bigType == 1">and sys_integral_config.type between 1 and 6 </if>
+				<if test="bigType == 2">and sys_integral_config.type between 13 and 25 </if>
+				<if test="bigType == 3">and sys_integral_config.type between 11 and 12 </if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sys_integral_config
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_integral_config
+		<include refid="Where_Condition" />
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_integral_config
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.IntegralConfig">
+		insert into sys_integral_config
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="type != null" > type, </if>
+		  <if test="rangeBegin != null" > rangeBegin, </if>
+		  <if test="rangeEnd != null" > rangeEnd, </if>
+		  <if test="rate != null" > rate, </if>
+		  <if test="integral != null" > integral, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="type != null" > #{type}, </if>
+		  <if test="rangeBegin != null" > #{rangeBegin}, </if>
+		  <if test="rangeEnd != null" > #{rangeEnd}, </if>
+		  <if test="rate != null" > #{rate}, </if>
+		  <if test="integral != null" > #{integral}, </if>
+        </trim>
+	</insert>
+
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into sys_integral_config(
+			type,
+			rangeBegin,
+			rangeEnd,
+			rate,
+			integral
+		) 
+    	values   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	    (
+	    	#{item.type},
+			#{item.rangeBegin},
+			#{item.rangeEnd},
+			#{item.rate},
+			#{item.integral}
+		)
+	    </foreach> 
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.IntegralConfig">
+		update 
+			sys_integral_config 
+		<set>
+			<if test="type != null"> type = #{type}, </if>
+			<if test="rangeBegin != null"> rangeBegin = #{rangeBegin}, </if>
+			<if test="rangeEnd != null"> rangeEnd = #{rangeEnd}, </if>
+			<if test="rate != null"> rate = #{rate}, </if>
+			<if test="integral != null"> integral = #{integral}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_integral_config
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_integral_config
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns="http://www.wabacus.com"
+			  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			  xsi:schemaLocation="http://www.wabacus.com ../../../src/defaultconfig/xsd/wabacus.resources.xsd">
+  
+  <!-- 下面两个分别为英文版没有查询到报表数据时的提示信息 -->
+  <resource key="nodata.mess">no data</resource>
+  <resource key="fileupload.label">Upload</resource>
+  <resource key="dataimport.label">Import Data</resource>
+  <resource key="word.label">Word</resource>
+  <resource key="richexcel.label">Rich Excel</resource>
+  <resource key="plainexcel.label">Plain Excel</resource>
+  <resource key="pdf.label">Pdf</resource>
+  <resource key="search.button.default.label">Search</resource>
+  <resource key="add.button.default.label">Add</resource>
+  <resource key="modify.button.default.label">Modify</resource>
+  <resource key="delete.button.default.label">Delete</resource>
+  <resource key="save.button.default.label">Save</resource>
+  <resource key="cancel.button.default.label">Cancel</resource>
+  <resource key="reset.button.default.label">Reset</resource>
+  <resource key="back.button.default.label">Back</resource>
+  <resource key="print.label">Print</resource>
+  <resource key="printpreview.label">Print Preview</resource>
+  <resource key="printsetting.label">Print Setting</resource>
+  <!-- 对可编辑报表进行增、删、改操作时的提示信息 -->
+  <!-- 对可编辑报表只有某一类操作时的提示信息 -->
+  <resource key="insert.success.prompt">add success</resource>
+  <resource key="insert.failed.prompt">add failed</resource>
+  <resource key="update.success.prompt">modify success</resource>
+  <resource key="update.failed.prompt">modify failed</resource>
+  <resource key="delete.success.prompt">delete success</resource>
+  <resource key="delete.failed.prompt">delete failed</resource>
+  <!-- 当本次操作即有添加、又有修改操作时的提示信息 -->
+  <resource key="save.success.prompt">save success</resource>
+  <resource key="save.failed.prompt">save failed</resource>
+  <!-- 当本次操作同时有增、删、改记录的操作时的提示信息 -->
+  <resource key="operate.success.prompt">success</resource>
+  <resource key="operate.failed.prompt">failed</resource>
+  <!-- 删除报表数据时的确认提示 -->
+  <resource key="delete.confirm.prompt">Sure to delete data?</resource>
+  
+  <!-- 各功能按钮菜单项默认label -->
+  <resource key="add.menu.default.label">Add</resource>
+  <resource key="modify.menu.default.label">Modify</resource>
+  <resource key="delete.menu.default.label">Delete</resource>
+  <resource key="save.menu.default.label">Save</resource>
+  <resource key="cancel.menu.default.label">Cancel</resource>
+  <resource key="reset.menu.default.label">Reset</resource>
+  <resource key="back.menu.default.label">Back</resource>
+  
+  <!-- 下面为默认的加载报表数据出错的提示信息 -->
+  <resource key="load.error.mess">
+  	<![CDATA[
+  		<strong>System is busy,Please try later</strong>
+  	]]>
+  </resource>
+  
+  <resource key="print.pageinfo.default">'Page:'+wx_content{pageno}+'/'+wx_content{pagecount}</resource><!-- 报表打印时，默认的页码信息 -->
+  
+  <resource key="roworder.arrow.label">Sort</resource><!-- 箭头排序列标题 -->
+  <resource key="roworder.top.label">Top</resource><!-- 置顶排序列标题 -->		
+  <resource key="roworder.inputbox.label">Sort</resource><!-- 输入框排序列标题 -->
+  
+  <resource key="editablelist.editcol.label">Edit</resource><!-- editablelist报表类型的行编辑列标题 -->
+  
+  <resource key="navigate.alldata.label">All</resource><!-- 翻页导航栏中切换页大小的下拉框中，不分页显示的label -->
+  <resource key="listreport.navigate.default" type="com.wabacus.config.resource.TemplateRes">
+  		<![CDATA[
+  			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  			  <tr>
+  				<td align="left"><span class="cls-navigate-info">
+  					Page:<wx:navigate type="pageno"/>/<wx:navigate type="pagecount"/>
+  					Record:<wx:navigate type="recordcount"/>
+  					Goto:<wx:navigate type="pageno">textbox</wx:navigate>
+  					</span>
+  				</td>
+  				<td align="right">
+  					<wx:navigate type="first"/>
+  					<wx:navigate type="previous"/>
+  					<wx:navigate type="sequence" minlength="2"><u>[%PAGENO%]</u></wx:navigate>
+  					<wx:navigate type="next"/>
+  					<wx:navigate type="last"/>
+  				 </td>
+  				</tr>
+  			</table>
+  		]]>
+  </resource>
+  <resource key="detailreport.navigate.default" type="com.wabacus.config.resource.TemplateRes">
+  		<![CDATA[
+  			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  			  <tr>
+  				<td align="left"><span class="cls-navigate-info">
+  					Count:<wx:navigate type="pageno"/>/<wx:navigate type="pagecount"/>
+  					Goto:<wx:navigate type="pageno">textbox</wx:navigate>
+  					</span>
+  				</td>
+  				<td align="right">
+  					<wx:navigate type="first"/>
+  					<wx:navigate type="previous"/>
+  					<wx:navigate type="sequence" initcount="5" maxcount="5" minlength="2"><u>[%PAGENO%]</u></wx:navigate>
+  					<wx:navigate type="next"/>
+  					<wx:navigate type="last"/>
+  				 </td>
+  				</tr>
+  			</table>
+  		]]>
+  </resource>
+  
+  <resource key="richtextbox.params.default"><!-- 富文本编辑器默认样式 -->
+  		<![CDATA[
+  			mode : "exact",
+			theme : "advanced",
+			skin : "o2k7",
+			debug:false,
+			language:"en",
+			plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups",
+			theme_advanced_buttons1 : "newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+			theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+			theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+			theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak,restoredraft",
+			theme_advanced_toolbar_location : "top",
+			theme_advanced_toolbar_align : "left",
+			theme_advanced_statusbar_location : "bottom",
+			theme_advanced_resizing : true
+  		]]>
+  </resource>
+</resources>

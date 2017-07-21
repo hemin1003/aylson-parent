@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns="http://www.wabacus.com"
+			  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			  xsi:schemaLocation="http://www.wabacus.com ../../../../src/defaultconfig/xsd/wabacus.resources.xsd">
+  <!-- wabacus系统级信息 -->
+  <resource key="search.button.i18n">查 询</resource>
+  <resource key="add.button.i18n">添 加</resource>
+  <resource key="modify.button.i18n">修 改</resource>
+  <resource key="delete.button.i18n">删 除</resource>
+  <resource key="save.button.i18n">保 存</resource>
+  <resource key="cancel.button.i18n">取 消</resource>
+  <resource key="reset.button.i18n">重 置</resource>
+  <resource key="back.button.i18n">返 回</resource>
+  <resource key="print.label.i18n">打印</resource>
+  <resource key="printpreview.label.i18n">打印预览</resource>
+  <resource key="printsetting.label.i18n">打印设置</resource>	
+  
+  <resource key="add.menu.i18n">添加</resource>
+  <resource key="modify.menu.i18n">修改</resource>
+  <resource key="delete.menu.i18n">删除</resource>
+  <resource key="save.menu.i18n">保存</resource>
+  <resource key="cancel.menu.i18n">取消</resource>
+  <resource key="reset.menu.i18n">重置</resource>
+  <resource key="back.menu.i18n">返回</resource>
+  <!-- 对可编辑报表进行增、删、改操作时的提示信息 -->
+  <!-- 对可编辑报表只有某一类操作时的提示信息 -->
+  <resource key="insert.success.prompt.i18n">添加成功</resource>
+  <resource key="insert.failed.prompt.i18n">添加失败</resource>
+  <resource key="update.success.prompt.i18n">修改成功</resource>
+  <resource key="update.failed.prompt.i18n">修改失败</resource>
+  <resource key="delete.success.prompt.i18n">删除成功</resource>
+  <resource key="delete.failed.prompt.i18n">删除失败</resource>
+  <!-- 当本次操作即有添加、又有修改操作时的提示信息 -->
+  <resource key="save.success.prompt.i18n">保存成功</resource>
+  <resource key="save.failed.prompt.i18n">保存失败</resource>
+  <!-- 当本次操作同时有增、删、改记录的操作时的提示信息 -->
+  <resource key="operate.success.prompt.i18n">操作成功</resource>
+  <resource key="operate.failed.prompt.i18n">操作失败</resource>
+  <!-- 删除报表数据时的确认提示 -->
+  <resource key="delete.confirm.prompt.i18n">确认删除报表数据？</resource>
+  <resource key="nodata.mess.i18n">无数据</resource>
+  
+  <resource key="fileupload.label.i18n">文件上传</resource>
+  <resource key="dataimport.label.i18n">导入数据</resource>
+  <resource key="word.label.i18n">导出Word</resource>
+  <resource key="richexcel.label.i18n">导出Excel</resource>
+  <resource key="plainexcel.label.i18n">导出纯数据</resource>
+  <resource key="pdf.label.i18n">导出Pdf</resource>
+  <resource key="loading.mess.i18n">正在加载，请稍候...</resource>
+  <resource key="load.error.mess.i18n">
+   <![CDATA[
+		<strong>系统忙，请稍后再试！</strong>
+   ]]>
+  </resource>
+  <resource key="roworder.arrow.label.i18n">排序</resource><!-- 箭头排序列标题 -->
+  <resource key="roworder.top.label.i18n">置顶</resource><!-- 置顶排序列标题 -->		
+  <resource key="roworder.inputbox.label.i18n">排序</resource><!-- 输入框排序列标题 -->
+  
+  <resource key="editablelist.editcol.label.i18n">编辑</resource><!-- editablelist报表类型的行编辑列标题 -->
+  
+  <resource key="navigate.alldata.label.i18n">不分页</resource><!-- 翻页导航栏中切换页大小的下拉框中，不分页显示的label -->
+  <resource key="listreport.navigate.i18n" type="com.wabacus.config.resource.TemplateRes">
+  		<![CDATA[
+  			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  			  <tr>
+  				<td align="left"><span class="cls-navigate-info">
+  					当前第<wx:navigate type="pageno"/>/<wx:navigate type="pagecount"/>页
+  					共<wx:navigate type="recordcount"/>条记录
+  					转到第<wx:navigate type="pageno">textbox</wx:navigate>页
+  					</span>
+  				</td>
+  				<td align="right">
+  					<wx:navigate type="first"/>
+  					<wx:navigate type="previous"/>
+  					<wx:navigate type="sequence" minlength="2"><u>[%PAGENO%]</u></wx:navigate>
+  					<wx:navigate type="next"/>
+  					<wx:navigate type="last"/>
+  				 </td>
+  				</tr>
+  			</table>
+  		]]>
+  </resource>
+  <resource key="detailreport.navigate.i18n" type="com.wabacus.config.resource.TemplateRes">
+  		<![CDATA[
+  			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  			  <tr>
+  				<td align="left">
+  					<span class="cls-navigate-info">
+  						当前第<wx:navigate type="pageno"/>/<wx:navigate type="pagecount"/>条
+						&nbsp;
+  						转到第<wx:navigate type="pageno">textbox</wx:navigate>条
+  					</span>
+  				</td>
+  				<td align="right">
+  					<wx:navigate type="first"/>
+  					<wx:navigate type="previous"/>
+  					<wx:navigate type="sequence" initcount="5" maxcount="5" minlength="2"><u>[%PAGENO%]</u></wx:navigate>
+  					<wx:navigate type="next"/>
+  					<wx:navigate type="last"/>
+  				 </td>
+  				</tr>
+  			</table>
+  		]]>
+  </resource>
+  
+  
+  <resource key="richtextbox.params.i18n"><!-- 富文本编辑器默认样式 -->
+  		<![CDATA[
+  			mode : "exact",
+			theme : "advanced",
+			skin : "o2k7",
+			debug:false,
+			language:"cn",
+			plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups",
+			theme_advanced_buttons1 : "newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
+			theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+			theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
+			theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak,restoredraft",
+			theme_advanced_toolbar_location : "top",
+			theme_advanced_toolbar_align : "left",
+			theme_advanced_statusbar_location : "bottom",
+			theme_advanced_resizing : true
+  		]]>
+  </resource>
+  
+  
+</resources>

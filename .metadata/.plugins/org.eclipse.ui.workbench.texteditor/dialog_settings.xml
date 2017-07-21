@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">
+		<item value="729" key="DIALOG_X_ORIGIN"/>
+		<item value="390" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="getBusiInfo" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="getBusiInfo"/>
+			<item value="approvalOpinion"/>
+			<item value="convertModelValueToFormValue"/>
+			<item value="getProcessDefinitionKey"/>
+			<item value="selectTaskToDoList"/>
+			<item value="updateBusiInfo"/>
+			<item value="save"/>
+			<item value="getVoById"/>
+		</list>
+		<list key="replacehistory">
+			<item value="Budget"/>
+			<item value="Contract"/>
+			<item value="Dimission"/>
+			<item value="Leave"/>
+			<item value="Notice"/>
+			<item value="Overtime"/>
+			<item value="Payment"/>
+			<item value="PurchaseApply"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="300" key="DIALOG_WIDTH"/>
+		<item value="1|微软雅黑|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|微软雅黑" key="DIALOG_FONT_NAME"/>
+		<item value="409" key="DIALOG_HEIGHT"/>
+		<item value="1570" key="DIALOG_X_ORIGIN"/>
+		<item value="290" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

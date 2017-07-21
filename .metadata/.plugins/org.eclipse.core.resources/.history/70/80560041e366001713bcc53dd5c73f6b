@@ -1,0 +1,94 @@
+package cn.aihama.sys.po;
+
+import java.io.Serializable;
+
+public class Position implements Serializable{
+
+	
+	private static final long serialVersionUID = -6720081593286044965L;
+	
+	private Integer id;                       //主键
+	private Integer parentId;                 //父id
+	private Integer seq;                      //序号
+	private String postCode;                  //职位编码
+	private String postName;                  //职位名称
+	private Integer orgId;                    //所属机构
+	private Integer orgParentId;              //所属上级机构
+	private String postTypeName;              //岗位类型名称
+	private Boolean isManager;                //是否主管
+	private Integer postLevel;                //岗位级别
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	public Integer getParentId() {
+		return parentId;
+	}
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
+	
+	public Integer getSeq() {
+		return seq;
+	}
+	public void setSeq(Integer seq) {
+		this.seq = seq;
+	}
+	
+	public String getPostCode() {
+		return postCode;
+	}
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+	}
+	
+	public String getPostName() {
+		return postName;
+	}
+	public void setPostName(String postName) {
+		this.postName = postName;
+	}
+	
+	public Integer getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(Integer orgId) {
+		this.orgId = orgId;
+	}
+	
+	public Integer getOrgParentId() {
+		return orgParentId;
+	}
+	public void setOrgParentId(Integer orgParentId) {
+		this.orgParentId = orgParentId;
+	}
+	
+	public String getPostTypeName() {
+		return postTypeName;
+	}
+	public void setPostTypeName(String postTypeName) {
+		this.postTypeName = postTypeName;
+	}
+	
+	public Boolean getIsManager() {
+		return isManager;
+	}
+	public void setIsManager(Boolean isManager) {
+		this.isManager = isManager;
+	}
+	
+	public Integer getPostLevel() {
+		return postLevel;
+	}
+	public void setPostLevel(Integer postLevel) {
+		this.postLevel = postLevel;
+	}
+	
+	
+	
+
+}

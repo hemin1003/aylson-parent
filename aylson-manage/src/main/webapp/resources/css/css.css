@@ -1,0 +1,18 @@
+
+
+/*endnav*/
+	.footerbox{ background:#393838; overflow:hidden; width:100%; color:white;font-family:"微软雅黑"; padding-bottom:70px;}
+	.footer{ width:1000px; margin:0 auto;}
+	.footer_leftbox{ float:left; width:450px; padding-top:40px;}
+	.foot_nav{ height:14px;}
+	.foot_nav li{ float:left;}
+	.foot_nav li a{ display:block; padding-right:12px; padding-left:12px; color:white; border-right:1px white solid; font-size:14px; line-height:16px;}
+	.foot_nav li .foot_nav_first{ padding-left:0px;}
+	.foot_nav li .footer_nav_end{ border-right:none;}
+	.foot_contact{ height:16px;}
+	.foot_contact li{ float:left; font-size:14px; line-height:30px; }
+	.foot_add{ font-size:14px; line-height:24px; margin-top:5px; }
+	.foot_contact_mail{ margin-left:20px; font-size:14px; }
+	.footer_rightbox{ float:right; padding-top:40px; width:138px;}
+	.footer_right_saosao{ width:137px; height:137px; background-image:url(../images/nav_saosao_21.png);}
+	.footer_rightbox span{font-family:"微软雅黑"; font-size:14px; width:137px; text-align:center; display:block; padding-top:10px;}

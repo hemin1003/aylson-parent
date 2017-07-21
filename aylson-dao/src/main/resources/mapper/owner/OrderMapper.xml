@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.owner.po.Order">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.owner.vo.OrderVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="orderNo" property="orderNo" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="appointId" property="appointId" jdbcType="INTEGER" />
+		<result column="appointNo" property="appointNo" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="decorateProject" property="decorateProject" jdbcType="VARCHAR" />
+		<result column="decorateProjectTypes" property="decorateProjectTypes" jdbcType="VARCHAR" />
+		<result column="designId" property="designId" jdbcType="INTEGER" />
+		<result column="designNo" property="designNo" jdbcType="VARCHAR" />
+		<result column="designType" property="designType" jdbcType="INTEGER" />
+		<result column="isSettle" property="isSettle" jdbcType="BIT" />
+		<result column="partnerId" property="partnerId" jdbcType="INTEGER" />
+		<result column="settleTime" property="settleTime" jdbcType="TIMESTAMP" />
+		<result column="salesAmount" property="salesAmount" jdbcType="FLOAT" />
+		<result column="sourceType" property="sourceType" jdbcType="INTEGER" />
+		<result column="reductionAcount" property="reductionAcount" jdbcType="FLOAT" />
+		<result column="quoSalesAmount" property="quoSalesAmount" jdbcType="FLOAT" />
+		<result column="hasBuyShow" property="hasBuyShow" jdbcType="BIT" />
+		<result column="limitDays" property="limitDays" jdbcType="INTEGER" />
+		<result column="level" property="level" jdbcType="INTEGER" />
+		<result column="byAgent" property="byAgent" jdbcType="VARCHAR" />
+		<result column="byAgentUserId" property="byAgentUserId" jdbcType="INTEGER" />
+		<result column="flowState" property="flowState" jdbcType="INTEGER" />
+		<result column="turnoverAmount" property="turnoverAmount" jdbcType="FLOAT" />
+		<result column="agentRemark" property="agentRemark" jdbcType="VARCHAR" />
+		<result column="orderTime" property="orderTime" jdbcType="TIMESTAMP" />
+		<result column="finishTime" property="finishTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		owner_order.id,
+		owner_order.orderNo,
+		owner_order.createTime,
+		owner_order.updateTime,
+		owner_order.appointId,
+		owner_order.appointNo,
+		owner_order.state,
+		owner_order.remark,
+		owner_order.mobilePhone,
+		owner_order.name,
+		owner_order.province,
+		owner_order.provinceId,
+		owner_order.city,
+		owner_order.cityId,
+		owner_order.area,
+		owner_order.areaId,
+		owner_order.address,
+		owner_order.decorateProject,
+		owner_order.decorateProjectTypes,
+		owner_order.designId,
+		owner_order.designNo,
+		owner_order.designType,
+		owner_order.isSettle,
+		owner_order.partnerId,
+		owner_order.settleTime,
+		owner_order.salesAmount,
+		owner_order.sourceType,
+		owner_order.limitDays,
+		owner_order.level,
+		owner_order.reductionAcount,
+		owner_order.byAgent,
+		owner_order.byAgentUserId,
+		owner_order.flowState,
+		owner_order.turnoverAmount,
+		owner_order.agentRemark,
+		owner_order.orderTime,
+		DATE_ADD(orderTime,INTERVAL limitDays day) as finishTime,
+		ifnull(owner_order.limitDays, 35) - datediff(now(),owner_order.updateTime) AS warnDays,
+		<!-- owner_quotation.salesAmount as quoSalesAmount, -->
+		EXISTS(select id from owner_buyershow WHERE  owner_buyershow.orderId=owner_order.id) as hasBuyShow
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and owner_order.id = #{id}</if>
+				<if test="state != null">and owner_order.state = #{state}</if>
+				<if test="appointId != null">and owner_order.appointId = #{appointId}</if>
+				<if test="createTimeStr != null and createTimeStr != ''">and DATE_FORMAT(owner_order.createTime ,'%Y-%m-%d') = #{createTimeStr}</if>
+				<if test="updateTimeStr != null and updateTimeStr != ''">and DATE_FORMAT(owner_order.updateTime ,'%Y-%m-%d') = #{updateTimeStr}</if>
+				<if test="mobilePhone != null and mobilePhone != ''">and owner_order.mobilePhone = #{mobilePhone}</if>
+				<if test="orderNo != null and orderNo != ''">and owner_order.orderNo = #{orderNo}</if>
+				<if test="phoneOrNo != null and phoneOrNo != ''">and (owner_order.orderNo = #{phoneOrNo} or owner_order.mobilePhone = #{phoneOrNo})</if>
+				<if test="isSettle != null">and owner_order.isSettle = #{isSettle}</if>
+				<if test="partnerId != null">and owner_order.partnerId = #{partnerId}</if>
+				<if test="designType != null">and owner_order.designType = #{designType}</if>
+				<if test="sourceType != null">and owner_order.sourceType = #{sourceType}</if>
+				<if test="tab != null and tab == 1">and owner_order.state between 1 and 3 </if>
+				<if test="tab != null and tab == 2">and owner_order.state = 4</if>
+				<if test="tab != null and tab == 3">and owner_order.state = 5</if>
+				<if test="byAgentUserId != null">and owner_order.byAgentUserId = #{byAgentUserId}</if>
+				<if test="flowState != null">and owner_order.flowState = #{flowState}</if>
+				<if test="isWarn == true"> and owner_order.flowState = 2 and owner_order.state &lt; 4 
+					and (ifnull(owner_order.limitDays, 35) - datediff(now(),owner_order.updateTime)) &lt;= 7
+					and now() > owner_order.updateTime
+				</if>
+				<if test="flowStateType == 0">and owner_order.flowState = 0</if>
+				<if test="flowStateType == 1">and owner_order.flowState != 0 </if>
+				<!-- 模糊查询 -->
+				<if test="orderNoLike != null and orderNoLike != ''">and owner_order.orderNo like CONCAT('%',#{orderNoLike},'%')</if>
+				<if test="appointNoLike != null and appointNoLike != ''">and owner_order.appointNo like CONCAT('%',#{appointNoLike},'%')</if>
+				<if test="mobilePhoneLike != null and mobilePhoneLike != ''">and owner_order.mobilePhone like CONCAT('%',#{mobilePhoneLike},'%')</if>
+				<if test="nameLike != null and nameLike != ''">and owner_order.name like CONCAT('%',#{nameLike},'%')</if>
+				<if test="designNoLike != null and designNoLike != ''">and owner_order.designNo like CONCAT('%',#{designNoLike},'%')</if>
+				<if test="phoneOrNameLike != null and phoneOrNameLike != ''">and (owner_order.mobilePhone like CONCAT('%',#{phoneOrNameLike},'%')
+					or owner_order.name like CONCAT('%',#{phoneOrNameLike},'%'))
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(owner_order.id) from owner_order
+		<!-- left join 
+		owner_quotation on owner_order.designId = owner_quotation.designId -->
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from owner_order
+		<!-- left join 
+		owner_quotation on owner_order.designId = owner_quotation.designId -->
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by owner_order.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_order
+		<!-- left join 
+		owner_quotation on owner_order.designId = owner_quotation.designId -->
+		where owner_order.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.owner.po.Order" useGeneratedKeys="true" keyProperty="id">
+		insert into owner_order
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			id,
+		  <if test="orderNo != null" > orderNo, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="updateTime != null" > updateTime, </if>
+		  <if test="appointId != null" > appointId, </if>
+		  <if test="appointNo != null" > appointNo, </if>
+		  <if test="state != null" > state, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="mobilePhone != null" > mobilePhone, </if>
+		  <if test="name != null" > name, </if>
+		  <if test="province != null" > province, </if>
+		  <if test="provinceId != null" > provinceId, </if>
+		  <if test="city != null" > city, </if>
+		  <if test="cityId != null" > cityId, </if>
+		  <if test="area != null" > area, </if>
+		  <if test="areaId != null" > areaId, </if>
+		  <if test="address != null" > address, </if>
+		  <if test="decorateProject != null" > decorateProject, </if>
+		  <if test="decorateProjectTypes != null" > decorateProjectTypes, </if>
+		  <if test="designId != null" > designId, </if>
+		  <if test="designNo != null" > designNo, </if>
+		  <if test="designType != null" > designType, </if>
+		  <if test="partnerId != null" > partnerId, </if>
+		  <!--  <if test="isSettle != null" > isSettle, </if> 
+		  <if test="settleTime != null" > settleTime, </if> 
+		  -->
+		  <if test="salesAmount != null" > salesAmount, </if>
+		  <if test="sourceType != null" > sourceType, </if>
+		  <if test="reductionAcount != null" > reductionAcount, </if>
+		  <if test="limitDays != null" > limitDays, </if>
+		  <if test="level != null" > level, </if>
+		  <if test="byAgent != null" > byAgent, </if>
+		  <if test="byAgentUserId != null" > byAgentUserId, </if>
+		  <if test="flowState != null" > flowState, </if>
+		  <if test="turnoverAmount != null" > turnoverAmount, </if>
+		  <if test="agentRemark != null" > agentRemark, </if>
+		  <if test="orderTime != null" > orderTime, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        	#{id},
+		  <if test="orderNo != null" > #{orderNo}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="updateTime != null" > #{updateTime}, </if>
+		  <if test="appointId != null" > #{appointId}, </if>
+		  <if test="appointNo != null" > #{appointNo}, </if>
+		  <if test="state != null" > #{state}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="mobilePhone != null" > #{mobilePhone}, </if>
+		  <if test="name != null" > #{name}, </if>
+		  <if test="province != null" > #{province}, </if>
+		  <if test="provinceId != null" > #{provinceId}, </if>
+		  <if test="city != null" > #{city}, </if>
+		  <if test="cityId != null" > #{cityId}, </if>
+		  <if test="area != null" > #{area}, </if>
+		  <if test="areaId != null" > #{areaId}, </if>
+		  <if test="address != null" > #{address}, </if>
+		  <if test="decorateProject != null" > #{decorateProject}, </if>
+		  <if test="decorateProjectTypes != null" > #{decorateProjectTypes}, </if>
+		  <if test="designId != null" > #{designId}, </if>
+		  <if test="designNo != null" > #{designNo}, </if>
+		  <if test="designType != null" > #{designType}, </if>
+		  <if test="partnerId != null" > #{partnerId}, </if>
+		  <!-- <if test="isSettle != null" > #{isSettle}, </if> 
+		  <if test="settleTime != null" > #{settleTime}, </if> 
+		  -->
+		  <if test="salesAmount != null" > #{salesAmount}, </if>
+		  <if test="sourceType != null" > #{sourceType}, </if>
+		  <if test="reductionAcount != null" > #{reductionAcount}, </if>
+		  <if test="limitDays != null" > #{limitDays}, </if>
+		  <if test="level != null" > #{level}, </if>
+		  <if test="byAgent != null" > #{byAgent}, </if>
+		  <if test="byAgentUserId != null" > #{byAgentUserId}, </if>
+		  <if test="flowState != null" > #{flowState}, </if>
+		  <if test="turnoverAmount != null" > #{turnoverAmount}, </if>
+		  <if test="agentRemark != null" > #{agentRemark}, </if>
+		  <if test="orderTime != null" > #{orderTime}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.owner.po.Order">
+		update 
+			owner_order 
+		<set>
+			<if test="orderNo != null"> orderNo = #{orderNo}, </if>
+			<if test="createTime != null"> createTime = #{createTime}, </if>
+			<if test="updateTime != null"> updateTime = #{updateTime}, </if>
+			<if test="appointId != null"> appointId = #{appointId}, </if>
+			<if test="appointNo != null"> appointNo = #{appointNo}, </if>
+			<if test="state != null"> state = #{state}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="mobilePhone != null"> mobilePhone = #{mobilePhone}, </if>
+			<if test="name != null"> name = #{name}, </if>
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="area != null"> area = #{area}, </if>
+			<if test="areaId != null"> areaId = #{areaId}, </if>
+			<if test="address != null"> address = #{address}, </if>
+			<if test="decorateProject != null"> decorateProject = #{decorateProject}, </if>
+			<if test="decorateProjectTypes != null"> decorateProjectTypes = #{decorateProjectTypes}, </if>
+			<if test="designId != null"> designId = #{designId}, </if>
+			<if test="designNo != null"> designNo = #{designNo}, </if>
+			<if test="designType != null"> designType = #{designType}, </if>
+			<if test="partnerId != null"> partnerId = #{partnerId}, </if>
+			<if test="isSettle != null"> isSettle = #{isSettle}, </if>
+			<if test="settleTime != null"> settleTime = #{settleTime}, </if>
+			<if test="salesAmount != null"> salesAmount = #{salesAmount}, </if>
+			<if test="sourceType != null"> sourceType = #{sourceType}, </if>
+			<if test="reductionAcount != null"> reductionAcount = #{reductionAcount}, </if>
+			<if test="limitDays != null"> limitDays = #{limitDays}, </if>
+			<if test="level != null"> level = #{level}, </if>
+			<if test="byAgent != null"> byAgent = #{byAgent}, </if>
+			<if test="byAgentUserId != null"> byAgentUserId = #{byAgentUserId}, </if>
+			<if test="flowState != null"> flowState = #{flowState}, </if>
+			<if test="turnoverAmount != null"> turnoverAmount = #{turnoverAmount}, </if>
+			<if test="agentRemark != null"> agentRemark = #{agentRemark}, </if>
+			<if test="orderTime != null"> orderTime = #{orderTime}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from owner_order
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from owner_order
+		<include refid="Where_Condition" />
+	</delete>
+	
+</mapper>

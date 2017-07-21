@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxool>
+	<alias>proxool_pool</alias>
+	<driver-url><![CDATA[jdbc:mysql://localhost/wabacusdemodb?useUnicode=true&characterEncoding=GBK]]></driver-url>
+	<driver-class>com.mysql.jdbc.Driver</driver-class>
+	<driver-properties>
+		<property name="user" value="root"></property>
+		<property name="password" value="111111"></property>
+	</driver-properties>
+	<house-keeping-sleep-time>90000</house-keeping-sleep-time>
+	<!--house-keeping-test-sql>select 1</house-keeping-test-sql-->
+	<maximum-new-connections>20</maximum-new-connections>
+	<prototype-count>5</prototype-count>
+	<maximum-connection-count>100</maximum-connection-count>
+	<minimum-connection-count>10</minimum-connection-count>
+</proxool>

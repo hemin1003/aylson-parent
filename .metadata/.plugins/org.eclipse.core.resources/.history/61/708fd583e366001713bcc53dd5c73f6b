@@ -1,0 +1,191 @@
+package cn.aihama.sys.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.aihama.core.frame.base.Page;
+import cn.aihama.core.frame.controller.BaseController;
+import cn.aihama.core.frame.domain.Result;
+import cn.aihama.core.frame.domain.ResultCode;
+import cn.aihama.sys.search.PositionSearch;
+import cn.aihama.sys.service.PositionService;
+import cn.aihama.sys.vo.PositionVo;
+import cn.aihama.utils.StringUtil;
+
+/**
+ * 职位信息管理
+ * @author wwx
+ * @since  2017-06
+ * @version v1.0
+ *
+ */
+@Controller
+@RequestMapping("/sys/position")
+public class PositionController extends BaseController {
+	
+	
+	@Autowired
+	private PositionService positionService;                    //职位管理服务
+	
+	/**
+	 * 获取列表（分页）
+	 * @param positionSearch
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getPage", method = RequestMethod.GET)
+	public Result getPage(PositionSearch positionSearch) {
+		Result result = new Result();
+		Page<PositionVo> page = this.positionService.getPage(positionSearch);
+		result.setOK(ResultCode.CODE_STATE_200, "操作成功", page);
+		return result;
+	}
+	
+	/**
+	 * 获取列表（不分页）
+	 * @param positionSearch
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getList", method = RequestMethod.GET)
+	public Result getList(PositionSearch positionSearch) {
+		Result result = new Result();
+		List<PositionVo> list = this.positionService.getList(positionSearch);
+		result.setOK(ResultCode.CODE_STATE_200, "操作成功", list);
+		return result;
+	}
+	
+	/**
+	 * 根据id查询
+	 * @param id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getById", method = RequestMethod.GET)
+	public Result getById(Integer id) {
+		Result result = new Result();
+		if(id == null){
+			result.setError(ResultCode.CODE_STATE_4006, "获取id失败，请稍后再试或者联系管理员！");
+			return result;
+		}
+		PositionVo positionVo = this.positionService.getById(id);
+		if(positionVo == null){
+			result.setError(ResultCode.CODE_STATE_4006, "获取信息失败，请稍后再试或者联系管理员！");
+		}else{
+			result.setOK(ResultCode.CODE_STATE_200, "操作成功", positionVo);
+		}
+		return result;
+	}
+	
+	/**
+	 * 新增
+	 * @param positionVo
+	 * @return
+	 */
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@ResponseBody
+	public Result add(PositionVo positionVo) {
+		Result result = new Result();
+		try{
+			//一、信息校验
+			if(StringUtil.isEmpty(positionVo.getPostName())){
+				result.setError(ResultCode.CODE_STATE_4006, "职位名称不能为空");return result;
+			}
+			if(positionVo.getOrgId() == null){
+				result.setError(ResultCode.CODE_STATE_4006, "所属部门不能为空");return result;
+			}
+			if(positionVo.getOrgParentId() == null){
+				result.setError(ResultCode.CODE_STATE_4006, "所属上级部门不能为空");return result;
+			}
+			if(positionVo.getPostLevel() == null){
+				result.setError(ResultCode.CODE_STATE_4006, "岗位级别不能为空");return result;
+			}
+			//二、信息有效
+			Boolean flag = this.positionService.add(positionVo);
+			if(flag){
+				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
+			}else{
+				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+			result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+		}
+		return result;
+	}
+	
+	/**
+	 * 修改
+	 * @param positionVo
+	 * @return
+	 */
+	@RequestMapping(value = "update", method = RequestMethod.POST)
+	@ResponseBody
+	public Result update(PositionVo positionVo) {
+		Result result = new Result();
+		try{
+			//一、信息校验
+			if(positionVo.getId() == null){
+				result.setError(ResultCode.CODE_STATE_4006, "主键不能为空");return result;
+			}
+			if(StringUtil.isEmpty(positionVo.getPostName())){
+				result.setError(ResultCode.CODE_STATE_4006, "职位名称不能为空");return result;
+			}
+			if(positionVo.getOrgId() == null){
+				result.setError(ResultCode.CODE_STATE_4006, "所属部门不能为空");return result;
+			}
+			if(positionVo.getOrgParentId() == null){
+				result.setError(ResultCode.CODE_STATE_4006, "所属上级部门不能为空");return result;
+			}
+			//二、信息有效
+			Boolean flag = this.positionService.update(positionVo);
+			if(flag){
+				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
+			}else{
+				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+			result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+		}
+		return result;
+	}
+	
+	/**
+	 * 根据id删除
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteById", method = RequestMethod.POST)
+	@ResponseBody
+	public Result deleteById(Integer id) {
+		Result result = new Result();
+		try{
+			if(id == null){
+				result.setError(ResultCode.CODE_STATE_4006, "获取id失败，请稍后再试或者联系管理员！");
+				return result;
+			}
+			Boolean flag = this.positionService.deleteById(id);
+			if(flag){
+				result.setOK(ResultCode.CODE_STATE_200, "删除成功");
+			}else{
+				result.setError(ResultCode.CODE_STATE_4006, "删除失败");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+			result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+		}
+		return result;
+	}
+	
+	
+	
+}

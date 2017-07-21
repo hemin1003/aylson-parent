@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.WxShare">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.WxShareVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="inviterWxOpenId" property="inviterWxOpenId" jdbcType="VARCHAR" />
+		<result column="inviterWxUnionId" property="inviterWxUnionId" jdbcType="VARCHAR" />
+		<result column="wxOpenId" property="wxOpenId" jdbcType="VARCHAR" />
+		<result column="wxUnionId" property="wxUnionId" jdbcType="VARCHAR" />
+		<result column="wxHeadPhoto" property="wxHeadPhoto" jdbcType="VARCHAR" />
+		<result column="sourceId" property="sourceId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="channel" property="channel" jdbcType="VARCHAR" />
+		<result column="wxNickName" property="wxNickName" jdbcType="VARCHAR" />
+		<result column="assistValue" property="assistValue" jdbcType="INTEGER" />
+		<result column="sharesHad" property="sharesHad" jdbcType="INTEGER" />
+		<result column="assistValueHad" property="assistValueHad" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_wx_share.id,
+		mem_wx_share.inviterWxOpenId,
+		mem_wx_share.inviterWxUnionId,
+		mem_wx_share.wxOpenId,
+		mem_wx_share.wxUnionId,
+		mem_wx_share.wxHeadPhoto,
+		mem_wx_share.sourceId,
+		mem_wx_share.type,
+		mem_wx_share.remark,
+		mem_wx_share.createTime,
+		mem_wx_share.channel,
+		mem_wx_share.wxNickName,
+		mem_wx_share.assistValue,
+		ifnull(statisticsInfo.sharesHad,0) sharesHad,
+		ifnull(statisticsInfo.assistValueHad,0) assistValueHad
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_wx_share.id = #{id}</if>
+				<if test="inviterWxOpenId != null">and mem_wx_share.inviterWxOpenId = #{inviterWxOpenId}</if>
+				<if test="inviterWxUnionId != null">and mem_wx_share.inviterWxUnionId = #{inviterWxUnionId}</if>
+				<if test="wxOpenId != null">and mem_wx_share.wxOpenId = #{wxOpenId}</if>
+				<if test="wxUnionId != null"> and mem_wx_share.wxUnionId = #{wxUnionId}</if>
+				<if test="type != null"> and mem_wx_share.type = #{type}</if>
+				<if test="channel != null"> and mem_wx_share.channel = #{channel}</if>
+				<if test="sourceId != null"> and mem_wx_share.sourceId = #{sourceId}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(mem_wx_share.id) from mem_wx_share
+		left join 
+		(
+		select inviterWxOpenId,channel,count(1) as sharesHad,ifnull(sum(assistValue),0) as assistValueHad from mem_wx_share group by inviterWxOpenId,channel
+		) statisticsInfo on mem_wx_share.wxOpenId = statisticsInfo.inviterWxOpenId and mem_wx_share.channel = statisticsInfo.channel
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from mem_wx_share
+		left join 
+		(
+		select inviterWxOpenId,channel,count(1) as sharesHad,ifnull(sum(assistValue),0) as assistValueHad from mem_wx_share group by inviterWxOpenId,channel
+		) statisticsInfo on mem_wx_share.wxOpenId = statisticsInfo.inviterWxOpenId and mem_wx_share.channel = statisticsInfo.channel
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_wx_share.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from mem_wx_share
+		left join 
+		(
+		select inviterWxOpenId,channel,count(1) as sharesHad,ifnull(sum(assistValue),0) as assistValueHad from mem_wx_share group by inviterWxOpenId,channel
+		) statisticsInfo on mem_wx_share.wxOpenId = statisticsInfo.inviterWxOpenId and mem_wx_share.channel = statisticsInfo.channel
+		where mem_wx_share.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.WxShare" useGeneratedKeys="true" keyProperty="id">
+		insert into mem_wx_share
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			id,
+		  <if test="inviterWxOpenId != null" > inviterWxOpenId, </if>
+		  <if test="inviterWxUnionId != null" > inviterWxUnionId, </if>
+		  <if test="wxOpenId != null" > wxOpenId, </if>
+		  <if test="wxUnionId != null" > wxUnionId, </if>
+		  <if test="wxHeadPhoto != null" > wxHeadPhoto, </if>
+		  <if test="sourceId != null" > sourceId, </if>
+		  <if test="type != null" > type, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="channel != null" > channel, </if>
+		  <if test="wxNickName != null" > wxNickName, </if>
+		  <if test="assistValue != null" > assistValue, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        	#{id},
+		  <if test="inviterWxOpenId != null" > #{inviterWxOpenId}, </if>
+		  <if test="inviterWxUnionId != null" > #{inviterWxUnionId}, </if>
+		  <if test="wxOpenId != null" > #{wxOpenId}, </if>
+		  <if test="wxUnionId != null" > #{wxUnionId}, </if>
+		  <if test="wxHeadPhoto != null" > #{wxHeadPhoto}, </if>
+		  <if test="sourceId != null" > #{sourceId}, </if>
+		  <if test="type != null" > #{type}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="channel != null" > #{channel}, </if>
+		  <if test="wxNickName != null" > #{wxNickName}, </if>
+		  <if test="assistValue != null" > #{assistValue}, </if>
+        </trim>
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.WxShare">
+		update 
+			mem_wx_share 
+		<set>
+			<if test="inviterWxOpenId != null"> inviterWxOpenId = #{inviterWxOpenId}, </if>
+			<if test="inviterWxUnionId != null"> inviterWxUnionId= #{inviterWxUnionId}, </if>
+			<if test="wxOpenId != null"> wxOpenId = #{wxOpenId}, </if>
+			<if test="wxUnionId != null"> wxUnionId = #{wxUnionId}, </if>
+			<if test="wxHeadPhoto != null"> wxHeadPhoto = #{wxHeadPhoto}, </if>
+			<if test="sourceId != null"> sourceId = #{sourceId}, </if>
+			<if test="type != null"> type = #{type}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="channel != null"> channel = #{channel}, </if>
+			<if test="wxNickName != null"> wxNickName = #{wxNickName}, </if>
+			<if test="assistValue != null"> assistValue = #{assistValue}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_wx_share
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_wx_share
+		<include refid="Where_Condition" />
+	</delete>
+	
+</mapper>

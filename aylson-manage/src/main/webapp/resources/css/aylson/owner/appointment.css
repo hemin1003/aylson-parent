@@ -1,0 +1,40 @@
+/* .design_title{margin:10px;font-size:16px;font-weight:bolder;}
+.tableForm_title{width:90%;border-style: none;}
+.tableForm_title td{border-style: none;}
+.tableForm{text-align:center;}
+.tableForm th{text-align:center;min-width:40px;}
+.textboxCss{width:80px!important;} */
+/*本页面默认easyui设置*/
+.easyui-textbox{width:80px;}
+.easyui-numberbox{width:50px;}
+.easyui-combobox{width:60px;}
+
+.tableForm_title{width:90%;border-style: none;}
+.tableForm_title td{border-style: none;}
+/*设计信息表*/
+.design_title{margin:10px;font-size:16px;font-weight:bolder;}
+.tableForm_design{width:90%;border-style: none;}
+.tableForm_design{width:90%;border-collapse:collapse;border:1px solid #95B8E7;}
+.tableForm_design td{border-collapse:collapse;text-align:center; border:1px solid #95B8E7;font-size:12px;padding:3px;height:25px;}
+.tableForm_design th{text-align:center;min-width:40px;border-collapse:collapse;border:1px solid #95B8E7;background-color:#eeeeff;}
+.tableForm_design .frameNumCss{width:40px;}
+/* 设计说明 */
+.design_desc{width:90%;text-align:left;margin-top:20px;}
+/* 订货单 */
+a#goodsAmount_a{text-decoration:none;color:#0000ff}
+.tableForm_quotation{width:100%;border-style: none;}
+.tableForm_quotation{width:100%;border-collapse:collapse;border:1px solid #95B8E7;}
+.tableForm_quotation td{border-collapse:collapse;text-align:center; border:1px solid #95B8E7;font-size:12px;padding:3px;height:25px;}
+.tableForm_quotation th{text-align:center;min-width:40px;border-collapse:collapse;border:1px solid #95B8E7;background-color:#eeeeff;}
+.tableForm_quotation .seqCss{width:30px;}
+.tableForm_quotation .colorInCss{width:50px;}
+.tableForm_quotation .colorOutCss{width:50px;}
+.tableForm_quotation .productNumCss{width:50px;}
+.tableForm_quotation .amountCss{width:60px;}
+.tableForm_quotation .orderAmountCss{width:60px;}
+.tableForm_quotation .remainAmountCss{width:60px;}
+.tableForm_quotation .depositCss{width:60px;}
+.tableForm_quotation .remarkCss{width:200px;}
+
+
+

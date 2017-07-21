@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;BillUtils.java&apos; to &apos;cn.aihama.utils.BillUtils.java&apos;&#x0D;&#x0A;- Original project: &apos;aihama-utils&apos;&#x0D;&#x0A;- Destination element: &apos;cn.aihama.utils.BillUtils.java&apos;&#x0D;&#x0A;- Original element: &apos;cn.aihama.utils.BillUtils.java&apos;" description="Copy compilation unit" destination="/src\/main\/java&lt;cn.aihama.utils{BillUtils.java" element1="/src\/main\/java&lt;cn.aihama.utils{BillUtils.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1499332130954" units="1" version="1.0"/>
+</session>

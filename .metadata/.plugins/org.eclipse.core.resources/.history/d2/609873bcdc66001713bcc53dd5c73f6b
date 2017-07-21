@@ -1,0 +1,17 @@
+#MySQL DATABASE CONFIG  
+validationQuery=SELECT 1  
+jdbc.driverClassName=com.mysql.jdbc.Driver
+# test db server
+jdbc.url=jdbc:mysql://rm-wz9q6a026816xd14io.mysql.rds.aliyuncs.com:3306/aihama_qite_test?useUnicode=true&autoReconnect=true&allowMultiQueries=true
+jdbc.username=aylson
+jdbc.password=Aylson2013
+# localhost db server
+#jdbc.url=jdbc:mysql://localhost:3306/aihama_qite_v1?useUnicode=true&autoReconnect=true&allowMultiQueries=true
+#jdbc.username=root
+#jdbc.password=root
+
+jdbc.initialSize=5
+jdbc.minIdle=1
+jdbc.maxIdle=10
+jdbc.maxWait=30000
+jdbc.maxActive=30

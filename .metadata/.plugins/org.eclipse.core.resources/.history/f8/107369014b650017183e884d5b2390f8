@@ -1,0 +1,119 @@
+package cn.aihama.busi.service.impl;
+
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import cn.aihama.busi.dao.UseCarDao;
+import cn.aihama.busi.po.UseCar;
+import cn.aihama.busi.search.UseCarSearch;
+import cn.aihama.busi.service.UseCarService;
+import cn.aihama.busi.vo.UseCarVo;
+import cn.aihama.core.exception.ServiceException;
+import cn.aihama.core.frame.dao.BaseDao;
+import cn.aihama.core.frame.domain.Result;
+import cn.aihama.core.frame.domain.ResultCode;
+import cn.aihama.core.frame.service.impl.BaseServiceImpl;
+import cn.aihama.sys.constant.BusiConstant.AttachSource;
+import cn.aihama.sys.constant.BusiConstant.AttachState;
+import cn.aihama.sys.constant.BusiConstant.CodePrefix;
+import cn.aihama.sys.service.AttachmentService;
+import cn.aihama.utils.BillUtils;
+import cn.aihama.utils.DateUtil;
+import cn.aihama.utils.StringUtil;
+
+
+
+@Service
+public class UseCarServiceImpl extends BaseServiceImpl<UseCar,UseCarSearch> implements UseCarService {
+	
+	
+	@Autowired
+	private UseCarDao useCarDao;
+	@Autowired
+	private AttachmentService attachmentService;               //附件服务
+	
+	@Override
+	protected BaseDao<UseCar,UseCarSearch> getBaseDao() {
+		return this.useCarDao;
+	}
+
+	/**
+	 * 信息校验
+	 * @param result
+	 * @param useCarVo
+	 * @return
+	 */
+	private Result valid(Result result, UseCarVo useCarVo){
+		if(result == null) result = new Result();
+		if(useCarVo.getUserId() == null){
+			result.setError(ResultCode.CODE_STATE_4006, "获取当前登录人信息失败！");return result;
+		}
+		if(StringUtil.isEmpty(useCarVo.getRemark())){
+			result.setError(ResultCode.CODE_STATE_4006, "用车事由不能为空！");return result;
+		}
+		if(StringUtil.isEmpty(useCarVo.getCarInfo())){
+			result.setError(ResultCode.CODE_STATE_4006, "申请车辆信息不能为空！");return result;
+		}
+		if(StringUtil.isEmpty(useCarVo.getUseTimeStr())){
+			result.setError(ResultCode.CODE_STATE_4006, "用车时间不能为空！");return result;
+		}
+		if(StringUtil.isEmpty(useCarVo.getReturnTimeStr())){
+			result.setError(ResultCode.CODE_STATE_4006, "预计返回时间不能为空！");return result;
+		}
+		result.setOK(ResultCode.CODE_STATE_200, "信息有效");
+		return result;
+	}
+	
+	@Override
+	@Transactional
+	public Result save(UseCarVo useCarVo) {
+		Result result = new Result();
+		//一、信息校验
+		result = this.valid(result, useCarVo);
+		if(!result.isSuccess())  return result;
+		//二、信息有效
+		boolean flag = false;          //标识
+		Boolean onlyAdd = true;        //是否添加
+		Date curDate = new Date();     //当前时间
+		//	1、保存申请单信息
+		useCarVo.setAttachNum(useCarVo.getAttachList().size()); //维护附件数量字段
+		useCarVo.setUseTime(DateUtil.format(useCarVo.getUseTimeStr()));
+		useCarVo.setReturnTime(DateUtil.format(useCarVo.getReturnTimeStr()));
+		if(useCarVo.getId() != null){//修改
+			onlyAdd = false;
+			useCarVo.setUpdateTime(curDate);
+			flag = this.update(useCarVo);
+		}else{//新增
+			useCarVo.setCreateTime(curDate);
+			useCarVo.setCode(BillUtils.getSequenceNumber(CodePrefix.USE_CAR));
+			flag = this.add(useCarVo);
+		}
+		if(!flag){
+			result.setError(ResultCode.CODE_STATE_4006, "保存申请单信息失败！");return result;
+		}
+		//	2、保存附件信息
+		result = this.attachmentService.saveAttach(useCarVo.getAttachList(), useCarVo.getId(), AttachSource.USE_CAR, onlyAdd);
+		if(!result.isSuccess()){
+			throw new ServiceException("保存附件信息失败");
+		}
+		result.setOK(ResultCode.CODE_STATE_200, "操作成功",travelVo);
+		return result;
+	}
+
+	@Override
+	public UseCarVo getVoById(Integer id) {
+		UseCarVo useCarVo = null;
+		if(id != null){
+			useCarVo = this.getById(id);
+			if(useCarVo != null && useCarVo.getAttachNum().intValue() > 0){//查询附件
+				useCarVo.setAttachList(this.attachmentService.getListBy(id, AttachSource.USE_CAR, AttachState.EFFECTIVE));
+			}
+		}
+		return useCarVo;
+	}
+
+	
+}

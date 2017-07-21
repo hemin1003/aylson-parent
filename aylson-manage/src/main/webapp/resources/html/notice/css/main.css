@@ -1,0 +1,29 @@
+*{ margin:0px; padding:0px; font-size:100%;}
+li{ list-style:none;}
+a{ text-decoration:none;}
+.bigbox{ min-width:320px; min-height:480px; background:#FFFFFF;}
+.activity_box{ width:95%; overflow:hidden; margin:0 auto; margin-top:15px;border-left:2px #b6b6b6 solid; border-bottom:2px #b6b6b6 solid;}
+.activity_box_top{ width:100%; height:25px; position:relative;border-top:2px #b6b6b6 solid; margin:0 auto;}
+
+.circular{ width:143px; background-image:url(../images/52_11.png); background-position:center; background-repeat:no-repeat; margin:0 auto; height:100%;}
+.bj{ background-image:url(../images/50_03_15.png);
+	width: 27px;
+	height: 27px;
+	position: absolute;
+	top: -2px;
+	right: -1px;
+	
+}
+.activity_contant_box{ width:100%;overflow:hidden; margin:0 auto; background-image:url(../images/51_07.png); background-repeat:repeat-y; background-position:right; padding-top:5px;}
+.activity_contant_one{ display:block; height:150px;; width:95%; margin:0 auto; background:#b10b0b; background-image:url(../images/banner_one.png); background-position:center; background-repeat:no-repeat;}
+.activity_contant_two{ display:block; height:150px;; width:95%; margin:0 auto; background:#d7c1a4; background-image:url(../images/banner_two.png); background-position:center; background-repeat:no-repeat;}
+.activity_time{ width:95%; margin:0 auto; overflow:hidden; font-size:16px; line-height:25px; font-family:"微软雅黑"; margin-top:0px; padding-top:10px; padding-bottom:10px;}
+.activity_time_one{ float:left;}
+.activity_time_one span{color:#ef8201;}
+.activity_time_two{ float:right; color:#f8b62e; font-size:14px; font-family:"微软雅黑";}
+.activity_time_two_one{ float:right; color:#008dcc; font-size:14px; font-family:"微软雅黑";}
+.activity_end{ overflow:hidden; width:95%; border-top:1px #b6b6b6 solid;  margin:0 auto; padding-top:5px; padding-bottom:5px; }
+.activity_end_box{ width:100px; margin:0 auto; padding-top:10px;}
+.activity_end_box li{ float:left;}
+.activity_end_one{ width:16px; height:14px; padding-top:5px; background-image:url(../images/52_19.png);}
+.activity_end_two{ padding-left:5px;font-size:14px; font-family:"微软雅黑"; color:#b6b6b6;}

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.agent.po.VisitSign">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.agent.vo.VisitSignVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="agentId" property="agentId" jdbcType="VARCHAR" />
+		<result column="agentName" property="agentName" jdbcType="VARCHAR" />
+		<result column="clientName" property="clientName" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="visitNum" property="visitNum" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="projectName" property="projectName" jdbcType="VARCHAR" />
+		<result column="budgetRange" property="budgetRange" jdbcType="VARCHAR" />
+		<result column="budgetRangeValue" property="budgetRangeValue" jdbcType="INTEGER" />
+		<result column="budgetRangeId" property="budgetRangeId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		agent_visit_sign.id,
+		agent_visit_sign.agentId,
+		agent_visit_sign.agentName,
+		agent_visit_sign.clientName,
+		agent_visit_sign.mobilePhone,
+		agent_visit_sign.address,
+		agent_visit_sign.visitNum,
+		agent_visit_sign.createTime,
+		agent_visit_sign.remark,
+		agent_visit_sign.province,
+		agent_visit_sign.provinceId,
+		agent_visit_sign.city,
+		agent_visit_sign.cityId,
+		agent_visit_sign.area,
+		agent_visit_sign.areaId,
+		agent_visit_sign.projectName,
+		agent_visit_sign.budgetRange,
+		agent_visit_sign.budgetRangeValue,
+		agent_visit_sign.budgetRangeId
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and agent_visit_sign.id = #{id}</if>
+				<if test="agentId != null">and agent_visit_sign.agentId = #{agentId}</if>
+				<if test="createTime != null and createTime != ''">and DATE_FORMAT(agent_visit_sign.createTime,'%Y-%m-%d') = #{createTime}</if>
+				<if test="provinceId != null">and agent_visit_sign.provinceId = #{provinceId}</if>
+				<if test="cityId != null">and agent_visit_sign.cityId = #{cityId}</if>
+				<if test="areaId != null">and agent_visit_sign.areaId = #{areaId}</if>
+				<!-- 模糊查询 -->
+				<if test="clientNameLike != null and clientNameLike != ''"> and agent_visit_sign.clientName like CONCAT("%",#{clientNameLike},"%") </if>
+				<if test="mobilePhoneLike != null and mobilePhoneLike != ''"> and agent_visit_sign.mobilePhone like CONCAT("%",#{mobilePhoneLike},"%") </if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from agent_visit_sign
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from agent_visit_sign
+		<include refid="Where_Condition" />
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from agent_visit_sign
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.agent.po.VisitSign">
+		insert into agent_visit_sign
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="agentId != null" > agentId, </if>
+		  <if test="agentName != null" > agentName, </if>
+		  <if test="clientName != null" > clientName, </if>
+		  <if test="mobilePhone != null" > mobilePhone, </if>
+		  <if test="address != null" > address, </if>
+		  <if test="visitNum != null" > visitNum, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="province != null" > province, </if>
+		  <if test="provinceId != null" > provinceId, </if>
+		  <if test="city != null" > city, </if>
+		  <if test="cityId != null" > cityId, </if>
+		  <if test="area != null" > area, </if>
+		  <if test="areaId != null" > areaId, </if>
+		  <if test="projectName != null" > projectName, </if>
+		  <if test="budgetRange != null" > budgetRange, </if>
+		  <if test="budgetRangeValue != null" > budgetRangeValue, </if>
+		  <if test="budgetRangeId != null" > budgetRangeId, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="agentId != null" > #{agentId}, </if>
+		  <if test="agentName != null" > #{agentName}, </if>
+		  <if test="clientName != null" > #{clientName}, </if>
+		  <if test="mobilePhone != null" > #{mobilePhone}, </if>
+		  <if test="address != null" > #{address}, </if>
+		  <if test="visitNum != null" > #{visitNum}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="province != null" > #{province}, </if>
+		  <if test="provinceId != null" > #{provinceId}, </if>
+		  <if test="city != null" > #{city}, </if>
+		  <if test="cityId != null" > #{cityId}, </if>
+		  <if test="area != null" > #{area}, </if>
+		  <if test="areaId != null" > #{areaId}, </if>
+		  <if test="projectName != null" > #{projectName}, </if>
+		  <if test="budgetRange != null" > #{budgetRange}, </if>
+		  <if test="budgetRangeValue != null" > #{budgetRangeValue}, </if>
+		  <if test="budgetRangeId != null" > #{budgetRangeId}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.agent.po.VisitSign">
+		update 
+			agent_visit_sign 
+		<set>
+			<if test="agentId != null"> agentId = #{agentId}, </if>
+			<if test="agentName != null"> agentName = #{agentName}, </if>
+			<if test="clientName != null"> clientName = #{clientName}, </if>
+			<if test="mobilePhone != null"> mobilePhone = #{mobilePhone}, </if>
+			<if test="address != null"> address = #{address}, </if>
+			<if test="visitNum != null"> visitNum = #{visitNum}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="area != null"> area = #{area}, </if>
+			<if test="areaId != null"> areaId = #{areaId}, </if>
+			<if test="projectName != null"> projectName = #{projectName}, </if>
+			<if test="budgetRange != null"> budgetRange = #{budgetRange}, </if>
+			<if test="budgetRangeValue != null"> budgetRangeValue = #{budgetRangeValue}, </if>
+			<if test="budgetRangeId != null"> budgetRangeId = #{budgetRangeId}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from agent_visit_sign
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from agent_visit_sign
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

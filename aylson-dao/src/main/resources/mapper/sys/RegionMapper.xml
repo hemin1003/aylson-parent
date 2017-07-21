@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.Region">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.RegionVo">
+		<id column="regionId" property="regionId" jdbcType="INTEGER" />
+		<result column="regionCode" property="regionCode" jdbcType="VARCHAR" />
+		<result column="regionName" property="regionName" jdbcType="VARCHAR" />
+		<result column="regionLevel" property="regionLevel" jdbcType="INTEGER" />
+		<result column="parentId" property="parentId" jdbcType="INTEGER" />
+		<result column="languge" property="languge" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_region.regionId,
+		sys_region.regionCode,
+		sys_region.regionName,
+		sys_region.regionLevel,
+		sys_region.parentId,
+		sys_region.languge
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="regionId != null">and sys_region.regionId = #{regionId}</if>
+				<if test="parentId != null"> and sys_region.parentId = #{parentId} </if>
+				<if test="regionLevel != null"> and sys_region.regionLevel = #{regionLevel} </if>
+				<if test="regionName != null"> and sys_region.regionName = #{regionName} </if>
+				<!-- 模糊查询 -->
+				<if test="regionNameLike != null and regionNameLike != ''">and sys_region.regionName  like CONCAT('%',#{regionNameLike},'%')</if>
+			</trim>
+		</where>
+	</sql>
+	
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(regionId) from sys_region
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_region
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_region.regionLevel </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage== true and offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+	</select>
+
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_region
+		where sys_region.regionId = #{id}
+	</select>
+	
+</mapper>

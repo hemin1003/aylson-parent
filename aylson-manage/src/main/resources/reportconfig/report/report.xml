@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<applications xmlns="http://www.wabacus.com"
+			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			   xsi:schemaLocation="http://www.wabacus.com ../xsd/wabacus.applications.xsd">
+	<page id="test">
+		<report id="report1" title="员工基本信息列表" pagesize="20" scrollstyle="image" scrollheight="300px" width="1000px" dataexport="richexcel">
+			<display>
+				<col column="{sequence:1}" label="序号"/>
+				<col column="partnerName" label="账号名" clickorderby="true"/>
+				<col column="mobilePhone" label="手机号" clickorderby="true"/>
+			</display>
+			<sql>
+				<value>
+					<![CDATA[
+						select partnerName,mobilePhone from partner_account
+					]]>
+				</value>
+			</sql>
+		</report>
+	</page>
+</applications>

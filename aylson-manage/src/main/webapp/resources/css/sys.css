@@ -1,0 +1,32 @@
+	.tableForm{
+	    width:100%;
+		border-collapse:collapse; 
+		border:1px solid #95B8E7;
+	}
+	.tableForm td{
+		border-collapse:collapse; 
+		border:1px solid #95B8E7;
+		font-size:12px;
+		padding:3px;
+		height:25px;
+	}
+	.tableForm th{
+		min-width:100px;
+		text-align:right;
+		border-collapse:collapse; 
+		border:1px solid #95B8E7;
+		background-color:#eeeeff;
+	}
+	
+	.ol_1 li{
+		margin:5px 0px;
+	}
+	.ol_1 li a{
+		text-decoration: none;
+	}
+	
+	[id$="Area"]{
+		background-color:#F3F3F3;
+	}
+	
+	

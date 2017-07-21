@@ -1,0 +1,735 @@
+TABLE {
+	MARGIN: 0px;
+}
+TD {
+	FONT-SIZE: 13px;
+}
+A:visited {
+	COLOR: #0000ff; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #ff0000; TEXT-DECORATION: none
+}
+A:link {
+	COLOR: #0000ff; TEXT-DECORATION: none
+}
+.cls-loading-img {/*正在加载提示图片样式*/
+	BACKGROUND-IMAGE: url(images/loading.gif);
+	position:absolute; 
+	z-index:1000;
+	border:0;
+	width:220px;
+	height:19px;
+	display:none;
+}
+
+.cls-articlelist-data-table{/*文章数据列表报表数据表格的样式*/
+	border:0px;
+	BORDER-COLLAPSE:   collapse;
+}
+
+.cls-data-tr-head-articlelist{/*文章数据列表报表数据头部<tr/>的样式*/	
+	height: 20px;
+}
+
+.cls-data-tr-odd{/*数据列表报表奇数行样式*/
+	background-color: #FBFBFB;
+}
+.cls-data-tr-even{/*数据列表报表偶数行样式*/
+	background-color: #FFFFFF;
+}
+
+.cls-data-th-articlelist{/*文章数据列表报表数据头部<td/>的样式*/	
+	BACKGROUND: #6FB4F8;
+	text-align: center; 
+	vertical-align:middle;
+	border:1px solid #BDDFFF;
+}
+
+.cls-data-td-articlelist{
+	background:url(images/articlelist_bottomline.gif) repeat-x scroll left bottom transparent;
+	min-height:23px;height:23px;
+	line-height:23px;
+}
+
+
+
+.cls-data-table{/*数据自动列表报表数据表格的样式*/
+	BORDER-COLLAPSE:   collapse;
+	border:1px solid #ACCCFF;
+}
+.cls-data-tr-head-list {/*数据自动列表报表数据标题行<tr/>的样式*/
+ 	height: 20px;
+ }
+.cls-data-th-list {/*数据自动列表报表数据标题行每个<td/>的样式#3AA8F3/#64A5F8*/
+	background-color: #6FB4F8;
+	/**BACKGROUND-IMAGE: url(images/datatitle_bg.gif);*/
+	text-align: center; 
+	vertical-align:middle;
+	border:1px solid #BDDFFF;
+ }
+.cls-data-td-list{/*数据自动列表报表数据行每个<td/>的样式*/
+	border:1px solid #BDDFFF; 
+	min-height:23px;height:23px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+.cls-data-content-list{/*如果cellresize配置为1或者显示了垂直滚动条，则会将单元格内容自动包在一个<div/>中，下面就是设置这个div的样式*/
+	/*white-space:nowrap;*/
+	overflow:hidden;
+	text-overflow:ellipsis;
+	width:100%	
+}
+.cls-data-td-editlist{/*可编辑数据自动列表报表数据行每个<td/>的样式*/
+	/*white-space:nowrap;*/
+	overflow:hidden;
+	text-overflow:ellipsis;
+	border:1px solid #BDDFFF; 
+	min-height:23px;height:23px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.cls-data-td-listform{/*列表表单数据行每个<td/>的样式*/
+	/*white-space:nowrap;*/
+	overflow:hidden;
+	text-overflow:ellipsis;
+	border:1px solid #BDDFFF; 
+	min-height:25px;height:25px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.cls-data-table-detail{
+	BORDER-COLLAPSE:   collapse;
+	border:1px solid #ACCCFF;
+}
+.cls-data-th-detail{/*数据细览报表显示数据标题<td/>的样式*/
+	/*background-color: #ACCCFF;
+	heigth:30px;
+	text-align: center;*/ 
+	background-color: #EBF0FE;
+	border:1px solid #BDDFFF;
+}
+.cls-data-td-detail{/*数据细览报表显示数据<td/>的样式*/
+	border:1px solid #BDDFFF; 
+	height:23px;min-height:23px;
+}
+.cls-data-td-editdetail{/*以编辑模式显示可编辑数据细览报表显示数据<td/>的样式*/
+	border:1px solid #BDDFFF; 
+	min-height:25px;height:25px;
+}
+
+.cls-search-table {/*显示搜索框的<table/>的样式*/
+	background-image: url(images/searchbox_bgcolor.gif);/*搜索框的背景色*/
+	height:40;
+	border:0;
+ }
+.cls_search_class1{/*前导图片样式*/
+/*    background-image: url(../images/test.gif);
+	width:15px;
+	height:15px;
+	border:0px;*/
+}
+.cls_search_tip{/*提示文字样式*/
+    color:#223c94
+}
+.cls_search_class3{/*中间竖线样式*/
+    /*background-image: url(../images/line.gif);
+	width:1px;
+	height:21px;
+	border:0px;*/
+}
+.cls-button{/*按钮样式*/
+	background:url(images/button.gif) no-repeat;
+	width:45px;height:20px;
+	font-size:12px;
+	color:#000;
+	border:0;
+	/*margin:10px 0;*/
+	cursor: pointer;
+	text-align:center;
+}
+
+.cls-button-mouseover{/*鼠标移上时按钮样式*/
+	background:url(images/button_mouseover.gif) no-repeat;
+	width:45px;height:20px;
+	font-size:12px;
+	color:#3366FF;
+	border:0;
+	/*margin:10px 0;*/
+	cursor: pointer;
+	text-align:center;
+}
+
+.cls-button-disabled{/*禁用按钮样式*/
+	background:url(images/button.gif) no-repeat;
+	width:45px;height:20px;
+	font-size:12px;
+	COLOR:#a0a0a0;
+	border:0;
+	/*margin:10px 0;*/
+	text-align:center;
+}
+
+.cls-button2{/*长按钮样式*/
+	background:url(images/button2.gif) no-repeat;
+	width:70px;height:20px;
+	font-size:12px;color:#000;border:0;
+	/*margin:10px 0;*/
+	cursor: pointer;
+	text-align:center;
+}
+
+.cls-button2-mouseover{/*长按钮样式*/
+	background:url(images/button2_mouseover.gif) no-repeat;
+	width:70px;height:20px;
+	font-size:12px;color:#3366FF;border:0;
+	/*margin:10px 0;*/
+	cursor: pointer;
+	text-align:center;
+}
+
+.cls-button2-disabled{/*禁用长按钮样式*/
+	background:url(images/button2.gif) no-repeat;
+	width:70px;height:20px;
+	font-size:12px;
+	color:#a0a0a0;
+	border:0;
+	/*margin:10px 0;*/
+	text-align:center;
+}
+
+.cls-datatable-headline{/*标题下面横线的颜色*/
+	background-color:#2882C6;
+	height:2px;
+}
+
+.cls-inputbox-normal{/*文本框默认样式*/
+	border:1px solid #C7C7C7;
+	display:inline;
+	font-size:13px;
+}
+
+.cls-inputbox-datepicker{/*日期选择框样式*/
+	background:url("images/datePicker.gif") no-repeat scroll right center transparent;
+}
+
+.cls-inputbox-typeselectbox{/*可输入的下拉框样式*/
+	background:url("images/down_arrow.jpg") no-repeat scroll right center transparent;
+}
+
+.cls-inputbox-mouseover{/*文本框onmouserover样式*/
+	border:1px solid #3A75FF;
+	display:inline;
+	font-size:13px;
+}
+.cls-inputbox-focus{/*文本框onfocus样式*/
+	border:2px solid #3A75FF;
+	display:inline;
+	font-size:13px;
+}
+.cls-inputbox-textareabox{/*普通多行文本框专有样式*/
+	width:100%;
+	/*height:100%;*/
+}
+
+.cls-inputbox2-full{/*第二种可编辑报表类型的输入框默认样式*/
+	border:0px none; 
+	BACKGROUND-COLOR:transparent; 
+	height:18;
+	color:#000000;
+	font-size:13px;
+	width:100%;
+}
+
+.cls-inputbox2-selectbox-full{/*第二种可编辑报表类型的下拉框默认样式*/
+	border:1px solid #C7C7C7;
+	display:inline;
+	font-size:13px;
+	width:100%;
+}
+
+.cls-inputbox2{/*第二种可编辑报表类型的输入框默认样式*/
+	border:0px none; 
+	BACKGROUND-COLOR:transparent; 
+	height:18;
+	color:#000000;
+	font-size:13px;
+}
+
+.cls-inputbox2-selectbox{/*第二种可编辑报表类型的下拉框默认样式*/
+	border:1px solid #C7C7C7;
+	display:inline;
+	font-size:13px;
+}
+
+.cls-inputbox-textareabox2
+{
+	/*border:0px none; BACKGROUND-COLOR:transparent; color:#000000;*/
+	font-size:13px;
+	position:absolute;
+	top:0px;
+	left:0px; 
+	z-index:101;
+	background-color:#ffffff;
+	border:1px solid #3A75FF;
+	padding-left:2px;
+	overflow:auto;
+	display:none;
+	height:100px;
+}
+
+.cls-img-normal{/*<img/>默认样式*/
+	cursor:pointer;
+}
+.cls-img-mouseover{/*<img/>onmouserover样式*/
+	border:1px solid #3A75FF;
+	cursor:pointer;
+}
+
+.resize_span{
+	text-align:right; 
+	width:3px; 
+	margin:0px 0 0px 0; 
+	border:0px; 
+	float:right; 
+	cursor:e-resize;
+}
+.filter_span{
+	BORDER:0px; 
+	FLOAT:right;
+	border:0px; 
+	MARGIN:0px 0 0px 0; 
+	TEXT-ALIGN:right;
+}
+.colSelectedLabel_leftimg{
+	float:left;
+	MARGIN:0 0px 0 0;
+	cursor:pointer;	
+	TEXT-ALIGN:left
+}
+.colSelectedLabel_rightimg{
+	float:right;
+	MARGIN:0 0px 0 0;
+	cursor:pointer;	
+	TEXT-ALIGN:right;
+}
+.titletree_container {/*列选择树所在容器的样式*/
+	position:absolute;
+	top:0px;
+	left:0px;
+	margin:0;
+	z-index:999;
+	background-color:#ffffff;
+	border:1px solid #64A5F8;
+}
+
+.titletree_container_inner {/*列选择树所在内层容器的样式*/
+	top:0px;
+	left:0px;
+	overflow: auto;
+	background-color:#FFFFFF;
+	padding:5px 2px 5px 10px;
+}
+
+span.spanOutputTextDropdown{
+	position:absolute;
+	top:0px;
+	left:0px; 
+	z-index:101;
+	background-color:#ffffff;
+	border:1px solid #64A5F8;
+	padding-left:2px;
+	overflow:auto;
+	display:none;
+	font-size:13px;
+}
+span.spanOutputTextTypePrompt{
+	position:absolute;
+	top:0px;
+	left:0px; 
+	z-index:101;
+	background-color:#ffffff;
+	border:1px solid #000000;
+	padding-left:2px;
+	overflow:auto;
+	display:none;
+	font-size:13px;
+}
+span.spanOutputTitleElement{
+	background:#64A5F8;
+	color:#000000;
+
+}
+span.spanOutputNormalElement{
+	background:#ffffff;
+	color:#000000;
+}
+span.spanOutputHighElement{
+	background:#000040;
+	color:white;
+	cursor:pointer;
+}
+span.spanTipContainer{
+  padding: 3px; 
+  border: 1px solid #666;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  display: none;
+  background: #eee;
+  color: red;
+  font: bold 12px Verdana, Arial, Helvetica, sans-serif;
+  text-align: left;
+  z-index: 1000;
+  overflow:auto;
+}
+/*
+ *可编辑表格的右键菜单中菜单及菜单项的样式
+ */
+.contextmenu {   
+    BORDER: #1872b6 2px solid; 
+    VISIBILITY: hidden; 
+    WIDTH: 100px; 
+    CURSOR: default; 
+    LINE-HEIGHT: 20px; 
+    PADDING-TOP: 4px; 
+    FONT-FAMILY: "宋体"; 
+    POSITION: absolute; 
+    BACKGROUND-COLOR: #EBF0FE; 
+    TEXT-ALIGN: left;
+    FONT-SIZE: 12px; 
+    MARGIN: 10px 0px 0px;   
+}   
+
+.contextmenuitems_enabled {   
+    PADDING-RIGHT: 1px; 
+    PADDING-LEFT: 10px; 
+    PADDING-BOTTOM: 2px; 
+    PADDING-TOP: 2px;   
+}
+.contextmenuitems_disabled {   
+    PADDING-RIGHT: 1px; 
+    PADDING-LEFT: 10px; 
+    PADDING-BOTTOM: 2px; 
+    PADDING-TOP: 2px; 
+    COLOR:#808080;   
+}
+.dragShadowInit {
+        background-color:gray;
+        cursor:default;
+        position:absolute;
+        filter:progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=50);
+        opacity:0.5;
+        z-index:101;
+        display:none;
+}
+.dragShadowOnMove {
+        background-color:gray;
+        cursor:default;
+        position:absolute;
+        filter:progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=50);
+        opacity:0.5;
+        z-index:101;
+}
+
+.cls-roworder-arrow /*上下移动行排序箭头的样式*/
+{
+	border:#739AC6 1px solid;
+	background-color:#D6EFFF;
+	height:20px;
+	width:20px;
+	cursor: pointer;
+}
+
+.cls-roworder-disabled .cls-roworder-arrow /*上下移动行排序箭头的禁用样式*/
+{
+	border:#739AC6 1px solid;
+	color:#909090;
+	height:20px;
+	width:20px;
+	cursor:default;
+}
+
+.cls-roworder-top /*置顶箭头的样式*/
+{
+	border:0;
+	height:20px;
+	width:20px;
+	cursor: pointer;
+	background:url(images/top.gif) no-repeat;
+}
+
+.cls-roworder-disabled .cls-roworder-top /*置顶箭头的禁用样式*/
+{
+	border:0;
+	height:20px;
+	width:20px;
+	cursor: default;
+	background:url(images/top_disabled.gif) no-repeat;
+}
+
+.cls-editablelist-editcol /*editablelist行编辑图片的样式*/
+{
+	border:0;
+	height:20px;
+	width:19px;
+	cursor: pointer;
+	background:url(images/rowedit.gif) no-repeat;
+}
+
+.cls-editablelist-disabledcol .cls-editablelist-editcol /*editablelist行编辑图片的禁用样式*/
+{
+	border:0;
+	height:19px;
+	width:20px;
+	cursor: default;
+	background:url(images/rowedit_disabled.gif) no-repeat;
+}
+
+/**
+ * blocklist报表类型的样式
+ */
+.cls-blocklist{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+.cls-blocklist-block{
+	float:left;
+	margin:0;
+	text-align:center;
+}
+
+.cls-blocklist-item{
+		
+}
+
+/**
+ * 固定行列表格的样式
+ */
+.cls-fixed-divcontainer{
+	position: relative;
+   width: 100%;
+   height: 100%;
+   overflow: hidden;
+}
+
+/* 整个标题部分外层<div/>标签的样式 */
+.cls-fixed-header {
+	position: absolute;
+	z-index: 3;
+	background-color: #ffffff;
+}
+
+/* 整个标题部分内层<div/>标签的样式 */
+.cls-fixed-headerInner {
+	position: relative;
+}
+.cls-fixed-headerInner table {
+	border-spacing: 0px 0px !important;
+	border-collapse: collapse !important;
+	width: 1px !important;
+	table-layout: fixed !important;
+	background-color: #ffffff; /* Here b/c of Opera 9.25 :( */
+}
+
+/*左上角固定标题部分<div/>样式*/
+.cls-fixed-fixedHeader {
+	position: absolute;
+	z-index: 4;
+	overflow: hidden;
+}
+.cls-fixed-fixedHeader table {
+	border-spacing: 0px 0px !important;
+	border-collapse: collapse !important;
+	width: 1px !important;
+	table-layout: fixed !important;
+	background-color: #ffffff; /* Here b/c of Opera 9.25 :( */
+}
+
+/* 显示滚动数据的部分的<div/>样式 */
+.cls-fixed-data {
+	position: absolute;
+	z-index: 2;
+	overflow: auto;
+	background-color: #ffffff;
+}
+.cls-fixed-data table {
+	border-spacing: 0px 0px !important;
+	border-collapse: collapse !important;
+	width: 1px !important;
+	table-layout: fixed !important;
+}
+
+/* 显示整个数据部分的外层<div/>标签的样式 */
+.cls-fixed-fixeddata {
+	position: absolute;
+	z-index: 1;
+	background-color: #ffffff;
+}
+
+.cls-fixed-fixeddata table {
+	border-spacing: 0px 0px !important;
+	border-collapse: collapse !important;
+	width: 1px !important;	
+	table-layout: fixed !important;
+}
+
+/* 显示整个数据部分的内层<div/>标签的样式 */
+.cls-fixed-fixeddataInner {
+	position: relative;
+}
+
+.cls-fixed-cols {/*被固定列的样式*/
+	background-color: #eeeeee;
+}
+
+/**
+ * 翻页导航栏的样式
+ */
+.cls-navigate-label {
+	TEXT-ALIGN: center;
+	FONT-FAMILY: Verdana,Arial,Tahoma;
+}
+.cls-navigate-label .cls-navigate-link {/*有翻页链接时的样式*/
+	PADDING-RIGHT: 5px;  PADDING-LEFT: 5px; PADDING-BOTTOM: 3px;PADDING-TOP: 3px;COLOR: #555555;
+	vertical-align:bottom;cursor:pointer;
+}
+.cls-navigate-link {/*没有翻页链接时的样式*/
+	PADDING-RIGHT: 5px;  PADDING-LEFT: 5px; PADDING-BOTTOM: 3px;PADDING-TOP: 3px;
+	vertical-align:bottom;
+	FONT-FAMILY: Verdana,Arial,Tahoma;
+}
+.cls-navigate-info{/*翻页导航信息的样式*/
+	vertical-align:bottom;
+	COLOR: #383838;
+}
+.cls-navigate-img{
+	vertical-align:top;
+}
+
+/*.cls-navigate-label .cls-navigate-link A:hover {
+	BORDER-RIGHT: #8db531 1px solid; 
+	PADDING-RIGHT: 2px; 
+	BORDER-TOP: #8db531 1px solid; 
+	PADDING-LEFT: 2px; 
+	PADDING-BOTTOM: 2px; 
+	MARGIN: 2px; 
+	BORDER-LEFT: #8db531 1px solid; 
+	COLOR: #fff; 
+	PADDING-TOP: 2px; 
+	BORDER-BOTTOM: #8db531 1px solid; 
+	BACKGROUND-COLOR: #8db531; 
+	TEXT-DECORATION: none;
+}*/
+
+.cls-navigate-link .cls-navigate-firstbutton
+{/*不带链接的第一页图片*/
+	background:url(images/first.gif) no-repeat;
+	width:12px;
+	height:15px;
+	text-align:center;
+	border:0;
+}
+.cls-navigate-label .cls-navigate-link .cls-navigate-firstbutton
+{/*带链接的第一页图片*/
+	background:url(images/firstlink.gif) no-repeat;
+	width:12px;
+	height:15px;
+	text-align:center;
+	border:0;
+	cursor:pointer;
+}
+
+.cls-navigate-link .cls-navigate-previousbutton
+{/*不带链接的上一页图片*/
+	background:url(images/previous.gif) no-repeat;
+	width:8px;
+	height:15px;
+	text-align:center;
+	border:0;
+}
+.cls-navigate-label .cls-navigate-link .cls-navigate-previousbutton
+{/*带链接的上一页图片*/
+	background:url(images/previouslink.gif) no-repeat;
+	width:8px;
+	height:15px;
+	text-align:center;
+	border:0;
+	cursor:pointer;
+}
+
+.cls-navigate-link .cls-navigate-nextbutton
+{/*不带链接的下一页图片*/
+	background:url(images/next.gif) no-repeat;
+	width:8px;
+	height:15px;
+	text-align:center;
+	border:0;
+}
+.cls-navigate-label .cls-navigate-link .cls-navigate-nextbutton
+{/*带链接的下一页图片*/
+	background:url(images/nextlink.gif) no-repeat;
+	width:8px;
+	height:15px;
+	text-align:center;
+	border:0;
+	cursor:pointer;
+}
+.cls-navigate-link .cls-navigate-lastbutton
+{/*不带链接的最后一页图片*/
+	background:url(images/last.gif) no-repeat;
+	width:12px;
+	height:15px;
+	text-align:center;
+	border:0;
+}
+.cls-navigate-label .cls-navigate-link .cls-navigate-lastbutton
+{/*带链接的最后一页图片*/
+	background:url(images/lastlink.gif) no-repeat;
+	width:12px;
+	height:15px;
+	text-align:center;
+	border:0;
+	cursor:pointer;
+}
+
+.cls-dataexport-success
+{/*采用只落地不导出的方式导出数据文件成功时的提示信息样式*/
+	text-align:center;
+	font-weight:bold;
+	color:#006400;
+	font-size:20px;
+}
+.cls-dataexport-path
+{/*采用只落地不导出的方式导出数据文件成功时的提示路径的样式*/
+	text-align:center;
+	color:#00008B;
+	font-size:16px;
+	margin-top:20px;
+}
+.cls-dataexport-failed
+{/*采用只落地不导出的方式导出数据文件失败时的提示信息样式*/
+	text-align:center;
+	font-weight:bold;
+	color:#DC143C;
+	font-size:16px;
+}
+
+/*正在加载的提示层样式*/
+.loading-indicator 
+{
+	height: 20px;
+	width: 220px;
+	background: url( 'images/loading.gif' );
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.loading-indicator-overlay 
+{
+	background-color: #FFFFFF;
+	opacity: 0.6;
+	filter: alpha(opacity = 60);
+}

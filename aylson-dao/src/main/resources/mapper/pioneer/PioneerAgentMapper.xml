@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.pioneer.po.PioneerAgent">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.pioneer.vo.PioneerAgentVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="agentName" property="agentName" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="contactPhone" property="contactPhone" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="udpateTime" property="udpateTime" jdbcType="TIMESTAMP" />
+		<result column="shopName" property="shopName" jdbcType="VARCHAR" />
+		<result column="shopAddress" property="shopAddress" jdbcType="VARCHAR" />
+		<result column="submitterId" property="submitterId" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="shopProvince" property="shopProvince" jdbcType="VARCHAR" />
+		<result column="shopProvinceId" property="shopProvinceId" jdbcType="INTEGER" />
+		<result column="shopCity" property="shopCity" jdbcType="VARCHAR" />
+		<result column="shopCityId" property="shopCityId" jdbcType="INTEGER" />
+		<result column="shopArea" property="shopArea" jdbcType="VARCHAR" />
+		<result column="shopAreaId" property="shopAreaId" jdbcType="INTEGER" />
+		<result column="historyRemark" property="historyRemark" jdbcType="VARCHAR" />
+		<result column="shopImg" property="shopImg" jdbcType="VARCHAR" />
+		<result column="shopAreas" property="shopAreas" jdbcType="FLOAT" />
+		<result column="signMode" property="signMode" jdbcType="INTEGER" />
+		<result column="agency" property="agency" jdbcType="VARCHAR" />
+		<result column="descs" property="descs" jdbcType="VARCHAR" />
+		<result column="submitter" property="submitter" jdbcType="VARCHAR" />
+		<result column="submitterRealName" property="submitterRealName" jdbcType="VARCHAR" />
+		<result column="submitterPhone" property="submitterPhone" jdbcType="VARCHAR" />
+		<result column="submitterReferral" property="submitterReferral" jdbcType="INTEGER" />
+		<result column="wxOpenId" property="wxOpenId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		pioneer_agent.id,
+		pioneer_agent.agentName,
+		pioneer_agent.province,
+		pioneer_agent.provinceId,
+		pioneer_agent.city,
+		pioneer_agent.cityId,
+		pioneer_agent.area,
+		pioneer_agent.areaId,
+		pioneer_agent.contactPhone,
+		pioneer_agent.address,
+		pioneer_agent.createTime,
+		pioneer_agent.udpateTime,
+		pioneer_agent.shopName,
+		pioneer_agent.shopAddress,
+		pioneer_agent.submitterId,
+		pioneer_agent.status,
+		pioneer_agent.remark,
+		pioneer_agent.shopProvince,             
+		pioneer_agent.shopProvinceId,
+		pioneer_agent.shopCity,
+		pioneer_agent.shopCityId,
+		pioneer_agent.shopArea,
+		pioneer_agent.shopAreaId,
+		pioneer_agent.historyRemark,
+		pioneer_agent.shopImg,
+		pioneer_agent.shopAreas,
+		pioneer_agent.signMode,
+		pioneer_agent.agency,
+		pioneer_agent.descs,
+		mem_account.accountName as submitter,
+		mem_account.realName as submitterRealName,
+		mem_account.mobilePhone as submitterPhone,
+		mem_account.referralId as submitterReferral,
+		mem_account.wxOpenId
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and pioneer_agent.id = #{id}</if>
+				<if test="submitterId != null">and pioneer_agent.submitterId = #{submitterId}</if>
+				<if test="statusMerge == 's1'">and pioneer_agent.status = 1</if>
+				<if test="statusMerge == 's2'">and (pioneer_agent.status = 2 or pioneer_agent.status = 21 
+				or pioneer_agent.status = 3 or pioneer_agent.status = 31 or pioneer_agent.status = 41)</if>
+				<if test="statusMerge == 's3'">and pioneer_agent.status = 4</if>
+				<if test="statusMerge == 's4'">and pioneer_agent.status != 4</if>
+				<!-- 模糊查询 -->
+				<if test="agentNameLike != null and agentNameLike != ''">and  pioneer_agent.agentName like CONCAT('%',#{agentNameLike},'%')</if>
+				<if test="contactPhoneLike != null and contactPhoneLike != ''">and  pioneer_agent.contactPhone like CONCAT('%',#{contactPhoneLike},'%')</if>
+				<if test="shopNameLike != null and shopNameLike != ''">and  pioneer_agent.shopName like CONCAT('%',#{shopNameLike},'%')</if>
+				<if test="addressLike != null and addressLike != ''">and  
+				 (pioneer_agent.province like CONCAT('%',#{addressLike},'%')
+					 or pioneer_agent.city like CONCAT('%',#{addressLike},'%')
+					 or pioneer_agent.area like CONCAT('%',#{addressLike},'%')
+					 or pioneer_agent.address like CONCAT('%',#{addressLike},'%')
+				 )
+				<if test="submitterLike != null and submitterLike != ''">and  mem_account.accountName like CONCAT('%',#{submitterLike},'%')</if>
+				<if test="submitterPhoneLike != null and submitterPhoneLike != ''">and  mem_account.mobilePhone like CONCAT('%',#{submitterPhoneLike},'%')</if>
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(pioneer_agent.id) from pioneer_agent
+		inner join mem_account on mem_account.id = pioneer_agent.submitterId
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from pioneer_agent
+		inner join mem_account on mem_account.id = pioneer_agent.submitterId
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by pioneer_agent.udpateTime desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from pioneer_agent
+		inner join mem_account on mem_account.id = pioneer_agent.submitterId
+		where pioneer_agent.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.pioneer.po.PioneerAgent">
+		insert into pioneer_agent
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="agentName != null" > agentName, </if>
+		  <if test="province != null" > province, </if>
+		  <if test="provinceId != null" > provinceId, </if>
+		  <if test="city != null" > city, </if>
+		  <if test="cityId != null" > cityId, </if>
+		  <if test="area != null" > area, </if>
+		  <if test="areaId != null" > areaId, </if>
+		  <if test="contactPhone != null" > contactPhone, </if>
+		  <if test="address != null" > address, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="udpateTime != null" > udpateTime, </if>
+		  <if test="shopName != null" > shopName, </if>
+		  <if test="shopAddress != null" > shopAddress, </if>
+		  <if test="submitterId != null" > submitterId, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="shopProvince != null" > shopProvince, </if>
+		  <if test="shopProvinceId != null" > shopProvinceId, </if>
+		  <if test="shopCity != null" > shopCity, </if>
+		  <if test="shopCityId != null" > shopCityId, </if>
+		  <if test="shopArea != null" > shopArea, </if>
+		  <if test="shopAreaId != null" > shopAreaId, </if>
+		  <if test="historyRemark != null" > historyRemark, </if>
+		  <if test="shopImg != null" > shopImg, </if>
+		  <if test="shopAreas != null" > shopAreas, </if>
+		  <if test="signMode != null" > signMode, </if>
+		  <if test="agency != null" > agency, </if>
+		  <if test="descs != null" > descs, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="agentName != null" > #{agentName}, </if>
+		  <if test="province != null" > #{province}, </if>
+		  <if test="provinceId != null" > #{provinceId}, </if>
+		  <if test="city != null" > #{city}, </if>
+		  <if test="cityId != null" > #{cityId}, </if>
+		  <if test="area != null" > #{area}, </if>
+		  <if test="areaId != null" > #{areaId}, </if>
+		  <if test="contactPhone != null" > #{contactPhone}, </if>
+		  <if test="address != null" > #{address}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="udpateTime != null" > #{udpateTime}, </if>
+		  <if test="shopName != null" > #{shopName}, </if>
+		  <if test="shopAddress != null" > #{shopAddress}, </if>
+		  <if test="submitterId != null" > #{submitterId}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="shopProvince != null" > #{shopProvince}, </if>
+		  <if test="shopProvinceId != null" > #{shopProvinceId}, </if>
+		  <if test="shopCity != null" > #{shopCity}, </if>
+		  <if test="shopCityId != null" > #{shopCityId}, </if>
+		  <if test="shopArea != null" > #{shopArea}, </if>
+		  <if test="shopAreaId != null" > #{shopAreaId}, </if>
+		  <if test="historyRemark != null" > #{historyRemark}, </if>
+		  <if test="shopImg != null" > #{shopImg}, </if>
+		  <if test="shopAreas != null" > #{shopAreas}, </if>
+		  <if test="signMode != null" > #{signMode}, </if>
+		  <if test="agency != null" > #{agency}, </if>
+		  <if test="descs != null" > #{descs}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.pioneer.po.PioneerAgent">
+		update 
+			pioneer_agent 
+		<set>
+			<if test="agentName != null"> agentName = #{agentName}, </if>
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="area != null"> area = #{area}, </if>
+			<if test="areaId != null"> areaId = #{areaId}, </if>
+			<if test="contactPhone != null"> contactPhone = #{contactPhone}, </if>
+			<if test="address != null"> address = #{address}, </if>
+			<if test="udpateTime != null"> udpateTime = #{udpateTime}, </if>
+			<if test="shopName != null"> shopName = #{shopName}, </if>
+			<if test="shopAddress != null"> shopAddress = #{shopAddress}, </if>
+			<if test="submitterId != null"> submitterId = #{submitterId}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="shopProvince != null"> shopProvince = #{shopProvince}, </if>
+			<if test="shopProvinceId != null"> shopProvinceId = #{shopProvinceId}, </if>
+			<if test="shopCity != null"> shopCity = #{shopCity}, </if>
+			<if test="shopCityId != null"> shopCityId = #{shopCityId}, </if>
+			<if test="shopArea != null"> shopArea = #{shopArea}, </if>
+			<if test="shopAreaId != null"> shopAreaId = #{shopAreaId}, </if>
+			<if test="historyRemark != null"> historyRemark = CONCAT(historyRemark,#{historyRemark}), </if>
+			<if test="shopImg != null"> shopImg = #{shopImg}, </if>
+			<if test="shopAreas != null"> shopAreas = #{shopAreas}, </if>
+			<if test="signMode != null"> signMode = #{signMode}, </if>
+			<if test="agency != null"> agency = #{agency}, </if>
+			<if test="descs != null"> descs = #{descs}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from pioneer_agent
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from pioneer_agent
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

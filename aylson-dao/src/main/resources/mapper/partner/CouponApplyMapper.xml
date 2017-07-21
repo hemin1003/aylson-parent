@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.partner.po.CouponApply">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.partner.vo.CouponApplyVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="applierId" property="applierId" jdbcType="INTEGER" />
+		<result column="applyCouponId" property="applyCouponId" jdbcType="INTEGER" />
+		<result column="applyCouponName" property="applyCouponName" jdbcType="VARCHAR" />
+		<result column="ownerName" property="ownerName" jdbcType="VARCHAR" />
+		<result column="ownerPhone" property="ownerPhone" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="street" property="street" jdbcType="VARCHAR" />
+		<result column="unit" property="unit" jdbcType="VARCHAR" />
+		<result column="houseStyle" property="houseStyle" jdbcType="VARCHAR" />
+		<result column="houseType" property="houseType" jdbcType="VARCHAR" />
+		<result column="houseArea" property="houseArea" jdbcType="VARCHAR" />
+		<result column="progress" property="progress" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="applyNum" property="applyNum" jdbcType="INTEGER" />
+		<result column="applyTime" property="applyTime" jdbcType="TIMESTAMP" />
+		<result column="isBind" property="isBind" jdbcType="BIT" />
+		<result column="auditTime" property="auditTime" jdbcType="TIMESTAMP" />
+		<!-- partner_account -->
+		<result column="applier" property="applier" jdbcType="VARCHAR" />
+		<result column="applierPhone" property="applierPhone" jdbcType="VARCHAR" />
+		<!-- partner_coupon_config -->
+		<result column="couponValue" property="couponValue" jdbcType="INTEGER" />
+		<result column="orderNum" property="orderNum" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		partner_coupon_apply.id,
+		partner_coupon_apply.applierId,
+		partner_coupon_apply.applyCouponId,
+		partner_coupon_apply.applyCouponName,
+		partner_coupon_apply.ownerName,
+		partner_coupon_apply.ownerPhone,
+		partner_coupon_apply.province,
+		partner_coupon_apply.provinceId,
+		partner_coupon_apply.city,
+		partner_coupon_apply.cityId,
+		partner_coupon_apply.area,
+		partner_coupon_apply.areaId,
+		partner_coupon_apply.street,
+		partner_coupon_apply.unit,
+		partner_coupon_apply.houseStyle,
+		partner_coupon_apply.houseType,
+		partner_coupon_apply.houseArea,
+		partner_coupon_apply.progress,
+		partner_coupon_apply.state,
+		partner_coupon_apply.applyNum,
+		partner_coupon_apply.applyTime,
+		partner_coupon_apply.isBind,
+		partner_coupon_apply.auditTime,
+		partner_account.partnerName as applier,
+		partner_account.mobilePhone as applierPhone,
+		partner_coupon_config.couponValue,
+		(select count(id) from owner_order where partnerId is not null and owner_order.mobilePhone = partner_coupon_apply.ownerPhone) as orderNum
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and partner_coupon_apply.id = #{id}</if>
+				<if test="state != null">and partner_coupon_apply.state = #{state}</if>
+				<if test="applierId != null">and partner_coupon_apply.applierId = #{applierId}</if>
+				<if test="applyCouponId != null">and partner_coupon_apply.applyCouponId = #{applyCouponId}</if>
+				<if test="ownerPhone != null">and partner_coupon_apply.ownerPhone = #{ownerPhone}</if>
+				<if test="provinceId != null">and partner_coupon_apply.provinceId = #{provinceId}</if>
+				<if test="cityId != null">and partner_coupon_apply.cityId = #{cityId}</if>
+				<if test="areaId != null">and partner_coupon_apply.areaId = #{areaId}</if>
+				<if test="progress != null">and partner_coupon_apply.progress = #{progress}</if>
+				<if test="applyTime != null and applyTime != ''">and DATE_FORMAT(partner_coupon_apply.applyTime ,'%Y-%m-%d') = #{applyTime} </if>
+				<if test="isBind != null">and partner_coupon_apply.isBind = #{isBind}</if>
+				<if test="isClient == true">and 
+					exists (select a.id from (select id,count(distinct ownerPhone) from partner_coupon_apply  group by ownerPhone) a where a.id = partner_coupon_apply.id)
+				</if>
+				<!-- 模糊查询 -->
+			    <if test="applierLike != null and applierLike != '' ">and partner_account.partnerName like CONCAT('%',#{applierLike},'%')</if>
+			    <if test="applierPhoneLike != null and applierPhoneLike != '' ">and partner_account.mobilePhone  like CONCAT('%',#{applierPhoneLike},'%')</if>
+			    <if test="ownerNameLike != null and ownerNameLike != '' ">and partner_coupon_apply.ownerName like CONCAT('%',#{ownerNameLike},'%')</if>
+			    <if test="ownerPhoneLike != null and ownerPhoneLike != '' ">and partner_coupon_apply.ownerPhone like CONCAT('%',#{ownerPhoneLike},'%')</if>
+			    <if test="applyCouponNameLike != null and applyCouponNameLike != '' ">and partner_coupon_apply.applyCouponName like CONCAT('%',#{applyCouponNameLike},'%')</if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(partner_coupon_apply.id) from partner_coupon_apply
+		left join partner_account
+		on partner_coupon_apply.applierId = partner_account.id
+		left join partner_coupon_config
+		on partner_coupon_apply.applyCouponId = partner_coupon_config.id
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from partner_coupon_apply
+		left join partner_account
+		on partner_coupon_apply.applierId = partner_account.id
+		left join partner_coupon_config
+		on partner_coupon_apply.applyCouponId = partner_coupon_config.id
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by partner_coupon_apply.state, partner_coupon_apply.applyTime</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from partner_coupon_apply
+		left join partner_account
+		on partner_coupon_apply.applierId = partner_account.id
+		left join partner_coupon_config
+		on partner_coupon_apply.applyCouponId = partner_coupon_config.id
+		where partner_coupon_apply.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.partner.po.CouponApply">
+		insert into partner_coupon_apply
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="applierId != null" > applierId, </if>
+		  <if test="applyCouponId != null" > applyCouponId, </if>
+		  <if test="applyCouponName != null" > applyCouponName, </if>
+		  <if test="ownerName != null" > ownerName, </if>
+		  <if test="ownerPhone != null" > ownerPhone, </if>
+		  <if test="province != null" > province, </if>
+		  <if test="provinceId != null" > provinceId, </if>
+		  <if test="city != null" > city, </if>
+		  <if test="cityId != null" > cityId, </if>
+		  <if test="area != null" > area, </if>
+		  <if test="areaId != null" > areaId, </if>
+		  <if test="street != null" > street, </if>
+		  <if test="unit != null" > unit, </if>
+		  <if test="houseStyle != null" > houseStyle, </if>
+		  <if test="houseType != null" > houseType, </if>
+		  <if test="houseArea != null" > houseArea, </if>
+		  <if test="progress != null" > progress, </if>
+		  <if test="state != null" > state, </if>
+		  <if test="applyNum != null" > applyNum, </if>
+		  <if test="applyTime != null" > applyTime, </if>
+		  <if test="isBind != null" > isBind, </if>
+		 <!--  <if test="auditTime != null" > auditTime, </if> -->
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="applierId != null" > #{applierId}, </if>
+		  <if test="applyCouponId != null" > #{applyCouponId}, </if>
+		  <if test="applyCouponName != null" > #{applyCouponName}, </if>
+		  <if test="ownerName != null" > #{ownerName}, </if>
+		  <if test="ownerPhone != null" > #{ownerPhone}, </if>
+		  <if test="province != null" > #{province}, </if>
+		  <if test="provinceId != null" > #{provinceId}, </if>
+		  <if test="city != null" > #{city}, </if>
+		  <if test="cityId != null" > #{cityId}, </if>
+		  <if test="area != null" > #{area}, </if>
+		  <if test="areaId != null" > #{areaId}, </if>
+		  <if test="street != null" > #{street}, </if>
+		  <if test="unit != null" > #{unit}, </if>
+		  <if test="houseStyle != null" > #{houseStyle}, </if>
+		  <if test="houseType != null" > #{houseType}, </if>
+		  <if test="houseArea != null" > #{houseArea}, </if>
+		  <if test="progress != null" > #{progress}, </if>
+		  <if test="state != null" > #{state}, </if>
+		  <if test="applyNum != null" > #{applyNum}, </if>
+		  <if test="applyTime != null" > #{applyTime}, </if>
+		  <if test="isBind != null" > #{isBind}, </if>
+		  <!-- <if test="auditTime != null" > #{auditTime}, </if> -->
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.partner.po.CouponApply">
+		update 
+			partner_coupon_apply 
+		<set>
+			<if test="applierId != null"> applierId = #{applierId}, </if>
+			<if test="applyCouponId != null"> applyCouponId = #{applyCouponId}, </if>
+			<if test="applyCouponName != null"> applyCouponName = #{applyCouponName}, </if>
+			<if test="ownerName != null"> ownerName = #{ownerName}, </if>
+			<if test="ownerPhone != null"> ownerPhone = #{ownerPhone}, </if>
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="area != null"> area = #{area}, </if>
+			<if test="areaId != null"> areaId = #{areaId}, </if>
+			<if test="street != null"> street = #{street}, </if>
+			<if test="unit != null"> unit = #{unit}, </if>
+			<if test="houseStyle != null"> houseStyle = #{houseStyle}, </if>
+			<if test="houseType != null"> houseType = #{houseType}, </if>
+			<if test="houseArea != null"> houseArea = #{houseArea}, </if>
+			<if test="progress != null"> progress = #{progress}, </if>
+			<if test="state != null"> state = #{state}, </if>
+			<if test="applyNum != null"> applyNum = #{applyNum}, </if>
+			<!-- <if test="applyTime != null"> applyTime = #{applyTime}, </if> -->
+			<if test="isBind != null"> isBind = #{isBind}, </if>
+			<if test="auditTime != null"> auditTime = #{auditTime}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from partner_coupon_apply
+		where partner_coupon_apply.id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from partner_coupon_apply
+		<include refid="Where_Condition" />
+	</delete>
+	
+
+</mapper>

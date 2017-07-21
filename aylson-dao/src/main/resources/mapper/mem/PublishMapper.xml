@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.Publish">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.PublishVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="thumb" property="thumb" jdbcType="VARCHAR" />
+		<result column="summary" property="summary" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="isRead" property="isRead" jdbcType="TINYINT" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_publish.id,
+		mem_publish.thumb,
+		mem_publish.summary,
+		mem_publish.title,
+		mem_publish.content,
+		mem_publish.createTime,
+		mem_publish.publishTime,
+		mem_publish.status,
+		mem_publish.type,
+		exists (select id from mem_publish_read where mem_publish_read.publishId = mem_publish.id) as isRead
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_publish.id = #{id}</if>
+				<if test="status != null">and mem_publish.status = #{status}</if>
+				<if test="type != null">and mem_publish.type = #{type}</if>
+				<!-- 模糊查询 -->
+				<if test="titleLike != null and titleLike != ''">and mem_publish.title like CONCAT('%',#{titleLike},'%')</if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from mem_publish
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from mem_publish
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_publish.status,mem_publish.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from mem_publish
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.Publish">
+		insert into mem_publish
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="thumb != null" > thumb, </if>
+		  <if test="summary != null" > summary, </if>
+		  <if test="title != null" > title, </if>
+		  <if test="content != null" > content, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="publishTime != null" > publishTime, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="type != null" > type, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="thumb != null" > #{thumb}, </if>
+		  <if test="summary != null" > #{summary}, </if>
+		  <if test="title != null" > #{title}, </if>
+		  <if test="content != null" > #{content}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="publishTime != null" > #{publishTime}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="type != null" > #{type}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.Publish">
+		update 
+			mem_publish 
+		<set>
+			<if test="thumb != null"> thumb = #{thumb}, </if>
+			<if test="summary != null"> summary = #{summary}, </if>
+			<if test="title != null"> title = #{title}, </if>
+			<if test="content != null"> content = #{content}, </if>
+			<if test="createTime != null"> createTime = #{createTime}, </if>
+			<if test="publishTime != null"> publishTime = #{publishTime}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="type != null"> type = #{type}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_publish
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_publish
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<!-- 公告读取情况   start -->
+	<!--  对应结果集 -->
+	<resultMap id="PublishReadResultMap" type="com.aylson.dc.mem.po.PublishRead">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="publishId" property="publishId" jdbcType="INTEGER" />
+		<result column="readerId" property="readerId" jdbcType="INTEGER" />
+		<result column="readTime" property="readTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<!-- db 对应字段 -->
+		<sql id="DB_Column_PublishReadInfo">
+			mem_publish_read.id,
+			mem_publish_read.publishId,
+			mem_publish_read.readerId,
+			mem_publish_read.readTime
+		</sql>
+		
+		<!-- 查询读取情况总数 -->
+		<select id="selectReadCount" resultType="java.lang.Long" parameterType="java.util.Map">
+			select
+				count(mem_publish_read.id)
+			FROM  
+				mem_publish_read where 1=1
+			<if test="id != null">and  mem_publish_read.id = #{id}</if>
+			<if test="publishId != null">and  mem_publish_read.publishId = #{publishId}</if>
+		</select>
+
+	<!-- 查询 -->
+	<select id="selectReadInfo" resultMap="PublishReadResultMap" parameterType="java.util.Map">
+		select
+			<include refid="DB_Column_PublishReadInfo" />
+		FROM  
+			mem_publish_read where 1=1
+		<if test="id != null">and  mem_publish_read.id = #{id}</if>
+		<if test="publishId != null">and  mem_publish_read.publishId = #{publishId}</if>
+		<if test="readerId != null">and  mem_publish_read.readerId = #{readerId}</if>
+	</select>
+	
+	<!-- 插入 -->
+	<insert id="insertReadInfo" parameterType="com.aylson.dc.mem.po.PublishRead">
+		insert into mem_publish_read
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			 <if test="publishId != null">publishId,   </if>
+			 <if test="readerId != null">readerId,   </if>
+			 <if test="readTime != null">readTime,  </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="publishId != null">#{publishId},</if>
+			<if test="readerId != null">#{readerId},</if>
+			<if test="readTime != null">#{readTime},</if>
+		</trim>
+	</insert>
+	<!-- 公告读取情况   end -->
+
+</mapper>

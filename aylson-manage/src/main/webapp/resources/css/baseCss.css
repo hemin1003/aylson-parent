@@ -1,0 +1,16 @@
+.tableForm {
+	border-collapse: collapse;
+}
+
+.tableForm th {
+	text-align: right;
+	border-bottom: 1px dotted #ccc;
+	padding: 5px;
+}
+
+.tableForm td {
+	text-align: left;
+	height:20px;
+	border-bottom: 1px dotted #ccc;
+	padding: 5px;
+}

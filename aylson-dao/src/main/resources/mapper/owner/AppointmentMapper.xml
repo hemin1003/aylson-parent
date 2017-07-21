@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.owner.po.Appointment">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.owner.vo.AppointmentVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="appointDate" property="appointDate" jdbcType="TIMESTAMP" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="designer" property="designer" jdbcType="VARCHAR" />
+		<result column="designerPhone" property="designerPhone" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="homeTime" property="homeTime" jdbcType="TIMESTAMP" />
+		<result column="decoratingTime" property="decoratingTime" jdbcType="TIMESTAMP" />
+		<result column="byAgent" property="byAgent" jdbcType="VARCHAR" />
+		<result column="byAgentUserId" property="byAgentUserId" jdbcType="INTEGER" />
+		<result column="decorateProject" property="decorateProject" jdbcType="VARCHAR" />
+		<result column="decorateProjectTypes" property="decorateProjectTypes" jdbcType="VARCHAR" />
+		<result column="budgetRange" property="budgetRange" jdbcType="VARCHAR" />
+		<result column="source" property="source" jdbcType="VARCHAR" />
+		<result column="billCode" property="billCode" jdbcType="VARCHAR" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="isAgent" property="isAgent" jdbcType="BIT" />
+		<result column="dealer" property="dealer" jdbcType="VARCHAR" />
+		<result column="dealerId" property="dealerId" jdbcType="INTEGER" />
+		<result column="agentRemark" property="agentRemark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		owner_appointment.id,
+		owner_appointment.name,
+		owner_appointment.mobilePhone,
+		owner_appointment.province,
+		owner_appointment.provinceId,
+		owner_appointment.city,
+		owner_appointment.cityId,
+		owner_appointment.area,
+		owner_appointment.areaId,
+		owner_appointment.appointDate,
+		owner_appointment.address,
+		owner_appointment.designer,
+		owner_appointment.designerPhone,
+		owner_appointment.remark,
+		owner_appointment.state,
+		owner_appointment.homeTime,
+		owner_appointment.decoratingTime,
+		owner_appointment.byAgent,
+		owner_appointment.byAgentUserId,
+		owner_appointment.decorateProject,
+		owner_appointment.decorateProjectTypes,
+		owner_appointment.budgetRange,
+		owner_appointment.source,
+		owner_appointment.billCode,
+		owner_appointment.updateTime,
+		owner_appointment.isAgent,
+		owner_appointment.dealer,
+		owner_appointment.dealerId,
+		owner_appointment.agentRemark
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and owner_appointment.id = #{id}</if>
+				<if test="state != null">and owner_appointment.state = #{state}</if>
+				<if test="provinceId != null">and owner_appointment.provinceId = #{provinceId}</if>
+				<if test="cityId != null">and owner_appointment.cityId = #{cityId}</if>
+				<if test="areaId != null">and owner_appointment.areaId = #{areaId}</if>
+				<if test="appointDate != null and appointDate != ''">and DATE_FORMAT(owner_appointment.appointDate ,'%Y-%m-%d') = #{appointDate}</if>
+				<if test="appointDateBegin != null and appointDateBegin != ''">and owner_appointment.appointDate &gt;= #{appointDateBegin}</if>
+                <if test="appointDateEnd != null and appointDateEnd != ''">and owner_appointment.appointDate &lt;= #{appointDateEnd}</if>
+				<if test="homeTime != null and homeTime != ''">and DATE_FORMAT(owner_appointment.homeTime ,'%Y-%m-%d') = #{homeTime}</if>
+				<if test="mobilePhone != null and mobilePhone != ''">and owner_appointment.mobilePhone = #{mobilePhone} </if>
+				<if test="byAgentUserId != null">and owner_appointment.byAgentUserId = #{byAgentUserId}</if>
+				<!-- 作废 -->
+				<if test="stateType == 0">and owner_appointment.state = 0</if>
+				<!-- 总部代办 -->
+				<if test="stateType == 1 and userType == 1">and (owner_appointment.state = 1 )</if>
+				<!-- 总部已办 -->
+				<if test="stateType == 2 and userType == 1">and (owner_appointment.state = 2 or owner_appointment.state = 3
+				or owner_appointment.state = 31 or owner_appointment.state = 4 or owner_appointment.state = 5 or owner_appointment.state = 6)</if>
+				<!-- 经销商代办 -->
+				<if test="stateType == 1 and userType == 2">and (owner_appointment.state = 2 or owner_appointment.state = 31
+				or owner_appointment.state = 4 )</if>
+				<!-- 经销商已办 -->
+				<if test="stateType == 2 and userType == 2">and (owner_appointment.state = 3 or owner_appointment.state = 5 or owner_appointment.state = 6)</if>
+				<!-- 模糊查询 -->
+				<if test="mobilePhoneLike != null and mobilePhoneLike != ''">and owner_appointment.mobilePhone like CONCAT('%',#{mobilePhoneLike},'%')</if>
+				<if test="designerLike != null and designerLike != ''">and owner_appointment.designer like CONCAT('%',#{designerLike},'%')</if>
+				<if test="designerPhoneLike != null and designerPhoneLike != ''">and owner_appointment.designerPhone like CONCAT('%',#{designerPhoneLike},'%')</if>
+				<if test="decorateProjectLike != null and decorateProjectLike != ''">and owner_appointment.decorateProject like CONCAT('%',#{decorateProjectLike},'%')</if>
+				<if test="billCodeLike != null and billCodeLike != ''">and owner_appointment.billCode like CONCAT('%',#{billCodeLike},'%')</if>
+				<if test="nameOrPhoneLike != null and nameOrPhoneLike != ''">and (owner_appointment.name like CONCAT('%',#{nameOrPhoneLike},'%') or owner_appointment.mobilePhone like CONCAT('%',#{nameOrPhoneLike},'%'))</if>
+				<if test="addressLike != null and addressLike != ''">and (owner_appointment.address like CONCAT('%',#{addressLike},'%')
+				 or owner_appointment.province like CONCAT('%',#{addressLike},'%')
+				 or owner_appointment.city like CONCAT('%',#{addressLike},'%')
+				 or owner_appointment.area like CONCAT('%',#{addressLike},'%')
+				)
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from owner_appointment
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from owner_appointment
+		<include refid="Where_Condition" />
+		<!-- <if test="sort == null">order by owner_appointment.state,owner_appointment.id desc</if> -->
+		<if test="sort == null">order by owner_appointment.updateTime desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_appointment
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.owner.po.Appointment" useGeneratedKeys="true" keyProperty="id">
+		insert into owner_appointment
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			id,
+		  <if test="name != null" > name, </if>
+		  <if test="mobilePhone != null" > mobilePhone, </if>
+		  <if test="province != null" > province, </if>
+		  <if test="provinceId != null" > provinceId, </if>
+		  <if test="city != null" > city, </if>
+		  <if test="cityId != null" > cityId, </if>
+		  <if test="area != null" > area, </if>
+		  <if test="areaId != null" > areaId, </if>
+		  <if test="appointDate != null" > appointDate, </if>
+		  <if test="address != null" > address, </if>
+		  <if test="designer != null" > designer, </if>
+		  <if test="designerPhone != null" > designerPhone, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="state != null" > state, </if>
+		  <if test="homeTime != null" > homeTime, </if>
+		  <if test="decoratingTime != null" > decoratingTime, </if>
+		  <if test="byAgent != null" > byAgent, </if>
+		  <if test="byAgentUserId != null" > byAgentUserId, </if>
+		  <if test="decorateProject != null" > decorateProject, </if>
+		  <if test="decorateProjectTypes != null" > decorateProjectTypes, </if>
+		  <if test="budgetRange != null" > budgetRange, </if>
+		  <if test="source != null" > source, </if>
+		  <if test="billCode != null" > billCode, </if>
+		  <if test="isAgent != null" > isAgent, </if>
+		   updateTime,
+		  <if test="dealer != null" > dealer, </if>
+		  <if test="dealerId != null" > dealerId, </if>
+		  <if test="agentRemark != null" > agentRemark, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        	#{id},
+		  <if test="name != null" > #{name}, </if>
+		  <if test="mobilePhone != null" > #{mobilePhone}, </if>
+		  <if test="province != null" > #{province}, </if>
+		  <if test="provinceId != null" > #{provinceId}, </if>
+		  <if test="city != null" > #{city}, </if>
+		  <if test="cityId != null" > #{cityId}, </if>
+		  <if test="area != null" > #{area}, </if>
+		  <if test="areaId != null" > #{areaId}, </if>
+		  <if test="appointDate != null" > #{appointDate}, </if>
+		  <if test="address != null" > #{address}, </if>
+		  <if test="designer != null" > #{designer}, </if>
+		  <if test="designerPhone != null" > #{designerPhone}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="state != null" > #{state}, </if>
+		  <if test="homeTime != null" > #{homeTime}, </if>
+		  <if test="decoratingTime != null" > #{decoratingTime}, </if>
+		  <if test="byAgent != null" > #{byAgent}, </if>
+		  <if test="byAgentUserId != null" > #{byAgentUserId}, </if>
+		  <if test="decorateProject != null" > #{decorateProject}, </if>
+		  <if test="decorateProjectTypes != null" > #{decorateProjectTypes}, </if>
+		  <if test="budgetRange != null" > #{budgetRange}, </if>
+		  <if test="source != null" > #{source}, </if>
+		  <if test="billCode != null" > #{billCode}, </if>
+		  <if test="isAgent != null" > #{isAgent}, </if>
+		  now(),
+		  <if test="dealer != null" > #{dealer}, </if>
+		  <if test="dealerId != null" > #{dealerId}, </if>
+		  <if test="agentRemark != null" > #{agentRemark}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.owner.po.Appointment">
+		update 
+			owner_appointment 
+		<set>
+			<if test="name != null"> name = #{name}, </if>
+			<if test="mobilePhone != null"> mobilePhone = #{mobilePhone}, </if>
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="area != null"> area = #{area}, </if>
+			<if test="areaId != null"> areaId = #{areaId}, </if>
+			<if test="appointDate != null"> appointDate = #{appointDate}, </if>
+			<if test="address != null"> address = #{address}, </if>
+			<if test="designer != null"> designer = #{designer}, </if>
+			<if test="designerPhone != null"> designerPhone = #{designerPhone}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="state != null"> state = #{state}, </if>
+			<if test="homeTime != null"> homeTime = #{homeTime}, </if>
+			<if test="decoratingTime != null"> decoratingTime = #{decoratingTime}, </if>
+			<if test="byAgent != null"> byAgent = #{byAgent}, </if>
+			<if test="byAgentUserId != null"> byAgentUserId = #{byAgentUserId}, </if>
+			<if test="decorateProject != null"> decorateProject = #{decorateProject}, </if>
+			<if test="decorateProjectTypes != null"> decorateProjectTypes = #{decorateProjectTypes}, </if>
+			<if test="budgetRange != null"> budgetRange = #{budgetRange}, </if>
+			<if test="source != null"> source = #{source}, </if>
+			<if test="isAgent != null"> isAgent = #{isAgent}, </if>
+			updateTime = now(),
+			<if test="dealer != null"> dealer = #{dealer}, </if>
+			<if test="dealerId != null"> dealerId = #{dealerId}, </if>
+			<if test="agentRemark != null"> agentRemark = #{agentRemark}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from owner_appointment
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from owner_appointment
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

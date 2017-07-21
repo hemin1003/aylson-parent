@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.Course">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.CourseVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="seq" property="seq" jdbcType="INTEGER" />
+		<result column="courseName" property="courseName" jdbcType="VARCHAR" />
+		<result column="courseUrl" property="courseUrl" jdbcType="VARCHAR" />
+		<result column="courseDesc" property="courseDesc" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="createrId" property="createrId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="lecturer" property="lecturer" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_course.id,
+		sys_course.seq,
+		sys_course.courseName,
+		sys_course.courseUrl,
+		sys_course.courseDesc,
+		sys_course.state,
+		sys_course.createTime,
+		sys_course.createrId,
+		sys_course.type,
+		sys_course.lecturer
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_course.id = #{id}</if>
+				<if test="state != null">and sys_course.state = #{state}</if>
+				<if test="createrId != null">and sys_course.createrId = #{createrId}</if>
+				<if test="type != null">and sys_course.type = #{type}</if>
+				<if test="createTime != null and createTime != ''">and DATE_FORMAT(sys_course.createTime ,'%Y-%m-%d') = #{createTime} </if>
+				<!-- 模糊查询 -->
+				<if test="courseNameLike != null and courseNameLike != ''">and sys_course.courseName like CONCAT('%',#{courseNameLike},'%')</if>
+				<if test="lecturerLike != null and lecturerLike != ''">and sys_course.lecturer like CONCAT('%',#{lecturerLike},'%')</if>
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(sys_course.id) from sys_course
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_course
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by if(isnull(sys_course.seq),1,0),sys_course.seq </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_course
+		where sys_course.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.Course">
+		insert into sys_course
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="seq != null" > seq, </if>
+		  <if test="courseName != null" > courseName, </if>
+		  <if test="courseUrl != null" > courseUrl, </if>
+		  <if test="courseDesc != null" > courseDesc, </if>
+		  <if test="state != null" > state, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="createrId != null" > createrId, </if>
+		  <if test="type != null" > type, </if>
+		  <if test="lecturer != null" > lecturer, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="seq != null" > #{seq}, </if>
+		  <if test="courseName != null" > #{courseName}, </if>
+		  <if test="courseUrl != null" > #{courseUrl}, </if>
+		  <if test="courseDesc != null" > #{courseDesc}, </if>
+		  <if test="state != null" > #{state}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="createrId != null" > #{createrId}, </if>
+		  <if test="type != null" > #{type}, </if>
+		  <if test="lecturer != null" > #{lecturer}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.Course">
+		update 
+			sys_course 
+		<set>
+			<if test="seq != null"> seq = #{seq}, </if>
+			<if test="courseName != null"> courseName = #{courseName}, </if>
+			<if test="courseUrl != null"> courseUrl = #{courseUrl}, </if>
+			<if test="courseDesc != null"> courseDesc = #{courseDesc}, </if>
+			<if test="state != null"> state = #{state}, </if>
+		<!-- 	<if test="createTime != null"> createTime = #{createTime}, </if>
+			<if test="createrId != null"> createrId = #{createrId}, </if> -->
+			<if test="type != null"> type = #{type}, </if>
+			<if test="lecturer != null"> lecturer = #{lecturer}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_course
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_course
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

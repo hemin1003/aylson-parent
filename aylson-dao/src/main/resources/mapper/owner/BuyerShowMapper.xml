@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.owner.po.BuyerShow">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.owner.vo.BuyerShowVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="memberId" property="memberId" jdbcType="INTEGER" />
+		<result column="orderId" property="orderId" jdbcType="INTEGER" />
+		<result column="appointId" property="appointId" jdbcType="INTEGER" />
+		<result column="designId" property="designId" jdbcType="INTEGER" />
+		<result column="designType" property="designType" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="readNum" property="readNum" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="imgUrls" property="imgUrls" jdbcType="VARCHAR" />
+		<result column="imgNum" property="imgNum" jdbcType="INTEGER" />
+		<result column="praiseNum" property="praiseNum" jdbcType="INTEGER" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceCode" property="provinceCode" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityCode" property="cityCode" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaCode" property="areaCode" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		owner_buyershow.id,
+		owner_buyershow.memberId,
+		owner_buyershow.orderId,
+		owner_buyershow.appointId,
+		owner_buyershow.designId,
+		owner_buyershow.designType,
+		owner_buyershow.createTime,
+		owner_buyershow.readNum,
+		owner_buyershow.content,
+		owner_buyershow.imgUrls,
+		owner_buyershow.imgNum,
+		owner_buyershow.province,
+		owner_buyershow.provinceCode,
+		owner_buyershow.provinceId,
+		owner_buyershow.city,
+		owner_buyershow.cityCode,
+		owner_buyershow.cityId,
+		owner_buyershow.area,
+		owner_buyershow.areaCode,
+		owner_buyershow.areaId,
+		ifnull(praiseInfo.praiseNum,0) as praiseNum
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and owner_buyershow.id = #{id}</if>
+				<if test="memberId != null">and owner_buyershow.memberId = #{memberId}</if>
+				<if test="orderId != null">and owner_buyershow.orderId = #{orderId}</if>
+				<if test="appointId != null">and owner_buyershow.appointId = #{appointId}</if>
+				<if test="designId != null">and owner_buyershow.designId = #{designId}</if>
+				<if test="provinceCode != null">and owner_buyershow.provinceCode = #{provinceCode}</if>
+				<if test="provinceId != null">and owner_buyershow.provinceId = #{provinceId}</if>
+				<if test="cityCode != null">and owner_buyershow.cityCode = #{cityCode}</if>
+				<if test="cityId != null">and owner_buyershow.cityId = #{cityId}</if>
+				<if test="areaCode != null">and owner_buyershow.areaCode = #{areaCode}</if>
+				<if test="areaId != null">and owner_buyershow.areaId = #{areaId}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(owner_buyershow.id) from owner_buyershow
+		left join (select buyershowId,count(1) praiseNum from owner_buyershow_praise where isPraise = 1 group by buyershowId)praiseInfo
+		on owner_buyershow.id = praiseInfo.buyershowId
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from owner_buyershow
+		left join (select buyershowId,count(1) praiseNum from owner_buyershow_praise where isPraise = 1 group by buyershowId)praiseInfo
+		on owner_buyershow.id = praiseInfo.buyershowId
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by owner_buyershow.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_buyershow
+		left join (select buyershowId,count(1) praiseNum from owner_buyershow_praise where isPraise = 1 group by buyershowId)praiseInfo
+		on owner_buyershow.id = praiseInfo.buyershowId
+		where owner_buyershow.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.owner.po.BuyerShow" >
+		insert into owner_buyershow
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="memberId != null" > memberId, </if>
+		  <if test="orderId != null" > orderId, </if>
+		  <if test="appointId != null" > appointId, </if>
+		  <if test="designId != null" > designId, </if>
+		  <if test="designType != null" > designType, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="readNum != null" > readNum, </if>
+		  <if test="content != null" > content, </if>
+		  <if test="imgUrls != null" > imgUrls, </if>
+		  <if test="imgNum != null" > imgNum, </if>
+		  <if test="province != null" > province, </if>
+		  <if test="provinceCode != null" > provinceCode, </if>
+		  <if test="provinceId != null" > provinceId, </if>
+		  <if test="city != null" > city, </if>
+		  <if test="cityCode != null" > cityCode, </if>
+		  <if test="cityId != null" > cityId, </if>
+		  <if test="area != null" > area, </if>
+		  <if test="areaCode != null" > areaCode, </if>
+		  <if test="areaId != null" > areaId, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="memberId != null" > #{memberId}, </if>
+		  <if test="orderId != null" > #{orderId}, </if>
+		  <if test="appointId != null" > #{appointId}, </if>
+		  <if test="designId != null" > #{designId}, </if>
+		  <if test="designType != null" > #{designType}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="readNum != null" > #{readNum}, </if>
+		  <if test="content != null" > #{content}, </if>
+		  <if test="imgUrls != null" > #{imgUrls}, </if>
+		  <if test="imgNum != null" > #{imgNum}, </if>
+		  <if test="province != null" > #{province}, </if>
+		  <if test="provinceCode != null" > #{provinceCode}, </if>
+		  <if test="provinceId != null" > #{provinceId}, </if>
+		  <if test="city != null" > #{city}, </if>
+		  <if test="cityCode != null" > #{cityCode}, </if>
+		  <if test="cityId != null" > #{cityId}, </if>
+		  <if test="area != null" > #{area}, </if>
+		  <if test="areaCode != null" > #{areaCode}, </if>
+		  <if test="areaId != null" > #{areaId}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.owner.po.BuyerShow">
+		update 
+			owner_buyershow 
+		<set>
+			<if test="memberId != null"> memberId = #{memberId}, </if>
+			<if test="orderId != null"> orderId = #{orderId}, </if>
+			<if test="appointId != null"> appointId = #{appointId}, </if>
+			<if test="designId != null"> designId = #{designId}, </if>
+			<if test="designType != null"> designType = #{designType}, </if>
+			<!-- <if test="createTime != null"> createTime = #{createTime}, </if> -->
+			<if test="readNum != null"> readNum = #{readNum}, </if>
+			<if test="content != null"> content = #{content}, </if>
+			<if test="imgUrls != null"> imgUrls = #{imgUrls}, </if>
+			<if test="imgNum != null"> imgNum = #{imgNum}, </if>
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceCode != null"> provinceCode = #{provinceCode}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityCode != null"> cityCode = #{cityCode}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="area != null"> area = #{area}, </if>
+			<if test="areaCode != null"> areaCode = #{areaCode}, </if>
+			<if test="areaId != null"> areaId = #{areaId}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from owner_buyershow
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from owner_buyershow
+		<include refid="Where_Condition" />
+	</delete>
+	
+</mapper>

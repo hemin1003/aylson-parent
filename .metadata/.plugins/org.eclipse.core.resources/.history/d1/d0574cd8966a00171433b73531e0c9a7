@@ -1,0 +1,775 @@
+package cn.aihama.workflow.service.impl;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.ZipInputStream;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.GraphicInfo;
+import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.FormType;
+import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricVariableInstance;
+import org.activiti.engine.impl.identity.Authentication;
+import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Comment;
+import org.activiti.engine.task.Task;
+/*import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;*/
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import cn.aihama.busi.po.Budget;
+import cn.aihama.busi.po.BusiModel;
+import cn.aihama.busi.po.Contract;
+import cn.aihama.busi.po.Dimission;
+import cn.aihama.busi.po.Leave;
+import cn.aihama.busi.po.MissClock;
+import cn.aihama.busi.po.Notice;
+import cn.aihama.busi.po.Overtime;
+import cn.aihama.busi.po.Payment;
+import cn.aihama.busi.po.Purchase;
+import cn.aihama.busi.po.PurchaseApply;
+import cn.aihama.busi.po.Recruit;
+import cn.aihama.busi.po.Regular;
+import cn.aihama.busi.po.Reimburse;
+import cn.aihama.busi.po.SalaryChange;
+import cn.aihama.busi.po.Travel;
+import cn.aihama.busi.po.TravelReimburse;
+import cn.aihama.busi.po.UseCar;
+import cn.aihama.busi.service.BudgetDetailService;
+import cn.aihama.busi.service.BudgetService;
+import cn.aihama.busi.service.ContractService;
+import cn.aihama.busi.service.DimissionService;
+import cn.aihama.busi.service.KnowledgeService;
+import cn.aihama.busi.service.LeaveService;
+import cn.aihama.busi.service.MissClockService;
+import cn.aihama.busi.service.NoticeService;
+import cn.aihama.busi.service.OvertimeService;
+import cn.aihama.busi.service.PaymentService;
+import cn.aihama.busi.service.PurchaseApplyService;
+import cn.aihama.busi.service.PurchaseDetailService;
+import cn.aihama.busi.service.PurchaseService;
+import cn.aihama.busi.service.RecruitService;
+import cn.aihama.busi.service.RegularService;
+import cn.aihama.busi.service.ReimburseDetailService;
+import cn.aihama.busi.service.ReimburseService;
+import cn.aihama.busi.service.SalaryChangeService;
+import cn.aihama.busi.service.TravelReimburseDetailService;
+import cn.aihama.busi.service.TravelReimburseService;
+import cn.aihama.busi.service.TravelService;
+import cn.aihama.busi.service.UseCarService;
+import cn.aihama.busi.vo.LeaveVo;
+import cn.aihama.busi.vo.MissClockVo;
+import cn.aihama.core.exception.ServiceException;
+import cn.aihama.core.frame.base.Page;
+import cn.aihama.core.frame.domain.Result;
+import cn.aihama.core.frame.domain.ResultCode;
+import cn.aihama.sys.common.SessionInfo;
+import cn.aihama.sys.constant.BusiConstant.ActionType;
+import cn.aihama.sys.constant.BusiConstant.BusiState;
+import cn.aihama.sys.constant.BusiConstant.CodePrefix;
+import cn.aihama.sys.service.PositionService;
+import cn.aihama.sys.service.UserService;
+import cn.aihama.sys.vo.EmployeeVo;
+import cn.aihama.sys.vo.UserVo;
+import cn.aihama.utils.StringUtil;
+import cn.aihama.workflow.dao.WorkflowDao;
+import cn.aihama.workflow.search.CommentSearch;
+import cn.aihama.workflow.search.DeploymentSearch;
+import cn.aihama.workflow.search.ProcessDefinitionSearch;
+import cn.aihama.workflow.search.TaskSearch;
+import cn.aihama.workflow.service.WorkflowService;
+import cn.aihama.workflow.vo.CommentVo;
+import cn.aihama.workflow.vo.DeploymentVo;
+import cn.aihama.workflow.vo.ProcessDefinitionVo;
+import cn.aihama.workflow.vo.TaskVo;
+
+@Service
+@Transactional
+public class WorkflowServiceImpl implements WorkflowService {
+	
+	@Autowired
+	private WorkflowDao workflowDao;
+	@Autowired
+	public ProcessEngine processEngine;                       			//工作流-引擎服务
+	@Autowired
+	public RepositoryService repositoryService;               			//工作流-仓库服务
+	@Autowired
+	public RuntimeService runtimeService;                     			//工作流-运行时服务
+	@Autowired  
+	public TaskService taskService;                           			//工作流-任务服务
+	@Autowired 
+	public FormService formService;                           			//工作流-表单服务
+	@Autowired 
+	public HistoryService historyService;                     			//工作流-历史服务
+	@Autowired
+	public BudgetDetailService budgetDetailService;             		//
+	@Autowired
+	public BudgetService budgetService;                         		//
+	@Autowired
+	public ContractService contractService;                     		//
+	@Autowired
+	public DimissionService dimissionService;                   		//
+	@Autowired
+	public KnowledgeService knowledgeService;             		 		//
+	@Autowired
+	public LeaveService leaveService;             				 		//
+	@Autowired
+	public MissClockService missClockService;         		     		//
+	@Autowired
+	public NoticeService noticeService;           			     		//
+	@Autowired
+	public OvertimeService overtimeService;            	     			//
+	@Autowired
+	public PaymentService paymentService;             			 		//
+	@Autowired
+	public PurchaseApplyService purchaseApplyService;           		//
+	@Autowired
+	public PurchaseDetailService purchaseDetailService;         		//
+	@Autowired
+	public PurchaseService purchaseService;             		 		//
+	@Autowired
+	public RecruitService recruitService;             			 		//
+	@Autowired
+	public RegularService regularService;             			 		//
+	@Autowired
+	public ReimburseDetailService reimburseDetailService;      			//
+	@Autowired
+	public ReimburseService reimburseService;                   		//
+	@Autowired
+	public SalaryChangeService salaryChangeService;             		//
+	@Autowired
+	public TravelReimburseDetailService travelReimburseDetailService;   //
+	@Autowired
+	public TravelReimburseService travelReimburseService;               //
+	@Autowired
+	public TravelService travelService;             				    //
+	@Autowired
+	public UseCarService useCarService;                                 //
+	@Autowired
+	private  HttpServletRequest request;                                //
+	@Autowired
+	public UserService useService;                                		//
+	@Autowired
+	public PositionService positionService;                             //
+	
+	
+	@Override
+	public Result deploy(InputStream in, String fileName, String category) {
+		Result result = new Result();
+		ZipInputStream zipInputStream = new ZipInputStream(in);
+		Deployment deployment = this.repositoryService.createDeployment()
+														.name(fileName)
+															.category(category)
+																.addZipInputStream(zipInputStream)
+																	.deploy();
+		if(StringUtil.isEmpty(deployment.getId())){
+			result.setError(ResultCode.CODE_STATE_4006, "部署失败");
+		}else{
+			result.setOK(ResultCode.CODE_STATE_200, "部署成功");
+		}
+		return result;
+	}
+
+	@Override
+	public Page<DeploymentVo> getDeployPage(DeploymentSearch deploymentSearch) {
+		Page<DeploymentVo> page = new Page<DeploymentVo>();
+		deploymentSearch.setIsPage(true);
+		List<DeploymentVo> list = this.workflowDao.selectDeployList(deploymentSearch);
+		Long total = this.workflowDao.selectDeployCount(deploymentSearch);
+		page.setPage(deploymentSearch.getPage());
+		page.setRows(deploymentSearch.getRows());
+		page.setTotal(total);
+		page.setRowsObject(list);
+		return page;
+	}
+
+	@Override
+	public Page<ProcessDefinitionVo> getProcessDefinitionPage(ProcessDefinitionSearch processDefinitionSearch) {
+		Page<ProcessDefinitionVo> page = new Page<ProcessDefinitionVo>();
+		processDefinitionSearch.setIsPage(true);
+		List<ProcessDefinitionVo> list = this.workflowDao.selectProcessDefinitionList(processDefinitionSearch);
+		Long total = this.workflowDao.selectProcessDefinitionCount(processDefinitionSearch);
+		page.setPage(processDefinitionSearch.getPage());
+		page.setRows(processDefinitionSearch.getRows());
+		page.setTotal(total);
+		page.setRowsObject(list);
+		return page;
+	}
+
+	@Override
+	public Result getDiagramByDeployId(String deployId) {
+		Result result = new Result();
+		if(StringUtil.isEmpty(deployId)){
+			result.setError(ResultCode.CODE_STATE_4006, "获取部署id失败");return result;
+		}
+		//根据部署id获取所有资源名称
+		List<String> resourceNames = this.repositoryService.getDeploymentResourceNames(deployId);
+		//流程定义图片资源名称
+		String imgResuoutceName = null;
+		for(String resourceName	: resourceNames){
+			if(resourceName.contains(".png")){
+				imgResuoutceName = resourceName;
+				break;
+			}
+		}
+		if(imgResuoutceName != null){
+			InputStream in = this.repositoryService.getResourceAsStream(deployId, imgResuoutceName);
+			result.setOK(ResultCode.CODE_STATE_200, "获取成功",in);
+		}
+		return result;
+	}
+	
+	@Override
+	public Result getDiagram(String procDefId, String procInstId) {
+		Result result = new Result();
+		if(StringUtil.isEmpty(procDefId)){
+			result.setError(ResultCode.CODE_STATE_4006, "流程定义id不能为空");return result;
+		}
+		if(StringUtil.isEmpty(procInstId)){
+			result.setError(ResultCode.CODE_STATE_4006, "流程实例id不能为空");return result;
+		}
+		InputStream is = this.repositoryService.getProcessDiagram(procDefId);
+		try{
+			//画布
+			BufferedImage image = ImageIO.read(is);
+			//创建画笔
+			Graphics2D g2d = image.createGraphics();
+			//红色画笔
+			g2d.setColor(Color.RED);
+			//获取bpmn模型
+			BpmnModel model = this.repositoryService.getBpmnModel(procDefId);
+			//获取当前的活动环节
+			List<String> activeActivityIds = this.runtimeService.getActiveActivityIds(procInstId);
+			for(String id : activeActivityIds){
+				GraphicInfo graphicInfo = model.getGraphicInfo(id);
+				g2d.drawRoundRect((int)graphicInfo.getX(), (int)graphicInfo.getY(), (int)graphicInfo.getWidth(), (int)graphicInfo.getHeight(), 20, 20);
+			}
+			ByteArrayOutputStream output = new ByteArrayOutputStream();
+			ImageIO.write(image,"png",output);
+			ByteArrayInputStream in = new ByteArrayInputStream(output.toByteArray());
+			result.setOK(ResultCode.CODE_STATE_200, "获取成功",in);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	@Override
+	public Result startProcess(String processDefinitionKey, String busiCode, Integer busiId, Integer nextTaskUserId) {
+		Result result = new Result();
+		Boolean flag = false;
+		//一、信息校验
+		if(StringUtil.isEmpty(processDefinitionKey)){
+			result.setError(ResultCode.CODE_STATE_4006, "流程key不能为空");return result;
+		}
+		if(StringUtil.isEmpty(busiCode)){
+			result.setError(ResultCode.CODE_STATE_4006, "业务单号不能为空");return result;
+		}
+		if(busiId == null){
+			result.setError(ResultCode.CODE_STATE_4006, "业务主键不能为空");return result;
+		}
+		if(nextTaskUserId == null){
+			result.setError(ResultCode.CODE_STATE_4006, "任务处理人id不能为空");return result;
+		}
+		//二、信息有效
+		//	1、更新业务信息状态
+		if(busiCode.contains(CodePrefix.MISS_CLOCK)){
+			MissClockVo missClockVo = new MissClockVo();
+			missClockVo.setId(busiId);
+			missClockVo.setState(BusiState.AUDIT_IN);
+			flag = this.missClockService.update(missClockVo);
+		}else{
+			result.setError(ResultCode.CODE_STATE_4006, "未知流程，无法启动");return result;
+		}
+		if(!flag){
+			throw new ServiceException("更新业务信息状态失败");
+		}
+		//	2、启动流程实例
+		Map<String, Object> variables = new HashMap<String, Object>();//变量
+		variables.put("userId", nextTaskUserId);
+		ProcessInstance pi = this.runtimeService.startProcessInstanceByKey(processDefinitionKey, busiCode+"#"+busiId, variables);
+		if(pi == null){
+			throw new ServiceException("申请失败");
+		}
+		result.setOK(ResultCode.CODE_STATE_200, "启动成功");
+		return result;
+	}
+	
+	@Override
+	public Result startProcess(String busiCode, Integer busiId, Integer nextTaskUserId) {
+		Result result = new Result();
+		//一、信息校验
+		if(StringUtil.isEmpty(busiCode)){
+			result.setError(ResultCode.CODE_STATE_4006, "业务单号不能为空");return result;
+		}
+		if(busiId == null){
+			result.setError(ResultCode.CODE_STATE_4006, "业务主键不能为空");return result;
+		}
+		if(nextTaskUserId == null){
+			result.setError(ResultCode.CODE_STATE_4006, "任务处理人id不能为空");return result;
+		}
+		SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+		if(sessionInfo == null){
+			result.setError(ResultCode.CODE_STATE_4006, "请重新登录");return result;
+		}
+		UserVo userVo = sessionInfo.getUser();
+		if(userVo == null){
+			result.setError(ResultCode.CODE_STATE_4006, "获取当前登录用户信息失败");return result;
+		}
+		//二、信息有效
+		//	1、更新业务信息状态
+		String processDefinitionKey = this.getProcessDefinitionKey(busiCode);
+		if(processDefinitionKey == null){
+			result.setError(ResultCode.CODE_STATE_4006, "未找到相关流程，请稍后再试或者联系管理员");return result;
+		}
+		this.updateBusiInfo(null, busiCode, busiId);
+		//	2、启动流程实例
+		
+		Authentication.setAuthenticatedUserId(userVo.getId()+"");
+		Map<String, Object> variables = new HashMap<String, Object>();//变量
+		if(busiCode.contains(CodePrefix.LEAVE)){//请假流程启动，设置变量
+			LeaveVo leaveVo = this.leaveService.getById(busiId);
+			variables.put("leaveHours", leaveVo.getLeaveHours().intValue());//请假小时数
+		}
+		//获取当前人的最大级别
+		EmployeeVo emp = userVo.getEmployeeVo();
+		Integer maxPostLevel = 0;
+		if(emp != null){
+			maxPostLevel = this.positionService.getMaxPostLevel(emp.getPostList());
+		}
+		variables.put("maxPostLevel", maxPostLevel);
+		variables.put("userId", nextTaskUserId);
+		ProcessInstance pi = this.runtimeService.startProcessInstanceByKey(processDefinitionKey, busiCode+"#"+busiId, variables);
+		if(pi == null){
+			throw new ServiceException("申请失败");
+		}
+		result.setOK(ResultCode.CODE_STATE_200, "启动成功");
+		return result;
+	}
+	
+	private String getProcessDefinitionKey(String busiCode) {
+		String processDefinitionKey = null;
+		if(StringUtil.isNotEmpty(busiCode)){
+			if(busiCode.contains(CodePrefix.MISS_CLOCK)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.MISS_CLOCK);
+			}else if(busiCode.contains(CodePrefix.BUDGET)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.BUDGET);
+			}else if(busiCode.contains(CodePrefix.LEAVE)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.LEAVE);
+			}else if(busiCode.contains(CodePrefix.OVERTIME)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.OVERTIME);
+			}else if(busiCode.contains(CodePrefix.CONTRACT)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.CONTRACT);
+			}else if(busiCode.contains(CodePrefix.DIMISSION)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.DIMISSION);
+			}else if(busiCode.contains(CodePrefix.NOTICE)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.NOTICE);
+			}else if(busiCode.contains(CodePrefix.PAYMENT)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.PAYMENT);
+			}else if(busiCode.contains(CodePrefix.PURCHASE)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.PURCHASE);
+			}else if(busiCode.contains(CodePrefix.PURCHASE_APPLY)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.PURCHASE_APPLY);
+			}else if(busiCode.contains(CodePrefix.RECRUIT)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.RECRUIT);
+			}else if(busiCode.contains(CodePrefix.REGULAR)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.REGULAR);
+			}else if(busiCode.contains(CodePrefix.REIMBURSE)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.REIMBURSE);
+			}else if(busiCode.contains(CodePrefix.SALARY_CHANGE)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.SALARY_CHANGE);
+			}else if(busiCode.contains(CodePrefix.TRAVEL)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.TRAVEL);
+			}else if(busiCode.contains(CodePrefix.TRAVEL_REIMBURSE)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.TRAVEL_REIMBURSE);
+			}else if(busiCode.contains(CodePrefix.USE_CAR)){
+				processDefinitionKey = CodePrefix.CodePrefixFlowKeyMap.get(CodePrefix.USE_CAR);
+			}
+		}
+		return processDefinitionKey;
+	}
+
+	@Override
+	public Page<TaskVo> getTaskToDoPage(TaskSearch taskSearch) {
+		Page<TaskVo> page = new Page<TaskVo>();
+		taskSearch.setIsPage(true);
+		List<TaskVo> list = this.workflowDao.selectTaskToDoList(taskSearch);
+		Long total = this.workflowDao.selectTaskToDoCount(taskSearch);
+		page.setPage(taskSearch.getPage());
+		page.setRows(taskSearch.getRows());
+		page.setTotal(total);
+		page.setRowsObject(list);
+		return page;
+	}
+
+	@Override
+	public Page<TaskVo> getTaskDonePage(TaskSearch taskSearch) {
+		Page<TaskVo> page = new Page<TaskVo>();
+		taskSearch.setIsPage(true);
+		List<TaskVo> list = this.workflowDao.selectTaskDoneList(taskSearch);
+		Long total = this.workflowDao.selectTaskDoneCount(taskSearch);
+		page.setPage(taskSearch.getPage());
+		page.setRows(taskSearch.getRows());
+		page.setTotal(total);
+		page.setRowsObject(list);
+		return page;
+	}
+
+	@Override
+	public Page<TaskVo> getTaskFiledPage(TaskSearch taskSearch) {
+		Page<TaskVo> page = new Page<TaskVo>();
+		taskSearch.setIsPage(true);
+		List<TaskVo> list = this.workflowDao.selectTaskFiledList(taskSearch);
+		Long total = this.workflowDao.selectTaskFiledCount(taskSearch);
+		page.setPage(taskSearch.getPage());
+		page.setRows(taskSearch.getRows());
+		page.setTotal(total);
+		page.setRowsObject(list);
+		return page;
+	}
+
+	@Override
+	public Result getTaskInfo(String taskId) {
+		Result result = new Result();
+		//一、信息校验
+		if(StringUtil.isEmpty(taskId)){
+			result.setError(ResultCode.CODE_STATE_4006, "任务id不能为空");return result;
+		}
+		Task task = this.taskService.createTaskQuery().taskId(taskId).singleResult();
+		if(task == null){
+			result.setError(ResultCode.CODE_STATE_4006, "获取任务信息失败");return result;
+		}
+		//二、信息有效
+		Map<String, Object> data = new HashMap<String, Object>();  		 //返回结果数据
+		//	2.1、获取任务相关的业务信息
+		String processInstanceId = task.getProcessInstanceId();    		 //任务实例id
+		ProcessInstance processInstance = this.runtimeService.createProcessInstanceQuery()
+											.processInstanceId(processInstanceId)
+												.singleResult();
+		String businessKey = processInstance.getBusinessKey();
+		String busiCode = businessKey.split("#")[0];                     //业务订单号
+		Integer busiId = Integer.parseInt(businessKey.split("#")[1]);    //业务id
+		data.put("busiCode", busiCode);
+		result = this.getBusiInfo(busiCode, busiId);
+		if(!result.isSuccess()) return result;
+		Map<String,Object> busiDataMap = (Map<String,Object>)result.getData();
+		data.put("busiData", busiDataMap.get("busiData"));
+		data.put("userVo", busiDataMap.get("userVo"));
+		data.put("busiId", busiId);
+		//	2.2、获取流程任务节点的可选操作
+		TaskFormData taskFormDate = this.formService.getTaskFormData(taskId);
+		List<FormProperty> formPropertyList = taskFormDate.getFormProperties();
+		FormProperty actionFormProperty = null;     //任务允许操作
+		for(FormProperty formProperty:formPropertyList){
+			if("action".equals(formProperty.getId())){
+				actionFormProperty = formProperty;
+				break;
+			}
+		}
+		FormType formType = actionFormProperty.getType();
+		Map<String, String> actionMap = (Map<String, String>)formType.getInformation("values");
+		//获取流程的变量
+		//HistoricVariableInstance hvi = this.historyService.createHistoricVariableInstanceQuery().taskId(taskId).variableName("leaveHours").singleResult();
+		/*Map<String, Object> variablesMap = this.runtimeService.getVariables(processInstanceId);
+		Object leaveHours = variablesMap.get("leaveHours");
+		if(leaveHours != null){
+			
+		}*/
+		data.put("actionMap", actionMap);//任务表单操作
+		//	2.3、获取任务的批注信息
+		List<CommentVo> commentList = this.getCommentListByProcInstId(processInstanceId);
+		data.put("commentList", commentList);
+		result.setOK(ResultCode.CODE_STATE_200, "获取成功",data);
+		return result;
+	}
+
+	/**
+	 * 获取业务数据
+	 * @param busiCode
+	 * @param busiId
+	 * @return
+	 */
+	private Result getBusiInfo(String busiCode, Integer busiId) {
+		Result result = new Result();
+		Map<String, Object> busiInfo = new HashMap<String, Object>();
+		Object busiData = null;
+		if(busiCode.contains(CodePrefix.MISS_CLOCK)){
+			busiData = this.missClockService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.BUDGET)){
+			busiData = this.budgetService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.LEAVE)){
+			busiData = this.leaveService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.OVERTIME)){
+			busiData = this.overtimeService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.CONTRACT)){
+			busiData = this.contractService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.DIMISSION)){
+			busiData = this.dimissionService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.NOTICE)){
+			busiData = this.noticeService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.PAYMENT)){
+			busiData = this.paymentService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.PURCHASE)){
+			busiData = this.purchaseService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.PURCHASE_APPLY)){
+			busiData = this.purchaseApplyService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.RECRUIT)){
+			busiData = this.recruitService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.REGULAR)){
+			busiData = this.regularService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.REIMBURSE)){
+			busiData = this.reimburseService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.SALARY_CHANGE)){
+			busiData = this.salaryChangeService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.TRAVEL)){
+			busiData = this.travelService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.TRAVEL_REIMBURSE)){
+			busiData = this.travelReimburseService.getVoById(busiId);
+		}else if(busiCode.contains(CodePrefix.USE_CAR)){
+			busiData = this.useCarService.getVoById(busiId);
+		}else{
+			result.setError(ResultCode.CODE_STATE_4006, "单号类型未知");return result;
+		}
+		busiInfo.put("busiData", busiData);
+		UserVo userVo = new UserVo();
+		userVo.setId(((BusiModel)busiData).getUserId());
+		userVo = this.useService.getUserInfo(userVo);
+		busiInfo.put("userVo", userVo);
+		result.setOK(ResultCode.CODE_STATE_200, "获取业务数据成功",busiInfo);
+		return result;
+	}
+
+	@Override
+	public Result audit(String taskId, String busiCode, Integer busiId, String approvalOpinion, Integer action, Integer auditUserId) {
+		Result result = new Result();
+		//一、信息校验
+		if(taskId == null){
+			result.setError(ResultCode.CODE_STATE_4006, "任务id不能为空");return result;
+		}
+		if(StringUtil.isEmpty(busiCode)){
+			result.setError(ResultCode.CODE_STATE_4006, "业务编码不能为空");return result;
+		}
+		if(busiId == null){
+			result.setError(ResultCode.CODE_STATE_4006, "业务id不能为空");return result;
+		}
+		/*if(StringUtil.isEmpty(approvalOpinion)){
+			result.setError(ResultCode.CODE_STATE_4006, "审核意见不能为空");return result;
+		}*/
+		if(action == null){
+			result.setError(ResultCode.CODE_STATE_4006, "未知操作");return result;
+		}
+		//二、信息有效
+		SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+		//	2.1、添加审核批注信息
+		Task task = this.taskService.createTaskQuery().taskId(taskId).singleResult();
+		if(task == null){
+			result.setError(ResultCode.CODE_STATE_4006, "获取任务信息失败");return result;
+		}
+		Authentication.setAuthenticatedUserId(sessionInfo.getUser().getId()+"");
+		if(StringUtil.isNotEmpty(approvalOpinion)){
+			Comment comment = this.taskService.addComment(taskId, task.getProcessInstanceId(), approvalOpinion);
+			if(comment == null){
+				result.setError(ResultCode.CODE_STATE_4006, "保存批注信息失败");return result;
+			}
+		}
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put("action", action+"");
+		if(auditUserId != null){
+			variables.put("auditUserId", auditUserId);
+		}
+		//	2.2、完成当前任务
+		this.taskService.complete(taskId, variables);
+		//	2.3、如果该流程已经结束，那么更新状态
+		this.updateBusiInfo(action,busiCode,busiId);
+		result.setOK(ResultCode.CODE_STATE_200, "操作成功");
+		return result;
+	}
+
+	/**
+	 * 更新业务数据
+	 * @param action
+	 * @param busiCode
+	 * @param busiId
+	 */
+	private void updateBusiInfo(Integer action, String busiCode, Integer busiId) {
+		Boolean isUpdateBusi = true;    				//是否需要更新业务信息
+		Integer state = BusiState.AUDIT_NOT;
+		
+		//处理启动时的业务数据
+		if(action == null){ //如果不传，用于启动流程时更新业务数据
+			state = BusiState.AUDIT_IN;
+			isUpdateBusi = true;
+		}else{
+			//根据办理任务的操作处理业务数据
+			if(ActionType.APPROVE_NOT == action){			//结束
+				state = BusiState.AUDIT_NOT;
+			}else if(ActionType.APPROVE_END == action){		//同意并办结
+				state = BusiState.AUDIT_OK;
+			}else if(ActionType.BACK_APPLICANT == action){	//退回申请人修改
+				state = BusiState.REBACK;
+			}else if(ActionType.APPLY_AGAIN == action){	//退回申请人修改
+				state = BusiState.AUDIT_IN;
+			}else if(ActionType.WAIT_APPROVE_PERFECT == action){       //同意，待完善资料
+				state = BusiState.WAIT_PERFECT_DATA;
+			}else if(ActionType.APPROVE_PERFECT == action){       //完善资料并办结
+				state = BusiState.AUDIT_OK_PERFECT;
+			}else{
+				isUpdateBusi = false;
+			}
+		}
+		if(isUpdateBusi){//需要更新业务状态
+			Boolean flag = false;
+			Date curDate = new Date();
+			if(busiCode.contains(CodePrefix.MISS_CLOCK)){
+				flag = this.missClockService.update(new MissClock(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.BUDGET)){
+				flag = this.budgetService.update(new Budget(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.LEAVE)){
+				flag = this.leaveService.update(new Leave(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.OVERTIME)){
+				flag = this.overtimeService.update(new Overtime(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.CONTRACT)){
+				flag = this.contractService.update(new Contract(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.DIMISSION)){
+				flag = this.dimissionService.update(new Dimission(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.NOTICE)){
+				flag = this.noticeService.update(new Notice(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.PAYMENT)){
+				flag = this.paymentService.update(new Payment(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.PURCHASE)){
+				flag = this.purchaseService.update(new Purchase(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.PURCHASE_APPLY)){
+				flag = this.purchaseApplyService.update(new PurchaseApply(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.RECRUIT)){
+				flag = this.recruitService.update(new Recruit(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.REGULAR)){
+				flag = this.regularService.update(new Regular(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.REIMBURSE)){
+				flag = this.reimburseService.update(new Reimburse(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.SALARY_CHANGE)){
+				flag = this.salaryChangeService.update(new SalaryChange(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.TRAVEL)){
+				flag = this.travelService.update(new Travel(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.TRAVEL_REIMBURSE)){
+				flag = this.travelReimburseService.update(new TravelReimburse(busiId,state,curDate));
+			}else if(busiCode.contains(CodePrefix.USE_CAR)){
+				flag = this.useCarService.update(new UseCar(busiId,state,curDate));
+			}
+			if(!flag){
+				throw new ServiceException("更新业务状态失败");
+			}
+			
+		}
+	}
+
+	@Override
+	public List<CommentVo> getCommentListByProcInstId(String procInstId) {
+		List<CommentVo> commentList = null;
+		if(StringUtil.isNotEmpty(procInstId)){
+			CommentSearch commentSearch = new CommentSearch();
+			commentSearch.setProcInstId(procInstId);
+			commentList = this.workflowDao.selectCommentList(commentSearch);
+		}
+		return commentList;
+	}
+
+	
+	@Override
+	public Result getDiagramByBusinessKey(String businessKey) {
+		Result result = new Result();
+		if(StringUtil.isEmpty(businessKey)){
+			result.setError(ResultCode.CODE_STATE_4006, "获取业务key失败");return result;
+		}
+		HistoricProcessInstance hip = this.historyService.createHistoricProcessInstanceQuery()
+									.processInstanceBusinessKey(businessKey)
+										.singleResult();
+		if(hip == null){
+			result.setError(ResultCode.CODE_STATE_4006, "找不到对应的流程实例");return result;
+		}
+		InputStream is = this.repositoryService.getProcessDiagram(hip.getProcessDefinitionId());
+		try{
+			if(hip.getEndTime() != null){
+				result.setOK(ResultCode.CODE_STATE_200, "获取成功",is);return result;
+			}
+			//画布
+			BufferedImage image = ImageIO.read(is);
+			//创建画笔
+			Graphics2D g2d = image.createGraphics();
+			//红色画笔
+			g2d.setColor(Color.RED);
+			//获取bpmn模型
+			BpmnModel model = this.repositoryService.getBpmnModel(hip.getProcessDefinitionId());
+			//获取当前的活动环节
+			List<String> activeActivityIds = this.runtimeService.getActiveActivityIds(hip.getId());
+			for(String id : activeActivityIds){
+				GraphicInfo graphicInfo = model.getGraphicInfo(id);
+				g2d.drawRoundRect((int)graphicInfo.getX(), (int)graphicInfo.getY(), (int)graphicInfo.getWidth(), (int)graphicInfo.getHeight(), 20, 20);
+			}
+			ByteArrayOutputStream output = new ByteArrayOutputStream();
+			ImageIO.write(image,"png",output);
+			ByteArrayInputStream in = new ByteArrayInputStream(output.toByteArray());
+			result.setOK(ResultCode.CODE_STATE_200, "获取成功",in);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+
+	@Override
+	public Result getCommentListByBusinessKey(String businessKey) {
+		Result result = new Result();
+		if(StringUtil.isEmpty(businessKey)){
+			result.setError(ResultCode.CODE_STATE_4006, "获取业务key失败");return result;
+		}
+		HistoricProcessInstance hip = this.historyService.createHistoricProcessInstanceQuery()
+				.processInstanceBusinessKey(businessKey)
+					.singleResult();
+		if(hip == null){
+			result.setError(ResultCode.CODE_STATE_4006, "找不到对应的流程实例");return result;
+		}
+		List<CommentVo> commentList = this.getCommentListByProcInstId(hip.getId());
+		result.setOK(ResultCode.CODE_STATE_200, "获取成功",commentList);
+		return result;
+	}
+
+	@Override
+	public Result delDeploy(String deploymentId) {
+		Result result = new Result();
+		if(StringUtil.isEmpty(deploymentId)){
+			result.setError(ResultCode.CODE_STATE_4006, "获取部署id失败");return result;
+		}
+		this.repositoryService.deleteDeployment(deploymentId);
+		result.setOK(ResultCode.CODE_STATE_200, "获取成功");
+		return result;
+	}
+
+}

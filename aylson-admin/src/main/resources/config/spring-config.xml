@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/data/jpa 
+		http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+<!-- 配置beanFactory 管理类 -->
+	<bean id="springBeanManager" class="com.aylson.core.utils.SpringBeanManager">
+	</bean>
+	<!-- Scans for application @Components to deploy -->
+	<context:component-scan base-package="com.aylson.dc/**">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- 数据库配置文件位置 -->
+	<context:property-placeholder location="classpath:config/jdbc.properties" />
+	<!-- 配置dbcp数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="minIdle" value="${jdbc.minIdle}" />        <!-- 队列中的最小等待数 -->
+		<property name="maxIdle" value="${jdbc.maxIdle}" />        <!-- 队列中的最大等待数 -->
+		<property name="maxWaitMillis" value="${jdbc.maxWait}" />  <!-- 最长等待时间，单位毫秒 -->
+		<property name="maxTotal" value="${jdbc.maxActive}" />     <!-- 最大活跃数 -->
+		<property name="initialSize" value="${jdbc.initialSize}" /><!-- 
+			初始大小 -->
+		<property name="testWhileIdle" value="true"></property>
+	</bean>
+
+	<!-- 使用JDBC事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 使用annotation注解方式配置事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- <property name="configLocation" value="classpath:mapper/sqlMapConfig.xml"></property> -->
+		<property name="mapperLocations" value="classpath:mapper/**/*Mapper.xml"></property>
+	</bean>
+
+	<!-- 配置SQLSession模板 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	
+	<!-- 验证码 -->
+	<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">  
+        <property name="config">  
+            <bean class="com.google.code.kaptcha.util.Config">  
+                <constructor-arg>  
+                    <props>  
+                        <prop key="kaptcha.border">no</prop>  
+                        <prop key="kaptcha.border.color">105,179,90</prop>  
+                        <prop key="kaptcha.textproducer.font.color">42,63,129</prop>  
+                        <prop key="kaptcha.image.width">250</prop>                        
+                        <prop key="kaptcha.textproducer.char.string">abcdefghigkmnpqrstuvwxzABCDEFGHJKLMNPQRSTUVWXZ2345679</prop>  
+                        <prop key="kaptcha.textproducer.font.size">80</prop>  
+                        <prop key="kaptcha.image.height">90</prop>  
+                        <prop key="kaptcha.session.key">code</prop>  
+                        <prop key="kaptcha.textproducer.char.length">4</prop>  
+                        <prop key="kaptcha.textproducer.font.names">宋体,楷体</prop>
+                        <prop key="kaptcha.obscurificator.impl">com.google.code.kaptcha.impl.WaterRipple</prop>  
+                        <prop key="kaptcha.background.clear.from">176,215,248</prop>  
+                        <prop key="kaptcha.background.clear.to">176,215,248</prop>  
+                    </props>  
+                </constructor-arg>  
+            </bean>  
+        </property>  
+    </bean>  
+	
+	
+</beans>

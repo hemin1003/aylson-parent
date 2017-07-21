@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.WithdrawalsApply">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.WithdrawalsApplyVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="applierId" property="applierId" jdbcType="INTEGER" />
+		<result column="amount" property="amount" jdbcType="FLOAT" />
+		<result column="bankNum" property="bankNum" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="applyTime" property="applyTime" jdbcType="TIMESTAMP" />
+		<result column="dealer" property="dealer" jdbcType="VARCHAR" />
+		<result column="dealerId" property="dealerId" jdbcType="INTEGER" />
+		<result column="dealTime" property="dealTime" jdbcType="TIMESTAMP" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="bankholder" property="bankholder" jdbcType="VARCHAR" />
+		<result column="applier" property="applier" jdbcType="VARCHAR" />
+		<result column="applierRealName" property="applierRealName" jdbcType="VARCHAR" />
+		<result column="applierPhone" property="applierPhone" jdbcType="VARCHAR" />
+		<result column="wxOpenId" property="wxOpenId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_withdrawals_apply.id,
+		mem_withdrawals_apply.applierId,
+		mem_withdrawals_apply.amount,
+		mem_withdrawals_apply.bankNum,
+		mem_withdrawals_apply.status,
+		mem_withdrawals_apply.applyTime,
+		mem_withdrawals_apply.dealer,
+		mem_withdrawals_apply.dealerId,
+		mem_withdrawals_apply.dealTime,
+		mem_withdrawals_apply.remark,
+		mem_withdrawals_apply.bankholder,
+		mem_withdrawals_apply.bankName,
+		mem_withdrawals_apply.transferProof,
+		mem_account.accountName as applier,
+		mem_account.realName as applierRealName,
+		mem_account.mobilePhone as applierPhone,
+		mem_account.wxOpenId
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_withdrawals_apply.id = #{id}</if>
+				<if test="status != null">and mem_withdrawals_apply.status = #{status}</if>
+				<if test="applierId != null">and mem_withdrawals_apply.applierId = #{applierId}</if>
+				<if test="dealerId != null">and mem_withdrawals_apply.dealerId = #{dealerId}</if>
+				<if test="ids != null and ids != ''">and mem_withdrawals_apply.id in ( #{ids} )</if>
+				 <if test="idsArray != null and idsArray != ''">and mem_withdrawals_apply.id in
+                    <foreach item="item" index="index" collection="idsArray"
+                             open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+				<!-- 模糊查询 -->
+				<if test="bankNumLike != null and bankNumLike != ''">and mem_withdrawals_apply.bankNum like CONCAT('%',#{bankNumLike},'%')</if>
+				<if test="applierLike != null and applierLike != ''">and mem_account.accountName like CONCAT('%',#{applierLike},'%')</if>
+				<if test="applierPhoneLike != null and applierPhoneLike != ''">and mem_account.mobilePhone like CONCAT('%',#{applierPhoneLike},'%')</if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(mem_withdrawals_apply.id) from mem_withdrawals_apply
+		inner join mem_account on mem_account.id = mem_withdrawals_apply.applierId
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from mem_withdrawals_apply
+		inner join mem_account on mem_account.id = mem_withdrawals_apply.applierId
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_withdrawals_apply.status,mem_withdrawals_apply.dealTime desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from mem_withdrawals_apply
+		inner join mem_account on mem_account.id = mem_withdrawals_apply.applierId
+		where mem_withdrawals_apply.id = #{id}
+	</select>
+	
+	<!-- 根据申请人id查询提现总金额 -->
+	<select id="sumByApplierId" resultType="java.lang.Float" parameterType="java.lang.Integer">
+		select ifnull(sum(amount),0) from mem_withdrawals_apply where `status` = 2 and applierId = #{applierId} 
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.WithdrawalsApply" useGeneratedKeys="true" keyProperty="id">
+		insert into mem_withdrawals_apply
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			id,
+		  <if test="applierId != null" > applierId, </if>
+		  <if test="amount != null" > amount, </if>
+		  <if test="bankNum != null" > bankNum, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="applyTime != null" > applyTime, </if>
+		  <if test="dealer != null" > dealer, </if>
+		  <if test="dealerId != null" > dealerId, </if>
+		  <if test="dealTime != null" > dealTime, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="transferProof != null" > transferProof, </if>
+		  <if test="bankholder != null" > bankholder, </if>
+		  <if test="bankName != null" > bankName, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        	#{id},
+		  <if test="applierId != null" > #{applierId}, </if>
+		  <if test="amount != null" > #{amount}, </if>
+		  <if test="bankNum != null" > #{bankNum}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="applyTime != null" > #{applyTime}, </if>
+		  <if test="dealer != null" > #{dealer}, </if>
+		  <if test="dealerId != null" > #{dealerId}, </if>
+		  <if test="dealTime != null" > #{dealTime}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="transferProof != null" > #{transferProof}, </if>
+		  <if test="bankholder != null" > #{bankholder}, </if>
+		  <if test="bankName != null" > #{bankName}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.WithdrawalsApply">
+		update 
+			mem_withdrawals_apply 
+		<set>
+			<if test="applierId != null"> applierId = #{applierId}, </if>
+			<if test="amount != null"> amount = #{amount}, </if>
+			<if test="bankNum != null"> bankNum = #{bankNum}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="dealer != null"> dealer = #{dealer}, </if>
+			<if test="dealerId != null"> dealerId = #{dealerId}, </if>
+			<if test="dealTime != null"> dealTime = #{dealTime}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="transferProof != null"> transferProof = #{transferProof}, </if>
+			<if test="bankholder != null"> bankholder = #{bankholder}, </if>
+			<if test="bankName != null"> bankName = #{bankName}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_withdrawals_apply
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_withdrawals_apply
+		<include refid="Where_Condition" />
+	</delete>
+	
+</mapper>

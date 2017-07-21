@@ -1,0 +1,312 @@
+package cn.aihama.busi.controller;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Iterator;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.activiti.engine.ProcessEngine;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+import cn.aihama.core.frame.base.Page;
+import cn.aihama.core.frame.controller.BaseController;
+import cn.aihama.core.frame.domain.Result;
+import cn.aihama.core.frame.domain.ResultCode;
+import cn.aihama.sys.common.SessionInfo;
+import cn.aihama.sys.vo.UserVo;
+import cn.aihama.utils.FileUtils;
+import cn.aihama.utils.StringUtil;
+import cn.aihama.workflow.search.DeploymentSearch;
+import cn.aihama.workflow.search.ProcessDefinitionSearch;
+import cn.aihama.workflow.search.TaskSearch;
+import cn.aihama.workflow.service.WorkflowService;
+import cn.aihama.workflow.vo.DeploymentVo;
+import cn.aihama.workflow.vo.ProcessDefinitionVo;
+import cn.aihama.workflow.vo.TaskVo;
+
+/**
+ * 工作流程管理
+ * @author wwx
+ * @since  2017-06
+ * @version v1.0
+ *
+ */
+@Controller
+@RequestMapping("/busi/workflow")
+public class WorkflowController extends BaseController {
+	
+	@Autowired
+	public WorkflowService workflowService;     //工作流服务
+	@Autowired
+	public ProcessEngine processEngine;         //工作流-引擎服务
+	
+	/**
+	 * 页面跳转
+	 * @param view
+	 * @return
+	 */
+	@RequestMapping(value = "/view", method = RequestMethod.GET)
+	public String toView(String view) {
+		DeploymentSearch deploymentSearch = new DeploymentSearch();
+		ProcessDefinitionSearch processDefinitionSearch = new ProcessDefinitionSearch();
+		Page<DeploymentVo> depList = this.workflowService.getDeployPage(deploymentSearch);
+		Page<ProcessDefinitionVo> pdList = this.workflowService.getProcessDefinitionPage(processDefinitionSearch);
+		request.setAttribute("depList", depList.getRowsObject());
+		request.setAttribute("pdList", pdList.getRowsObject());
+		return "/"+view;
+	}	
+	
+	/**
+	 * 部署流程
+	 * @param fileName
+	 * @param category
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/deploy", method = RequestMethod.POST)
+	public Result deploy(String fileName, String category) {
+		Result result = new Result();
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+		if(multipartResolver.isMultipart(request)){ //判断request是否有文件上传
+			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
+			Iterator<String> ite = multiRequest.getFileNames();
+			while(ite.hasNext()){
+				MultipartFile file = multiRequest.getFile(ite.next());
+				if(file!=null){
+					try {
+						 //判断文件格式
+						 if(!FileUtils.checkFileType(file.getOriginalFilename(), "zip")){
+							 result.setError(ResultCode.CODE_STATE_4006, "请上传后缀为.zip的流程资源文件！");return result;
+						 }
+						 if(StringUtil.isEmpty(fileName))fileName = file.getOriginalFilename();
+						 result = this.workflowService.deploy(file.getInputStream(), fileName, category);
+						 break;
+					} catch (Exception e) {
+						e.printStackTrace();
+						logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+						result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+					} 
+				}else{
+					 result.setError(ResultCode.CODE_STATE_4006, "请上传后缀为.zip的流程资源文件！");return result;
+				}
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 查询部署列表-分页
+	 * @return
+	 * @throws Exception 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getDeployPage", method = RequestMethod.GET)
+	public Result getDeployPage(DeploymentSearch deploymentSearch) throws Exception {
+		Result result = new Result();
+		Page<DeploymentVo> page = this.workflowService.getDeployPage(deploymentSearch);
+		result.setOK(ResultCode.CODE_STATE_200, "查询成功",page);
+		return result;
+	}
+	
+	/**
+	 * 查询流程定义列表
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getPDPage", method = RequestMethod.GET)
+	public Result getPDPage(ProcessDefinitionSearch processDefinitionSearch) {
+		Result result = new Result();
+		Page<ProcessDefinitionVo> page = this.workflowService.getProcessDefinitionPage(processDefinitionSearch);
+		result.setOK(ResultCode.CODE_STATE_200, "查询成功", page);
+		return result;
+	}
+	
+	/**
+	 * 根据部署id查询流程定义图
+	 * @return
+	 * @throws Exception 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getDiagramByDeployId", method = RequestMethod.GET)
+	public Result getDiagramByDeployId(String deployId, HttpServletResponse response) throws Exception {
+		Result result = new Result();
+		result = this.workflowService.getDiagramByDeployId(deployId);
+		if(result.isSuccess()){
+			OutputStream out = response.getOutputStream();
+			InputStream in = (InputStream)result.getData();
+			for(int b=-1;(b=in.read())!=-1;){
+				out.write(b);
+			}
+			out.close();
+			in.close();
+		}
+		return result;
+	}
+	
+	/**
+	 * 获取跟踪流程图
+	 * @param procDefId
+	 * @param procInstId
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getDiagram", method = RequestMethod.GET)
+	public Result getDiagram(String procDefId,String procInstId,  HttpServletResponse response) throws Exception {
+		Result result = new Result();
+		result = this.workflowService.getDiagram(procDefId, procInstId);
+		if(result.isSuccess()){
+			OutputStream out = response.getOutputStream();
+			InputStream in = (InputStream)result.getData();
+			for(int b=-1;(b=in.read())!=-1;){
+				out.write(b);
+			}
+			out.close();
+			in.close();
+		}
+		return result;
+	}
+	
+	/**
+	 * 立即申请（启动流程）
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/startProcess", method = RequestMethod.POST)
+	public Result startProcess( String busiCode, Integer busiId, Integer nextTaskUserId){
+		Result result = new Result();
+		try{
+			result = this.workflowService.startProcess(busiCode, busiId, nextTaskUserId);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+			result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+		}
+		return result;
+	}
+	
+	/**
+	 * 获取我的代办任务列表
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getMyTaskToDoPage", method = RequestMethod.GET)
+	public Result getMyTaskToDoPage(TaskSearch taskSearch){
+		Result result = new Result();
+		try{
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+			if(sessionInfo != null){
+				UserVo userVo = sessionInfo.getUser();
+				taskSearch.setUserId(userVo.getId());
+			}
+			Page<TaskVo> page = this.workflowService.getTaskToDoPage(taskSearch);
+			result.setOK(ResultCode.CODE_STATE_200, "查询成功",page);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+			result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+		}
+		return result;
+	}
+	
+	/**
+	 * 获取我的已办任务列表
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getMyTaskDonePage", method = RequestMethod.GET)
+	public Result getMyTaskDonePage(TaskSearch taskSearch){
+		Result result = new Result();
+		try{
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+			if(sessionInfo != null){
+				UserVo userVo = sessionInfo.getUser();
+				taskSearch.setUserId(userVo.getId());
+			}
+			Page<TaskVo> page = this.workflowService.getTaskDonePage(taskSearch);
+			result.setOK(ResultCode.CODE_STATE_200, "查询成功",page);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+			result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+		}
+		return result;
+	}
+	
+	/**
+	 * 获取我的归档任务列表
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getTaskFiledPage", method = RequestMethod.GET)
+	public Result getTaskFiledPage(TaskSearch taskSearch){
+		Result result = new Result();
+		try{
+			Page<TaskVo> page = this.workflowService.getTaskFiledPage(taskSearch);
+			result.setOK(ResultCode.CODE_STATE_200, "查询成功",page);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+			result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+		}
+		return result;
+	}
+	
+	/**
+	 * 获取任务详情信息
+	 * @param taskId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getTaskInfo", method = RequestMethod.GET)
+	public Result getTaskInfo(String taskId){
+		Result result = new Result();
+		try{
+			result = this.workflowService.getTaskInfo(taskId);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+			result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+		}
+		return result;
+	}
+	
+	/**
+	 * 办理任务
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/audit", method = RequestMethod.POST)
+	public Result audit(String taskId, String busiCode, Integer busiId, String approvalOpinion, Integer action, Integer auditUserId){
+		Result result = new Result();
+		try{
+			result = this.workflowService.audit(taskId, busiCode, busiId, approvalOpinion, action, auditUserId);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+			result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+		}
+		return result;
+	}
+	
+	public Result getDiagramByBusiness(String busiCode, Integer busiId){
+		Result result = new Result();
+		if(StringUtil.isEmpty(busiCode)){
+			result.setError(ResultCode.CODE_STATE_4006, "获取业务Code失败");return result;
+		}
+		if(busiId == null){
+			result.setError(ResultCode.CODE_STATE_4006, "获取业务Code失败");return result;
+		}
+		return result;
+	}
+	
+}

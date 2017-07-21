@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;SystemInitializeJob.java&apos; to &apos;aihama-web-qite/src/main/java/cn.aihama.base.common&apos;&#x0D;&#x0A;- Original project: &apos;aylson-manage&apos;&#x0D;&#x0A;- Destination element: &apos;aihama-web-qite/src/main/java/cn.aihama.base.common&apos;&#x0D;&#x0A;- Original element: &apos;com.aylson.dc.base.common.SystemInitializeJob.java&apos;" description="Copy compilation unit" destination="=aihama-web-qite/src\/main\/java&lt;cn.aihama.base.common" element1="/src\/main\/java&lt;com.aylson.dc.base.common{SystemInitializeJob.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1497600839088" units="1" version="1.0"/>
+</session>

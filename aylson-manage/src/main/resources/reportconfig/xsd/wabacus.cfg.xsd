@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+				targetNamespace="http://www.wabacus.com"
+				xmlns:wxs="http://www.wabacus.com"
+				elementFormDefault="qualified">
+	 <xs:include schemaLocation="wabacus.util.xsd"/>
+	 
+    <xs:element name="wabacus-config">
+    	<xs:complexType>
+    		<xs:all>
+    			<xs:element name="system"  minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+    								<xs:attribute name="name" type="wxs:keyType" use="required"/>
+    								<xs:attribute name="value" type="xs:string" use="required"/>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="datasources" minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="datasource" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+    								<xs:sequence>
+    									<xs:element name="property" maxOccurs="unbounded">
+    										<xs:complexType>
+    											<xs:simpleContent>
+    												<xs:extension base="xs:string">
+    													<xs:attribute name="name" type="wxs:keyType" use="required"/>
+    												</xs:extension>
+    											</xs:simpleContent>
+    										</xs:complexType>
+    									</xs:element>
+    								</xs:sequence>
+    								<xs:attribute name="name" type="wxs:keyType" use="required"/>
+    								<xs:attribute name="type" type="xs:string"/>
+    								<xs:attribute name="dbtype" type="xs:string" use="required"/>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    					<xs:attribute name="default" type="xs:string"/>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="inputbox-types"  minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="inputbox-type" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+    								<xs:attribute name="name" type="wxs:keyType" use="required"/>
+    								<xs:attribute name="class" type="xs:string" use="required"/>
+    								<xs:attribute name="defaultstyleproperty" type="xs:string"/>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    					<xs:attribute name="default" type="xs:string"/>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="data-types"  minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="data-type" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+    								<xs:attribute name="name" type="wxs:keyType" use="required"/>
+    								<xs:attribute name="class" type="xs:string" use="required"/>
+    								<xs:attribute name="defaultformat" type="xs:string"/>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    					<xs:attribute name="default" type="xs:string"/>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="report-datasetvalue-providers" minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="dataset-provider" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+    								<xs:attribute name="name" type="wxs:keyType" use="required"/>
+    								<xs:attribute name="class" type="xs:string" use="required"/>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    					<xs:attribute name="default" type="xs:string"/>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="common-datasetvalue-providers" minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="dataset-provider" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+    								<xs:attribute name="name" type="xs:string" use="required"/>
+    								<xs:attribute name="class" type="xs:string" use="required"/>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    					<xs:attribute name="default" type="xs:string"/>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="update-dataset-providers" minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="dataset-provider" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+    								<xs:attribute name="name" type="xs:string" use="required"/>
+    								<xs:attribute name="class" type="xs:string" use="required"/>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    					<xs:attribute name="default" type="xs:string"/>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="container-types" minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="container-type" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+    								<xs:attribute name="name" type="wxs:keyType" use="required"/>
+    								<xs:attribute name="class" type="xs:string" use="required"/>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="report-types"  minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="report-type" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+    								<xs:attribute name="name" type="wxs:keyType" use="required"/>
+    								<xs:attribute name="class" type="xs:string" use="required"/>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    					<xs:attribute name="default" type="xs:string"/>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="global-interceptors" minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="interceptor" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+    								<xs:attribute name="class" type="xs:string" use="required"/>
+    								<xs:attribute name="pageid" type="xs:string"/>
+    								<xs:attribute name="matchmode" type="xs:string"/>
+    							</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="global-jsfiles"  minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="js-file" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType mixed="true">
+									<xs:attribute name="loadorder" type="xs:integer"/>
+								</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="global-cssfiles"  minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="css-file" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="i18n-resources"  minOccurs="0">
+    				<xs:complexType>
+    					<xs:attribute name="file" type="xs:string" use="required"/>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="global-resources"  minOccurs="0">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="resource-file" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+    								<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="pattern" type="wxs:booleanType"/>
+											<xs:attribute name="recursive" type="wxs:booleanType"/>
+										</xs:extension>
+									</xs:simpleContent>
+			   				</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    			
+    			<xs:element name="report-files"  minOccurs="0">
+    			    <xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="report-file" minOccurs="0" maxOccurs="unbounded">
+    							<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="pattern" type="wxs:booleanType"/>
+											<xs:attribute name="recursive" type="wxs:booleanType"/>
+										</xs:extension>
+									</xs:simpleContent>
+			   				</xs:complexType>
+    						</xs:element>
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    		</xs:all>
+    	</xs:complexType>
+    </xs:element>
+</xs:schema>

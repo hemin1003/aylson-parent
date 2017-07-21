@@ -1,0 +1,155 @@
+package cn.aihama.busi.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import cn.aihama.busi.search.BudgetSearch;
+import cn.aihama.busi.service.BudgetService;
+import cn.aihama.busi.vo.BudgetVo;
+import cn.aihama.core.frame.base.Page;
+import cn.aihama.core.frame.controller.BaseController;
+import cn.aihama.core.frame.domain.Result;
+import cn.aihama.core.frame.domain.ResultCode;
+import cn.aihama.sys.common.SessionInfo;
+import cn.aihama.sys.constant.BusiConstant.BusiState;
+import cn.aihama.sys.vo.UserVo;
+
+/**
+ * 预算申请管理
+ * @author wwx
+ * @since  2017-06
+ * @version v1.0
+ *
+ */
+@Controller
+@RequestMapping("/busi/budget")
+public class BudgetController extends BaseController {
+	
+	@Autowired
+	private BudgetService budgetService;                     //预算申请服务
+	
+	/**
+	 * 获取列表（分页）
+	 * @param budgetSearch
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getPage", method = RequestMethod.GET)
+	public Result getPage(BudgetSearch budgetSearch) {
+		Result result = new Result();
+		SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+		if(sessionInfo != null){
+			UserVo userVo = sessionInfo.getUser();
+			budgetSearch.setUserId(userVo.getId());
+		}
+		Page<BudgetVo> page = this.budgetService.getPage(budgetSearch);
+		result.setOK(ResultCode.CODE_STATE_200, "操作成功", page);
+		return result;
+	}
+	
+	/**
+	 * 获取列表（不分页）
+	 * @param budgetSearch
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getList", method = RequestMethod.GET)
+	public Result getList(BudgetSearch budgetSearch) {
+		Result result = new Result();
+		SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+		if(sessionInfo != null){
+			UserVo userVo = sessionInfo.getUser();
+			budgetSearch.setUserId(userVo.getId());
+		}
+		List<BudgetVo> list = this.budgetService.getList(budgetSearch);
+		result.setOK(ResultCode.CODE_STATE_200, "操作成功", list);
+		return result;
+	}
+	
+	/**
+	 * 根据id查询
+	 * @param id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getById", method = RequestMethod.GET)
+	public Result getById(Integer id) {
+		Result result = new Result();
+		if(id == null){
+			result.setError(ResultCode.CODE_STATE_4006, "获取id失败，请稍后再试或者联系管理员！");
+			return result;
+		}
+		BudgetVo budgetVo = this.budgetService.getVoById(id);
+		if(budgetVo == null){
+			result.setError(ResultCode.CODE_STATE_4006, "获取信息失败，请稍后再试或者联系管理员！");return result;
+		}
+		result.setOK(ResultCode.CODE_STATE_200, "操作成功", budgetVo);
+		return result;
+	}
+	
+	/**
+	 * 新增
+	 * @param budgetVo
+	 * @return
+	 */
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@ResponseBody
+	public Result save(BudgetVo budgetVo) {
+		Result result = new Result();
+		try{
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+			if(sessionInfo != null){
+				UserVo userVo = sessionInfo.getUser();
+				budgetVo.setUserId(userVo.getId());
+			}
+			result = this.budgetService.save(budgetVo);
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+			result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+		}
+		return result;
+	}
+		
+	/**
+	 * 根据id删除
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/deleteById", method = RequestMethod.POST)
+	@ResponseBody
+	public Result deleteById(Integer id) {
+		Result result = new Result();
+		try{
+			/*if(id == null){
+				result.setError(ResultCode.CODE_STATE_4006, "获取id失败，请稍后再试或者联系管理员！");return result;
+			}
+			BudgetVo budgetVo = this.budgetService.getById(id);
+			if(budgetVo == null){
+				result.setError(ResultCode.CODE_STATE_4006, "获取信息失败，请稍后再试或者联系管理员！");return result;
+			}
+			if(BusiState.DRAFT != budgetVo.getState().intValue()){
+				result.setError(ResultCode.CODE_STATE_4006, "当前状态不能修改！");return result;
+			}
+			Boolean flag = this.budgetService.deleteById(id);
+			if(flag){
+				result.setOK(ResultCode.CODE_STATE_200, "删除成功");
+			}else{
+				result.setError(ResultCode.CODE_STATE_4006, "删除失败");
+			}*/
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("接口："+request.getRequestURI()+"，错误信息："+e.getMessage());
+			result.setError(ResultCode.CODE_STATE_500, "操作失败，请稍后再试或者联系管理员！");
+		}
+		return result;
+	}
+	
+	
+	
+}

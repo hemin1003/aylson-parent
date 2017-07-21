@@ -1,0 +1,128 @@
+package cn.aihama.workflow.search;
+
+import java.util.Date;
+
+import cn.aihama.core.frame.search.BaseSearch;
+
+public class CommentSearch extends BaseSearch {
+
+	private static final long serialVersionUID = 7742117314084563722L;
+
+	//匹配查询
+	private String procInstId;                       //流程实例id
+	private String nodeName;                         //当前节点名称/当前阶段
+	private Date receiveTime;                        //接收时间
+	private Date finishTime;                         //审批完成时间
+	private String auditerName;                      //审核人姓名
+	private String approvalOpinion;                  //审批意见
+	private String taskId;                           //任务id
+	private Long duration;                           //完成时长：毫秒
+	//模糊查询
+
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
+	
+	public String getApplyTime() {
+		return applyTime;
+	}
+	public void setApplyTime(String applyTime) {
+		this.applyTime = applyTime;
+	}
+	
+	public String getApplyTimeStart() {
+		return applyTimeStart;
+	}
+	public void setApplyTimeStart(String applyTimeStart) {
+		this.applyTimeStart = applyTimeStart;
+	}
+	
+	public String getApplyTimeEnd() {
+		return applyTimeEnd;
+	}
+	public void setApplyTimeEnd(String applyTimeEnd) {
+		this.applyTimeEnd = applyTimeEnd;
+	}
+	
+	public String getReceiveTime() {
+		return receiveTime;
+	}
+	public void setReceiveTime(String receiveTime) {
+		this.receiveTime = receiveTime;
+	}
+	
+	public String getReceiveTimeStart() {
+		return receiveTimeStart;
+	}
+	public void setReceiveTimeStart(String receiveTimeStart) {
+		this.receiveTimeStart = receiveTimeStart;
+	}
+	
+	public String getReceiveTimeEnd() {
+		return receiveTimeEnd;
+	}
+	public void setReceiveTimeEnd(String receiveTimeEnd) {
+		this.receiveTimeEnd = receiveTimeEnd;
+	}
+	
+	public String getAuditTime() {
+		return auditTime;
+	}
+	public void setAuditTime(String auditTime) {
+		this.auditTime = auditTime;
+	}
+	
+	public String getAuditTimeStart() {
+		return auditTimeStart;
+	}
+	public void setAuditTimeStart(String auditTimeStart) {
+		this.auditTimeStart = auditTimeStart;
+	}
+	
+	public String getAuditTimeEnd() {
+		return auditTimeEnd;
+	}
+	public void setAuditTimeEnd(String auditTimeEnd) {
+		this.auditTimeEnd = auditTimeEnd;
+	}
+	
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	
+	public String getApplyNameLike() {
+		return applyNameLike;
+	}
+	public void setApplyNameLike(String applyNameLike) {
+		this.applyNameLike = applyNameLike;
+	}
+	
+	public String getBusiCodeLike() {
+		return busiCodeLike;
+	}
+	public void setBusiCodeLike(String busiCodeLike) {
+		this.busiCodeLike = busiCodeLike;
+	}
+	
+	public String getFlowNameLike() {
+		return flowNameLike;
+	}
+	public void setFlowNameLike(String flowNameLike) {
+		this.flowNameLike = flowNameLike;
+	}
+	
+	public String getAuditerNameLike() {
+		return auditerNameLike;
+	}
+	public void setAuditerNameLike(String auditerNameLike) {
+		this.auditerNameLike = auditerNameLike;
+	}
+	
+	
+}

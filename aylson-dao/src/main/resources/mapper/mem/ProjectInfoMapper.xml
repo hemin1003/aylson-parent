@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.mem.po.ProjectInfo">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.mem.vo.ProjectInfoVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="memberId" property="memberId" jdbcType="INTEGER" />
+		<result column="clientName" property="clientName" jdbcType="VARCHAR" />
+		<result column="projectName" property="projectName" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="provinceId" property="provinceId" jdbcType="INTEGER" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cityId" property="cityId" jdbcType="INTEGER" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="areaId" property="areaId" jdbcType="INTEGER" />
+		<result column="clientAddress" property="clientAddress" jdbcType="VARCHAR" />
+		<result column="mobilePhone" property="mobilePhone" jdbcType="VARCHAR" />
+		<result column="budgetRange" property="budgetRange" jdbcType="VARCHAR" />
+		<result column="budgetRangeValue" property="budgetRangeValue" jdbcType="INTEGER" />
+		<result column="budgetRangeId" property="budgetRangeId" jdbcType="INTEGER" />
+		<result column="byAgent" property="byAgent" jdbcType="VARCHAR" />
+		<result column="byAgentId" property="byAgentId" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="isSent" property="isSent" jdbcType="TINYINT" />
+		<result column="integral" property="integral" jdbcType="INTEGER" />
+		<result column="gold" property="gold" jdbcType="INTEGER" />
+		<result column="isSuccessfulCase" property="isSuccessfulCase" jdbcType="TINYINT" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="successCaseImg" property="successCaseImg" jdbcType="VARCHAR" />
+		
+		<result column="accountName" property="accountName" jdbcType="VARCHAR" />
+		<result column="realName" property="realName" jdbcType="VARCHAR" />
+		<result column="referralId" property="referralId" jdbcType="INTEGER" />
+		<result column="referralName" property="referralName" jdbcType="VARCHAR" />
+		<result column="memberPhone" property="memberPhone" jdbcType="VARCHAR" />
+		<result column="memberType" property="memberType" jdbcType="INTEGER" />
+		<result column="wxOpenId" property="wxOpenId" jdbcType="VARCHAR" />
+		<result column="productTypes" property="productTypes" jdbcType="VARCHAR" />
+		<result column="productTypeIds" property="productTypeIds" jdbcType="VARCHAR" />
+		<result column="evalScore" property="evalScore" jdbcType="INTEGER" />
+		<result column="evalContent" property="evalContent" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		mem_project_info.id,
+		mem_project_info.memberId,
+		mem_project_info.clientName,
+		mem_project_info.projectName,
+		mem_project_info.province,
+		mem_project_info.provinceId,
+		mem_project_info.city,
+		mem_project_info.cityId,
+		mem_project_info.area,
+		mem_project_info.areaId,
+		mem_project_info.clientAddress,
+		mem_project_info.mobilePhone,
+		mem_project_info.budgetRange,
+		mem_project_info.budgetRangeValue,
+		mem_project_info.budgetRangeId,
+		mem_project_info.byAgent,
+		mem_project_info.byAgentId,
+		mem_project_info.status,
+		mem_project_info.createTime,
+		mem_project_info.remark,
+		mem_project_info.isSent,
+		mem_project_info.integral,
+		mem_project_info.gold,
+		mem_project_info.isSuccessfulCase,
+		mem_project_info.updateTime,
+		mem_project_info.successCaseImg,
+		mem_account.accountName,
+		mem_account.realName,
+		mem_account.referralId,
+		mem_account.referralName,
+		mem_account.mobilePhone as memberPhone,
+		mem_account.memberType,
+		mem_account.wxOpenId,
+		mem_project_design.productTypes,
+		mem_project_design.productTypeIds,
+		mem_project_design.evalScore,
+		mem_project_design.evalContent
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and mem_project_info.id = #{id}</if>
+				<if test="memberId != null">and mem_project_info.memberId = #{memberId}</if>
+				<if test="clientName != null">and mem_project_info.clientName = #{clientName}</if>
+				<if test="projectName != null">and mem_project_info.projectName = #{projectName}</if>
+				<if test="province != null">and mem_project_info.province = #{province}</if>
+				<if test="provinceId != null">and mem_project_info.provinceId = #{provinceId}</if>
+				<if test="city != null">and mem_project_info.city = #{city}</if>
+				<if test="cityId != null">and mem_project_info.cityId = #{cityId}</if>
+				<if test="area != null">and mem_project_info.area = #{area}</if>
+				<if test="areaId != null">and mem_project_info.areaId = #{areaId}</if>
+				<if test="mobilePhone != null">and mem_project_info.mobilePhone = #{mobilePhone}</if>
+				<if test="byAgent != null">and mem_project_info.byAgent = #{byAgent}</if>
+				<if test="byAgentId != null">and mem_project_info.byAgentId = #{byAgentId}</if>
+				<if test="status != null">and mem_project_info.status = #{status}</if>
+				<if test="isSuccessfulCase != null">and mem_project_info.isSuccessfulCase = #{isSuccessfulCase}</if>
+				<if test="isHadDesign == 0">and mem_project_info.status not between 5 and 8 </if>
+				<if test="isHadDesign == 1">and mem_project_info.status between 5 and 8 </if>
+				<if test="isVerify == 0">and (mem_project_info.status = 2 or mem_project_info.status = 11) </if>
+				<if test="isVerify == 1">and mem_project_info.status = 3 </if>
+				<if test="memberType != null">and mem_account.memberType = #{memberType} </if>
+				<!-- 状态合并查询 -->
+				<if test="statusMerge == 's1'">and (mem_project_info.status = 1 or mem_project_info.status = 2 or mem_project_info.status = 11) </if>
+				<if test="statusMerge == 's2'">and (mem_project_info.status = 3 or mem_project_info.status = 31 or mem_project_info.status = 32) </if>
+				<if test="statusMerge == 's3'">and (mem_project_info.status = 4 or mem_project_info.status = 51) </if>
+				<if test="statusMerge == 's4'">and (mem_project_info.status = 5) </if>
+				<if test="statusMerge == 's5'">and (mem_project_info.status = 6 or mem_project_info.status = 7) </if>
+				<if test="statusMerge == 's6'">and (mem_project_info.status = 8) </if>
+				<!-- 模糊查询 -->
+				<if test="projectNameLike != null and projectNameLike != ''">and  mem_project_info.projectName like CONCAT('%',#{projectNameLike},'%')</if>
+				<if test="productTypesLike != null and productTypesLike != ''">and  mem_project_design.productTypes like CONCAT('%',#{productTypesLike},'%')</if>
+				<if test="mobilePhoneLike != null and mobilePhoneLike != ''">and  mem_project_info.mobilePhone like CONCAT('%',#{mobilePhoneLike},'%')</if>
+				<if test="addressLike != null and addressLike != ''">and  
+				 (mem_project_info.province like CONCAT('%',#{addressLike},'%')
+					 or mem_project_info.city like CONCAT('%',#{addressLike},'%')
+					 or mem_project_info.area like CONCAT('%',#{addressLike},'%')
+					 or mem_project_info.clientAddress like CONCAT('%',#{addressLike},'%')
+				 )
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(mem_project_info.id) from mem_project_info
+		inner join mem_account 
+		on mem_project_info.memberId = mem_account.id
+		left join mem_project_design 
+		on mem_project_info.id = mem_project_design.projectId
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from mem_project_info
+		inner join mem_account 
+		on mem_project_info.memberId = mem_account.id
+		left join mem_project_design 
+		on mem_project_info.id = mem_project_design.projectId
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by mem_project_info.updateTime desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+		
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from mem_project_info
+		inner join mem_account 
+		on mem_project_info.memberId = mem_account.id
+		left join mem_project_design 
+		on mem_project_info.id = mem_project_design.projectId
+		where mem_project_info.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.mem.po.ProjectInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into mem_project_info
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			id,
+		  <if test="memberId != null" > memberId, </if>
+		  <if test="clientName != null" > clientName, </if>
+		  <if test="projectName != null" > projectName, </if>
+		  <if test="province != null" > province, </if>
+		  <if test="provinceId != null" > provinceId, </if>
+		  <if test="city != null" > city, </if>
+		  <if test="cityId != null" > cityId, </if>
+		  <if test="area != null" > area, </if>
+		  <if test="areaId != null" > areaId, </if>
+		  <if test="clientAddress != null" > clientAddress, </if>
+		  <if test="mobilePhone != null" > mobilePhone, </if>
+		  <if test="budgetRange != null" > budgetRange, </if>
+		  <if test="budgetRangeValue != null" > budgetRangeValue, </if>
+		  <if test="budgetRangeId != null" > budgetRangeId, </if>
+		  <if test="byAgent != null" > byAgent, </if>
+		  <if test="byAgentId != null" > byAgentId, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="createTime != null" > createTime, </if>
+		  <if test="remark != null" > remark, </if>
+		  <if test="integral != null" > integral, </if>
+		  <if test="gold != null" > gold, </if>
+		  <if test="isSuccessfulCase != null" > isSuccessfulCase, </if>
+		  <if test="successCaseImg != null" > successCaseImg, </if>
+		  <if test="isSent != null" > isSent, </if>
+		  updateTime, 
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        	#{id},
+		  <if test="memberId != null" > #{memberId}, </if>
+		  <if test="clientName != null" > #{clientName}, </if>
+		  <if test="projectName != null" > #{projectName}, </if>
+		  <if test="province != null" > #{province}, </if>
+		  <if test="provinceId != null" > #{provinceId}, </if>
+		  <if test="city != null" > #{city}, </if>
+		  <if test="cityId != null" > #{cityId}, </if>
+		  <if test="area != null" > #{area}, </if>
+		  <if test="areaId != null" > #{areaId}, </if>
+		  <if test="clientAddress != null" > #{clientAddress}, </if>
+		  <if test="mobilePhone != null" > #{mobilePhone}, </if>
+		  <if test="budgetRange != null" > #{budgetRange}, </if>
+		  <if test="budgetRangeValue != null" > #{budgetRangeValue}, </if>
+		  <if test="budgetRangeId != null" > #{budgetRangeId}, </if>
+		  <if test="byAgent != null" > #{byAgent}, </if>
+		  <if test="byAgentId != null" > #{byAgentId}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+		  <if test="integral != null" > #{integral}, </if>
+		  <if test="gold != null" > #{gold}, </if>
+		  <if test="isSuccessfulCase != null" > #{isSuccessfulCase}, </if>
+		  <if test="successCaseImg != null" > #{successCaseImg}, </if>
+		  <if test="isSent != null" > #{isSent}, </if>
+		   now(),
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.mem.po.ProjectInfo">
+		update 
+			mem_project_info 
+		<set>
+			<if test="memberId != null"> memberId = #{memberId}, </if>
+			<if test="clientName != null"> clientName = #{clientName}, </if>
+			<if test="projectName != null"> projectName = #{projectName}, </if>
+			<if test="province != null"> province = #{province}, </if>
+			<if test="provinceId != null"> provinceId = #{provinceId}, </if>
+			<if test="city != null"> city = #{city}, </if>
+			<if test="cityId != null"> cityId = #{cityId}, </if>
+			<if test="area != null"> area = #{area}, </if>
+			<if test="areaId != null"> areaId = #{areaId}, </if>
+			<if test="clientAddress != null"> clientAddress = #{clientAddress}, </if>
+			<if test="mobilePhone != null"> mobilePhone = #{mobilePhone}, </if>
+			<if test="budgetRange != null"> budgetRange = #{budgetRange}, </if>
+			<if test="budgetRangeValue != null"> budgetRangeValue = #{budgetRangeValue}, </if>
+			<if test="budgetRangeId != null"> budgetRangeId = #{budgetRangeId}, </if>
+			<if test="byAgent != null"> byAgent = #{byAgent}, </if>
+			<if test="byAgentId != null"> byAgentId = #{byAgentId}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+			<if test="isSent != null"> isSent = #{isSent}, </if>
+			<if test="integral != null"> integral = #{integral}, </if>
+			<if test="gold != null"> gold = #{gold}, </if>
+			<if test="isSuccessfulCase != null"> isSuccessfulCase = #{isSuccessfulCase}, </if>
+			<if test="successCaseImg != null"> successCaseImg = #{successCaseImg}, </if>
+			 updateTime = now(),
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from mem_project_info
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from mem_project_info
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

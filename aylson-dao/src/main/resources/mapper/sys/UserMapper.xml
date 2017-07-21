@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.User">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.UserVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="pwd" property="pwd" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="roleId" property="roleId" jdbcType="INTEGER" />
+		<result column="roleName" property="roleName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="DB_Column_List">
+		sys_user.id,
+		sys_user.userName,
+		sys_user.pwd,
+		sys_user.type,
+		sys_user.`status`,
+		sys_user.roleId,
+		sys_user.roleName
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_user.id = #{id}</if>
+				<if test="userName != null"> and sys_user.userName = #{userName} </if>
+				<if test="status != null"> and sys_user.status = #{status} </if>
+				<if test="roleId != null"> and sys_user.roleId = #{roleId} </if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from sys_user
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_user
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_user.id </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_user
+		where id = #{id}
+	</select>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.User" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="userName != null"> userName, </if>
+			<if test="pwd != null"> pwd, </if>
+			<if test="type != null"> type, </if>
+			<if test="status != null"> status, </if>
+			<if test="roleId != null"> roleId, </if>
+			<if test="roleName != null"> roleName, </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			#{id},
+			<if test="userName != null"> #{userName}, </if>
+			<if test="pwd != null"> #{pwd}, </if>
+			<if test="type != null"> #{type}, </if>
+			<if test="status != null"> #{status}, </if>
+			<if test="roleId != null"> #{roleId}, </if>
+			<if test="roleName != null"> #{roleName}, </if>
+		</trim>
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.User">
+		update
+		sys_user
+		<set>
+			<if test="userName != null"> userName = #{userName}, </if>
+			<if test="pwd != null"> pwd = #{pwd}, </if>
+			<if test="type != null"> type = #{type}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="roleId != null"> roleId = #{roleId}, </if>
+			<if test="roleName != null"> roleName = #{roleName}, </if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_user
+		where
+		id = #{id}
+	</delete>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_user
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<!-- 批量插入角色用户 -->
+	<insert id="batchInsertRoleUser" parameterType="java.util.List">
+		insert into sys_role_user(
+			userId,
+			roleId
+		) values 
+		 <foreach collection="list" item="item" index="index" separator="," > 
+		(	#{item.userId},
+			#{item.roleId}
+		)
+		 </foreach> 
+	</insert>
+	
+	<!-- 插入角色用户 -->
+	<insert id="insertUserRole" parameterType="com.aylson.dc.sys.po.User" >
+		insert into sys_role_user(
+			userId,
+			roleId
+		) values 
+		(	
+			#{id},
+			#{roleId}
+		)
+	</insert>
+	
+	<!-- 通过用户id删除角色 -->
+	<delete id="deleteRoleByUserId" parameterType="java.lang.Integer">
+		delete from sys_role_user
+		where sys_role_user.userId = #{userId}
+	</delete>
+
+</mapper>

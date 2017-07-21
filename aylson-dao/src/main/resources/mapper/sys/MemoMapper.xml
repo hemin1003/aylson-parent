@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.sys.po.Memo">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.sys.vo.MemoVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="userId" property="userId" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="memoTime" property="memoTime" jdbcType="TIMESTAMP" />
+		<result column="memoLevel" property="memoLevel" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		sys_memo.id,
+		sys_memo.userId,
+		sys_memo.content,
+		sys_memo.memoTime,
+		sys_memo.memoLevel,
+		sys_memo.createTime
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and sys_memo.id = #{id} </if>
+				<if test="userId != null">and sys_memo.userId = #{userId} </if>
+				<if test="memoLevel != null">and sys_memo.memoLevel = #{memoLevel} </if>
+				<if test="createTime != null and createTime != ''">and DATE_FORMAT(sys_memo.createTime ,'%Y-%m-%d') = #{createTime} </if>
+				<if test="createTimeStart != null and createTimeStart != ''">and sys_memo.createTime &gt;= #{createTimeStart}</if>
+                <if test="createTimeEnd != null and createTimeEnd != ''">and sys_memo.createTime &lt;= CONCAT(#{createTimeEnd},' 23:59:59')</if>
+				<if test="memoTime != null and memoTime != ''">and DATE_FORMAT(sys_memo.memoTime ,'%Y-%m-%d') = #{memoTime} </if>
+				<if test="memoTimeStart != null and memoTimeStart != ''">and sys_memo.memoTime &gt;= #{memoTimeStart}</if>
+                <if test="memoTimeEnd != null and memoTimeEnd != ''">and sys_memo.memoTime &lt;= CONCAT(#{memoTimeEnd},' 23:59:59')</if>
+                <if test="memoTimeGt != null and memoTimeGt != ''">and sys_memo.memoTime &gt;= DATE_FORMAT(#{memoTimeGt},'%Y-%m-%d')</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(sys_memo.id) from sys_memo
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from sys_memo
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by sys_memo.memoTime, sys_memo.memoLevel desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from sys_memo
+		where sys_memo.id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.sys.po.Memo">
+		insert into sys_memo
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="userId != null" > userId, </if>
+		  <if test="content != null" > content, </if>
+		  <if test="memoTime != null" > memoTime, </if>
+		  <if test="memoLevel != null" > memoLevel, </if>
+		  <if test="createTime != null" > createTime, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="userId != null" > #{userId}, </if>
+		  <if test="content != null" > #{content}, </if>
+		  <if test="memoTime != null" > #{memoTime}, </if>
+		  <if test="memoLevel != null" > #{memoLevel}, </if>
+		  <if test="createTime != null" > #{createTime}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.sys.po.Memo">
+		update 
+			sys_memo 
+		<set>
+			<if test="userId != null"> userId = #{userId}, </if>
+			<if test="content != null"> content = #{content}, </if>
+			<if test="memoTime != null"> memoTime = #{memoTime}, </if>
+			<if test="memoLevel != null"> memoLevel = #{memoLevel}, </if>
+		<!-- 	<if test="createTime != null"> createTime = #{createTime}, </if> -->
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from sys_memo
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from sys_memo
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>

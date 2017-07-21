@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.owner.po.QuotationDetailSR">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.owner.vo.QuotationDetailSRVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="appointId" property="appointId" jdbcType="INTEGER" />
+		<result column="quotationId" property="quotationId" jdbcType="INTEGER" />
+		<result column="seq" property="seq" jdbcType="INTEGER" />
+		<result column="productNo" property="productNo" jdbcType="VARCHAR" />
+		<result column="category" property="category" jdbcType="INTEGER" />
+		<result column="structure" property="structure" jdbcType="INTEGER" />
+		<result column="colorIn" property="colorIn" jdbcType="VARCHAR" />
+		<result column="colorOut" property="colorOut" jdbcType="VARCHAR" />
+		<result column="glass" property="glass" jdbcType="VARCHAR" />
+		<result column="shutter" property="shutter" jdbcType="VARCHAR" />
+		<result column="pruductNum" property="pruductNum" jdbcType="INTEGER" />
+		<result column="areas" property="areas" jdbcType="FLOAT" />
+		<result column="unitPrice" property="unitPrice" jdbcType="FLOAT" />
+		<result column="salesUnitPrice" property="salesUnitPrice" jdbcType="FLOAT" />
+		<result column="salesUnitAmount" property="salesUnitAmount" jdbcType="FLOAT" />
+		<result column="amount" property="amount" jdbcType="FLOAT" />
+		<result column="handColor" property="handColor" jdbcType="VARCHAR" />
+		<result column="length" property="length" jdbcType="INTEGER" />
+		<result column="width" property="width" jdbcType="INTEGER" />
+		<result column="height" property="height" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		owner_quotation_detail_sr.id,
+		owner_quotation_detail_sr.appointId,
+		owner_quotation_detail_sr.quotationId,
+		owner_quotation_detail_sr.seq,
+		owner_quotation_detail_sr.productNo,
+		owner_quotation_detail_sr.category,
+		owner_quotation_detail_sr.structure,
+		owner_quotation_detail_sr.colorIn,
+		owner_quotation_detail_sr.colorOut,
+		owner_quotation_detail_sr.glass,
+		owner_quotation_detail_sr.shutter,
+		owner_quotation_detail_sr.pruductNum,
+		owner_quotation_detail_sr.areas,
+		owner_quotation_detail_sr.unitPrice,
+		owner_quotation_detail_sr.salesUnitPrice,
+		owner_quotation_detail_sr.salesUnitAmount,
+		owner_quotation_detail_sr.amount,
+		owner_quotation_detail_sr.handColor,
+		owner_quotation_detail_sr.length,
+		owner_quotation_detail_sr.width,
+		owner_quotation_detail_sr.height
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and owner_quotation_detail_sr.id = #{id}</if>
+				<if test="appointId != null">and owner_quotation_detail_sr.appointId = #{appointId}</if>
+				<if test="quotationId != null">and owner_quotation_detail_sr.quotationId = #{quotationId}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from owner_quotation_detail_sr
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from owner_quotation_detail_sr
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by owner_quotation_detail_sr.id desc</if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_quotation_detail_sr
+		where id = #{id}
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectByQuotationId" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from owner_quotation_detail_sr
+		where quotationId = #{quotationId}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.owner.po.QuotationDetailSR">
+		insert into owner_quotation_detail_sr
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="appointId != null" > appointId, </if>
+		  <if test="quotationId != null" > quotationId, </if>
+		  <if test="seq != null" > seq, </if>
+		  <if test="productNo != null" > productNo, </if>
+		  <if test="category != null" > category, </if>
+		  <if test="structure != null" > structure, </if>
+		  <if test="colorIn != null" > colorIn, </if>
+		  <if test="colorOut != null" > colorOut, </if>
+		  <if test="glass != null" > glass, </if>
+		  <if test="shutter != null" > shutter, </if>
+		  <if test="pruductNum != null" > pruductNum, </if>
+		  <if test="areas != null" > areas, </if>
+		  <if test="unitPrice != null" > unitPrice, </if>
+		  <if test="salesUnitPrice != null" > salesUnitPrice, </if>
+		  <if test="salesUnitAmount != null" > salesUnitAmount, </if>
+		  <if test="amount != null" > amount, </if>
+		  <if test="handColor != null" > handColor, </if>
+		  <if test="length != null" > length, </if>
+		  <if test="width != null" >width,</if>
+		  <if test="height != null" > height, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="appointId != null" > #{appointId}, </if>
+		  <if test="quotationId != null" > #{quotationId}, </if>
+		  <if test="seq != null" > #{seq}, </if>
+		  <if test="productNo != null" > #{productNo}, </if>
+		  <if test="category != null" > #{category}, </if>
+		  <if test="structure != null" > #{structure}, </if>
+		  <if test="colorIn != null" > #{colorIn}, </if>
+		  <if test="colorOut != null" > #{colorOut}, </if>
+		  <if test="glass != null" > #{glass}, </if>
+		  <if test="shutter != null" > #{shutter}, </if>
+		  <if test="pruductNum != null" > #{pruductNum}, </if>
+		  <if test="areas != null" > #{areas}, </if>
+		  <if test="unitPrice != null" > #{unitPrice}, </if>
+		  <if test="salesUnitPrice != null" > #{salesUnitPrice}, </if>
+		  <if test="salesUnitAmount != null" > #{salesUnitAmount}, </if>
+		  <if test="amount != null" > #{amount}, </if>
+		  <if test="handColor != null" > #{handColor}, </if>
+		  <if test="length != null" > #{length}, </if>
+		  <if test="width != null" > #{width}, </if>
+		  <if test="height != null" > #{height}, </if>
+        </trim>
+	</insert>
+
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.owner.po.QuotationDetailSR">
+		update 
+			owner_quotation_detail_sr 
+		<set>
+			<if test="appointId != null"> appointId = #{appointId}, </if>
+			<if test="quotationId != null"> quotationId = #{quotationId}, </if>
+			<if test="seq != null"> seq = #{seq}, </if>
+			<if test="productNo != null"> productNo = #{productNo}, </if>
+			<if test="category != null"> category = #{category}, </if>
+			<if test="structure != null"> structure = #{structure}, </if>
+			<if test="colorIn != null"> colorIn = #{colorIn}, </if>
+			<if test="colorOut != null"> colorOut = #{colorOut}, </if>
+			<if test="glass != null"> glass = #{glass}, </if>
+			<if test="shutter != null"> shutter = #{shutter}, </if>
+			<if test="pruductNum != null"> pruductNum = #{pruductNum}, </if>
+			<if test="areas != null"> areas = #{areas}, </if>
+			<if test="unitPrice != null"> unitPrice = #{unitPrice}, </if>
+			<if test="salesUnitPrice != null"> salesUnitPrice = #{salesUnitPrice}, </if>
+			<if test="salesUnitAmount != null"> salesUnitAmount = #{salesUnitAmount}, </if>
+			<if test="amount != null"> amount = #{amount}, </if>
+			<if test="handColor != null"> handColor = #{handColor}, </if>
+			<if test="length != null"> length = #{length}, </if>
+			<if test="width != null"> width = #{width}, </if>
+			<if test="height != null"> height = #{height}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from owner_quotation_detail_sr
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from owner_quotation_detail_sr
+		<include refid="Where_Condition" />
+	</delete>
+	
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into owner_quotation_detail_sr(
+			appointId,
+			quotationId,
+			seq,
+			productNo,
+			category,
+			structure,
+			colorIn,
+			colorOut,
+			glass,
+			shutter,
+			pruductNum,
+			areas,
+			unitPrice,
+			salesUnitPrice,
+			salesUnitAmount,
+			amount,
+			handColor,
+			length,
+			width,
+			height
+		) 
+    	values   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	    (
+			#{item.appointId},
+			#{item.quotationId},
+			#{item.seq},
+			#{item.productNo},
+			#{item.category},
+			#{item.structure},
+			#{item.colorIn},
+			#{item.colorOut},
+			#{item.glass},
+			#{item.shutter},
+			#{item.pruductNum},
+			#{item.areas},
+			#{item.unitPrice},
+			#{item.salesUnitPrice},
+			#{item.salesUnitAmount},
+			#{item.amount},
+			#{item.handColor},
+			#{item.length},
+			#{item.width},
+			#{item.height}
+		)
+	    </foreach> 
+	</insert>
+	
+	<!-- 批量更新 -->
+	<update id="batchUpdate"  parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 
+				owner_quotation_detail_sr 
+			<set>
+				<if test="item.appointId != null"> appointId = #{item.appointId}, </if>
+				<if test="item.quotationId != null"> quotationId = #{item.quotationId}, </if>
+				<if test="item.seq != null"> seq = #{item.seq}, </if>
+				<if test="item.productNo != null"> productNo = #{item.productNo}, </if>
+				<if test="item.category != null"> category = #{item.category}, </if>
+				<if test="item.structure != null"> structure = #{item.structure}, </if>
+				<if test="item.colorIn != null"> colorIn = #{item.colorIn}, </if>
+				<if test="item.colorOut != null"> colorOut = #{item.colorOut}, </if>
+				<if test="item.glass != null"> glass = #{item.glass}, </if>
+				<if test="item.shutter != null"> shutter = #{item.shutter}, </if>
+				<if test="item.pruductNum != null"> pruductNum = #{item.pruductNum}, </if>
+				<if test="item.areas != null"> areas = #{item.areas}, </if>
+				<if test="item.unitPrice != null"> unitPrice = #{item.unitPrice}, </if>
+				<if test="item.salesUnitPrice != null"> salesUnitPrice = #{item.salesUnitPrice}, </if>
+				<if test="item.salesUnitAmount != null"> salesUnitAmount = #{item.salesUnitAmount}, </if>
+				<if test="item.amount != null"> amount = #{item.amount}, </if>
+				<if test="item.handColor != null"> handColor = #{item.handColor}, </if>
+				<if test="item.length != null"> length = #{item.length}, </if>
+				<if test="item.width != null"> width = #{item.width}, </if>
+				<if test="item.height != null"> height = #{item.height}, </if>
+			</set> 
+			 where id = #{item.id} 
+         </foreach>
+    </update>
+
+</mapper>

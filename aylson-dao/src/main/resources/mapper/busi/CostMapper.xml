@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.busi.po.Cost">
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true" 
+		/> -->
+
+	<resultMap id="ResultMap" type="com.aylson.dc.busi.vo.CostVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="costType" property="costType" jdbcType="INTEGER" />
+		<result column="costName" property="costName" jdbcType="VARCHAR" />
+		<result column="costValue" property="costValue" jdbcType="FLOAT" />
+		<result column="desc" property="desc" jdbcType="VARCHAR" />
+		<result column="sourceType" property="sourceType" jdbcType="INTEGER" />
+		<result column="sourceId" property="sourceId" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		busi_cost.id,
+		busi_cost.costType,
+		busi_cost.costName,
+		busi_cost.costValue,
+		busi_cost.desc,
+		busi_cost.sourceType,
+		busi_cost.sourceId,
+		busi_cost.remark
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="id != null">and busi_cost.id = #{id}</if>
+				<if test="costType != null">and busi_cost.costType = #{costType}</if>
+				<if test="sourceId != null">and busi_cost.sourceId = #{sourceId}</if>
+				<if test="sourceType != null">and busi_cost.sourceType = #{sourceType}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from busi_cost
+		<include refid="Where_Condition" />
+	</select>
+
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from busi_cost
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by busi_cost.id  </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+    <!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="DB_Column_List" />
+		from busi_cost
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.busi.po.Cost">
+		insert into busi_cost
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="costType != null" > costType, </if>
+		  <if test="costName != null" > costName, </if>
+		  <if test="costValue != null" > costValue, </if>
+		  <if test="desc != null" > `desc`, </if>
+		  <if test="sourceType != null" > sourceType, </if>
+		  <if test="sourceId != null" > sourceId, </if>
+		  <if test="remark != null" > remark, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="costType != null" > #{costType}, </if>
+		  <if test="costName != null" > #{costName}, </if>
+		  <if test="costValue != null" > #{costValue}, </if>
+		  <if test="desc != null" > #{desc}, </if>
+		  <if test="sourceType != null" > #{sourceType}, </if>
+		  <if test="sourceId != null" > #{sourceId}, </if>
+		  <if test="remark != null" > #{remark}, </if>
+        </trim>
+	</insert>
+
+	<!-- 批量添加 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into busi_cost(
+			costType,
+			costName,
+			costValue,
+			`desc`,
+			sourceType,
+			sourceId,
+			remark
+		) 
+    	values   
+	    <foreach collection="list" item="item" index="index" separator="," >  
+	    (
+			#{item.costType},
+			#{item.costName},
+			#{item.costValue},
+			#{item.desc},
+			#{item.sourceType},
+			#{item.sourceId},
+			#{item.remark}
+		)
+	    </foreach> 
+	</insert>
+
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.busi.po.Cost">
+		update 
+			busi_cost 
+		<set>
+			<if test="costType != null"> costType = #{costType}, </if>
+			<if test="costName != null"> costName = #{costName}, </if>
+			<if test="costValue != null"> costValue = #{costValue}, </if>
+			<if test="desc != null"> `desc` = #{desc}, </if>
+			<if test="sourceType != null"> sourceType = #{sourceType}, </if>
+			<if test="sourceId != null"> sourceId = #{sourceId}, </if>
+			<if test="remark != null"> remark = #{remark}, </if>
+		</set>
+		 where id = #{id} 
+	</update>
+	
+	<!-- 批量更新 -->
+	<update id="batchUpdate"  parameterType="java.util.List">
+          <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 
+				busi_cost 
+			<set>
+				<if test="item.costType != null"> costType = #{item.costType}, </if>
+				<if test="item.costName != null"> costName = #{item.costName}, </if>
+				<if test="item.costValue != null"> costValue = #{item.costValue}, </if>
+				<if test="item.desc != null"> `desc` = #{item.desc}, </if>
+				<if test="item.sourceType != null"> sourceType = #{item.sourceType}, </if>
+				<if test="item.sourceId != null"> sourceId = #{item.sourceId}, </if>
+				<if test="item.remark != null"> remark = #{item.remark}, </if>
+			</set> 
+			 where id = #{item.id} 
+         </foreach>
+    </update>
+
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from busi_cost
+		where id = #{id}
+	</delete>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterType="java.util.Map">
+		delete from busi_cost
+		<include refid="Where_Condition" />
+	</delete>
+
+</mapper>
