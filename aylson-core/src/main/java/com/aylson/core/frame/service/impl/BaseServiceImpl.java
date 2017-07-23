@@ -38,6 +38,15 @@ public abstract class BaseServiceImpl<T extends Serializable,S extends BaseSearc
 	}
 	
 	/**
+	 * 根据id获取实体对象
+	 * @param id
+	 * @return
+	 */
+	public <V extends T> V getById(String id){
+		return this.getBaseDao().selectById(id);
+	}
+	
+	/**
 	 * 插入一条记录
 	 * @param entity
 	 * @return
@@ -61,6 +70,15 @@ public abstract class BaseServiceImpl<T extends Serializable,S extends BaseSearc
 	 * @return
 	 */
 	public Boolean deleteById(Integer id){
+		return this.getBaseDao().deleteById(id);
+	}
+	
+	/**
+	 * 根据id删除记录
+	 * @param id
+	 * @return
+	 */
+	public Boolean deleteById(String id){
 		return this.getBaseDao().deleteById(id);
 	}
 	

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.cfdb.po.WithdrawHis">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.WithdrawHisVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="phoneId" property="phoneId" jdbcType="VARCHAR" />
+		<result column="withdrawType" property="withdrawType" jdbcType="INTEGER" />
+		<result column="withdrawName" property="withdrawName" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="account" property="account" jdbcType="VARCHAR" />
+		<result column="income" property="income" jdbcType="VARCHAR" />
+		<result column="withdrawTime" property="withdrawTime" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="statusType" property="statusType" jdbcType="INTEGER" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		cfdb_withdraw_his.id,
+		cfdb_withdraw_his.phoneId,
+		cfdb_withdraw_his.withdrawType, 
+		cfdb_withdraw_his.withdrawName,
+		cfdb_withdraw_his.name,
+		cfdb_withdraw_his.account,
+		cfdb_withdraw_his.income,
+		cfdb_withdraw_his.withdrawTime,
+		cfdb_withdraw_his.status,
+		cfdb_withdraw_his.statusType,
+		cfdb_withdraw_his.createDate,
+		cfdb_withdraw_his.updateDate
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="withdrawType != null">and cfdb_withdraw_his.withdrawType = #{withdrawType}</if>
+				<if test="name != null">and cfdb_withdraw_his.name = #{name}</if>
+				<if test="account != null">and cfdb_withdraw_his.account = #{account}</if>
+				<if test="statusType != null">and cfdb_withdraw_his.statusType = #{statusType}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from cfdb_withdraw_his
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_withdraw_his
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by cfdb_withdraw_his.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_withdraw_his
+		where id = #{id}
+	</select>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.cfdb.po.WithdrawHis">
+		update 
+			cfdb_withdraw_his 
+		<set>
+			<if test="phoneId != null"> phoneId = #{phoneId}, </if>
+			<if test="withdrawType != null"> withdrawType = #{withdrawType}, </if>
+			<if test="withdrawName != null"> withdrawName = #{withdrawName}, </if>
+			<if test="name != null"> name = #{name}, </if>
+			<if test="account != null"> account = #{account}, </if>
+			<if test="income != null"> income = #{income}, </if>
+			<if test="withdrawTime != null"> withdrawTime = #{withdrawTime}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="statusType != null"> statusType = #{statusType}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+	
+</mapper>

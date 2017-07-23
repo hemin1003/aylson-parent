@@ -97,6 +97,16 @@ public abstract class BaseDaoImpl<T extends Serializable, S extends BaseSearch>
 		}
 	}
 
+	public <V extends T> V selectById(String id) {
+		try {
+			return sqlSessionTemplate.selectOne(
+					getSqlName(SqlId.SQL_SELECT_BY_ID), id);
+		} catch (Exception e) {
+			throw new DaoException(String.format("根据ID查询对象出错！语句：%s",
+					getSqlName(SqlId.SQL_SELECT_BY_ID)), e);
+		}
+	}
+	
 	public <V extends T> Boolean  batchInsert( List<V>  list) {
 		try {
 			int rows = sqlSessionTemplate.insert(getSqlName(SqlId.SQL_BATCH_INSERT),list);
@@ -154,6 +164,21 @@ public abstract class BaseDaoImpl<T extends Serializable, S extends BaseSearch>
 	}
 
 	public Boolean deleteById(Integer id) {
+		try {
+			int rows = sqlSessionTemplate.delete(
+					getSqlName(SqlId.SQL_DELETE_BY_ID), id);
+			if (rows > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			throw new DaoException(String.format("根据ID删除对象出错！语句：%s",
+					getSqlName(SqlId.SQL_DELETE_BY_ID)), e);
+		}
+	}
+	
+	public Boolean deleteById(String id) {
 		try {
 			int rows = sqlSessionTemplate.delete(
 					getSqlName(SqlId.SQL_DELETE_BY_ID), id);

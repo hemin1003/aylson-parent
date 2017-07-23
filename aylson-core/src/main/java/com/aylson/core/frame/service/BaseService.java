@@ -27,6 +27,13 @@ public interface BaseService<T extends Serializable, S extends BaseSearch> {
 	public <V extends T> V getById(Integer id);
 	
 	/**
+	 * 根据id获取实体对象
+	 * @param id
+	 * @return
+	 */
+	public <V extends T> V getById(String id);
+	
+	/**
 	 * 插入一条记录
 	 * @param entity
 	 * @return
@@ -46,6 +53,13 @@ public interface BaseService<T extends Serializable, S extends BaseSearch> {
 	 * @return
 	 */
 	public Boolean deleteById(Integer id);
+	
+	/**
+	 * 根据id删除记录
+	 * @param id
+	 * @return
+	 */
+	public Boolean deleteById(String id);
 	
 	/**
 	 * 根据组合条件删除记录
