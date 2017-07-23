@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.cfdb.po.ApkUrl">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.ApkUrlVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="appName" property="appName" jdbcType="VARCHAR" />
+		<result column="apkUrl" property="apkUrl" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		cfdb_apk_url.id,
+		cfdb_apk_url.appName,
+		cfdb_apk_url.apkUrl, 
+		cfdb_apk_url.createDate,
+		cfdb_apk_url.updateDate
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+				<if test="appNameLike != null and appNameLike != ''"> and cfdb_apk_url.appName like CONCAT('%',#{appNameLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from cfdb_apk_url
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_apk_url
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by cfdb_apk_url.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_apk_url
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.cfdb.po.ApkUrl">
+		insert into cfdb_apk_url
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="appName != null" > appName, </if>
+		  <if test="apkUrl != null" > apkUrl, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="appName != null" > #{appName}, </if>
+		  <if test="apkUrl != null" > #{apkUrl}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > #{updateDate}, </if>
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.cfdb.po.ApkUrl">
+		update 
+			cfdb_apk_url 
+		<set>
+			<if test="appName != null"> appName = #{appName}, </if>
+			<if test="apkUrl != null"> apkUrl = #{apkUrl}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from cfdb_apk_url
+		where id = #{id}
+	</delete>
+	
+</mapper>

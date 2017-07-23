@@ -13,23 +13,23 @@ import com.aylson.core.easyui.EasyuiDataGridJson;
 import com.aylson.core.frame.controller.BaseController;
 import com.aylson.core.frame.domain.Result;
 import com.aylson.core.frame.domain.ResultCode;
-import com.aylson.dc.cfdb.search.WithdrawHisSearch;
-import com.aylson.dc.cfdb.service.WithdrawHisService;
-import com.aylson.dc.cfdb.vo.WithdrawHisVo;
+import com.aylson.dc.cfdb.po.ImUsers;
+import com.aylson.dc.cfdb.search.ImUsersSearch;
+import com.aylson.dc.cfdb.service.ImUsersService;
 import com.aylson.utils.DateUtil2;
 
 /**
- * 用户提现记录管理
+ * 手机IM用户配置
  * @author Minbo
  */
 @Controller
-@RequestMapping("/cfdb/withdrawHis")
-public class WithdrawHisController extends BaseController {
+@RequestMapping("/cfdb/imUsers")
+public class ImUsersController extends BaseController {
 	
-	protected static final Logger logger = Logger.getLogger(WithdrawHisController.class);
+	protected static final Logger logger = Logger.getLogger(ImUsersController.class);
 
 	@Autowired
-	private WithdrawHisService withdrawHisService;
+	private ImUsersService imUsersService;
 	
 	/**
 	 * 后台-首页
@@ -37,7 +37,7 @@ public class WithdrawHisController extends BaseController {
 	 */
 	@RequestMapping(value = "/admin/toIndex", method = RequestMethod.GET)
 	public String toIndex() {
-		return "/jsp/cfdb/admin/withdrawHis/index";
+		return "/jsp/cfdb/admin/imUsers/index";
 	}
 	
 	/**
@@ -46,12 +46,12 @@ public class WithdrawHisController extends BaseController {
 	 */
 	@RequestMapping(value = "/admin/list", method = RequestMethod.GET)
 	@ResponseBody
-	public EasyuiDataGridJson list(WithdrawHisSearch withdrawHisSearch){
+	public EasyuiDataGridJson list(ImUsersSearch imUsersSearch){
 		EasyuiDataGridJson result = new EasyuiDataGridJson();//页面DataGrid结果集
 		try{
-			withdrawHisSearch.setIsPage(true);
-			List<WithdrawHisVo> list = this.withdrawHisService.getList(withdrawHisSearch);
-			result.setTotal(this.withdrawHisService.getRowCount(withdrawHisSearch));
+			imUsersSearch.setIsPage(true);
+			List<ImUsers> list = this.imUsersService.getList(imUsersSearch);
+			result.setTotal(this.imUsersService.getRowCount(imUsersSearch));
 			result.setRows(list);
 			return result;
 		}catch(Exception e){
@@ -68,24 +68,24 @@ public class WithdrawHisController extends BaseController {
 	@RequestMapping(value = "/admin/toEdit", method = RequestMethod.GET)
 	public String toEdit(String id) {
 		if(id != null){
-			WithdrawHisVo withdrawHisVo = this.withdrawHisService.getById(id);
-			this.request.setAttribute("withdrawHisVo", withdrawHisVo);
+			ImUsers imUsersVo = this.imUsersService.getById(id);
+			this.request.setAttribute("imUsersVo", imUsersVo);
 		}
-		return "/jsp/cfdb/admin/withdrawHis/add";
+		return "/jsp/cfdb/admin/imUsers/add";
 	}
 	
 	/**
 	 * 后台-编辑保存
-	 * @param withdrawHisVo
+	 * @param imUsersVo
 	 * @return
 	 */
 	@RequestMapping(value = "/admin/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Result update(WithdrawHisVo withdrawHisVo) {
+	public Result update(ImUsers imUsersVo) {
 		Result result = new Result();
 		try {
-			withdrawHisVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
-			Boolean flag = this.withdrawHisService.edit(withdrawHisVo);
+			imUsersVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
+			Boolean flag = this.imUsersService.edit(imUsersVo);
 			if(flag){
 				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
 			}else{

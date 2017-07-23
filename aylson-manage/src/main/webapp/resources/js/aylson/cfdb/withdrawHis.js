@@ -86,6 +86,7 @@
 				field : 'createDate',
 				align : 'center',
 				width : 150,
+				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
 						return value.substring(0,19);
@@ -97,6 +98,7 @@
 				field : 'updateDate',
 				align : 'center',
 				width : 150,
+				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
 						return value.substring(0,19);

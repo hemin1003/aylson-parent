@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.cfdb.po.ImUsers">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.ImUsersVo">
+		<result column="phoneId" property="phoneId" jdbcType="VARCHAR" />
+		<result column="balance" property="balance" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		cfdb_users.phoneId,
+		cfdb_users.balance, 
+		cfdb_users.createDate,
+		cfdb_users.updateDate
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+				<if test="phoneIdLike != null and phoneIdLike != ''"> and cfdb_users.phoneId like CONCAT('%',#{phoneIdLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(phoneId) from cfdb_users
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_users
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by cfdb_users.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_users
+		where phoneId = #{phoneId}
+	</select>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.cfdb.po.ImUsers">
+		update 
+			cfdb_users 
+		<set>
+			<if test="balance != null"> balance = #{balance}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where phoneId = #{phoneId} 
+	</update>
+	
+</mapper>
