@@ -68,8 +68,7 @@
   </listener>
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:config/spring-config.xml
-    ,classpath:config/spring-quartz.xml </param-value>
+    <param-value>classpath:config/spring-config.xml</param-value>
   </context-param>
   <servlet-mapping>
     <servlet-name>default</servlet-name>
