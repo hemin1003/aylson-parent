@@ -10,6 +10,8 @@ public class AppConfig implements Serializable{
 	private String logoUrl;		//广告图Url
 	private String createDate;	//创建时间
 	private String updateDate;	//更新时间
+	private String createdBy;	//创建人
+	private String updatedBy;	//更新人
 	
 	public String getId() {
 		return id;
@@ -34,5 +36,17 @@ public class AppConfig implements Serializable{
 	}
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
+	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 }

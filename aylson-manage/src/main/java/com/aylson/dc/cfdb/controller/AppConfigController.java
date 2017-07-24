@@ -15,6 +15,7 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.cfdb.search.AppConfigSearch;
 import com.aylson.dc.cfdb.service.AppConfigService;
 import com.aylson.dc.cfdb.vo.AppConfigVo;
+import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
 import com.aylson.utils.UUIDUtils;
 
@@ -81,8 +82,10 @@ public class AppConfigController extends BaseController {
 	public Result add(AppConfigVo appConfigVo) {
 		Result result = new Result();
 		try{
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
 			appConfigVo.setId(UUIDUtils.create());
 			String cTime = DateUtil2.getCurrentLongDateTime();
+			appConfigVo.setCreatedBy(sessionInfo.getUser().getId() + "/" + sessionInfo.getUser().getUserName());
 			appConfigVo.setCreateDate(cTime);
 			appConfigVo.setUpdateDate(cTime);
 			Boolean flag = this.appConfigService.add(appConfigVo);
@@ -122,6 +125,8 @@ public class AppConfigController extends BaseController {
 	public Result update(AppConfigVo appConfigVo) {
 		Result result = new Result();
 		try {
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+			appConfigVo.setUpdatedBy(sessionInfo.getUser().getId() + "/" + sessionInfo.getUser().getUserName());
 			appConfigVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
 			Boolean flag = this.appConfigService.edit(appConfigVo);
 			if(flag){

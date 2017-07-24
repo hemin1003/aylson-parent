@@ -57,18 +57,18 @@
 					return value;
 				}
 			}
-//			, {
-//				title : '更新时间',
-//				field : 'updateDate',
-//				align : 'center',
-//				width : 150,
-//				formatter:function(value,row,index){
-//					if(value){
-//						return value.substring(0,19);
-//					}
-//					return value;
-//				}
-//			}
+			, {
+				title : '更新时间',
+				field : 'updateDate',
+				align : 'center',
+				width : 150,
+				formatter:function(value,row,index){
+					if(value){
+						return value.substring(0,19);
+					}
+					return value;
+				}
+			}
 			] ]
 		});
 		

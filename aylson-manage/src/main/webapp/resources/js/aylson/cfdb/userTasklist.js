@@ -1,5 +1,5 @@
 	/**
-	 * 用户任务管理
+	 * 用户任务审核管理
 	 */
 	var datagrid;
 	var editor;
@@ -115,6 +115,7 @@
 			] ]
 		});
 		
+		$(".datagrid-body").css("overflow-x","scroll");
 	});
 	
 	//修改

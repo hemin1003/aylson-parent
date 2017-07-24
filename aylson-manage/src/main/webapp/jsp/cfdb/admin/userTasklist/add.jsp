@@ -38,7 +38,7 @@ text-align:left!important;
 						<th>手机标识码：</th>
 						<td colspan="3" style="text-align:left">
 							<input value="${userTasklistVo.phoneId}"
-								class="easyui-validatebox textbox"
+								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>
@@ -46,7 +46,7 @@ text-align:left!important;
 						<th>任务名称：</th>
 						<td colspan="3" style="text-align:left">
 							<input value="${userTasklistVo.taskName}"
-								class="easyui-validatebox textbox"
+								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>
@@ -54,7 +54,7 @@ text-align:left!important;
 						<th>任务标签：</th>
 						<td colspan="3" style="text-align:left">
 							<input value="${userTasklistVo.taskTag}"
-								class="easyui-validatebox textbox"
+								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>
@@ -62,7 +62,7 @@ text-align:left!important;
 						<th>任务收益金额：</th>
 						<td colspan="3" style="text-align:left">
 							<input value="${userTasklistVo.income}"
-								class="easyui-validatebox textbox"
+								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>
@@ -70,7 +70,7 @@ text-align:left!important;
 						<th>跳转url地址：</th>
 						<td colspan="3" style="text-align:left">
 							<input value="${userTasklistVo.goUrl}"
-								class="easyui-validatebox textbox"
+								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>
