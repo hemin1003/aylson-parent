@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.cfdb.po.Tasklist">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.TasklistVo">
+		<result column="taskId" property="taskId" jdbcType="VARCHAR" />
+		<result column="logoUrl" property="logoUrl" jdbcType="VARCHAR" />
+		<result column="taskName" property="taskName" jdbcType="VARCHAR" />
+		<result column="taskTag" property="taskTag" jdbcType="VARCHAR" />
+		<result column="amount" property="amount" jdbcType="INTEGER" />
+		<result column="income" property="income" jdbcType="VARCHAR" />
+		<result column="orderNo" property="orderNo" jdbcType="INTEGER" />
+		<result column="goUrl" property="goUrl" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		cfdb_tasklist.taskId, 
+		cfdb_tasklist.logoUrl,
+		cfdb_tasklist.taskName,
+		cfdb_tasklist.taskTag,
+		cfdb_tasklist.amount,
+		cfdb_tasklist.income,
+		cfdb_tasklist.orderNo,
+		cfdb_tasklist.goUrl,
+		cfdb_tasklist.createDate,
+		cfdb_tasklist.updateDate
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+				<if test="taskNameLike != null and taskNameLike != ''"> and cfdb_tasklist.taskName like CONCAT('%',#{taskNameLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(taskId) from cfdb_tasklist
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_tasklist
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by cfdb_tasklist.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_tasklist
+		where taskId = #{taskId}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.cfdb.po.Tasklist">
+		insert into cfdb_tasklist
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="taskId != null" > taskId, </if>
+		  <if test="logoUrl != null" > logoUrl, </if>
+		  <if test="taskName != null" > taskName, </if>
+		  <if test="taskTag != null" > taskTag, </if>
+		  <if test="amount != null" > amount, </if>
+		  <if test="income != null" > income, </if>
+		  <if test="orderNo != null" > orderNo, </if>
+		  <if test="goUrl != null" > goUrl, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="taskId != null" > #{taskId}, </if>
+		  <if test="logoUrl != null" > #{logoUrl}, </if>
+		  <if test="taskName != null" > #{taskName}, </if>
+		  <if test="taskTag != null" > #{taskTag}, </if>
+		  <if test="amount != null" > #{amount}, </if>
+		  <if test="income != null" > #{income}, </if>
+		  <if test="orderNo != null" > #{orderNo}, </if>
+		  <if test="goUrl != null" > #{goUrl}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > #{updateDate}, </if>
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.cfdb.po.Tasklist">
+		update 
+			cfdb_tasklist 
+		<set>
+			<if test="logoUrl != null"> logoUrl = #{logoUrl}, </if>
+			<if test="taskName != null"> taskName = #{taskName}, </if>
+			<if test="taskTag != null"> taskTag = #{taskTag}, </if>
+			<if test="amount != null"> amount = #{amount}, </if>
+			<if test="income != null"> income = #{income}, </if>
+			<if test="orderNo != null"> orderNo = #{orderNo}, </if>
+			<if test="goUrl != null"> goUrl = #{goUrl}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where taskId = #{taskId} 
+	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from cfdb_tasklist
+		where taskId = #{taskId}
+	</delete>
+	
+</mapper>

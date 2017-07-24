@@ -1,5 +1,5 @@
 	/**
-	 * 提现审核管理
+	 * 用户任务管理
 	 */
 	var datagrid;
 	var editor;
@@ -7,7 +7,7 @@
 	$(function() { 
 		datagrid = $('#datagrid').datagrid({
 			method:'get',
-			url : projectName+'/cfdb/withdrawHis/admin/list?v_date=' + new Date(),
+			url : projectName+'/cfdb/userTasklist/admin/list?v_date=' + new Date(),
 			pagination : true,
 			pageSize : 20,
 			pageList : [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 ],
@@ -30,7 +30,10 @@
 				width : 100,
 				formatter:function(value,row,index){
 					var handleHtml = '';
-					handleHtml += '<a href="javascript:edit(\'' + row.id + '\')">处理</a>&nbsp;';
+					//审核中的状态才需要审核
+					if(row.statusFlag == 2 || row.statusFlag == 3 || row.statusFlag == 4){
+						handleHtml += '<a href="javascript:edit(\'' + row.id + '\')">审批</a>&nbsp;';
+					}
 					return handleHtml;
 				}
 			}, {
@@ -40,49 +43,31 @@
 				width : 80,
 				sortable:true
 			}, {
-				title : '提现类型',
-				field : 'withdrawName',
+				title : '任务名称',
+				field : 'taskName',
 				align : 'center',
-				width : 80,
+				width : 120,
 				sortable:true
 			}, {
-				title : '姓名',
-				field : 'name',
+				title : '任务标签',
+				field : 'taskTag',
 				align : 'center',
-				width : 80,
+				width : 120,
 				sortable:true
 			}, {
-				title : '账户名',
-				field : 'account',
-				align : 'center',
-				width : 80,
-				sortable:true
-			}, {
-				title : '提现金额',
+				title : '任务收益金额',
 				field : 'income',
 				align : 'center',
 				width : 80,
 				sortable:true
 			}, {
-				title : '提现时间',
-				field : 'withdrawTime',
+				title : '跳转url地址',
+				field : 'goUrl',
 				align : 'center',
-				width : 150,
-				sortable:true,
-				formatter:function(value,row,index){
-					if(value){
-						return value.substring(0,19);
-					}
-					return value;
-				}
+				width : 120,
+				sortable:true
 			}, {
-				title : '提现状态',
-				field : 'status',
-				align : 'center',
-				sortable:true,
-				width : 80
-			}, {
-				title : '创建时间',
+				title : '用户抢购任务时间',
 				field : 'createDate',
 				align : 'center',
 				width : 150,
@@ -94,7 +79,13 @@
 					return value;
 				}
 			}, {
-				title : '更新时间',
+				title : '任务状态',
+				field : 'status',
+				align : 'center',
+				width : 80,
+				sortable:true
+			}, {
+				title : '审批时间',
 				field : 'updateDate',
 				align : 'center',
 				width : 150,
@@ -104,6 +95,19 @@
 						return value.substring(0,19);
 					}
 					return value;
+				}
+			}, {
+				title : '是否查看过',
+				field : 'isChecked',
+				align : 'center',
+				width : 80,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value == 1){
+						return "否";
+					}else if(value == 2){
+						return "是";
+					}
 				}
 			}
 			] ]
@@ -116,10 +120,10 @@
 		win = $("<div></div>").dialog({
 			title:'操作',
 			width:450,
-			height:'60%',
+			height:'65%',
 			maximizable:true,
 			modal:true,
-			href:projectName+'/cfdb/withdrawHis/admin/toEdit?id='+id,
+			href:projectName+'/cfdb/userTasklist/admin/toEdit?id='+id,
 			onClose:function(){
 		    		$(this).dialog("destroy");
 		    },
@@ -129,9 +133,9 @@
 				    handler:function(){
 					    	$.messager.confirm("提示","确定更新该记录吗？",function(r){
 							if(r){
-								$("#withdrawHisConfigForm").form('submit',{
+								$("#userTasklistConfigForm").form('submit',{
 							    		 type:'POST',
-							    		 url : projectName+'/cfdb/withdrawHis/admin/update',
+							    		 url : projectName+'/cfdb/userTasklist/admin/update',
 							    		 success:function(responseData){
 							    			 win.dialog('destroy');
 							    			 if(responseData){
@@ -163,11 +167,11 @@
 	
 	//搜索
 	function doSearch(){
-		$("#datagrid").datagrid("load", serializeObject($("#withdrawHisForm")));
+		$("#datagrid").datagrid("load", serializeObject($("#userTasklistForm")));
 	}
 	
 	//重置
 	function reset(){
-		$("#withdrawHisForm").form("reset");
+		$("#userTasklistForm").form("reset");
 	}
 	

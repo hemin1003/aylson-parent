@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.cfdb.po.UserTasklist">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.UserTasklistVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="phoneId" property="phoneId" jdbcType="VARCHAR" />
+		<result column="taskId" property="taskId" jdbcType="VARCHAR" />
+		<result column="logoUrl" property="logoUrl" jdbcType="VARCHAR" />
+		<result column="taskName" property="taskName" jdbcType="VARCHAR" />
+		<result column="taskTag" property="taskTag" jdbcType="VARCHAR" />
+		<result column="amount" property="amount" jdbcType="INTEGER" />
+		<result column="income" property="income" jdbcType="VARCHAR" />
+		<result column="orderNo" property="orderNo" jdbcType="INTEGER" />
+		<result column="goUrl" property="goUrl" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="statusFlag" property="statusFlag" jdbcType="INTEGER" />
+		<result column="isChecked" property="isChecked" jdbcType="INTEGER" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		cfdb_user_tasklist.id,
+		cfdb_user_tasklist.phoneId,
+		cfdb_user_tasklist.taskId, 
+		cfdb_user_tasklist.logoUrl,
+		cfdb_user_tasklist.taskName,
+		cfdb_user_tasklist.taskTag,
+		cfdb_user_tasklist.amount,
+		cfdb_user_tasklist.income,
+		cfdb_user_tasklist.orderNo,
+		cfdb_user_tasklist.goUrl,
+		cfdb_user_tasklist.status,
+		cfdb_user_tasklist.statusFlag,
+		cfdb_user_tasklist.isChecked,
+		cfdb_user_tasklist.createDate,
+		cfdb_user_tasklist.updateDate
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="statusFlag != null">and cfdb_user_tasklist.statusFlag = #{statusFlag}</if>
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from cfdb_user_tasklist
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_user_tasklist
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by cfdb_user_tasklist.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_user_tasklist
+		where id = #{id}
+	</select>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.cfdb.po.UserTasklist">
+		update 
+			cfdb_user_tasklist 
+		<set>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="statusFlag != null"> statusFlag = #{statusFlag}, </if>
+			<if test="isChecked != null"> isChecked = #{isChecked}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+	
+</mapper>
