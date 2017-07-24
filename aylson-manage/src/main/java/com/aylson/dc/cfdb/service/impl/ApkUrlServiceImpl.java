@@ -13,10 +13,10 @@ import com.aylson.dc.cfdb.service.ApkUrlService;
 public class ApkUrlServiceImpl  extends BaseServiceImpl<ApkUrl, ApkUrlSearch> implements ApkUrlService {
 
 	@Autowired
-	private ApkUrlDao ApkUrlDao;
+	private ApkUrlDao apkUrlDao;
 
 	@Override
 	protected BaseDao<ApkUrl, ApkUrlSearch> getBaseDao() {
-		return ApkUrlDao;
+		return apkUrlDao;
 	}
 }

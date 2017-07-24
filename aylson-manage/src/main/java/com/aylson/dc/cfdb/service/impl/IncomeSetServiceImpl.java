@@ -13,10 +13,10 @@ import com.aylson.dc.cfdb.service.IncomeSetService;
 public class IncomeSetServiceImpl  extends BaseServiceImpl<IncomeSet, IncomeSetSearch> implements IncomeSetService {
 
 	@Autowired
-	private IncomeSetDao IncomeSetDao;
+	private IncomeSetDao incomeSetDao;
 
 	@Override
 	protected BaseDao<IncomeSet, IncomeSetSearch> getBaseDao() {
-		return IncomeSetDao;
+		return incomeSetDao;
 	}
 }

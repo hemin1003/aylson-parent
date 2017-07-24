@@ -13,10 +13,10 @@ import com.aylson.dc.cfdb.service.ImUsersService;
 public class ImUsersServiceImpl  extends BaseServiceImpl<ImUsers, ImUsersSearch> implements ImUsersService {
 
 	@Autowired
-	private ImUsersDao ImUsersDao;
+	private ImUsersDao imUsersDao;
 
 	@Override
 	protected BaseDao<ImUsers, ImUsersSearch> getBaseDao() {
-		return ImUsersDao;
+		return imUsersDao;
 	}
 }

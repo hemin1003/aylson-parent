@@ -37,10 +37,10 @@
 			<trim prefixOverrides="and">
 				<!-- 匹配查询 -->
 				<if test="withdrawType != null">and cfdb_withdraw_his.withdrawType = #{withdrawType}</if>
-				<if test="name != null">and cfdb_withdraw_his.name = #{name}</if>
-				<if test="account != null">and cfdb_withdraw_his.account = #{account}</if>
 				<if test="statusType != null">and cfdb_withdraw_his.statusType = #{statusType}</if>
 				<!-- 模糊查询 -->
+				<if test="nameLike != null and nameLike != ''"> and cfdb_withdraw_his.name like CONCAT('%',#{nameLike},'%') </if>
+				<if test="accountLike != null and accountLike != ''"> and cfdb_withdraw_his.account like CONCAT('%',#{accountLike},'%') </if>
 			</trim>
 		</where>
 	</sql>

@@ -15,10 +15,10 @@ import com.aylson.dc.cfdb.service.WithdrawHisService;
 public class WithdrawHisServiceImpl extends BaseServiceImpl<WithdrawHis, WithdrawHisSearch> implements WithdrawHisService {
 
 	@Autowired
-	private WithdrawHisDao WithdrawHisDao;
+	private WithdrawHisDao withdrawHisDao;
 
 	@Override
 	protected BaseDao<WithdrawHis, WithdrawHisSearch> getBaseDao() {
-		return WithdrawHisDao;
+		return withdrawHisDao;
 	}
 }

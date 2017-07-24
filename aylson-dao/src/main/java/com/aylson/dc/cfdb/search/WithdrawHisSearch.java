@@ -8,9 +8,12 @@ public class WithdrawHisSearch  extends BaseSearch{
 	
 	//匹配查询
 	private Integer withdrawType;	//提现类型
-	private String name;		//姓名
-	private String account;		//账户名
 	private Integer statusType;	//提现状态标识
+	
+	//模糊查询
+	private String nameLike;		//姓名
+	private String accountLike;		//账户名
+	
 	
 	public Integer getWithdrawType() {
 		return withdrawType;
@@ -18,17 +21,17 @@ public class WithdrawHisSearch  extends BaseSearch{
 	public void setWithdrawType(Integer withdrawType) {
 		this.withdrawType = withdrawType;
 	}
-	public String getName() {
-		return name;
+	public String getNameLike() {
+		return nameLike;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setNameLike(String nameLike) {
+		this.nameLike = nameLike;
 	}
-	public String getAccount() {
-		return account;
+	public String getAccountLike() {
+		return accountLike;
 	}
-	public void setAccount(String account) {
-		this.account = account;
+	public void setAccountLike(String accountLike) {
+		this.accountLike = accountLike;
 	}
 	public Integer getStatusType() {
 		return statusType;

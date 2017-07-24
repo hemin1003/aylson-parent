@@ -20,16 +20,6 @@
 								<option value="3">微信</option>
 							</select>
 						</td>
-						<!-- 
-						<td class="tar" >姓名：</td>
-						<td class="tal" >
-							<input class="easyui-textbox" name="name" prompt="模糊查询"/>
-						</td> 
-						<td class="tar" >账户名：</td>
-						<td class="tal" >
-							<input class="easyui-textbox" name="account" prompt="模糊查询"/>
-						</td>
-						 -->
 						<td class="tar" >提现状态：</td>
 						<td class="tal" >
 							<select name="statusType" class="easyui-combobox"  style="width: 120px;" editable=false>
@@ -39,6 +29,14 @@
 								<option value="3">充值成功</option>
 								<option value="4">失败</option>
 							</select>
+						</td>
+						<td class="tar" >姓名：</td>
+						<td class="tal" >
+							<input class="easyui-textbox" name="nameLike" prompt="模糊查询"/>
+						</td> 
+						<td class="tar" >账户名：</td>
+						<td class="tal" >
+							<input class="easyui-textbox" name="accountLike" prompt="模糊查询"/>
 						</td>
 					    <td style="padding-left:20px">
 							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch()">搜索</a>
