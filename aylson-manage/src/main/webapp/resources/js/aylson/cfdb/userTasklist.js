@@ -40,7 +40,7 @@
 				title : '手机标识码',
 				field : 'phoneId',
 				align : 'center',
-				width : 80,
+				width : 120,
 				sortable:true
 			}, {
 				title : '任务名称',
@@ -60,13 +60,15 @@
 				align : 'center',
 				width : 80,
 				sortable:true
-			}, {
-				title : '跳转url地址',
-				field : 'goUrl',
-				align : 'center',
-				width : 120,
-				sortable:true
-			}, {
+			}, 
+//			{
+//				title : '跳转url地址',
+//				field : 'goUrl',
+//				align : 'center',
+//				width : 120,
+//				sortable:true
+//			}, 
+			{
 				title : '用户抢购任务时间',
 				field : 'createDate',
 				align : 'center',
