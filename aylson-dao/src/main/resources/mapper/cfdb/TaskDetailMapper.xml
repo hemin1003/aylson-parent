@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.cfdb.po.TaskDetail">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.TaskDetailVo">
+		<result column="taskId" property="taskId" jdbcType="VARCHAR" />
+		<result column="taskDesc" property="taskDesc" jdbcType="VARCHAR" />
+		<result column="stepUrl" property="stepUrl" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
+		<result column="updatedBy" property="updatedBy" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		cfdb_task_detail.taskId, 
+		cfdb_task_detail.taskDesc,
+		cfdb_task_detail.stepUrl,
+		cfdb_task_detail.createDate,
+		cfdb_task_detail.updateDate,
+		cfdb_task_detail.createdBy,
+		cfdb_task_detail.updatedBy
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(taskId) from cfdb_task_detail
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_task_detail
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by cfdb_task_detail.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_task_detail
+		where taskId = #{taskId}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.cfdb.po.TaskDetail">
+		insert into cfdb_task_detail
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="taskId != null" > taskId, </if>
+		  <if test="taskDesc != null" > taskDesc, </if>
+		  <if test="stepUrl != null" > stepUrl, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="createdBy != null" > createdBy, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="taskId != null" > #{taskId}, </if>
+		  <if test="taskDesc != null" > #{taskDesc}, </if>
+		  <if test="stepUrl != null" > #{stepUrl}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="createdBy != null" > #{createdBy}, </if>
+		  <if test="updateDate != null" > null, </if>
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.cfdb.po.TaskDetail">
+		update 
+			cfdb_task_detail 
+		<set>
+			<if test="taskDesc != null"> taskDesc = #{taskDesc}, </if>
+			<if test="stepUrl != null"> stepUrl = #{stepUrl}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
+		</set>
+		where taskId = #{taskId} 
+	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from cfdb_task_detail
+		where taskId = #{taskId}
+	</delete>
+</mapper>

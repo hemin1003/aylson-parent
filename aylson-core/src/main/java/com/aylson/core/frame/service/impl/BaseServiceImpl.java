@@ -3,6 +3,8 @@ package com.aylson.core.frame.service.impl;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.aylson.core.frame.base.Page;
 import com.aylson.core.frame.dao.BaseDao;
 import com.aylson.core.frame.search.BaseSearch;
@@ -51,6 +53,7 @@ public abstract class BaseServiceImpl<T extends Serializable,S extends BaseSearc
 	 * @param entity
 	 * @return
 	 */
+	@Transactional
 	public Boolean add(T entity){
 		return this.getBaseDao().insert(entity);
 	}
@@ -60,6 +63,7 @@ public abstract class BaseServiceImpl<T extends Serializable,S extends BaseSearc
 	 * @param entity
 	 * @return
 	 */
+	@Transactional
 	public Boolean edit(T entity){
 		return this.getBaseDao().updateById(entity);
 	}
@@ -69,6 +73,7 @@ public abstract class BaseServiceImpl<T extends Serializable,S extends BaseSearc
 	 * @param id
 	 * @return
 	 */
+	@Transactional
 	public Boolean deleteById(Integer id){
 		return this.getBaseDao().deleteById(id);
 	}
@@ -78,6 +83,7 @@ public abstract class BaseServiceImpl<T extends Serializable,S extends BaseSearc
 	 * @param id
 	 * @return
 	 */
+	@Transactional
 	public Boolean deleteById(String id){
 		return this.getBaseDao().deleteById(id);
 	}
@@ -87,6 +93,7 @@ public abstract class BaseServiceImpl<T extends Serializable,S extends BaseSearc
 	 * @param search
 	 * @return
 	 */
+	@Transactional
 	public Boolean delete(S search){
 		return this.getBaseDao().delete(search);
 	}
@@ -118,6 +125,7 @@ public abstract class BaseServiceImpl<T extends Serializable,S extends BaseSearc
 	/**
 	 * 批量插入记录
 	 */
+	@Transactional
 	public <V extends T> Boolean  batchAdd( List<V>  list){
 		return this.getBaseDao().batchInsert(list);
 	}
@@ -125,6 +133,7 @@ public abstract class BaseServiceImpl<T extends Serializable,S extends BaseSearc
 	/**
 	 * 批量更新记录
 	 */
+	@Transactional
 	public <V extends T> Boolean  batchUpdate( List<V>  list){
 		return this.getBaseDao().batchUpdate(list);
 	}

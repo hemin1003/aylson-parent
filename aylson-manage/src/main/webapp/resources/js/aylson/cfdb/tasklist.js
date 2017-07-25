@@ -36,7 +36,7 @@
 					var handleHtml = '';
 					handleHtml += '<a href="javascript:edit(\'' + row.taskId + '\')">修改</a>&nbsp;';
 					handleHtml += '<a href="javascript:del(\'' + row.taskId + '\')">删除</a>&nbsp;';
-					handleHtml += '<a href="javascript:del(\'' + row.taskId + '\')">详情</a>&nbsp;';
+					handleHtml += '<a href="javascript:detail(\'' + row.taskId + '\')">详情</a>&nbsp;';
 					return handleHtml;
 				}
 			}, {
@@ -220,6 +220,50 @@
 					}
 				});
 			}
+		});
+	}
+	
+	//详情配置
+	function detail(id){
+		win = $("<div></div>").dialog({
+			title:'详情',
+			width:800,
+			height:'85%',
+			maximizable:true,
+			modal:true,
+			href:projectName+'/cfdb/tasklist/admin/toDetail?taskId='+id,
+			onClose:function(){
+		    		$(this).dialog("destroy");
+		    },
+			buttons:[{
+					text:'确定',
+				    iconCls:'icon-ok',
+				    handler:function(){
+				     	//处理富文本编辑的内容
+					    	var html = editor.html();
+					    	$("#taskDesc").val(html);
+					    	$("#taskDetailConfigForm").form('submit',{
+					    		 type:'POST',
+					    		 url : projectName+'/cfdb/tasklist/admin/updateDetail',
+					    		 success:function(responseData){
+					    			 win.dialog('destroy');
+					    			 if(responseData){
+					    				var data = $.parseJSON(responseData);
+					    			 	$.messager.show({"title":"系统提示","msg":data.message,"timeout":1000});
+					    			 	if(data.success){
+					    			 		$("#datagrid").datagrid("reload");
+					    				}
+					    			 } 
+					    		 }
+					    	 });
+				     }   
+				   },{
+					 text:'取消',
+				     iconCls:'icon-cancel',  
+				 	 handler:function(){
+				 		 win.dialog('destroy');
+				 	 }   
+				  }]
 		});
 	}
 	

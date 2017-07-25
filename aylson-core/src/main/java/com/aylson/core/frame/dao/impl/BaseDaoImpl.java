@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.aylson.core.constants.SqlId;
 import com.aylson.core.exception.DaoException;
@@ -107,6 +108,7 @@ public abstract class BaseDaoImpl<T extends Serializable, S extends BaseSearch>
 		}
 	}
 	
+	@Transactional
 	public <V extends T> Boolean  batchInsert( List<V>  list) {
 		try {
 			int rows = sqlSessionTemplate.insert(getSqlName(SqlId.SQL_BATCH_INSERT),list);
@@ -120,6 +122,7 @@ public abstract class BaseDaoImpl<T extends Serializable, S extends BaseSearch>
 		}
 	}
 	
+	@Transactional
 	public Boolean insert(T entity) {
 		try {
 			int rows = sqlSessionTemplate.insert(getSqlName(SqlId.SQL_INSERT),
@@ -135,6 +138,7 @@ public abstract class BaseDaoImpl<T extends Serializable, S extends BaseSearch>
 		}
 	}
 
+	@Transactional
 	public <V extends T> Boolean  batchUpdate( List<V>  list) {
 		try {
 			int rows = sqlSessionTemplate.update(getSqlName(SqlId.SQL_BATCH_UPDATE),list);
@@ -148,6 +152,7 @@ public abstract class BaseDaoImpl<T extends Serializable, S extends BaseSearch>
 		}
 	}
 	
+	@Transactional
 	public Boolean updateById(T entity) {
 		try {
 			int rows = sqlSessionTemplate.update(
@@ -163,6 +168,7 @@ public abstract class BaseDaoImpl<T extends Serializable, S extends BaseSearch>
 		}
 	}
 
+	@Transactional
 	public Boolean deleteById(Integer id) {
 		try {
 			int rows = sqlSessionTemplate.delete(
@@ -178,6 +184,7 @@ public abstract class BaseDaoImpl<T extends Serializable, S extends BaseSearch>
 		}
 	}
 	
+	@Transactional
 	public Boolean deleteById(String id) {
 		try {
 			int rows = sqlSessionTemplate.delete(
@@ -193,6 +200,7 @@ public abstract class BaseDaoImpl<T extends Serializable, S extends BaseSearch>
 		}
 	}
 
+	@Transactional
 	public Boolean delete(S search) {
 		try {
 			Map<String, Object> params = BeanUtils.toMap(search);

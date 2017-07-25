@@ -1,6 +1,7 @@
 package com.aylson.dc.cfdb.controller;
 
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +14,12 @@ import com.aylson.core.frame.controller.BaseController;
 import com.aylson.core.frame.domain.Result;
 import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.cfdb.search.TasklistSearch;
+import com.aylson.dc.cfdb.service.TaskDetailService;
 import com.aylson.dc.cfdb.service.TasklistService;
+import com.aylson.dc.cfdb.vo.TaskDetailVo;
 import com.aylson.dc.cfdb.vo.TasklistVo;
+import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
-import com.aylson.utils.UUIDUtils;
 
 /**
  * 任务配置表
@@ -30,6 +33,9 @@ public class TasklistController extends BaseController {
 
 	@Autowired
 	private TasklistService tasklistService;
+	
+	@Autowired
+	private TaskDetailService taskDetailService;
 	
 	/**
 	 * 后台-首页
@@ -81,16 +87,7 @@ public class TasklistController extends BaseController {
 	public Result add(TasklistVo tasklistVo) {
 		Result result = new Result();
 		try{
-			tasklistVo.setTaskId(UUIDUtils.create());
-			String cTime = DateUtil2.getCurrentLongDateTime();
-			tasklistVo.setCreateDate(cTime);
-			tasklistVo.setUpdateDate(cTime);
-			Boolean flag = this.tasklistService.add(tasklistVo);
-			if(flag){
-				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
-			}else{
-				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
-			}
+			result = this.tasklistService.addListAndDetail(tasklistVo, this.request);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			result.setError(ResultCode.CODE_STATE_500, e.getMessage());
@@ -137,6 +134,46 @@ public class TasklistController extends BaseController {
 	}
 	
 	/**
+	 * 后台-详情编辑页面
+	 * @param taskId
+	 * @return
+	 */
+	@RequestMapping(value = "/admin/toDetail", method = RequestMethod.GET)
+	public String toDetail(String taskId) {
+		if(taskId != null){
+			TaskDetailVo taskDetailVo = this.taskDetailService.getById(taskId);
+			this.request.setAttribute("taskDetailVo", taskDetailVo);
+		}
+		return "/jsp/cfdb/admin/tasklist/addDetail";
+	}
+	
+	/**
+	 * 后台-详情编辑保存
+	 * @param taskDetailVo
+	 * @return
+	 */
+	@RequestMapping(value = "/admin/updateDetail", method = RequestMethod.POST)
+	@ResponseBody
+	public Result updateDetail(TaskDetailVo taskDetailVo) {
+		Result result = new Result();
+		try {
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+			taskDetailVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
+			taskDetailVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
+			Boolean flag = this.taskDetailService.edit(taskDetailVo);
+			if(flag){
+				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
+			}else{
+				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			result.setError(ResultCode.CODE_STATE_500, e.getMessage());
+		}
+		return result;
+	}
+	
+	/**
 	 * 根据id删除
 	 * @param taskId
 	 * @return
@@ -146,12 +183,7 @@ public class TasklistController extends BaseController {
 	public Result deleteById(String taskId) {
 		Result result = new Result();
 		try{
-			Boolean flag = this.tasklistService.deleteById(taskId);
-			if(flag){
-				result.setOK(ResultCode.CODE_STATE_200, "删除成功");
-			}else{
-				result.setError(ResultCode.CODE_STATE_4006, "删除失败");
-			}
+			result = this.tasklistService.deleteListAndDetail(taskId);
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			result.setError(ResultCode.CODE_STATE_500, e.getMessage());
