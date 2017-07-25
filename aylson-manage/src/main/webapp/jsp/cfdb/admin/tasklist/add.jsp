@@ -45,7 +45,7 @@ text-align:left!important;
 					<tr>
 						<th>
 							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-large-picture',size:'large',iconAlign:'top'" 
-								onclick="uploadImg('img','logoUrl','dc-test')" id="uploadImg" style="margin-bottom:10px;">上传任务Logo图</a>
+								onclick="uploadImg('img','logoUrl','yfax-test')" id="uploadImg" style="margin-bottom:10px;">上传任务Logo图</a>
 						</th>
 						<td colspan="3" style="text-align:left">
 							<div style="width:240px;height:120px">

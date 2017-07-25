@@ -36,6 +36,7 @@
 					var handleHtml = '';
 					handleHtml += '<a href="javascript:edit(\'' + row.taskId + '\')">修改</a>&nbsp;';
 					handleHtml += '<a href="javascript:del(\'' + row.taskId + '\')">删除</a>&nbsp;';
+					handleHtml += '<a href="javascript:del(\'' + row.taskId + '\')">详情</a>&nbsp;';
 					return handleHtml;
 				}
 			}, {
@@ -45,20 +46,20 @@
 				width : 120,
 				sortable:true
 			}, 
-//			{
-//				title : '任务Logo',
-//				field : 'logoUrl',
-//				align : 'center',
-//				width : 80,
-//				sortable:true,
-//				formatter:function(value,row,index){
-//					if(value){
-//						var handleHtml = '';
-//						handleHtml += '<img id="img" src=\'' + value + '\' style="width:50px;height:50px"/>';
-//						return handleHtml;
-//					}
-//				}
-//			}, 
+			{
+				title : '任务Logo',
+				field : 'logoUrl',
+				align : 'center',
+				width : 80,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value){
+						var handleHtml = '';
+						handleHtml += '<img src=\'' + value + '\' style="width:50px;height:50px"/>';
+						return handleHtml;
+					}
+				}
+			}, 
 			{
 				title : '任务标签',
 				field : 'taskTag',
@@ -135,7 +136,6 @@
 				text:'确定',
 			    iconCls:'icon-ok',
 			    handler:function(){
-			    		$("#logoUrl").val($("#url").val());
 				    	$("#tasklistConfigForm").form('submit',{
 				    		 type:'POST',
 				    		 url : projectName+'/cfdb/tasklist/admin/add',
@@ -177,7 +177,6 @@
 					text:'确定',
 				    iconCls:'icon-ok',
 				    handler:function(){
-				    		$("#logoUrl").val($("#url").val());
 					    	$("#tasklistConfigForm").form('submit',{
 					    		 type:'POST',
 					    		 url : projectName+'/cfdb/tasklist/admin/update',

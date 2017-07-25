@@ -136,7 +136,7 @@
 				    handler:function(){
 				    		var statusFlag = $('#statusFlag').combobox('getValue');
 				    		if(statusFlag == 2){
-				    			$.messager.alert('提示','任务状态不能为\'审核中\'，请审核或者取消','error');
+				    			$.messager.alert('提示','提交任务状态不能为\'审核中\'，请审核或取消','error');
 				    		}else{
 				    			$.messager.confirm("提示","确定更新该记录吗？",function(r){
 									if(r){
