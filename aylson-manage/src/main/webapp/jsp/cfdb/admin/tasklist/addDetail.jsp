@@ -51,6 +51,21 @@ $("#tabActivity").tabs({
 		}
 	}
 })
+
+function download(){  
+    var simg = $('#stepUrl').val();;  
+    wins = $("<div align='center' style='text-align:center; background:#90A4AE'><img id='simg'/></div>").dialog({
+		title:'大图预览',
+		width:'95%',
+		height:'95%',
+		maximizable:true,
+		modal:true,
+		onClose:function(){
+	    		$(this).dialog("destroy");
+	    },
+	});
+    $("#simg").attr("src",simg);  
+}
 </script>
 <div align="center" >
 	<div class="easyui-tabs" id="tabActivity" style="width:100%">
@@ -76,6 +91,7 @@ $("#tabActivity").tabs({
 								<c:if test="${empty taskDetailVo.stepUrl }"><img id="img" src="" style="width:120px;height:120px"/></c:if>
 								<input id="stepUrl" name="stepUrl" value="${taskDetailVo.stepUrl}" type="hidden"/>
 							</div>
+							<c:if test="${not empty taskDetailVo.stepUrl}"><a href="javascript:download()">查看大图</a></c:if>
 						</td>
 					</tr>
 				</table>
