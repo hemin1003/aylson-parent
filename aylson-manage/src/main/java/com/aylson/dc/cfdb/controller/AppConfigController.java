@@ -85,7 +85,7 @@ public class AppConfigController extends BaseController {
 			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
 			appConfigVo.setId(UUIDUtils.create());
 			String cTime = DateUtil2.getCurrentLongDateTime();
-			appConfigVo.setCreatedBy(sessionInfo.getUser().getId() + "/" + sessionInfo.getUser().getUserName());
+			appConfigVo.setCreatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			appConfigVo.setCreateDate(cTime);
 			appConfigVo.setUpdateDate(cTime);
 			Boolean flag = this.appConfigService.add(appConfigVo);
@@ -126,7 +126,7 @@ public class AppConfigController extends BaseController {
 		Result result = new Result();
 		try {
 			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
-			appConfigVo.setUpdatedBy(sessionInfo.getUser().getId() + "/" + sessionInfo.getUser().getUserName());
+			appConfigVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			appConfigVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
 			Boolean flag = this.appConfigService.edit(appConfigVo);
 			if(flag){

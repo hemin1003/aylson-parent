@@ -15,6 +15,7 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.cfdb.search.ApkUrlSearch;
 import com.aylson.dc.cfdb.service.ApkUrlService;
 import com.aylson.dc.cfdb.vo.ApkUrlVo;
+import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
 import com.aylson.utils.UUIDUtils;
 
@@ -81,8 +82,10 @@ public class ApkUrlController extends BaseController {
 	public Result add(ApkUrlVo apkUrlVo) {
 		Result result = new Result();
 		try{
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
 			apkUrlVo.setId(UUIDUtils.create());
 			String cTime = DateUtil2.getCurrentLongDateTime();
+			apkUrlVo.setCreatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			apkUrlVo.setCreateDate(cTime);
 			apkUrlVo.setUpdateDate(cTime);
 			Boolean flag = this.apkUrlService.add(apkUrlVo);
@@ -122,6 +125,8 @@ public class ApkUrlController extends BaseController {
 	public Result update(ApkUrlVo apkUrlVo) {
 		Result result = new Result();
 		try {
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+			apkUrlVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			apkUrlVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
 			Boolean flag = this.apkUrlService.edit(apkUrlVo);
 			if(flag){

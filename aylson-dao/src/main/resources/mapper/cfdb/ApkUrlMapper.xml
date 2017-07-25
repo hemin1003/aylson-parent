@@ -8,6 +8,8 @@
 		<result column="apkUrl" property="apkUrl" jdbcType="VARCHAR" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
+		<result column="updatedBy" property="updatedBy" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="DB_Column_List">
@@ -66,6 +68,7 @@
 		  <if test="appName != null" > appName, </if>
 		  <if test="apkUrl != null" > apkUrl, </if>
 		  <if test="createDate != null" > createDate, </if>
+		  <if test="createdBy != null" > createdBy, </if>
 		  <if test="updateDate != null" > updateDate, </if>
 		</trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -73,7 +76,8 @@
 		  <if test="appName != null" > #{appName}, </if>
 		  <if test="apkUrl != null" > #{apkUrl}, </if>
 		  <if test="createDate != null" > #{createDate}, </if>
-		  <if test="updateDate != null" > #{updateDate}, </if>
+		  <if test="createdBy != null" > #{createdBy}, </if>
+		  <if test="updateDate != null" > null, </if>
         </trim>
 	</insert>
 	
@@ -85,6 +89,7 @@
 			<if test="appName != null"> appName = #{appName}, </if>
 			<if test="apkUrl != null"> apkUrl = #{apkUrl}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
 		</set>
 		where id = #{id} 
 	</update>

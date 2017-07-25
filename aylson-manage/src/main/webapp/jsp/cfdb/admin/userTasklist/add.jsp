@@ -99,6 +99,7 @@ text-align:left!important;
 									$('#status').val(data.text);
 								}" 
 								style="width:50%; " editable=false>
+								<option value="2">审核中</option>
 								<option value="3">审核完成</option>
 								<option value="4">审批失败</option>
 							</select>

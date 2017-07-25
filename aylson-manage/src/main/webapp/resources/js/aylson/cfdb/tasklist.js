@@ -44,13 +44,22 @@
 				align : 'center',
 				width : 120,
 				sortable:true
-			}, {
-				title : '任务logo url地址',
-				field : 'logoUrl',
-				align : 'center',
-				width : 150,
-				sortable:true
-			}, {
+			}, 
+//			{
+//				title : '任务Logo',
+//				field : 'logoUrl',
+//				align : 'center',
+//				width : 80,
+//				sortable:true,
+//				formatter:function(value,row,index){
+//					if(value){
+//						var handleHtml = '';
+//						handleHtml += '<img id="img" src=\'' + value + '\' style="width:50px;height:50px"/>';
+//						return handleHtml;
+//					}
+//				}
+//			}, 
+			{
 				title : '任务标签',
 				field : 'taskTag',
 				align : 'center',
@@ -116,7 +125,7 @@
 		win = $("<div></div>").dialog({
 			title:'新增',
 			width:450,
-			height:'60%',
+			height:'75%',
 			modal:true,
 			href:projectName+'/cfdb/tasklist/admin/toAdd',
 			onClose:function(){
@@ -126,6 +135,7 @@
 				text:'确定',
 			    iconCls:'icon-ok',
 			    handler:function(){
+			    		$("#logoUrl").val($("#url").val());
 				    	$("#tasklistConfigForm").form('submit',{
 				    		 type:'POST',
 				    		 url : projectName+'/cfdb/tasklist/admin/add',
@@ -156,7 +166,7 @@
 		win = $("<div></div>").dialog({
 			title:'修改',
 			width:450,
-			height:'60%',
+			height:'75%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/tasklist/admin/toEdit?taskId='+id,
@@ -167,6 +177,7 @@
 					text:'确定',
 				    iconCls:'icon-ok',
 				    handler:function(){
+				    		$("#logoUrl").val($("#url").val());
 					    	$("#tasklistConfigForm").form('submit',{
 					    		 type:'POST',
 					    		 url : projectName+'/cfdb/tasklist/admin/update',

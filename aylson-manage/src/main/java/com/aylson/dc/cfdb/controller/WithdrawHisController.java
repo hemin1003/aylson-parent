@@ -84,6 +84,7 @@ public class WithdrawHisController extends BaseController {
 	public Result update(WithdrawHisVo withdrawHisVo) {
 		Result result = new Result();
 		try {
+			//TODO 成功后需要把用户余额减掉
 			withdrawHisVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
 			Boolean flag = this.withdrawHisService.edit(withdrawHisVo);
 			if(flag){

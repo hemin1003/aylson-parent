@@ -43,11 +43,16 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th>任务logo url地址：</th>
+						<th>
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-large-picture',size:'large',iconAlign:'top'" 
+								onclick="uploadImg('img','logoUrl','dc-test')" id="uploadImg" style="margin-bottom:10px;">上传任务Logo图</a>
+						</th>
 						<td colspan="3" style="text-align:left">
-							<input name="logoUrl" value="${tasklistVo.logoUrl}" data-options="required:true"
-								class="easyui-textbox"
-								style="width:95%; text-align:left"/>
+							<div style="width:240px;height:120px">
+								<c:if test="${not empty tasklistVo.logoUrl}"><img id="img" src="${tasklistVo.logoUrl}" style="width:120px;height:120px"/></c:if>
+								<c:if test="${empty tasklistVo.logoUrl }"><img id="img" src="" style="width:120px;height:120px"/></c:if>
+								<input id="logoUrl" name="logoUrl" value="${tasklistVo.logoUrl}" type="hidden"/>
+							</div>
 						</td>
 					</tr>
 					<tr>

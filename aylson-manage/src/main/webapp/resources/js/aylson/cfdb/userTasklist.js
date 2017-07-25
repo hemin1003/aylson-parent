@@ -134,24 +134,29 @@
 					text:'提交',
 				    iconCls:'icon-ok',
 				    handler:function(){
-					    	$.messager.confirm("提示","确定更新该记录吗？",function(r){
-							if(r){
-								$("#userTasklistConfigForm").form('submit',{
-							    		 type:'POST',
-							    		 url : projectName+'/cfdb/userTasklist/admin/update',
-							    		 success:function(responseData){
-							    			 win.dialog('destroy');
-							    			 if(responseData){
-							    				var data = $.parseJSON(responseData);
-							    			 	$.messager.show({"title":"系统提示","msg":data.message,"timeout":1000});
-							    			 	if(data.success){
-							    			 		$("#datagrid").datagrid("reload");
-							    				}
-							    			 } 
-							    		 }
-							    	 });
-							}
-						});
+				    		var statusFlag = $('#statusFlag').combobox('getValue');
+				    		if(statusFlag == 2){
+				    			$.messager.alert('提示','任务状态不能为\'审核中\'，请审核或者取消','error');
+				    		}else{
+				    			$.messager.confirm("提示","确定更新该记录吗？",function(r){
+									if(r){
+										$("#userTasklistConfigForm").form('submit',{
+									    		 type:'POST',
+									    		 url : projectName+'/cfdb/userTasklist/admin/update',
+									    		 success:function(responseData){
+									    			 win.dialog('destroy');
+									    			 if(responseData){
+									    				var data = $.parseJSON(responseData);
+									    			 	$.messager.show({"title":"系统提示","msg":data.message,"timeout":1000});
+									    			 	if(data.success){
+									    			 		$("#datagrid").datagrid("reload");
+									    				}
+									    			 } 
+									    		 }
+									    	 });
+									}
+								});
+				    		}
 				     }   
 				   },{
 					 text:'取消',
