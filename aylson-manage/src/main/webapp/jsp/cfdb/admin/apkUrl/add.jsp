@@ -43,7 +43,7 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th>下载地址：</th>
+						<th>下载链接：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="apkUrl" value="${apkUrlVo.apkUrl}"
 								class="easyui-textbox" data-options="required:true"
