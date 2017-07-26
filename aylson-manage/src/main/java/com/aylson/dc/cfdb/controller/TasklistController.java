@@ -16,6 +16,7 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.cfdb.search.TasklistSearch;
 import com.aylson.dc.cfdb.service.TaskDetailService;
 import com.aylson.dc.cfdb.service.TasklistService;
+import com.aylson.dc.cfdb.vo.AppUpgradeVo;
 import com.aylson.dc.cfdb.vo.TaskDetailVo;
 import com.aylson.dc.cfdb.vo.TasklistVo;
 import com.aylson.dc.sys.common.SessionInfo;
@@ -119,6 +120,8 @@ public class TasklistController extends BaseController {
 	public Result update(TasklistVo tasklistVo) {
 		Result result = new Result();
 		try {
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+			tasklistVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			tasklistVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
 			Boolean flag = this.tasklistService.edit(tasklistVo);
 			if(flag){
@@ -185,6 +188,31 @@ public class TasklistController extends BaseController {
 		try{
 			result = this.tasklistService.deleteListAndDetail(taskId);
 		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+			result.setError(ResultCode.CODE_STATE_500, e.getMessage());
+		}
+		return result;
+	}
+	
+	@RequestMapping(value = "/admin/changeStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public Result changeStatus(TasklistVo tasklistVo) {
+		Result result = new Result();
+		try {
+			if(tasklistVo.getStatus() == null){
+				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
+				return result;
+			}
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+			tasklistVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
+			tasklistVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
+			Boolean flag = this.tasklistService.edit(tasklistVo);
+			if(flag){
+				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
+			}else{
+				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
+			}
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			result.setError(ResultCode.CODE_STATE_500, e.getMessage());
 		}

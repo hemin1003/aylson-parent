@@ -31,13 +31,33 @@
 				field : 'opt',
 				title : '操作选项',
 				align : 'center',
-				width : 100,
+				width : 120,
 				formatter:function(value,row,index){
 					var handleHtml = '';
-					handleHtml += '<a href="javascript:edit(\'' + row.taskId + '\')">修改</a>&nbsp;';
-					handleHtml += '<a href="javascript:del(\'' + row.taskId + '\')">删除</a>&nbsp;';
-					handleHtml += '<a href="javascript:detail(\'' + row.taskId + '\')">详情</a>&nbsp;';
+					if(row.status == 2){
+						handleHtml += '<a href="javascript:changeStatus(\'' + row.taskId + '\',1)">下线</a>&nbsp;';
+						handleHtml += '<a href="javascript:detailQuery(\'' + row.taskId + '\')">详情</a>&nbsp;';
+					}else{
+						handleHtml += '<a href="javascript:changeStatus(\'' + row.taskId + '\',2)">上线</a>&nbsp;';
+						handleHtml += '<a href="javascript:edit(\'' + row.taskId + '\')">修改</a>&nbsp;';
+						handleHtml += '<a href="javascript:del(\'' + row.taskId + '\')">删除</a>&nbsp;';
+						handleHtml += '<a href="javascript:detail(\'' + row.taskId + '\')">详情</a>&nbsp;';
+					}
+					
 					return handleHtml;
+				}
+			}, {
+				title : '任务状态',
+				field : 'status',
+				align : 'center',
+				width : 60,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value == 2){
+						return "<font color=blue>上线</font>";
+					}else{
+						return "<font color=red>下线</font>";
+					}
 				}
 			}, {
 				title : '任务名称',
@@ -94,7 +114,7 @@
 				title : '创建时间',
 				field : 'createDate',
 				align : 'center',
-				width : 150,
+				width : 120,
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
@@ -162,14 +182,14 @@
 	}
 	
 	//修改
-	function edit(id){
+	function edit(taskId){
 		win = $("<div></div>").dialog({
 			title:'修改',
 			width:450,
 			height:'75%',
 			maximizable:true,
 			modal:true,
-			href:projectName+'/cfdb/tasklist/admin/toEdit?taskId='+id,
+			href:projectName+'/cfdb/tasklist/admin/toEdit?taskId='+taskId,
 			onClose:function(){
 		    		$(this).dialog("destroy");
 		    },
@@ -203,12 +223,12 @@
 	}
 
 	//删除
-	function del(id){
+	function del(taskId){
 		$.messager.confirm("提示","确定删除此记录吗？",function(r){
 			if(r){
 				$.ajax({
 					type:"POST",
-					url:projectName+'/cfdb/tasklist/admin/deleteById?taskId=' + id,
+					url:projectName+'/cfdb/tasklist/admin/deleteById?taskId=' + taskId,
 					dataType:"json",
 					success:function(data){
 						if(data){
@@ -224,14 +244,14 @@
 	}
 	
 	//详情配置
-	function detail(id){
+	function detail(taskId){
 		win = $("<div></div>").dialog({
 			title:'详情',
 			width:800,
 			height:'85%',
 			maximizable:true,
 			modal:true,
-			href:projectName+'/cfdb/tasklist/admin/toDetail?taskId='+id,
+			href:projectName+'/cfdb/tasklist/admin/toDetail?taskId='+taskId,
 			onClose:function(){
 		    		$(this).dialog("destroy");
 		    },
@@ -264,6 +284,56 @@
 				 		 win.dialog('destroy');
 				 	 }   
 				  }]
+		});
+	}
+	
+	//详情查看
+	function detailQuery(taskId){
+		win = $("<div></div>").dialog({
+			title:'查看详情',
+			width:800,
+			height:'85%',
+			maximizable:true,
+			modal:true,
+			href:projectName+'/cfdb/tasklist/admin/toDetail?taskId='+taskId,
+			onClose:function(){
+		    		$(this).dialog("destroy");
+		    },
+			buttons:[{
+					 text:'取消',
+				     iconCls:'icon-cancel',  
+				 	 handler:function(){
+				 		 win.dialog('destroy');
+				 	 }   
+				  }]
+		});
+	}
+	
+	//发布
+	function changeStatus(taskId, status){
+		var tip = "";
+		if(status == 1){
+			tip = "确定下线吗？";
+			
+		}else if(status == 2){
+			tip = "确定上线吗？";
+		}
+		$.messager.confirm("提示",tip,function(r){
+			if(r){
+				$.ajax({
+					type:"POST",
+					url:projectName+'/cfdb/tasklist/admin/changeStatus?taskId=' + taskId+'&status='+status,
+					dataType:"json",
+					success:function(data){
+						if(data){
+		    				$.messager.show({"title":"系统提示","msg":data.message,"timeout":1000});
+		    				if(data.success){
+		    					$("#datagrid").datagrid("reload");
+		    				}
+		    			 }
+					}
+				});
+			}
 		});
 	}
 	

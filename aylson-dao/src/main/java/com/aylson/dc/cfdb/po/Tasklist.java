@@ -16,6 +16,9 @@ public class Tasklist implements Serializable{
 	private String goUrl;		//跳转url地址
 	private String createDate;	//创建时间
 	private String updateDate;	//更新时间
+	private Integer status;		//任务状态
+	private String createdBy;	//创建人
+	private String updatedBy;	//更新人
 	
 	public String getTaskId() {
 		return taskId;
@@ -76,5 +79,23 @@ public class Tasklist implements Serializable{
 	}
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 }

@@ -50,6 +50,7 @@ public class TasklistServiceImpl  extends BaseServiceImpl<Tasklist, TasklistSear
 			String cTime = DateUtil2.getCurrentLongDateTime();
 			tasklistVo.setCreateDate(cTime);
 			tasklistVo.setUpdateDate(cTime);
+			tasklistVo.setCreatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			boolean flag1 = this.tasklistDao.insert(tasklistVo);
 			
 			//2. 详情表
