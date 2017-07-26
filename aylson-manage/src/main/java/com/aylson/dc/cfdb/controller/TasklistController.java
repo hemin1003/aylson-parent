@@ -16,7 +16,6 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.cfdb.search.TasklistSearch;
 import com.aylson.dc.cfdb.service.TaskDetailService;
 import com.aylson.dc.cfdb.service.TasklistService;
-import com.aylson.dc.cfdb.vo.AppUpgradeVo;
 import com.aylson.dc.cfdb.vo.TaskDetailVo;
 import com.aylson.dc.cfdb.vo.TasklistVo;
 import com.aylson.dc.sys.common.SessionInfo;

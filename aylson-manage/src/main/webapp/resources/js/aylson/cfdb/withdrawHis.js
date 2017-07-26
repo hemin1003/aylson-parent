@@ -37,7 +37,7 @@
 				title : '手机标识码',
 				field : 'phoneId',
 				align : 'center',
-				width : 80,
+				width : 120,
 				sortable:true
 			}, {
 				title : '提现类型',
@@ -64,10 +64,10 @@
 				width : 80,
 				sortable:true
 			}, {
-				title : '提现时间',
+				title : '提现发起时间',
 				field : 'withdrawTime',
 				align : 'center',
-				width : 150,
+				width : 120,
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
@@ -85,7 +85,7 @@
 				title : '创建时间',
 				field : 'createDate',
 				align : 'center',
-				width : 150,
+				width : 120,
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
@@ -97,7 +97,7 @@
 				title : '更新时间',
 				field : 'updateDate',
 				align : 'center',
-				width : 150,
+				width : 120,
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
@@ -127,24 +127,29 @@
 					text:'提交',
 				    iconCls:'icon-ok',
 				    handler:function(){
-					    	$.messager.confirm("提示","确定更新该记录吗？",function(r){
-							if(r){
-								$("#withdrawHisConfigForm").form('submit',{
-							    		 type:'POST',
-							    		 url : projectName+'/cfdb/withdrawHis/admin/update',
-							    		 success:function(responseData){
-							    			 win.dialog('destroy');
-							    			 if(responseData){
-							    				var data = $.parseJSON(responseData);
-							    			 	$.messager.show({"title":"系统提示","msg":data.message,"timeout":1000});
-							    			 	if(data.success){
-							    			 		$("#datagrid").datagrid("reload");
-							    				}
-							    			 } 
-							    		 }
-							    	 });
-							}
-						});
+					    	var statusType = $('#statusType').combobox('getValue');
+				    		if(statusType == 1){
+				    			$.messager.alert('提示','提交\'提现状态\'不能为\'处理中\'，请审核或取消','error');
+				    		}else{
+				    			$.messager.confirm("提示","确定更新该记录吗？",function(r){
+									if(r){
+										$("#withdrawHisConfigForm").form('submit',{
+									    		 type:'POST',
+									    		 url : projectName+'/cfdb/withdrawHis/admin/update',
+									    		 success:function(responseData){
+									    			 win.dialog('destroy');
+									    			 if(responseData){
+									    				var data = $.parseJSON(responseData);
+									    			 	$.messager.show({"title":"系统提示","msg":data.message,"timeout":1000});
+									    			 	if(data.success){
+									    			 		$("#datagrid").datagrid("reload");
+									    				}
+									    			 } 
+									    		 }
+									    	 });
+									}
+								});
+				    		}
 				     }   
 				   },{
 					 text:'取消',

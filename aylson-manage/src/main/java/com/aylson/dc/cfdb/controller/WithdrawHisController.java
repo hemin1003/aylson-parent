@@ -19,7 +19,7 @@ import com.aylson.dc.cfdb.vo.WithdrawHisVo;
 import com.aylson.utils.DateUtil2;
 
 /**
- * 用户提现记录管理
+ * 用户提现审核管理
  * @author Minbo
  */
 @Controller
@@ -84,14 +84,7 @@ public class WithdrawHisController extends BaseController {
 	public Result update(WithdrawHisVo withdrawHisVo) {
 		Result result = new Result();
 		try {
-			//TODO 成功后需要把用户余额减掉
-			withdrawHisVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
-			Boolean flag = this.withdrawHisService.edit(withdrawHisVo);
-			if(flag){
-				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
-			}else{
-				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
-			}
+			result = this.withdrawHisService.updateWithdrawHisInfo(withdrawHisVo, this.request);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			result.setError(ResultCode.CODE_STATE_500, e.getMessage());

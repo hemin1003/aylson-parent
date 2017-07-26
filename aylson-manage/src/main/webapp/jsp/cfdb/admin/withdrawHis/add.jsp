@@ -37,7 +37,7 @@ text-align:left!important;
 					<tr>
 						<th>手机标识码：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${withdrawHisVo.phoneId}"
+							<input name="phoneId" value="${withdrawHisVo.phoneId}"
 								class="easyui-validatebox textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -45,7 +45,7 @@ text-align:left!important;
 					<tr>
 						<th>提现类型：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${withdrawHisVo.withdrawName}"
+							<input name="withdrawName" value="${withdrawHisVo.withdrawName}"
 								class="easyui-validatebox textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -53,7 +53,7 @@ text-align:left!important;
 					<tr>
 						<th>姓名：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${withdrawHisVo.name}"
+							<input name="name" value="${withdrawHisVo.name}"
 								class="easyui-validatebox textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -61,7 +61,7 @@ text-align:left!important;
 					<tr>
 						<th>账户名：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${withdrawHisVo.account}"
+							<input name="account" value="${withdrawHisVo.account}"
 								class="easyui-validatebox textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -69,15 +69,15 @@ text-align:left!important;
 					<tr>
 						<th>提现金额：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${withdrawHisVo.income}"
+							<input name="income" value="${withdrawHisVo.income}"
 								class="easyui-validatebox textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>
 					<tr>
-						<th>提现时间：</th>
+						<th>提现发起时间：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${withdrawHisVo.withdrawTime}"
+							<input name="withdrawTime" value="${withdrawHisVo.withdrawTime}"
 								class="easyui-datetimebox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -101,6 +101,8 @@ text-align:left!important;
 				</table>
 				<input name="id" type="hidden" value="${withdrawHisVo.id}"/>
 				<input name="status" id="status" value="${withdrawHisVo.status}" type="hidden"/>
+				<input name="withdrawType" value="${withdrawHisVo.withdrawType}" type="hidden"/>
+				
 			</form>
 		</div>
 	</div> 

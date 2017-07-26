@@ -98,6 +98,7 @@ public abstract class BaseDaoImpl<T extends Serializable, S extends BaseSearch>
 		}
 	}
 
+	@Transactional
 	public <V extends T> V selectById(String id) {
 		try {
 			return sqlSessionTemplate.selectOne(

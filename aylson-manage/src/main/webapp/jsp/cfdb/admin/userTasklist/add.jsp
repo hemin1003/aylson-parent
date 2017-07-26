@@ -37,7 +37,7 @@ text-align:left!important;
 					<tr>
 						<th>手机标识码：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${userTasklistVo.phoneId}"
+							<input name="phoneId" value="${userTasklistVo.phoneId}"
 								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -45,7 +45,7 @@ text-align:left!important;
 					<tr>
 						<th>任务名称：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${userTasklistVo.taskName}"
+							<input name="taskName" value="${userTasklistVo.taskName}"
 								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -53,7 +53,7 @@ text-align:left!important;
 					<tr>
 						<th>任务标签：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${userTasklistVo.taskTag}"
+							<input name="taskTag" value="${userTasklistVo.taskTag}"
 								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -61,7 +61,7 @@ text-align:left!important;
 					<tr>
 						<th>任务收益金额：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${userTasklistVo.income}"
+							<input name="income" value="${userTasklistVo.income}"
 								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -69,7 +69,7 @@ text-align:left!important;
 					<tr>
 						<th>跳转url地址：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${userTasklistVo.goUrl}"
+							<input name="goUrl" value="${userTasklistVo.goUrl}"
 								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -107,6 +107,8 @@ text-align:left!important;
 					</tr>
 				</table>
 				<input name="id" type="hidden" value="${userTasklistVo.id}"/>
+				<input name="taskId" type="hidden" value="${userTasklistVo.taskId}"/>
+				<input name="logoUrl" type="hidden" value="${userTasklistVo.logoUrl}"/>
 				<input name="status" id="status" value="${userTasklistVo.status}" type="hidden"/>
 			</form>
 		</div>

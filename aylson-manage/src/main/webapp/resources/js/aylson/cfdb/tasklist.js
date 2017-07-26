@@ -84,16 +84,22 @@
 				title : '任务标签',
 				field : 'taskTag',
 				align : 'center',
-				width : 150,
+				width : 120,
 				sortable:true
 			}, {
-				title : '任务剩余数量',
+				title : '剩余数量',
 				field : 'amount',
+				align : 'center',
+				width : 60,
+				sortable:true
+			}, {
+				title : '平台金额',
+				field : 'income',
 				align : 'center',
 				width : 80,
 				sortable:true
 			}, {
-				title : '任务收益金额',
+				title : '用户收益金额',
 				field : 'income',
 				align : 'center',
 				width : 80,
@@ -109,7 +115,10 @@
 				field : 'goUrl',
 				align : 'center',
 				width : 150,
-				sortable:true
+				sortable:true,
+				formatter:function(value,row,index){
+					return '<a href="javascript:window.open(\'' + value + '\',\'_blank\')">查看</a>&nbsp;';
+				}
 			}, {
 				title : '创建时间',
 				field : 'createDate',
@@ -127,7 +136,7 @@
 //				title : '更新时间',
 //				field : 'updateDate',
 //				align : 'center',
-//				width : 150,
+//				width : 120,
 //				formatter:function(value,row,index){
 //					if(value){
 //						return value.substring(0,19);

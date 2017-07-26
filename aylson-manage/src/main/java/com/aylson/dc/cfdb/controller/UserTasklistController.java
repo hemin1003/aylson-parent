@@ -16,10 +16,9 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.cfdb.search.UserTasklistSearch;
 import com.aylson.dc.cfdb.service.UserTasklistService;
 import com.aylson.dc.cfdb.vo.UserTasklistVo;
-import com.aylson.utils.DateUtil2;
 
 /**
- * 用户任务管理
+ * 用户任务审批管理
  * @author Minbo
  */
 @Controller
@@ -83,16 +82,9 @@ public class UserTasklistController extends BaseController {
 	@ResponseBody
 	public Result update(UserTasklistVo userTasklistVo) {
 		Result result = new Result();
-		try {
-			userTasklistVo.setIsChecked(1);
-			userTasklistVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
-			Boolean flag = this.userTasklistService.edit(userTasklistVo);
-			if(flag){
-				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
-			}else{
-				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
-			}
-		} catch (Exception e) {
+		try{
+			result = this.userTasklistService.updateUserTaskInfo(userTasklistVo, this.request);
+		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			result.setError(ResultCode.CODE_STATE_500, e.getMessage());
 		}

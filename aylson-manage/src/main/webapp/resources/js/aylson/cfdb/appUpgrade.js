@@ -73,7 +73,7 @@
 				title : '创建时间',
 				field : 'createDate',
 				align : 'center',
-				width : 150,
+				width : 120,
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value){

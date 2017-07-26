@@ -1,6 +1,5 @@
 package com.aylson.dc.cfdb.controller;
 
-import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.cfdb.search.AppUpgradeSearch;
 import com.aylson.dc.cfdb.service.AppUpgradeService;
 import com.aylson.dc.cfdb.vo.AppUpgradeVo;
-import com.aylson.dc.sys.vo.CouponActivityVo;
 import com.aylson.utils.DateUtil2;
 import com.aylson.utils.UUIDUtils;
 

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.cfdb.po.IncomeHis">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.IncomeHisVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="phoneId" property="phoneId" jdbcType="VARCHAR" />
+		<result column="taskId" property="taskId" jdbcType="VARCHAR" />
+		<result column="logoUrl" property="logoUrl" jdbcType="VARCHAR" />
+		<result column="taskName" property="taskName" jdbcType="VARCHAR" />
+		<result column="incomeTime" property="incomeTime" jdbcType="VARCHAR" />
+		<result column="income" property="income" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="flag" property="flag" jdbcType="INTEGER" />
+	</resultMap>
+
+    <sql id="DB_Column_List">
+		cfdb_income_his.id,
+		cfdb_income_his.phoneId,
+		cfdb_income_his.taskId,
+		cfdb_income_his.logoUrl,
+		cfdb_income_his.taskName,
+		cfdb_income_his.incomeTime,
+		cfdb_income_his.income,
+		cfdb_income_his.createDate,
+		cfdb_income_his.updateDate,
+		cfdb_income_his.flag
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+				<if test="phoneIdLike != null and phoneIdLike != ''"> and cfdb_income_his.phoneId like CONCAT('%',#{phoneIdLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(phoneId) from cfdb_income_his
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_income_his
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by cfdb_income_his.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+    
+    <!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.cfdb.vo.IncomeHisVo">
+		insert into cfdb_income_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneId != null" > phoneId, </if>
+		  <if test="taskId != null" > taskId, </if>
+		  <if test="logoUrl != null" > logoUrl, </if>
+		  <if test="taskName != null" > taskName, </if>
+		  <if test="incomeTime != null" > incomeTime, </if>
+		  <if test="income != null" > income, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="flag != null" > flag, </if>
+		  
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneId != null" > #{phoneId}, </if>
+		  <if test="taskId != null" > #{taskId}, </if>
+		  <if test="logoUrl != null" > #{logoUrl}, </if>
+		  <if test="taskName != null" > #{taskName}, </if>
+		  <if test="incomeTime != null" > #{incomeTime}, </if>
+		  <if test="income != null" > #{income}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  <if test="flag != null" > #{flag}, </if>
+		  
+        </trim>
+	</insert>
+</mapper>

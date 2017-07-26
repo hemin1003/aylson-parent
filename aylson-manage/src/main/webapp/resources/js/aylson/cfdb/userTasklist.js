@@ -72,7 +72,7 @@
 				title : '用户抢购任务时间',
 				field : 'createDate',
 				align : 'center',
-				width : 150,
+				width : 120,
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
@@ -90,7 +90,7 @@
 				title : '审批时间',
 				field : 'updateDate',
 				align : 'center',
-				width : 150,
+				width : 120,
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
@@ -136,7 +136,7 @@
 				    handler:function(){
 				    		var statusFlag = $('#statusFlag').combobox('getValue');
 				    		if(statusFlag == 2){
-				    			$.messager.alert('提示','提交任务状态不能为\'审核中\'，请审核或取消','error');
+				    			$.messager.alert('提示','提交\'任务状态\'不能为\'审核中\'，请审核或取消','error');
 				    		}else{
 				    			$.messager.confirm("提示","确定更新该记录吗？",function(r){
 									if(r){
