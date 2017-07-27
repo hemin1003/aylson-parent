@@ -137,6 +137,10 @@
 				    			$.messager.alert('提示','不能重复审核成功','info');
 				    			return;
 				    		}
+				    		if(statusTypeOld == 4){
+				    			$.messager.alert('提示','已审核失败，不能再审核成功','info');
+				    			return;
+				    		}
 					    
 				    		if(statusType == 1){
 				    			$.messager.alert('提示','提交\'提现状态\'不能为\'处理中\'，请审核或取消','error');

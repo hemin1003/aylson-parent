@@ -12,14 +12,12 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.core.frame.service.impl.BaseServiceImpl;
 import com.aylson.dc.cfdb.dao.ImUsersDao;
 import com.aylson.dc.cfdb.dao.WithdrawHisDao;
-import com.aylson.dc.cfdb.po.IncomeHis;
 import com.aylson.dc.cfdb.po.WithdrawHis;
 import com.aylson.dc.cfdb.search.WithdrawHisSearch;
 import com.aylson.dc.cfdb.service.WithdrawHisService;
 import com.aylson.dc.cfdb.vo.ImUsersVo;
 import com.aylson.dc.cfdb.vo.WithdrawHisVo;
 import com.aylson.utils.DateUtil2;
-import com.aylson.utils.UUIDUtils;
 
 
 @Service
@@ -47,20 +45,19 @@ public class WithdrawHisServiceImpl extends BaseServiceImpl<WithdrawHis, Withdra
 			withdrawHisVo.setUpdateDate(cTime);
 			boolean flag = this.withdrawHisDao.updateById(withdrawHisVo);
 			if(flag) {
-				//2. 如果成功，则需要增加用户收益金额
+				//2. 如果失败，则需要增加用户收益金额
 				ImUsersVo imUsersVo = this.imUsersDao.selectById(withdrawHisVo.getPhoneId());
 				//更新数据
-				int balance = imUsersVo.getBalance();	//原已有余额
-				int earn = Integer.valueOf(withdrawHisVo.getIncome());	//提现金额
-				imUsersVo.setUpdateDate(cTime);
+				int balance = Integer.valueOf(imUsersVo.getBalance());	//原已有余额
 				//2=支付成功；3=充值成功；；
 				if(withdrawHisVo.getStatusType() == 2 || withdrawHisVo.getStatusType() == 3) {
-					imUsersVo.setBalance(balance-earn);
-					logger.info("用户提现成功，扣减后余额=" + (balance-earn) + "。balance=" + balance + ", earn=" + earn);
+					logger.info("用户提现成功，余额=" + (balance));
 					
 				//4=失败
 				}else if(withdrawHisVo.getStatusType() == 4) {
-					imUsersVo.setBalance(balance+earn);
+					int earn = Integer.valueOf(withdrawHisVo.getIncome());	//提现金额
+					imUsersVo.setUpdateDate(cTime);
+					imUsersVo.setBalance(String.valueOf(balance+earn));
 					logger.info("用户提现失败，回滚后余额=" + (balance+earn) + "。balance=" + balance + ", earn=" + earn);
 					
 				}

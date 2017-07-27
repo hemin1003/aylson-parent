@@ -38,7 +38,7 @@ text-align:left!important;
 						<th>手机标识码：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="phoneId" value="${withdrawHisVo.phoneId}"
-								class="easyui-validatebox textbox"
+								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>
@@ -46,7 +46,7 @@ text-align:left!important;
 						<th>提现类型：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="withdrawName" value="${withdrawHisVo.withdrawName}"
-								class="easyui-validatebox textbox"
+								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>
@@ -54,7 +54,7 @@ text-align:left!important;
 						<th>姓名：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="name" value="${withdrawHisVo.name}"
-								class="easyui-validatebox textbox"
+								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>
@@ -62,7 +62,7 @@ text-align:left!important;
 						<th>账户名：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="account" value="${withdrawHisVo.account}"
-								class="easyui-validatebox textbox"
+								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>
@@ -70,7 +70,7 @@ text-align:left!important;
 						<th>提现金额：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="income" value="${withdrawHisVo.income}"
-								class="easyui-validatebox textbox"
+								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>

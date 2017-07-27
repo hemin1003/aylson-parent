@@ -55,7 +55,7 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 				//2. 如果审批完成，则需要增加用户收益金额
 				ImUsersVo imUsersVo = this.imUsersDao.selectById(userTasklistVo.getPhoneId());
 				//更新数据
-				int balance = imUsersVo.getBalance();	//原已有余额
+				int balance = Integer.valueOf(imUsersVo.getBalance());	//原已有余额
 				int earn = Integer.valueOf(userTasklistVo.getIncome());	//任务收益金额
 				imUsersVo.setUpdateDate(cTime);
 				//操作标识位
@@ -63,13 +63,13 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 				//审核完成
 				if(userTasklistVo.getStatusFlag() == 3) {
 					actionFlag = 1;
-					imUsersVo.setBalance(balance+earn);
+					imUsersVo.setBalance(String.valueOf(balance+earn));
 					logger.info("用户加钱后余额=" + (balance+earn) + "。balance=" + balance + ", earn=" + earn);
 					
 				//审核失败
 				}else if(userTasklistVo.getStatusFlag() == 4) {
 					actionFlag = 2;
-					imUsersVo.setBalance(balance-earn);
+					imUsersVo.setBalance(String.valueOf(balance-earn));
 					logger.info("用户扣钱后余额=" + (balance-earn) + "。balance=" + balance + ", earn=" + earn);
 					
 				}

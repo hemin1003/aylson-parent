@@ -13,7 +13,7 @@ public class WithdrawHisSearch  extends BaseSearch{
 	//模糊查询
 	private String nameLike;		//姓名
 	private String accountLike;		//账户名
-	
+	private String phoneIdLike;	//手机唯一标识码
 	
 	public Integer getWithdrawType() {
 		return withdrawType;
@@ -38,5 +38,11 @@ public class WithdrawHisSearch  extends BaseSearch{
 	}
 	public void setStatusType(Integer statusType) {
 		this.statusType = statusType;
+	}
+	public String getPhoneIdLike() {
+		return phoneIdLike;
+	}
+	public void setPhoneIdLike(String phoneIdLike) {
+		this.phoneIdLike = phoneIdLike;
 	}
 }

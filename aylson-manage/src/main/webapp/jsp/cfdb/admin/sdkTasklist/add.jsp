@@ -59,13 +59,22 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th>简介：</th>
+						<th>应用简介：</th>
 						<td colspan="3" style="text-align:left">
-							<input name="text2" value="${sdkTasklistVo.text2}" 
-								class="easyui-textbox"
-								style="width:95%; text-align:left"/>
+							<input name="intro" value="${sdkTasklistVo.intro}" 
+								class="easyui-textbox" data-options="multiline:true"
+								style="width:95%; height:80px; text-align:left"/>
 						</td>
 					</tr>
+					<tr>
+						<th>广告APK下载地址：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="url" value="${sdkTasklistVo.url}" 
+								class="easyui-textbox" data-options="multiline:true"
+								style="width:95%; height:60px; text-align:left"/>
+						</td>
+					</tr>
+					<!-- 
 					<tr>
 						<th>任务步骤描述：</th>
 						<td colspan="3" style="text-align:left">
@@ -74,6 +83,7 @@ text-align:left!important;
 								style="width:95%; text-align:left"/>
 						</td>
 					</tr>
+					 -->
 					<tr>
 						<th>广告激活时间：</th>
 						<td colspan="3" style="text-align:left">
@@ -86,6 +96,30 @@ text-align:left!important;
 						<th>当前步骤激活条件：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="curr_note" value="${sdkTasklistVo.curr_note}" 
+								class="easyui-textbox"
+								style="width:95%; text-align:left"/>
+						</td>
+					</tr>
+					<tr>
+						<th>简介下载量：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="text1" value="${sdkTasklistVo.text1}" 
+								class="easyui-textbox"
+								style="width:95%; text-align:left"/>
+						</td>
+					</tr>
+					<tr>
+						<th>激活次数：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="active_num" value="${sdkTasklistVo.active_num}" 
+								class="easyui-textbox"
+								style="width:95%; text-align:left"/>
+						</td>
+					</tr>
+					<tr>
+						<th>任务总积分：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="score" value="${sdkTasklistVo.score}" 
 								class="easyui-textbox"
 								style="width:95%; text-align:left"/>
 						</td>

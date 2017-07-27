@@ -6,7 +6,7 @@
 <jsp:include page="/resources/inc/easyui.jsp"></jsp:include>
 </head>
 <body class="easyui-layout" fit="true">
-	<div region="north" style="white-space: nowrap;padding: 5px; height: 50px;">
+	<div region="north" style="white-space: nowrap;padding: 5px; height: 75px;">
 		<div style="margin-bottom: 5px">
 			<form id="withdrawHisForm"  method="post">
 				<table class="table_content"   border="0" >
@@ -33,12 +33,18 @@
 						<td class="tar" >姓名：</td>
 						<td class="tal" >
 							<input class="easyui-textbox" name="nameLike" prompt="模糊查询"/>
-						</td> 
+						</td>
+					</tr>
+					<tr>
 						<td class="tar" >账户名：</td>
 						<td class="tal" >
 							<input class="easyui-textbox" name="accountLike" prompt="模糊查询"/>
 						</td>
-					    <td style="padding-left:20px">
+						<td class="tar" >手机IMEI账户：</td>
+						<td class="tal" >
+							<input class="easyui-textbox" name="phoneIdLike" prompt="模糊查询"/>
+						</td>
+					    <td style="padding-left:20px" colspan=2>
 							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch()">搜索</a>
 							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" style="width:80px" onclick="reset()">重置</a>
 						</td> 

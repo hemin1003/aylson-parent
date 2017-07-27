@@ -40,8 +40,8 @@
 				width : 120,
 				sortable:true
 			}, {
-				title : '应用简介',
-				field : 'intro',
+				title : '简介',
+				field : 'text2',
 				align : 'center',
 				width : 150,
 				sortable:true
@@ -71,17 +71,16 @@
 				width : 80,
 				sortable:true
 			}, {
-				title : '广告APK下载地址',
-				field : 'url',
-				align : 'center',
-				width : 120,
-				sortable:true
-			}, {
 				title : 'app包大小',
 				field : 'psize',
 				align : 'center',
 				width : 80,
-				sortable:true
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value){
+						return value + ' M';
+					}
+				}
 			}, {
 				title : '简介下载量',
 				field : 'text1',
@@ -123,7 +122,7 @@
 		win = $("<div></div>").dialog({
 			title:'查看详情',
 			width:480,
-			height:'80%',
+			height:'90%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/sdkTasklist/admin/toEdit?adid='+adid,

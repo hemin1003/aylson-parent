@@ -41,6 +41,7 @@
 				<!-- 模糊查询 -->
 				<if test="nameLike != null and nameLike != ''"> and cfdb_withdraw_his.name like CONCAT('%',#{nameLike},'%') </if>
 				<if test="accountLike != null and accountLike != ''"> and cfdb_withdraw_his.account like CONCAT('%',#{accountLike},'%') </if>
+				<if test="phoneIdLike != null and phoneIdLike != ''"> and cfdb_withdraw_his.phoneId like CONCAT('%',#{phoneIdLike},'%') </if>
 			</trim>
 		</where>
 	</sql>
