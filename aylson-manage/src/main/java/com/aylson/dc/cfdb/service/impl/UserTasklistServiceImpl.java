@@ -49,54 +49,53 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 			//1. 更新任务审批状态
 			userTasklistVo.setIsChecked(1);
 			userTasklistVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
-			boolean flag = this.userTasklistDao.updateById(userTasklistVo);
 			
-			if(flag) {
-				//2. 如果审批完成，则需要增加用户收益金额
-				ImUsersVo imUsersVo = this.imUsersDao.selectById(userTasklistVo.getPhoneId());
-				//更新数据
-				int balance = Integer.valueOf(imUsersVo.getBalance());	//原已有余额
-				int earn = Integer.valueOf(userTasklistVo.getIncome());	//任务收益金额
-				imUsersVo.setUpdateDate(cTime);
-				//操作标识位
-				int actionFlag = 0;
-				//审核完成
-				if(userTasklistVo.getStatusFlag() == 3) {
-					actionFlag = 1;
-					imUsersVo.setBalance(String.valueOf(balance+earn));
-					logger.info("用户加钱后余额=" + (balance+earn) + "。balance=" + balance + ", earn=" + earn);
-					
-				//审核失败
-				}else if(userTasklistVo.getStatusFlag() == 4) {
-					actionFlag = 2;
-					imUsersVo.setBalance(String.valueOf(balance-earn));
-					logger.info("用户扣钱后余额=" + (balance-earn) + "。balance=" + balance + ", earn=" + earn);
-					
-				}
-				boolean flag2 = this.imUsersDao.updateById(imUsersVo);
-				if(flag2) {
-					result.setOK(ResultCode.CODE_STATE_200, "操作成功");
-				}else {
-					result.setError(ResultCode.CODE_STATE_4006, "操作失败");
-				}
+			//2. 如果审批完成，则需要增加或扣减用户收益金额
+			ImUsersVo imUsersVo = this.imUsersDao.selectById(userTasklistVo.getPhoneId());
+			//更新数据
+			int balance = Integer.valueOf(imUsersVo.getBalance());	//原已有余额
+			int earn = Integer.valueOf(userTasklistVo.getIncome());	//任务收益金额
+			imUsersVo.setUpdateDate(cTime);
+			//操作标识位
+			int actionFlag = 0;
+			//审核完成
+			if(userTasklistVo.getStatusFlag() == 3) {
+				actionFlag = 1;
+				imUsersVo.setBalance(String.valueOf(balance+earn));
+				logger.info("用户加钱后余额=" + (balance+earn) + "。balance=" + balance + ", earn=" + earn);
 				
-				//3. 记录用户收益记录情况
-				IncomeHis incomeHis = new IncomeHis();
-				incomeHis.setId(UUIDUtils.create());
-				incomeHis.setPhoneId(userTasklistVo.getPhoneId());
-				incomeHis.setTaskId(userTasklistVo.getTaskId());
-				incomeHis.setLogoUrl(userTasklistVo.getLogoUrl());
-				incomeHis.setTaskName(userTasklistVo.getTaskName());
-				incomeHis.setIncomeTime(cTime);
-				incomeHis.setIncome(userTasklistVo.getIncome());
-				incomeHis.setCreateDate(cTime);
-				incomeHis.setUpdateDate(cTime);
-				incomeHis.setFlag(actionFlag);
-				this.incomeHisDao.insert(incomeHis);
+			//审核失败
+			}else if(userTasklistVo.getStatusFlag() == 4) {
+				actionFlag = 2;
+				imUsersVo.setBalance(String.valueOf(balance-earn));
+				logger.info("用户扣钱后余额=" + (balance-earn) + "。balance=" + balance + ", earn=" + earn);
+				
+			}
+			
+			boolean flag1 = this.userTasklistDao.updateById(userTasklistVo);	//更新任务审批状态
+			boolean flag2 = this.imUsersDao.updateById(imUsersVo);			//增加或扣减用户收益金额
+			if(flag1 && flag2) {
+				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
 			}else {
 				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
 			}
 			
+			//3. 记录用户收益记录情况
+			IncomeHis incomeHis = new IncomeHis();
+			incomeHis.setId(UUIDUtils.create());
+			incomeHis.setPhoneId(userTasklistVo.getPhoneId());
+			incomeHis.setTaskId(userTasklistVo.getTaskId());
+			incomeHis.setLogoUrl(userTasklistVo.getLogoUrl());
+			incomeHis.setTaskName(userTasklistVo.getTaskName());
+			incomeHis.setIncomeTime(cTime);
+			incomeHis.setIncome(userTasklistVo.getIncome());
+			incomeHis.setCreateDate(cTime);
+			incomeHis.setUpdateDate(cTime);
+			incomeHis.setFlag(actionFlag);
+			boolean flag3 = this.incomeHisDao.insert(incomeHis);				//记录用户收益记录情况
+			if(!flag3) {
+				logger.warn("记录用户收益记录失败，请查核。phoneId=" + userTasklistVo.getPhoneId());
+			}
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 			result.setError(ResultCode.CODE_STATE_500, e.getMessage());

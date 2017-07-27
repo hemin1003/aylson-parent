@@ -16,7 +16,6 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.cfdb.search.WithdrawHisSearch;
 import com.aylson.dc.cfdb.service.WithdrawHisService;
 import com.aylson.dc.cfdb.vo.WithdrawHisVo;
-import com.aylson.utils.DateUtil2;
 
 /**
  * 用户提现审核管理

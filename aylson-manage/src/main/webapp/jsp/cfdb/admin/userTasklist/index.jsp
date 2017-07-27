@@ -17,9 +17,13 @@
 								<option value="">全部</option>
 								<option value="1">进行中</option>
 								<option value="2">审核中</option>
-								<option value="3">审核完成</option>
-								<option value="4">审批失败</option>
+								<option value="3">审核成功</option>
+								<option value="4">审核失败</option>
 							</select>
+						</td>
+						<td class="tar" >手机IMEI账户：</td>
+						<td class="tal" >
+							<input class="easyui-textbox" name="phoneIdLike" prompt="模糊查询"/>
 						</td>
 					    <td style="padding-left:20px">
 							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch()">搜索</a>

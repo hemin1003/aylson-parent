@@ -44,6 +44,7 @@
 				<!-- 匹配查询 -->
 				<if test="statusFlag != null">and cfdb_user_tasklist.statusFlag = #{statusFlag}</if>
 				<!-- 模糊查询 -->
+				<if test="phoneIdLike != null and phoneIdLike != ''"> and cfdb_user_tasklist.phoneId like CONCAT('%',#{phoneIdLike},'%') </if>
 			</trim>
 		</where>
 	</sql>
