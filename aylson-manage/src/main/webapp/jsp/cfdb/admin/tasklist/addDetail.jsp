@@ -69,11 +69,11 @@ function download(){
 </script>
 <div align="center" >
 	<div class="easyui-tabs" id="tabActivity" style="width:100%">
-		 <div title="任务详情配置" style="padding:10px;text-align:center">
+		 <div title="广告详情配置" style="padding:10px;text-align:center">
 		 	<form id="taskDetailConfigForm" method="post">
 				<table class="tableForm" style="width:99%;">
 					<tr>
-						<th>任务详情：</th>
+						<th>广告详情描述：</th>
 						<td colspan="3" style="text-align:left">
 							<textarea id="editor_id" style="width:400px;height:240px;">
 									${taskDetailVo.taskDesc}

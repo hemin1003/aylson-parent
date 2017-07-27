@@ -114,7 +114,7 @@
 	//修改
 	function edit(id){
 		win = $("<div></div>").dialog({
-			title:'操作',
+			title:'提现处理',
 			width:450,
 			height:'60%',
 			maximizable:true,
@@ -127,7 +127,17 @@
 					text:'提交',
 				    iconCls:'icon-ok',
 				    handler:function(){
-					    	var statusType = $('#statusType').combobox('getValue');
+				    		var statusTypeOld = $('#statusTypeOld').val();
+				    		var statusType = $('#statusType').combobox('getValue');
+				    		if(statusTypeOld == statusType){
+				    			$.messager.alert('提示','数据未变化','info');
+				    			return;
+				    		}
+				    		if((statusTypeOld == 2 && statusType ==3) || (statusTypeOld == 3 && statusType ==2)){
+				    			$.messager.alert('提示','不能重复审核成功','info');
+				    			return;
+				    		}
+					    
 				    		if(statusType == 1){
 				    			$.messager.alert('提示','提交\'提现状态\'不能为\'处理中\'，请审核或取消','error');
 				    		}else{

@@ -11,7 +11,7 @@ public class Tasklist implements Serializable{
 	private String taskName;		//任务名称
 	private String taskTag;		//任务标签
 	private Integer amount;		//任务剩余数量
-	private String income;		//排序编号
+	private String income;		//任务收益金额
 	private Integer orderNo;		//排序编号
 	private String goUrl;		//跳转url地址
 	private String createDate;	//创建时间
@@ -19,6 +19,7 @@ public class Tasklist implements Serializable{
 	private Integer status;		//任务状态
 	private String createdBy;	//创建人
 	private String updatedBy;	//更新人
+	private String taskValue;	//任务实际金额
 	
 	public String getTaskId() {
 		return taskId;
@@ -97,5 +98,11 @@ public class Tasklist implements Serializable{
 	}
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+	public String getTaskValue() {
+		return taskValue;
+	}
+	public void setTaskValue(String taskValue) {
+		this.taskValue = taskValue;
 	}
 }

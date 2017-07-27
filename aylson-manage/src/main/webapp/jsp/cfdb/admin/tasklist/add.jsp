@@ -31,11 +31,11 @@ text-align:left!important;
 </style>
 <div align="center" >
 	<div class="easyui-tabs" id="tabActivity" style="width:100%">
-		 <div title="任务配置" style="padding:10px;text-align:center">
+		 <div title="广告配置" style="padding:10px;text-align:center">
 		 	<form id="tasklistConfigForm" method="post">
 				<table class="tableForm" style="width:99%;">
 					<tr>
-						<th>任务名称：</th>
+						<th>广告名称：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="taskName" value="${tasklistVo.taskName}" data-options="required:true"
 								class="easyui-textbox"
@@ -45,7 +45,7 @@ text-align:left!important;
 					<tr>
 						<th>
 							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-large-picture',size:'large',iconAlign:'top'" 
-								onclick="uploadImg('img','logoUrl','yfax-test')" id="uploadImg" style="margin-bottom:10px;">上传任务Logo图</a>
+								onclick="uploadImg('img','logoUrl','yfax-test')" id="uploadImg" style="margin-bottom:10px;">上传广告Logo图</a>
 						</th>
 						<td colspan="3" style="text-align:left">
 							<div style="width:240px;height:120px">
@@ -56,7 +56,7 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th>任务标签：</th>
+						<th>广告标签：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="taskTag" value="${tasklistVo.taskTag}"
 								class="easyui-textbox" data-options="required:true"
@@ -64,9 +64,17 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th>任务剩余数量：</th>
+						<th>剩余数量：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="amount" value="${tasklistVo.amount}"
+								class="easyui-numberbox" data-options="required:true"
+								style="width:95%; text-align:left; "/>
+						</td>
+					</tr>
+					<tr>
+						<th>平台金额：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="taskValue" value="${tasklistVo.taskValue}"
 								class="easyui-numberbox" data-options="required:true"
 								style="width:95%; text-align:left; "/>
 						</td>

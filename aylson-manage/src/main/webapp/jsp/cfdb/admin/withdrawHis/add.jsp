@@ -102,6 +102,7 @@ text-align:left!important;
 				<input name="id" type="hidden" value="${withdrawHisVo.id}"/>
 				<input name="status" id="status" value="${withdrawHisVo.status}" type="hidden"/>
 				<input name="withdrawType" value="${withdrawHisVo.withdrawType}" type="hidden"/>
+				<input name="statusTypeOld" id="statusTypeOld" value="${withdrawHisVo.statusType}" type="hidden"/>
 				
 			</form>
 		</div>

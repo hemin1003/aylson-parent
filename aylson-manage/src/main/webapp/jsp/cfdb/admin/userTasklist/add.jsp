@@ -31,7 +31,7 @@ text-align:left!important;
 </style>
 <div align="center" >
 	<div class="easyui-tabs" id="tabActivity" style="width:100%">
-		 <div title="审批操作" style="padding:10px;text-align:center">
+		 <div title="广告任务审批" style="padding:10px;text-align:center">
 		 	<form id="userTasklistConfigForm" method="post">
 				<table class="tableForm" style="width:99%;">
 					<tr>
@@ -43,7 +43,7 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th>任务名称：</th>
+						<th>广告名称：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="taskName" value="${userTasklistVo.taskName}"
 								class="easyui-textbox"
@@ -51,7 +51,7 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th>任务标签：</th>
+						<th>广告标签：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="taskTag" value="${userTasklistVo.taskTag}"
 								class="easyui-textbox"
@@ -59,7 +59,7 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th>任务收益金额：</th>
+						<th>用户收益金额：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="income" value="${userTasklistVo.income}"
 								class="easyui-textbox"
@@ -91,7 +91,7 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th><font color="red">*</font>任务状态：</th>
+						<th><font color="red">*</font>广告任务状态：</th>
 						<td colspan="3" style="text-align:left">
 							<select id="statusFlag" name="statusFlag" class="easyui-combobox" value="${userTasklistVo.statusFlag}" 
 								data-options=" 
@@ -110,6 +110,8 @@ text-align:left!important;
 				<input name="taskId" type="hidden" value="${userTasklistVo.taskId}"/>
 				<input name="logoUrl" type="hidden" value="${userTasklistVo.logoUrl}"/>
 				<input name="status" id="status" value="${userTasklistVo.status}" type="hidden"/>
+				<input name="statusFlagOld" id="statusFlagOld" type="hidden" value="${userTasklistVo.statusFlag}"/>
+				
 			</form>
 		</div>
 	</div> 

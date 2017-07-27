@@ -16,6 +16,7 @@
 		<result column="status" property="status" jdbcType="INTEGER" />
 		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
 		<result column="updatedBy" property="updatedBy" jdbcType="VARCHAR" />
+		<result column="taskValue" property="taskValue" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="DB_Column_List">
@@ -31,13 +32,15 @@
 		cfdb_tasklist.updateDate,
 		cfdb_tasklist.status,
 		cfdb_tasklist.createdBy,
-		cfdb_tasklist.updatedBy
+		cfdb_tasklist.updatedBy,
+		cfdb_tasklist.taskValue
 	</sql>
 
 	<sql id="Where_Condition">
 		<where>
 			<trim prefixOverrides="and">
 				<!-- 匹配查询 -->
+				<if test="status != null">and cfdb_tasklist.status = #{status}</if>
 				<!-- 模糊查询 -->
 				<if test="taskNameLike != null and taskNameLike != ''"> and cfdb_tasklist.taskName like CONCAT('%',#{taskNameLike},'%') </if>
 			</trim>
@@ -89,6 +92,7 @@
 		  <if test="createDate != null" > createDate, </if>
 		  <if test="createdBy != null" > createdBy, </if>
 		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="taskValue != null" > taskValue, </if>
 		</trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
 		  <if test="taskId != null" > #{taskId}, </if>
@@ -102,6 +106,7 @@
 		  <if test="createDate != null" > #{createDate}, </if>
 		  <if test="createdBy != null" > #{createdBy}, </if>
 		  <if test="updateDate != null" > null, </if>
+		  <if test="taskValue != null" > #{taskValue}, </if>
         </trim>
 	</insert>
 	
@@ -120,6 +125,7 @@
 			<if test="status != null"> status = #{status}, </if>
 			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="taskValue != null"> taskValue = #{taskValue}, </if>
 		</set>
 		where taskId = #{taskId} 
 	</update>

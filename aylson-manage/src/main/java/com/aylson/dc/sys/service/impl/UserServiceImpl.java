@@ -32,31 +32,26 @@ public class UserServiceImpl extends BaseServiceImpl<User,UserSearch> implements
 
 	@Override
 	public List<UserVo> getSyncGridTree(List<UserVo> list, Integer parentId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Result addRegisterUser(UserVo userVo) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Boolean batchAddRoleUserByType(Integer userId, String companyTypeIds) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Result addChildAccount(UserVo userVo, SessionInfo sessionInfo) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Result commonValid(UserVo userVo) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

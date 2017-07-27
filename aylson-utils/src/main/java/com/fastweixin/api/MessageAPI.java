@@ -77,7 +77,7 @@ public class MessageAPI extends BaseAPI {
             image.put("media_id", msg.getMediaId());
             params.put("image", image);
         }else if(message instanceof VideoMsg){
-            // TODO 此处方法特别
+            
         }
         BaseResponse response = executePost(url, JSONUtil.toJson(params));
         String resultJson = isSuccess(response.getErrcode()) ? response.getErrmsg() : response.toJsonString();
@@ -129,7 +129,7 @@ public class MessageAPI extends BaseAPI {
             image.put("media_id", msg.getMediaId());
             params.put("image", image);
         }else if(message instanceof VideoMsg){
-            // TODO 此处方法特别
+            
         }
         BaseResponse response = executePost(url, JSONUtil.toJson(params));
         String resultJson = isSuccess(response.getErrcode()) ? response.getErrmsg() : response.toJsonString();

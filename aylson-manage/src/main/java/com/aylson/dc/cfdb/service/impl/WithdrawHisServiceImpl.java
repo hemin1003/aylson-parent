@@ -55,13 +55,13 @@ public class WithdrawHisServiceImpl extends BaseServiceImpl<WithdrawHis, Withdra
 				imUsersVo.setUpdateDate(cTime);
 				//2=支付成功；3=充值成功；；
 				if(withdrawHisVo.getStatusType() == 2 || withdrawHisVo.getStatusType() == 3) {
-					imUsersVo.setBalance(balance+earn);
-					logger.info("用户提现成功后余额=" + (balance+earn) + "。balance=" + balance + ", earn=" + earn);
+					imUsersVo.setBalance(balance-earn);
+					logger.info("用户提现成功，扣减后余额=" + (balance-earn) + "。balance=" + balance + ", earn=" + earn);
 					
 				//4=失败
 				}else if(withdrawHisVo.getStatusType() == 4) {
-					imUsersVo.setBalance(balance-earn);
-					logger.info("用户提现失败后余额=" + (balance-earn) + "。balance=" + balance + ", earn=" + earn);
+					imUsersVo.setBalance(balance+earn);
+					logger.info("用户提现失败，回滚后余额=" + (balance+earn) + "。balance=" + balance + ", earn=" + earn);
 					
 				}
 				boolean flag2 = this.imUsersDao.updateById(imUsersVo);

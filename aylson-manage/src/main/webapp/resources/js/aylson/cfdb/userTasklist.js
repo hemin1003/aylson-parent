@@ -43,19 +43,19 @@
 				width : 120,
 				sortable:true
 			}, {
-				title : '任务名称',
+				title : '广告名称',
 				field : 'taskName',
 				align : 'center',
 				width : 120,
 				sortable:true
 			}, {
-				title : '任务标签',
+				title : '广告标签',
 				field : 'taskTag',
 				align : 'center',
 				width : 120,
 				sortable:true
 			}, {
-				title : '任务收益金额',
+				title : '用户收益金额',
 				field : 'income',
 				align : 'center',
 				width : 80,
@@ -69,7 +69,7 @@
 //				sortable:true
 //			}, 
 			{
-				title : '用户抢购任务时间',
+				title : '用户抢购时间',
 				field : 'createDate',
 				align : 'center',
 				width : 120,
@@ -81,7 +81,7 @@
 					return value;
 				}
 			}, {
-				title : '任务状态',
+				title : '广告任务状态',
 				field : 'status',
 				align : 'center',
 				width : 80,
@@ -134,7 +134,12 @@
 					text:'提交',
 				    iconCls:'icon-ok',
 				    handler:function(){
+				    		var statusFlagOld = $('#statusFlagOld').val();
 				    		var statusFlag = $('#statusFlag').combobox('getValue');
+				    		if(statusFlagOld == statusFlag){
+				    			$.messager.alert('提示','数据未变化','info');
+				    			return;
+				    		}
 				    		if(statusFlag == 2){
 				    			$.messager.alert('提示','提交\'任务状态\'不能为\'审核中\'，请审核或取消','error');
 				    		}else{

@@ -36,7 +36,7 @@
 					var handleHtml = '';
 					if(row.status == 2){
 						handleHtml += '<a href="javascript:changeStatus(\'' + row.taskId + '\',1)">下线</a>&nbsp;';
-						handleHtml += '<a href="javascript:detailQuery(\'' + row.taskId + '\')">详情</a>&nbsp;';
+						handleHtml += '<a href="javascript:detailQuery(\'' + row.taskId + '\')">查看详情</a>&nbsp;';
 					}else{
 						handleHtml += '<a href="javascript:changeStatus(\'' + row.taskId + '\',2)">上线</a>&nbsp;';
 						handleHtml += '<a href="javascript:edit(\'' + row.taskId + '\')">修改</a>&nbsp;';
@@ -47,7 +47,7 @@
 					return handleHtml;
 				}
 			}, {
-				title : '任务状态',
+				title : '广告状态',
 				field : 'status',
 				align : 'center',
 				width : 60,
@@ -60,14 +60,14 @@
 					}
 				}
 			}, {
-				title : '任务名称',
+				title : '广告任务名称',
 				field : 'taskName',
 				align : 'center',
 				width : 120,
 				sortable:true
 			}, 
 			{
-				title : '任务Logo',
+				title : '广告Logo',
 				field : 'logoUrl',
 				align : 'center',
 				width : 80,
@@ -81,7 +81,7 @@
 				}
 			}, 
 			{
-				title : '任务标签',
+				title : '广告标签',
 				field : 'taskTag',
 				align : 'center',
 				width : 120,
@@ -94,7 +94,7 @@
 				sortable:true
 			}, {
 				title : '平台金额',
-				field : 'income',
+				field : 'taskValue',
 				align : 'center',
 				width : 80,
 				sortable:true
@@ -108,13 +108,13 @@
 				title : '排序编号',
 				field : 'orderNo',
 				align : 'center',
-				width : 80,
+				width : 60,
 				sortable:true
 			}, {
 				title : '跳转url地址',
 				field : 'goUrl',
 				align : 'center',
-				width : 150,
+				width : 70,
 				sortable:true,
 				formatter:function(value,row,index){
 					return '<a href="javascript:window.open(\'' + value + '\',\'_blank\')">查看</a>&nbsp;';
@@ -154,8 +154,8 @@
 		var win;
 		win = $("<div></div>").dialog({
 			title:'新增',
-			width:450,
-			height:'75%',
+			width:480,
+			height:'80%',
 			modal:true,
 			href:projectName+'/cfdb/tasklist/admin/toAdd',
 			onClose:function(){
@@ -194,8 +194,8 @@
 	function edit(taskId){
 		win = $("<div></div>").dialog({
 			title:'修改',
-			width:450,
-			height:'75%',
+			width:480,
+			height:'80%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/tasklist/admin/toEdit?taskId='+taskId,
@@ -299,7 +299,7 @@
 	//详情查看
 	function detailQuery(taskId){
 		win = $("<div></div>").dialog({
-			title:'查看详情',
+			title:'仅查看（<font color=blue>如需修改，请先进行任务下线操作</font>）',
 			width:800,
 			height:'85%',
 			maximizable:true,

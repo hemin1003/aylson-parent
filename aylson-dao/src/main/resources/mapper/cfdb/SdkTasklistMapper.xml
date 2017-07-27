@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.cfdb.po.SdkTasklist">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.SdkTasklistVo">
+		<id column="adid" property="adid" jdbcType="VARCHAR" />
+		<id column="cid" property="cid" jdbcType="VARCHAR" />
+		<id column="intro" property="intro" jdbcType="VARCHAR" />
+		<id column="url" property="url" jdbcType="VARCHAR" />
+		<id column="icon" property="icon" jdbcType="VARCHAR" />
+		<id column="psize" property="psize" jdbcType="VARCHAR" />
+		<id column="title" property="title" jdbcType="VARCHAR" />
+		<id column="text1" property="text1" jdbcType="VARCHAR" />
+		<id column="text2" property="text2" jdbcType="VARCHAR" />
+		<id column="android_url" property="android_url" jdbcType="VARCHAR" />
+		<id column="active_time" property="active_time" jdbcType="VARCHAR" />
+		<id column="runtime" property="runtime" jdbcType="VARCHAR" />
+		<id column="curr_note" property="curr_note" jdbcType="VARCHAR" />
+		<id column="active_num" property="active_num" jdbcType="VARCHAR" />
+		<id column="score" property="score" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		cfdb_sdk_tasklist.adid,
+		cfdb_sdk_tasklist.cid,
+		cfdb_sdk_tasklist.intro,
+		cfdb_sdk_tasklist.url,
+		cfdb_sdk_tasklist.icon,
+		cfdb_sdk_tasklist.psize,
+		cfdb_sdk_tasklist.title,
+		cfdb_sdk_tasklist.text1,
+		cfdb_sdk_tasklist.text2,
+		cfdb_sdk_tasklist.android_url,
+		cfdb_sdk_tasklist.active_time,
+		cfdb_sdk_tasklist.runtime,
+		cfdb_sdk_tasklist.curr_note,
+		cfdb_sdk_tasklist.active_num,
+		cfdb_sdk_tasklist.score,
+		cfdb_sdk_tasklist.createDate,
+		cfdb_sdk_tasklist.updateDate
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+				<if test="titleLike != null and titleLike != ''"> and cfdb_sdk_tasklist.title like CONCAT('%',#{titleLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(adid) from cfdb_sdk_tasklist
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_sdk_tasklist
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by cfdb_sdk_tasklist.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_sdk_tasklist
+		where adid = #{adid}
+	</select>
+	
+</mapper>

@@ -1,6 +1,5 @@
 /**   
  * @Title: ResultCode.java 
- * @Description: TODO
  * @date 2014年9月19日 上午11:19:06 
  * @version V1.0   
  */
