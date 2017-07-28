@@ -27,7 +27,7 @@
 				title : '手机标识码',
 				field : 'phoneId',
 				align : 'center',
-				width : 220,
+				width : 120,
 				sortable:true
 			}, {
 				title : '账户余额/元',
@@ -36,7 +36,20 @@
 				width : 150,
 				sortable:true,
 				formatter:function(value,row,index){
-					return value+".00";
+					if(value){
+						return value+".00";
+					}
+				}
+			}, {
+				title : '累计收入/元',
+				field : 'totalIncome',
+				align : 'center',
+				width : 150,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value){
+						return value+".00";
+					}
 				}
 			}, {
 				title : '注册时间',

@@ -61,16 +61,21 @@
 				width : 80,
 				sortable:true
 			}, 
-//			{
-//				title : '跳转url地址',
-//				field : 'goUrl',
-//				align : 'center',
-//				width : 120,
-//				sortable:true
-//			}, 
 			{
 				title : '用户抢购时间',
 				field : 'createDate',
+				align : 'center',
+				width : 120,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value){
+						return value.substring(0,19);
+					}
+					return value;
+				}
+			}, {
+				title : '提交审核时间',
+				field : 'updateDate',
 				align : 'center',
 				width : 120,
 				sortable:true,
@@ -85,30 +90,31 @@
 				field : 'status',
 				align : 'center',
 				width : 80,
-				sortable:true
-			}, {
-				title : '审批时间',
-				field : 'updateDate',
-				align : 'center',
-				width : 120,
 				sortable:true,
 				formatter:function(value,row,index){
-					if(value){
-						return value.substring(0,19);
+					if(row.statusFlag == 3){
+						return "<font color=green>" + value + "</font>";
+					}else if(row.statusFlag == 4){
+						return "<font color=red>" + value + "</font>";
 					}
 					return value;
 				}
 			}, {
-				title : '是否查看过',
+				title : '审核完成时间',
+				field : 'proveDate',
+				align : 'center',
+				width : 120
+			}, {
+				title : '是否被用户查看过',
 				field : 'isChecked',
 				align : 'center',
-				width : 80,
+				width : 110,
 				sortable:true,
 				formatter:function(value,row,index){
-					if(value == 1){
-						return "否";
-					}else if(value == 2){
+					if(value == 2){
 						return "是";
+					}else if(value == 1){
+						return "否";
 					}
 				}
 			}

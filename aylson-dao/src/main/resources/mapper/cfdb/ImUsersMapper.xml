@@ -5,13 +5,15 @@
 	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.ImUsersVo">
 		<result column="phoneId" property="phoneId" jdbcType="VARCHAR" />
 		<result column="balance" property="balance" jdbcType="VARCHAR" />
+		<result column="totalIncome" property="totalIncome" jdbcType="VARCHAR" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="DB_Column_List">
 		cfdb_users.phoneId,
-		cfdb_users.balance, 
+		cfdb_users.balance,
+		cfdb_users.totalIncome,
 		cfdb_users.createDate,
 		cfdb_users.updateDate
 	</sql>
@@ -62,9 +64,19 @@
 			cfdb_users 
 		<set>
 			<if test="balance != null"> balance = #{balance}, </if>
+			<if test="totalIncome != null"> totalIncome = #{totalIncome}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
 		</set>
 		where phoneId = #{phoneId} 
 	</update>
+	
+	 <!-- 增加与扣减的差，即为今日收入 -->
+    <select id="selectUsersTodayIncome" parameterType="com.aylson.dc.cfdb.po.ImUsers" 
+    			resultType="java.lang.String">
+		select (select sum(income) from cfdb_income_his where phoneId=#{phoneId} 
+		and date_format(incomeTime,'%Y-%m-%d')=#{currentTime} and flag=1) - 
+		(select sum(income) from cfdb_income_his where phoneId=#{phoneId} 
+		and date_format(incomeTime,'%Y-%m-%d')=#{currentTime} and flag=2) as result
+	</select>
 	
 </mapper>

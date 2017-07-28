@@ -98,6 +98,11 @@ text-align:left!important;
 							</select>
 						</td>
 					</tr>
+					<tr>
+						<td colspan=4>
+							<font color=blue size=1>说明：当审核失败时，系统会自动回款，不能再审核</font>
+						</td>
+					</tr>
 				</table>
 				<input name="id" type="hidden" value="${withdrawHisVo.id}"/>
 				<input name="status" id="status" value="${withdrawHisVo.status}" type="hidden"/>

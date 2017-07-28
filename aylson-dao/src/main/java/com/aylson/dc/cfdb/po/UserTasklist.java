@@ -18,9 +18,11 @@ public class UserTasklist implements Serializable{
 	private String goUrl;		//跳转url地址
 	private String status;		//任务状态
 	private Integer statusFlag;	//任务状态标识
+	private String createDate;	//用户抢购时间
+	private String updateDate;	//提交审核时间
 	private Integer isChecked;	//是否查看过
-	private String createDate;	//创建时间
-	private String updateDate;	//更新时间
+	private String proveDate;	//审核完成时间
+	private Integer isFirstSuc;	//是否有过成功审核标识，1=否；2=是
 	
 	public String getId() {
 		return id;
@@ -111,5 +113,17 @@ public class UserTasklist implements Serializable{
 	}
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
+	}
+	public String getProveDate() {
+		return proveDate;
+	}
+	public void setProveDate(String proveDate) {
+		this.proveDate = proveDate;
+	}
+	public Integer getIsFirstSuc() {
+		return isFirstSuc;
+	}
+	public void setIsFirstSuc(Integer isFirstSuc) {
+		this.isFirstSuc = isFirstSuc;
 	}
 }

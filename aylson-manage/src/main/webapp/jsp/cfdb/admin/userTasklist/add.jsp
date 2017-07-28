@@ -111,6 +111,8 @@ text-align:left!important;
 				<input name="logoUrl" type="hidden" value="${userTasklistVo.logoUrl}"/>
 				<input name="status" id="status" value="${userTasklistVo.status}" type="hidden"/>
 				<input name="statusFlagOld" id="statusFlagOld" type="hidden" value="${userTasklistVo.statusFlag}"/>
+				<input name="proveDate" type="hidden" value="${userTasklistVo.proveDate}"/>
+				<input name="isFirstSuc" type="hidden" value="${userTasklistVo.isFirstSuc}"/>
 				
 			</form>
 		</div>

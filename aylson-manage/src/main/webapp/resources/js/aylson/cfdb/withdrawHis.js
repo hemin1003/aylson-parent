@@ -27,7 +27,7 @@
 				field : 'opt',
 				title : '操作选项',
 				align : 'center',
-				width : 100,
+				width : 80,
 				formatter:function(value,row,index){
 					var handleHtml = '';
 					handleHtml += '<a href="javascript:edit(\'' + row.id + '\')">处理</a>&nbsp;';
@@ -49,19 +49,19 @@
 				title : '姓名',
 				field : 'name',
 				align : 'center',
-				width : 80,
+				width : 90,
 				sortable:true
 			}, {
 				title : '账户名',
 				field : 'account',
 				align : 'center',
-				width : 80,
+				width : 150,
 				sortable:true
 			}, {
 				title : '提现金额',
 				field : 'income',
 				align : 'center',
-				width : 80,
+				width : 70,
 				sortable:true
 			}, {
 				title : '提现发起时间',
@@ -80,32 +80,42 @@
 				field : 'status',
 				align : 'center',
 				sortable:true,
-				width : 80
-			}, {
-				title : '创建时间',
-				field : 'createDate',
-				align : 'center',
-				width : 120,
-				sortable:true,
+				width : 80,
 				formatter:function(value,row,index){
-					if(value){
-						return value.substring(0,19);
-					}
-					return value;
-				}
-			}, {
-				title : '更新时间',
-				field : 'updateDate',
-				align : 'center',
-				width : 120,
-				sortable:true,
-				formatter:function(value,row,index){
-					if(value){
-						return value.substring(0,19);
+					if(row.statusType == 2 || row.statusType == 3){
+						return "<font color=green>成功</font>";
+					}else if(row.statusType == 4){
+						return "<font color=red>失败</font>";
 					}
 					return value;
 				}
 			}
+//			, {
+//				title : '创建时间',
+//				field : 'createDate',
+//				align : 'center',
+//				width : 120,
+//				sortable:true,
+//				formatter:function(value,row,index){
+//					if(value){
+//						return value.substring(0,19);
+//					}
+//					return value;
+//				}
+//			}
+//			, {
+//				title : '更新时间',
+//				field : 'updateDate',
+//				align : 'center',
+//				width : 120,
+//				sortable:true,
+//				formatter:function(value,row,index){
+//					if(value){
+//						return value.substring(0,19);
+//					}
+//					return value;
+//				}
+//			}
 			] ]
 		});
 		
@@ -116,7 +126,7 @@
 		win = $("<div></div>").dialog({
 			title:'提现处理',
 			width:450,
-			height:'60%',
+			height:'65%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/withdrawHis/admin/toEdit?id='+id,
@@ -138,14 +148,14 @@
 				    			return;
 				    		}
 				    		if(statusTypeOld == 4){
-				    			$.messager.alert('提示','已审核失败，系统自动回款了，不能再审核成功！<font color=blue size=1>APP用户重新发起提现操作即可</font>','info');
+				    			$.messager.alert('提示','已审核失败，系统自动回款了，不能再审核！<font color=blue>APP用户重新发起提现操作即可</font>','info');
 				    			return;
 				    		}
 					    
 				    		if(statusType == 1){
 				    			$.messager.alert('提示','提交\'提现状态\'不能为\'处理中\'，请审核或取消','error');
 				    		}else{
-				    			$.messager.confirm("提示","确定更新该记录吗？",function(r){
+				    			$.messager.confirm("提示","确定更新该记录吗?",function(r){
 									if(r){
 										$("#withdrawHisConfigForm").form('submit',{
 									    		 type:'POST',

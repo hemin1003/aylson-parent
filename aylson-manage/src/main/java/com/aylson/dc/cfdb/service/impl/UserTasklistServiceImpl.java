@@ -48,28 +48,36 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 		try{
 			//1. 更新任务审批状态
 			userTasklistVo.setIsChecked(1);
-			userTasklistVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
+			userTasklistVo.setUpdateDate(cTime);
+			userTasklistVo.setProveDate(cTime);
 			
 			//2. 如果审批完成，则需要增加或扣减用户收益金额
 			ImUsersVo imUsersVo = this.imUsersDao.selectById(userTasklistVo.getPhoneId());
 			//更新数据
 			int balance = Integer.valueOf(imUsersVo.getBalance());	//原已有余额
+			int totalIncome = Integer.valueOf(imUsersVo.getTotalIncome());	//原累积收入余额
 			int earn = Integer.valueOf(userTasklistVo.getIncome());	//任务收益金额
 			imUsersVo.setUpdateDate(cTime);
-			//操作标识位
+			//操作标识位，1=加钱，2=扣钱
 			int actionFlag = 0;
-			//审核完成
+			//审核完成，增加用户金额
 			if(userTasklistVo.getStatusFlag() == 3) {
 				actionFlag = 1;
 				imUsersVo.setBalance(String.valueOf(balance+earn));
+				imUsersVo.setTotalIncome(String.valueOf(totalIncome+earn));
 				logger.info("用户加钱后余额=" + (balance+earn) + "。balance=" + balance + ", earn=" + earn);
+				userTasklistVo.setIsFirstSuc(2);		//成功审核标识
 				
-			//审核失败
+			//审核失败，且有成功审核后才扣减用户金额
 			}else if(userTasklistVo.getStatusFlag() == 4) {
-				actionFlag = 2;
-				imUsersVo.setBalance(String.valueOf(balance-earn));
-				logger.info("用户扣钱后余额=" + (balance-earn) + "。balance=" + balance + ", earn=" + earn);
-				
+				if(null!=userTasklistVo.getIsFirstSuc() && userTasklistVo.getIsFirstSuc()==2) {
+					actionFlag = 2;
+					imUsersVo.setBalance(String.valueOf(balance-earn));
+					imUsersVo.setTotalIncome(String.valueOf(totalIncome-earn));
+					logger.info("用户扣钱后余额=" + (balance-earn) + "。balance=" + balance + ", earn=" + earn);
+				}else {
+					actionFlag = 3;	//未扣钱，直接审批失败
+				}
 			}
 			
 			boolean flag1 = this.userTasklistDao.updateById(userTasklistVo);	//更新任务审批状态
@@ -80,23 +88,26 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
 			}
 			
-			//3. 记录用户收益记录情况
-			IncomeHis incomeHis = new IncomeHis();
-			incomeHis.setId(UUIDUtils.create());
-			incomeHis.setPhoneId(userTasklistVo.getPhoneId());
-			incomeHis.setTaskId(userTasklistVo.getTaskId());
-			incomeHis.setLogoUrl(userTasklistVo.getLogoUrl());
-			incomeHis.setTaskName(userTasklistVo.getTaskName());
-			incomeHis.setIncomeTime(cTime);
-			incomeHis.setIncome(userTasklistVo.getIncome());
-			incomeHis.setCreateDate(cTime);
-			incomeHis.setUpdateDate(cTime);
-			incomeHis.setFlag(actionFlag);	//1=加钱；2=扣钱
-			incomeHis.setChannel(1);			//1=后台系统广告；2=SDK平台广告
-			boolean flag3 = this.incomeHisDao.insert(incomeHis);				//记录用户收益记录情况
-			if(!flag3) {
-				logger.warn("记录用户收益记录失败，请查核。phoneId=" + userTasklistVo.getPhoneId() 
-						+ ", taskId=" + userTasklistVo.getTaskId());
+			//反生加扣款，才记录收益数据
+			if(actionFlag != 3) {
+				//3. 记录用户收益记录情况
+				IncomeHis incomeHis = new IncomeHis();
+				incomeHis.setId(UUIDUtils.create());
+				incomeHis.setPhoneId(userTasklistVo.getPhoneId());
+				incomeHis.setTaskId(userTasklistVo.getTaskId());
+				incomeHis.setLogoUrl(userTasklistVo.getLogoUrl());
+				incomeHis.setTaskName(userTasklistVo.getTaskName());
+				incomeHis.setIncomeTime(cTime);
+				incomeHis.setIncome(userTasklistVo.getIncome());
+				incomeHis.setCreateDate(cTime);
+				incomeHis.setUpdateDate(cTime);
+				incomeHis.setFlag(actionFlag);	//1=加钱；2=扣钱
+				incomeHis.setChannel(1);			//1=后台系统广告；2=SDK平台广告
+				boolean flag3 = this.incomeHisDao.insert(incomeHis);				//记录用户收益记录情况
+				if(!flag3) {
+					logger.warn("记录用户收益记录失败，请查核。phoneId=" + userTasklistVo.getPhoneId() 
+							+ ", taskId=" + userTasklistVo.getTaskId());
+				}
 			}
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);

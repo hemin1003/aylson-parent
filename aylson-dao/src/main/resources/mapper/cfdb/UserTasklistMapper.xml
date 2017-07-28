@@ -15,9 +15,11 @@
 		<result column="goUrl" property="goUrl" jdbcType="VARCHAR" />
 		<result column="status" property="status" jdbcType="VARCHAR" />
 		<result column="statusFlag" property="statusFlag" jdbcType="INTEGER" />
-		<result column="isChecked" property="isChecked" jdbcType="INTEGER" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="isChecked" property="isChecked" jdbcType="INTEGER" />
+		<result column="proveDate" property="proveDate" jdbcType="VARCHAR" />
+		<result column="isFirstSuc" property="isFirstSuc" jdbcType="INTEGER" />
 	</resultMap>
 
 	<sql id="DB_Column_List">
@@ -33,9 +35,11 @@
 		cfdb_user_tasklist.goUrl,
 		cfdb_user_tasklist.status,
 		cfdb_user_tasklist.statusFlag,
-		cfdb_user_tasklist.isChecked,
 		cfdb_user_tasklist.createDate,
-		cfdb_user_tasklist.updateDate
+		cfdb_user_tasklist.updateDate,
+		cfdb_user_tasklist.isChecked,
+		cfdb_user_tasklist.proveDate,
+		cfdb_user_tasklist.isFirstSuc
 	</sql>
 
 	<sql id="Where_Condition">
@@ -87,7 +91,8 @@
 			<if test="status != null"> status = #{status}, </if>
 			<if test="statusFlag != null"> statusFlag = #{statusFlag}, </if>
 			<if test="isChecked != null"> isChecked = #{isChecked}, </if>
-			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="proveDate != null"> proveDate = #{proveDate}, </if>
+			<if test="isFirstSuc != null"> isFirstSuc = #{isFirstSuc}, </if>
 		</set>
 		where id = #{id} 
 	</update>

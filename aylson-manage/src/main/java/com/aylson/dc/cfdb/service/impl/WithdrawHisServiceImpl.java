@@ -52,7 +52,7 @@ public class WithdrawHisServiceImpl extends BaseServiceImpl<WithdrawHis, Withdra
 			if(withdrawHisVo.getStatusType() == 2 || withdrawHisVo.getStatusType() == 3) {
 				logger.info("用户提现成功，余额=" + (balance));
 				
-			//4=失败
+			//4=失败则回退用户金额
 			}else if(withdrawHisVo.getStatusType() == 4) {
 				int earn = Integer.valueOf(withdrawHisVo.getIncome());	//提现金额
 				imUsersVo.setUpdateDate(cTime);
