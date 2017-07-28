@@ -20,6 +20,7 @@ public class IncomeHis implements Serializable {
 	private String createDate;
 	private String updateDate;
 	private int flag;	//1=加钱；2=扣钱
+	private int channel;		//1=后台系统广告；2=SDK平台广告
 	
 	public String getId() {
 		return id;
@@ -80,5 +81,11 @@ public class IncomeHis implements Serializable {
 	}
 	public void setFlag(int flag) {
 		this.flag = flag;
+	}
+	public int getChannel() {
+		return channel;
+	}
+	public void setChannel(int channel) {
+		this.channel = channel;
 	}
 }

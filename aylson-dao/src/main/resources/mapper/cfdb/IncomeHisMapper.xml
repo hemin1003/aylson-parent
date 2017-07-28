@@ -13,6 +13,7 @@
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
 		<result column="flag" property="flag" jdbcType="INTEGER" />
+		<result column="channel" property="channel" jdbcType="INTEGER" />
 	</resultMap>
 
     <sql id="DB_Column_List">
@@ -25,7 +26,8 @@
 		cfdb_income_his.income,
 		cfdb_income_his.createDate,
 		cfdb_income_his.updateDate,
-		cfdb_income_his.flag
+		cfdb_income_his.flag,
+		cfdb_income_his.channel
 	</sql>
 
 	<sql id="Where_Condition">
@@ -74,6 +76,7 @@
 		  <if test="createDate != null" > createDate, </if>
 		  <if test="updateDate != null" > updateDate, </if>
 		  <if test="flag != null" > flag, </if>
+		  <if test="channel != null" > channel, </if>
 		  
 		</trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -87,6 +90,7 @@
 		  <if test="createDate != null" > #{createDate}, </if>
 		  <if test="updateDate != null" > null, </if>
 		  <if test="flag != null" > #{flag}, </if>
+		  <if test="channel != null" > #{channel}, </if>
 		  
         </trim>
 	</insert>

@@ -91,10 +91,12 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 			incomeHis.setIncome(userTasklistVo.getIncome());
 			incomeHis.setCreateDate(cTime);
 			incomeHis.setUpdateDate(cTime);
-			incomeHis.setFlag(actionFlag);
+			incomeHis.setFlag(actionFlag);	//1=加钱；2=扣钱
+			incomeHis.setChannel(1);			//1=后台系统广告；2=SDK平台广告
 			boolean flag3 = this.incomeHisDao.insert(incomeHis);				//记录用户收益记录情况
 			if(!flag3) {
-				logger.warn("记录用户收益记录失败，请查核。phoneId=" + userTasklistVo.getPhoneId());
+				logger.warn("记录用户收益记录失败，请查核。phoneId=" + userTasklistVo.getPhoneId() 
+						+ ", taskId=" + userTasklistVo.getTaskId());
 			}
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
