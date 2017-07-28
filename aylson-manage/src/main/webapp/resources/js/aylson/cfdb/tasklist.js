@@ -257,7 +257,7 @@
 		win = $("<div></div>").dialog({
 			title:'详情',
 			width:800,
-			height:'85%',
+			height:'95%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/tasklist/admin/toDetail?taskId='+taskId,
@@ -271,6 +271,10 @@
 				     	//处理富文本编辑的内容
 					    	var html = editor.html();
 					    	$("#taskDesc").val(html);
+					    	
+					    	var html2 = editor2.html();
+					    	$("#fields").val(html2);
+					    	
 					    	$("#taskDetailConfigForm").form('submit',{
 					    		 type:'POST',
 					    		 url : projectName+'/cfdb/tasklist/admin/updateDetail',
@@ -301,7 +305,7 @@
 		win = $("<div></div>").dialog({
 			title:'仅查看（<font color=blue>如需修改，请先进行任务下线操作</font>）',
 			width:800,
-			height:'85%',
+			height:'95%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/tasklist/admin/toDetail?taskId='+taskId,

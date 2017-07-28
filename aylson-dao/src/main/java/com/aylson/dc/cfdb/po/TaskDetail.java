@@ -9,6 +9,8 @@ public class TaskDetail implements Serializable{
 	private String taskId;	//任务唯一ID
 	private String taskDesc;	//任务详情
 	private String stepUrl;	//详情步骤图Url
+	private String steps;	//动态步骤图组合字段
+	private String fields;	//动态验证组合字段
 	private String createDate;
 	private String updateDate;
 	private String createdBy;
@@ -55,5 +57,17 @@ public class TaskDetail implements Serializable{
 	}
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+	public String getSteps() {
+		return steps;
+	}
+	public void setSteps(String steps) {
+		this.steps = steps;
+	}
+	public String getFields() {
+		return fields;
+	}
+	public void setFields(String fields) {
+		this.fields = fields;
 	}
 }

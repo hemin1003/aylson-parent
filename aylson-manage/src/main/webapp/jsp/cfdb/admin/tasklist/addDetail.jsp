@@ -43,6 +43,19 @@ function createEditor(){
 				'insertunorderedlist', '|', 'emoticons', 'image', 'link','fullscreen'], 
 				
 	});
+	 
+	window.editor2 = KindEditor.create('#editor_id2',{
+        resizeType:1,      
+        urlType:projectName, // 带有域名的绝对路径
+        allowFileManager : false,
+        allowImageUpload : true,
+        uploadJson : projectName+'/sys/fileHandle/kindeditorUpload?bucket=dc-gift',
+		 items : [
+				'source', '|','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+				'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+				'insertunorderedlist', '|', 'emoticons', 'image', 'link','fullscreen'], 
+					
+	});
 }
 $("#tabActivity").tabs({
 	onSelect:function(title,index){
@@ -75,7 +88,7 @@ function download(){
 					<tr>
 						<th>广告详情描述：</th>
 						<td colspan="3" style="text-align:left">
-							<textarea id="editor_id" style="width:400px;height:240px;">
+							<textarea id="editor_id" style="width:400px;height:180px;">
 									${taskDetailVo.taskDesc}
 							</textarea>
 						</td>
@@ -94,8 +107,17 @@ function download(){
 							<c:if test="${not empty taskDetailVo.stepUrl}"><a href="javascript:download()">查看大图</a></c:if>
 						</td>
 					</tr>
+					<tr>
+						<th>扩展字段：</th>
+						<td colspan="3" style="text-align:left">
+							<textarea id="editor_id2" style="width:400px;height:180px;">
+									${taskDetailVo.fields}
+							</textarea>
+						</td>
+					</tr>
 				</table>
 				<input name="taskDesc" id="taskDesc" type="hidden" value=""/>
+				<input name="fields" id="fields" type="hidden" value=""/>
 				<input name="taskId" type="hidden" value="${taskDetailVo.taskId}"/>
 			</form>
 		</div>
