@@ -23,11 +23,23 @@
 				iconCls : 'icon-reload',
 				handler : reload
 			}],
- 			frozenColumns : [[{ 
+ 			frozenColumns : [[{
+				title : '后台创建时间',
+				field : 'createDate',
+				align : 'center',
+				width : 120,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value){
+						return value.substring(0,19);
+					}
+					return value;
+				}
+			}, { 
 				field : 'opt',
 				title : '操作选项',
 				align : 'center',
-				width : 100,
+				width : 60,
 				formatter:function(value,row,index){
 					var handleHtml = '';
 					handleHtml += '<a href="javascript:edit(\'' + row.adid + '\')">查看详情</a>&nbsp;';
@@ -87,18 +99,6 @@
 				align : 'center',
 				width : 80,
 				sortable:true
-			}, {
-				title : '创建时间',
-				field : 'createDate',
-				align : 'center',
-				width : 120,
-				sortable:true,
-				formatter:function(value,row,index){
-					if(value){
-						return value.substring(0,19);
-					}
-					return value;
-				}
 			}
 //			, {
 //				title : '更新时间',

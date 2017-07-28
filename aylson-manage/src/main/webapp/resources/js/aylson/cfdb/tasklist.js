@@ -54,7 +54,7 @@
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value == 2){
-						return "<font color=blue>上线</font>";
+						return "<font color=green>上线</font>";
 					}else{
 						return "<font color=red>下线</font>";
 					}

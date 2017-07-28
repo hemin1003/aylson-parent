@@ -138,7 +138,7 @@
 				    			return;
 				    		}
 				    		if(statusTypeOld == 4){
-				    			$.messager.alert('提示','已审核失败，不能再审核成功','info');
+				    			$.messager.alert('提示','已审核失败，系统自动回款了，不能再审核成功！<font color=blue size=1>APP用户重新发起提现操作即可</font>','info');
 				    			return;
 				    		}
 					    
