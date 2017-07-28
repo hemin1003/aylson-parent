@@ -15,6 +15,7 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.cfdb.search.IncomeSetSearch;
 import com.aylson.dc.cfdb.service.IncomeSetService;
 import com.aylson.dc.cfdb.vo.IncomeSetVo;
+import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
 import com.aylson.utils.UUIDUtils;
 
@@ -81,8 +82,10 @@ public class IncomeSetController extends BaseController {
 	public Result add(IncomeSetVo incomeSetVo) {
 		Result result = new Result();
 		try{
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
 			incomeSetVo.setId(UUIDUtils.create());
 			String cTime = DateUtil2.getCurrentLongDateTime();
+			incomeSetVo.setCreatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			incomeSetVo.setCreateDate(cTime);
 			incomeSetVo.setUpdateDate(cTime);
 			Boolean flag = this.incomeSetService.add(incomeSetVo);
@@ -122,6 +125,8 @@ public class IncomeSetController extends BaseController {
 	public Result update(IncomeSetVo incomeSetVo) {
 		Result result = new Result();
 		try {
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+			incomeSetVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			incomeSetVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
 			Boolean flag = this.incomeSetService.edit(incomeSetVo);
 			if(flag){

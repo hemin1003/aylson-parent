@@ -54,13 +54,13 @@
 				title : '版本描述',
 				field : 'vdesc',
 				align : 'center',
-				width : 260,
+				width : 150,
 				sortable:true
 			}, {
 				title : '版本状态',
 				field : 'status',
 				align : 'center',
-				width : 260,
+				width : 80,
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value == 2){
@@ -82,18 +82,18 @@
 					return value;
 				}
 			}
-//			, {
-//				title : '更新时间',
-//				field : 'updateDate',
-//				align : 'center',
-//				width : 150,
-//				formatter:function(value,row,index){
-//					if(value){
-//						return value.substring(0,19);
-//					}
-//					return value;
-//				}
-//			}
+			, {
+				title : '更新时间',
+				field : 'updateDate',
+				align : 'center',
+				width : 120,
+				formatter:function(value,row,index){
+					if(value){
+						return value.substring(0,19);
+					}
+					return value;
+				}
+			}
 			] ]
 		});
 		

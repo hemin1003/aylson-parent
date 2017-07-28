@@ -9,6 +9,8 @@
 		<result column="orderNo" property="orderNo" jdbcType="INTEGER" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
+		<result column="updatedBy" property="updatedBy" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="DB_Column_List">
@@ -17,7 +19,9 @@
 		cfdb_app_banner.url,
 		cfdb_app_banner.orderNo,
 		cfdb_app_banner.createDate,
-		cfdb_app_banner.updateDate
+		cfdb_app_banner.updateDate,
+		cfdb_app_banner.createdBy,
+		cfdb_app_banner.updatedBy
 	</sql>
 
 	<sql id="Where_Condition">
@@ -68,6 +72,7 @@
 		  <if test="url != null" > url, </if>
 		  <if test="orderNo != null" > orderNo, </if>
 		  <if test="createDate != null" > createDate, </if>
+		  <if test="createdBy != null" > createdBy, </if>
 		  <if test="updateDate != null" > updateDate, </if>
 		</trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -76,7 +81,8 @@
 		  <if test="url != null" > #{url}, </if>
 		  <if test="orderNo != null" > #{orderNo}, </if>
 		  <if test="createDate != null" > #{createDate}, </if>
-		  <if test="updateDate != null" > #{updateDate}, </if>
+		  <if test="createdBy != null" > #{createdBy}, </if>
+		  <if test="updateDate != null" > null, </if>
         </trim>
 	</insert>
 	
@@ -89,6 +95,7 @@
 			<if test="url != null"> url = #{url}, </if>
 			<if test="orderNo != null"> orderNo = #{orderNo}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
 		</set>
 		where id = #{id} 
 	</update>

@@ -22,7 +22,7 @@ import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
 
 /**
- * 任务配置表
+ * 任务管理
  * @author Minbo
  */
 @Controller

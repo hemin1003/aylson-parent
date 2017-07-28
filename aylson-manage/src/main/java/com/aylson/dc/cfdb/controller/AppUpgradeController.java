@@ -15,11 +15,12 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.cfdb.search.AppUpgradeSearch;
 import com.aylson.dc.cfdb.service.AppUpgradeService;
 import com.aylson.dc.cfdb.vo.AppUpgradeVo;
+import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
 import com.aylson.utils.UUIDUtils;
 
 /**
- * 版本升级配置
+ * APP版本升级管理
  * @author Minbo
  */
 @Controller
@@ -81,8 +82,10 @@ public class AppUpgradeController extends BaseController {
 	public Result add(AppUpgradeVo appUpgradeVo) {
 		Result result = new Result();
 		try{
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
 			appUpgradeVo.setId(UUIDUtils.create());
 			String cTime = DateUtil2.getCurrentLongDateTime();
+			appUpgradeVo.setCreatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			appUpgradeVo.setCreateDate(cTime);
 			appUpgradeVo.setUpdateDate(cTime);
 			Boolean flag = this.appUpgradeService.add(appUpgradeVo);
@@ -122,6 +125,8 @@ public class AppUpgradeController extends BaseController {
 	public Result update(AppUpgradeVo appUpgradeVo) {
 		Result result = new Result();
 		try {
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+			appUpgradeVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			appUpgradeVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
 			Boolean flag = this.appUpgradeService.edit(appUpgradeVo);
 			if(flag){

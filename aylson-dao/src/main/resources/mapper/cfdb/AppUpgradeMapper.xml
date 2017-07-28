@@ -9,6 +9,8 @@
 		<result column="status" property="status" jdbcType="INTEGER" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
+		<result column="updatedBy" property="updatedBy" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="DB_Column_List">
@@ -17,7 +19,9 @@
 		cfdb_app_upgrade.vdesc,
 		cfdb_app_upgrade.status,
 		cfdb_app_upgrade.createDate,
-		cfdb_app_upgrade.updateDate
+		cfdb_app_upgrade.updateDate,
+		cfdb_app_upgrade.createdBy,
+		cfdb_app_upgrade.updatedBy
 	</sql>
 
 	<sql id="Where_Condition">
@@ -69,6 +73,7 @@
 		  <if test="vdesc != null" > vdesc, </if>
 		  <if test="status != null" > status, </if>
 		  <if test="createDate != null" > createDate, </if>
+		  <if test="createdBy != null" > createdBy, </if>
 		  <if test="updateDate != null" > updateDate, </if>
 		</trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -77,7 +82,8 @@
 		  <if test="vdesc != null" > #{vdesc}, </if>
 		  <if test="status != null" > #{status}, </if>
 		  <if test="createDate != null" > #{createDate}, </if>
-		  <if test="updateDate != null" > #{updateDate}, </if>
+		  <if test="createdBy != null" > #{createdBy}, </if>
+		  <if test="updateDate != null" > null, </if>
         </trim>
 	</insert>
 	
@@ -90,6 +96,7 @@
 			<if test="vdesc != null"> vdesc = #{vdesc}, </if>
 			<if test="status != null"> status = #{status}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
 		</set>
 		where id = #{id} 
 	</update>

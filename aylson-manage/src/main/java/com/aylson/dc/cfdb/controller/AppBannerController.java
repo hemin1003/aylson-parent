@@ -15,11 +15,12 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.cfdb.search.AppBannerSearch;
 import com.aylson.dc.cfdb.service.AppBannerService;
 import com.aylson.dc.cfdb.vo.AppBannerVo;
+import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
 import com.aylson.utils.UUIDUtils;
 
 /**
- * APP广告Banner配置
+ * APP广告Banner管理
  * @author Minbo
  */
 @Controller
@@ -81,7 +82,9 @@ public class AppBannerController extends BaseController {
 	public Result add(AppBannerVo appBannerVo) {
 		Result result = new Result();
 		try{
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
 			appBannerVo.setId(UUIDUtils.create());
+			appBannerVo.setCreatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			String cTime = DateUtil2.getCurrentLongDateTime();
 			appBannerVo.setCreateDate(cTime);
 			appBannerVo.setUpdateDate(cTime);
@@ -122,6 +125,8 @@ public class AppBannerController extends BaseController {
 	public Result update(AppBannerVo appBannerVo) {
 		Result result = new Result();
 		try {
+			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
+			appBannerVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
 			appBannerVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
 			Boolean flag = this.appBannerService.edit(appBannerVo);
 			if(flag){

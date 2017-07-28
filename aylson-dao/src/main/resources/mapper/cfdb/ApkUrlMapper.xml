@@ -17,7 +17,9 @@
 		cfdb_apk_url.appName,
 		cfdb_apk_url.apkUrl, 
 		cfdb_apk_url.createDate,
-		cfdb_apk_url.updateDate
+		cfdb_apk_url.updateDate,
+		cfdb_apk_url.createdBy,
+		cfdb_apk_url.updatedBy
 	</sql>
 
 	<sql id="Where_Condition">
