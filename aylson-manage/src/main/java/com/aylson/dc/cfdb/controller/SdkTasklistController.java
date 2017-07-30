@@ -13,10 +13,9 @@ import com.aylson.core.frame.controller.BaseController;
 import com.aylson.dc.cfdb.search.SdkTasklistSearch;
 import com.aylson.dc.cfdb.service.SdkTasklistService;
 import com.aylson.dc.cfdb.vo.SdkTasklistVo;
-import com.aylson.dc.cfdb.vo.TasklistVo;
 
 /**
- * 平台SDK广告配置
+ * SDK平台广告配置
  * @author Minbo
  */
 @Controller
