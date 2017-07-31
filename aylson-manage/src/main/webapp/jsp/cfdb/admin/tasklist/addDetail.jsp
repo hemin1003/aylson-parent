@@ -115,7 +115,7 @@ function preview(){
 		</div>
 	</div> 
 </div>
-<script src="<%=request.getContextPath()%>/resources/plugs/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="<%=request.getContextPath()%>/resources/plugs/ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
