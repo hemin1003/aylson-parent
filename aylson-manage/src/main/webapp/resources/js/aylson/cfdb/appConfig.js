@@ -39,11 +39,17 @@
 					return handleHtml;
 				}
 			}, {
-				title : '广告Logo图Url',
+				title : '启动广告图',
 				field : 'logoUrl',
 				align : 'center',
 				width : 150,
-				sortable:true
+				formatter:function(value,row,index){
+					if(value){
+						var handleHtml = '';
+						handleHtml += '<img src=\'' + value + '\' style="width:70px;height:70px"/>';
+						return handleHtml;
+					}
+				}
 			}, {
 				title : '创建时间',
 				field : 'createDate',

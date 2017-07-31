@@ -35,11 +35,16 @@ text-align:left!important;
 		 	<form id="appConfigConfigForm" method="post">
 				<table class="tableForm" style="width:99%;">
 					<tr>
-						<th>广告图Url：</th>
+						<th>
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-large-picture',size:'large',iconAlign:'top'" 
+								onclick="uploadImg('img','logoUrl','yfax-test')" id="uploadImg" style="margin-bottom:10px;">上传广告图</a>
+						</th>
 						<td colspan="3" style="text-align:left">
-							<input name="logoUrl" value="${appConfigVo.logoUrl}" data-options="required:true"
-								class="easyui-textbox"
-								style="width:95%; text-align:left"/>
+							<div style="width:240px;height:120px">
+								<c:if test="${not empty appConfigVo.logoUrl}"><img id="img" src="${appConfigVo.logoUrl}" style="width:120px;height:120px"/></c:if>
+								<c:if test="${empty appConfigVo.logoUrl }"><img id="img" src="" style="width:120px;height:120px"/></c:if>
+								<input id="logoUrl" name="logoUrl" value="${appConfigVo.logoUrl}" type="hidden"/>
+							</div>
 						</td>
 					</tr>
 				</table>

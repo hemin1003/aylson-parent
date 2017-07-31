@@ -1,12 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Access-Control-Allow-Origin" content="*">
+</head>
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/plugs/kindeditor/kindeditor-4.1.10/themes/default/default.css" />
-<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/plugs/kindeditor/kindeditor-4.1.10/plugins/code/prettify.css" />
-<script charset="utf-8" src="<%=request.getContextPath()%>/resources/plugs/kindeditor/kindeditor-4.1.10/kindeditor.js"></script>
-<script charset="utf-8" src="<%=request.getContextPath()%>/resources/plugs/kindeditor/kindeditor-4.1.10/lang/zh_CN.js"></script>
+
+<!-- include libraries(jQuery, bootstrap) -->
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+
+<!-- include summernote css/js-->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.css" rel="stylesheet">
+<script src="<%=request.getContextPath()%>/resources/plugs/summernote/dist/summernote.js"></script>
+
+<script charset="utf-8" src="<%=request.getContextPath()%>/resources/plugs/summernote/lang/summernote-zh-CN.js"></script>
+
 <style>
 .param_th{
 text-align:center!important;
@@ -31,30 +43,10 @@ text-align:left!important;
 </style>
 <script type="text/javascript">
 function createEditor(){
-	 window.editor = KindEditor.create('#editor_id',{
-        resizeType:1,      
-        urlType:projectName, // 带有域名的绝对路径
-        allowFileManager : false,
-        allowImageUpload : true,
-        uploadJson : projectName+'/sys/fileHandle/kindeditorUpload?bucket=dc-gift',
-		 items : [
-				'source', '|','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-				'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-				'insertunorderedlist', '|', 'emoticons', 'image', 'link','fullscreen'], 
-				
-	});
-	 
-	window.editor2 = KindEditor.create('#editor_id2',{
-        resizeType:1,      
-        urlType:projectName, // 带有域名的绝对路径
-        allowFileManager : false,
-        allowImageUpload : true,
-        uploadJson : projectName+'/sys/fileHandle/kindeditorUpload?bucket=dc-gift',
-		 items : [
-				'source', '|','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
-				'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-				'insertunorderedlist', '|', 'emoticons', 'image', 'link','fullscreen'], 
-					
+	$('#summernote').summernote({
+		height: 160,
+		focus: true,
+		lang: 'zh-CN'   	    		  
 	});
 }
 $("#tabActivity").tabs({
@@ -65,7 +57,7 @@ $("#tabActivity").tabs({
 	}
 })
 
-function download(){  
+function preview(){  
     var simg = $('#stepUrl').val();;  
     wins = $("<div align='center' style='text-align:center; background:#90A4AE'><img id='simg'/></div>").dialog({
 		title:'大图预览',
@@ -88,9 +80,9 @@ function download(){
 					<tr>
 						<th>广告详情描述：</th>
 						<td colspan="3" style="text-align:left">
-							<textarea id="editor_id" style="width:400px;height:180px;">
-									${taskDetailVo.taskDesc}
-							</textarea>
+							<div id="summernote">
+								${taskDetailVo.taskDesc}
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -104,15 +96,15 @@ function download(){
 								<c:if test="${empty taskDetailVo.stepUrl }"><img id="img" src="" style="width:120px;height:120px"/></c:if>
 								<input id="stepUrl" name="stepUrl" value="${taskDetailVo.stepUrl}" type="hidden"/>
 							</div>
-							<c:if test="${not empty taskDetailVo.stepUrl}"><a href="javascript:download()">查看大图</a></c:if>
+							<c:if test="${not empty taskDetailVo.stepUrl}"><a href="javascript:preview()">查看大图</a></c:if>
 						</td>
 					</tr>
 					<tr>
 						<th>扩展字段：</th>
 						<td colspan="3" style="text-align:left">
-							<textarea id="editor_id2" style="width:400px;height:180px;">
-									${taskDetailVo.fields}
-							</textarea>
+							<div id="editor" style="width:99%;height:220px;">
+								${taskDetailVo.fields}
+							</div>
 						</td>
 					</tr>
 				</table>
@@ -123,3 +115,10 @@ function download(){
 		</div>
 	</div> 
 </div>
+<script src="<%=request.getContextPath()%>/resources/plugs/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/javascript");
+</script>
+</html>

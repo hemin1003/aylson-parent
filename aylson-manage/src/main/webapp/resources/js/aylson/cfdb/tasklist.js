@@ -253,9 +253,9 @@
 	
 	//详情配置
 	function detail(taskId){
-		win = $("<div></div>").dialog({
+		win = $("<html></html>").dialog({
 			title:'详情',
-			width:800,
+			width:830,
 			height:'95%',
 			maximizable:true,
 			modal:true,
@@ -268,11 +268,8 @@
 				    iconCls:'icon-ok',
 				    handler:function(){
 				     	//处理富文本编辑的内容
-					    	var html = editor.html();
-					    	$("#taskDesc").val(html);
-					    	
-					    	var html2 = editor2.html();
-					    	$("#fields").val(html2);
+					    	$("#taskDesc").val($('#summernote').summernote('code'));
+					    	$("#fields").val(editor.getValue());
 					    	
 					    	$("#taskDetailConfigForm").form('submit',{
 					    		 type:'POST',
@@ -288,11 +285,14 @@
 					    			 } 
 					    		 }
 					    	 });
+					    	 $('#summernote').summernote('destroy');
 				     }   
 				   },{
 					 text:'取消',
 				     iconCls:'icon-cancel',  
 				 	 handler:function(){
+				 		 $('#summernote').summernote('destroy');
+				 		 $('#summernote2').summernote('destroy');
 				 		 win.dialog('destroy');
 				 	 }   
 				  }]
@@ -315,6 +315,8 @@
 					 text:'取消',
 				     iconCls:'icon-cancel',  
 				 	 handler:function(){
+				 		 $('#summernote').summernote('destroy');
+				 		 $('#summernote2').summernote('destroy');
 				 		 win.dialog('destroy');
 				 	 }   
 				  }]
