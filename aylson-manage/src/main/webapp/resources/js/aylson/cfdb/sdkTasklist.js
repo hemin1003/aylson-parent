@@ -39,7 +39,7 @@
 				field : 'opt',
 				title : '操作选项',
 				align : 'center',
-				width : 60,
+				width : 65,
 				formatter:function(value,row,index){
 					var handleHtml = '';
 					handleHtml += '<a href="javascript:edit(\'' + row.adid + '\')">查看详情</a>&nbsp;';
@@ -49,7 +49,7 @@
 				title : '广告名称',
 				field : 'title',
 				align : 'center',
-				width : 120,
+				width : 150,
 				sortable:true
 			}, {
 				title : '简介',
@@ -97,7 +97,7 @@
 				title : '简介下载量',
 				field : 'text1',
 				align : 'center',
-				width : 80,
+				width : 110,
 				sortable:true
 			}
 //			, {

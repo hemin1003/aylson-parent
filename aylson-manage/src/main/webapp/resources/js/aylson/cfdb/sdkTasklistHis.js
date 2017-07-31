@@ -76,7 +76,7 @@
 //				sortable:true
 //			}, 
 			{
-				title : '手机设备标识码',
+				title : '手机标识码(IMEI)',
 				field : 'deviceid',
 				align : 'center',
 				width : 120,

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.cfdb.po.UserTasklistHis">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.UserTasklistHisVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="phoneId" property="phoneId" jdbcType="VARCHAR" />
+		<result column="taskId" property="taskId" jdbcType="VARCHAR" />
+		<result column="logoUrl" property="logoUrl" jdbcType="VARCHAR" />
+		<result column="taskName" property="taskName" jdbcType="VARCHAR" />
+		<result column="income" property="income" jdbcType="VARCHAR" />
+		<result column="point" property="point" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="statusFlag" property="statusFlag" jdbcType="INTEGER" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		cfdb_user_tasklist_his.id,
+		cfdb_user_tasklist_his.phoneId,
+		cfdb_user_tasklist_his.taskId, 
+		cfdb_user_tasklist_his.logoUrl,
+		cfdb_user_tasklist_his.taskName,
+		cfdb_user_tasklist_his.income,
+		cfdb_user_tasklist_his.point,
+		cfdb_user_tasklist_his.status,
+		cfdb_user_tasklist_his.statusFlag,
+		cfdb_user_tasklist_his.createDate
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+				<if test="phoneIdLike != null and phoneIdLike != ''"> and cfdb_user_tasklist_his.phoneId like CONCAT('%',#{phoneIdLike},'%') </if>
+				<if test="taskNameLike != null and taskNameLike != ''"> and cfdb_user_tasklist_his.taskName like CONCAT('%',#{taskNameLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from cfdb_user_tasklist_his
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_user_tasklist_his
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by cfdb_user_tasklist_his.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from cfdb_user_tasklist_his
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.cfdb.po.UserTasklistHis">
+		insert into cfdb_user_tasklist_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="phoneId != null" > phoneId, </if>
+		  <if test="taskId != null" > taskId, </if>
+		  <if test="logoUrl != null" > logoUrl, </if>
+		  <if test="taskName != null" > taskName, </if>
+		  <if test="income != null" > income, </if>
+		  <if test="point != null" > point, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="statusFlag != null" > statusFlag, </if>
+		  <if test="createDate != null" > createDate, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="phoneId != null" > #{phoneId}, </if>
+		  <if test="taskId != null" > #{taskId}, </if>
+		  <if test="logoUrl != null" > #{logoUrl}, </if>
+		  <if test="taskName != null" > #{taskName}, </if>
+		  <if test="income != null" > #{income}, </if>
+		  <if test="point != null" > #{point}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="statusFlag != null" > #{statusFlag}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+        </trim>
+	</insert>
+	
+</mapper>

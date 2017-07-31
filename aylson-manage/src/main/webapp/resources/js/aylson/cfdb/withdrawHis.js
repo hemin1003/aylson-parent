@@ -90,19 +90,6 @@
 					return value;
 				}
 			}
-//			, {
-//				title : '创建时间',
-//				field : 'createDate',
-//				align : 'center',
-//				width : 120,
-//				sortable:true,
-//				formatter:function(value,row,index){
-//					if(value){
-//						return value.substring(0,19);
-//					}
-//					return value;
-//				}
-//			}
 			, {
 				title : '审批完成时间',
 				field : 'updateDate',
@@ -115,6 +102,11 @@
 					}
 					return value;
 				}
+			}, {
+				title : '审核人',
+				field : 'updatedBy',
+				align : 'center',
+				width : 120
 			}
 			] ]
 		});

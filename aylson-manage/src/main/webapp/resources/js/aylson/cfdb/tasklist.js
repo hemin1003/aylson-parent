@@ -65,8 +65,7 @@
 				align : 'center',
 				width : 120,
 				sortable:true
-			}, 
-			{
+			}, {
 				title : '广告Logo',
 				field : 'logoUrl',
 				align : 'center',

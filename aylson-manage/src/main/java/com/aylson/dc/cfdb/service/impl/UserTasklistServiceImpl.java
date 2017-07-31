@@ -18,6 +18,7 @@ import com.aylson.dc.cfdb.search.UserTasklistSearch;
 import com.aylson.dc.cfdb.service.UserTasklistService;
 import com.aylson.dc.cfdb.vo.ImUsersVo;
 import com.aylson.dc.cfdb.vo.UserTasklistVo;
+import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
 import com.aylson.utils.UUIDUtils;
 
@@ -88,26 +89,26 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
 			}
 			
-			//反生加扣款，才记录收益数据
-			if(actionFlag != 3) {
-				//3. 记录用户收益记录情况
-				IncomeHis incomeHis = new IncomeHis();
-				incomeHis.setId(UUIDUtils.create());
-				incomeHis.setPhoneId(userTasklistVo.getPhoneId());
-				incomeHis.setTaskId(userTasklistVo.getTaskId());
-				incomeHis.setLogoUrl(userTasklistVo.getLogoUrl());
-				incomeHis.setTaskName(userTasklistVo.getTaskName());
-				incomeHis.setIncomeTime(cTime);
-				incomeHis.setIncome(userTasklistVo.getIncome());
-				incomeHis.setCreateDate(cTime);
-				incomeHis.setUpdateDate(cTime);
-				incomeHis.setFlag(actionFlag);	//1=加钱；2=扣钱
-				incomeHis.setChannel(1);			//1=后台系统广告；2=SDK平台广告
-				boolean flag3 = this.incomeHisDao.insert(incomeHis);				//记录用户收益记录情况
-				if(!flag3) {
-					logger.warn("记录用户收益记录失败，请查核。phoneId=" + userTasklistVo.getPhoneId() 
-							+ ", taskId=" + userTasklistVo.getTaskId());
-				}
+			
+			SessionInfo sessionInfo = (SessionInfo)request.getSession().getAttribute("sessionInfo");
+			//3. 记录用户收益记录情况
+			IncomeHis incomeHis = new IncomeHis();
+			incomeHis.setId(UUIDUtils.create());
+			incomeHis.setPhoneId(userTasklistVo.getPhoneId());
+			incomeHis.setTaskId(userTasklistVo.getTaskId());
+			incomeHis.setLogoUrl(userTasklistVo.getLogoUrl());
+			incomeHis.setTaskName(userTasklistVo.getTaskName());
+			incomeHis.setIncomeTime(cTime);
+			incomeHis.setIncome(userTasklistVo.getIncome());
+			incomeHis.setCreateDate(cTime);
+			incomeHis.setCreatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
+			incomeHis.setUpdateDate(cTime);
+			incomeHis.setFlag(actionFlag);	//1=加钱；2=扣钱
+			incomeHis.setChannel(1);			//1=后台系统广告；2=SDK平台广告
+			boolean flag3 = this.incomeHisDao.insert(incomeHis);				//记录用户收益记录情况
+			if(!flag3) {
+				logger.warn("记录用户收益记录失败，请查核。phoneId=" + userTasklistVo.getPhoneId() 
+						+ ", taskId=" + userTasklistVo.getTaskId());
 			}
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);

@@ -17,6 +17,7 @@ import com.aylson.dc.cfdb.search.WithdrawHisSearch;
 import com.aylson.dc.cfdb.service.WithdrawHisService;
 import com.aylson.dc.cfdb.vo.ImUsersVo;
 import com.aylson.dc.cfdb.vo.WithdrawHisVo;
+import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
 
 
@@ -42,6 +43,8 @@ public class WithdrawHisServiceImpl extends BaseServiceImpl<WithdrawHis, Withdra
 		String cTime = DateUtil2.getCurrentLongDateTime();
 		try{
 			//1. 更新提现状态
+			SessionInfo sessionInfo = (SessionInfo)request.getSession().getAttribute("sessionInfo");
+			withdrawHisVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getRole().getRoleName());
 			withdrawHisVo.setUpdateDate(cTime);
 			
 			//2. 如果失败，则需要增加用户收益金额
