@@ -95,7 +95,7 @@ function preview(){
 					<tr>
 						<th>扩展字段：</th>
 						<td colspan="3" style="text-align:left">
-							<div id="editor" style="width:99%;height:220px;">
+							<div id="editor" style="width:90%;height:220px;">
 								${taskDetailVo.fields}
 							</div>
 						</td>

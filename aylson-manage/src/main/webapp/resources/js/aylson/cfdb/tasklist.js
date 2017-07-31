@@ -253,7 +253,7 @@
 	
 	//详情配置
 	function detail(taskId){
-		win = $("<html></html>").dialog({
+		win = $("<div></div>").dialog({
 			title:'详情',
 			width:830,
 			height:'95%',
@@ -269,7 +269,7 @@
 				    handler:function(){
 				     	//处理富文本编辑的内容
 					    	$("#taskDesc").val($('#summernote').summernote('code'));
-					    	$("#fields").val(editor.getValue());
+					    	$("#fields").val($.trim(editor.getValue()));
 					    	
 					    	$("#taskDetailConfigForm").form('submit',{
 					    		 type:'POST',
