@@ -10,6 +10,15 @@
 <script src="<%=request.getContextPath()%>/resources/js/sysConfig.js?v_date=201506092" charset="UTF-8" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/resources/js/aylson/sys/fileUpload.js?v_date=2015083101" charset="UTF-8" type="text/javascript"></script>
 <link href="<%=request.getContextPath()%>/resources/css/sys.css?v_date=2015082400" rel="stylesheet" type="text/css" media="screen">
+
+<!-- 两个插件集成，后续优化 -->
+<script src="<%=request.getContextPath()%>/resources/plugs/ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+<!-- include libraries(jQuery, bootstrap) -->
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+<!-- include summernote css/js-->
+<script src="<%=request.getContextPath()%>/resources/plugs/summernote/dist/summernote.js"></script>
+<script charset="utf-8" src="<%=request.getContextPath()%>/resources/plugs/summernote/lang/summernote-zh-CN.js"></script>
+
 <script>
 //获取项目名称
 var pathName=window.document.location.pathname;

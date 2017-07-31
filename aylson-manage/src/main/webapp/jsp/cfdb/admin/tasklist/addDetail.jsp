@@ -9,15 +9,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<!-- include libraries(jQuery, bootstrap) -->
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
-
-<!-- include summernote css/js-->
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.6/summernote.css" rel="stylesheet">
-<script src="<%=request.getContextPath()%>/resources/plugs/summernote/dist/summernote.js"></script>
-
-<script charset="utf-8" src="<%=request.getContextPath()%>/resources/plugs/summernote/lang/summernote-zh-CN.js"></script>
 
 <style>
 .param_th{
@@ -115,7 +108,6 @@ function preview(){
 		</div>
 	</div> 
 </div>
-<script src="<%=request.getContextPath()%>/resources/plugs/ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");

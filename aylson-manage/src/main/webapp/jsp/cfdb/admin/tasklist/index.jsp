@@ -36,5 +36,5 @@
     	<table id="datagrid"></table>
     </div>
 </body>
-<script type="text/javascript" charset="UTF-8" src="<%=request.getContextPath()%>/resources/js/aylson/cfdb/tasklist.js?date=2016112516"></script>
+<script type="text/javascript" charset="UTF-8" src="<%=request.getContextPath()%>/resources/js/aylson/cfdb/tasklist.js"></script>
 </html>
