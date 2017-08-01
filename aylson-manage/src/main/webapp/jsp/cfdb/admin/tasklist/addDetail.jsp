@@ -33,6 +33,22 @@ padding:5px;
 .basic_td{
 text-align:left!important;
 }
+
+.radioSpan {
+  position: relative;
+  border: 1px solid #95B8E7;
+  background-color: #fff;
+  vertical-align: middle;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  display:block;
+}
 </style>
 <script type="text/javascript">
 function createEditor(){
@@ -73,7 +89,7 @@ function preview(){
 					<tr>
 						<th>广告详情描述：</th>
 						<td colspan="3" style="text-align:left">
-							<div id="summernote">
+							<div id="summernote" style="width:90%">
 								${taskDetailVo.taskDesc}
 							</div>
 						</td>
@@ -93,17 +109,34 @@ function preview(){
 						</td>
 					</tr>
 					<tr>
-						<th>扩展字段：</th>
+						<th>动态审核字段：</th>
 						<td colspan="3" style="text-align:left">
 							<div id="editor" style="width:90%;height:220px;">
 								${taskDetailVo.fields}
 							</div>
 						</td>
 					</tr>
+					<tr>
+						<th>是否上传图片：</th>
+						<td colspan="3" style="text-align:left">
+							<span class="radioSpan" style="text-align:left">
+								<input type="radio" name="isUploadRd" value="0"><label>否</label></input>
+								<input type="radio" name="isUploadRd" value="1"><label>是</label></input>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<th>上传图片数量：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="imagesNum" value="${taskDetailVo.imagesNum}" class="easyui-numberbox"
+								style="text-align:left"/>
+						</td>
+					</tr>
 				</table>
 				<input name="taskDesc" id="taskDesc" type="hidden" value=""/>
 				<input name="fields" id="fields" type="hidden" value=""/>
 				<input name="taskId" type="hidden" value="${taskDetailVo.taskId}"/>
+				<input id="isUpload" name="isUpload" type="hidden" value="${taskDetailVo.isUpload}"/>
 			</form>
 		</div>
 	</div> 
@@ -112,5 +145,7 @@ function preview(){
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");
+    //根据值，设置对应的radio选中
+    $(":radio[name='isUploadRd'][value='" + $("#isUpload").val() + "']").prop("checked", "checked");
 </script>
 </html>

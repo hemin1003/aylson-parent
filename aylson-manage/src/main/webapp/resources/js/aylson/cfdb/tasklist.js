@@ -267,9 +267,11 @@
 					text:'确定',
 				    iconCls:'icon-ok',
 				    handler:function(){
+				    	
 				     	//处理富文本编辑的内容
 					    	$("#taskDesc").val($('#summernote').summernote('code'));
 					    	$("#fields").val($.trim(editor.getValue()));
+					    	$("#isUpload").val($("input[name='isUploadRd']:checked").val());
 					    	
 					    	$("#taskDetailConfigForm").form('submit',{
 					    		 type:'POST',

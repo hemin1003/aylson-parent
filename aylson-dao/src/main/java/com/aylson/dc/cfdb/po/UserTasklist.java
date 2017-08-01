@@ -13,7 +13,7 @@ public class UserTasklist implements Serializable{
 	private String taskName;		//任务名称
 	private String taskTag;		//任务标签
 	private Integer amount;		//任务剩余数量
-	private String income;		//任务收益金额
+	private String income;		//用户收益金额
 	private Integer orderNo;		//排序编号
 	private String goUrl;		//跳转url地址
 	private String status;		//任务状态

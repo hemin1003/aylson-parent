@@ -8,6 +8,8 @@
 		<result column="stepUrl" property="stepUrl" jdbcType="VARCHAR" />
 		<result column="steps" property="steps" jdbcType="VARCHAR" />
 		<result column="fields" property="fields" jdbcType="VARCHAR" />
+		<result column="isUpload" property="isUpload" jdbcType="INTEGER" />
+		<result column="imagesNum" property="imagesNum" jdbcType="INTEGER" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
 		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
@@ -20,6 +22,8 @@
 		cfdb_task_detail.stepUrl,
 		cfdb_task_detail.steps,
 		cfdb_task_detail.fields,
+		cfdb_task_detail.isUpload,
+		cfdb_task_detail.imagesNum,
 		cfdb_task_detail.createDate,
 		cfdb_task_detail.updateDate,
 		cfdb_task_detail.createdBy,
@@ -74,6 +78,8 @@
 		  <if test="stepUrl != null" > stepUrl, </if>
 		  <if test="steps != null" > steps, </if>
 		  <if test="fields != null" > fields, </if>
+		  <if test="isUpload != null" > isUpload, </if>
+		  <if test="imagesNum != null" > imagesNum, </if>
 		  <if test="createDate != null" > createDate, </if>
 		  <if test="createdBy != null" > createdBy, </if>
 		  <if test="updateDate != null" > updateDate, </if>
@@ -84,6 +90,8 @@
 		  <if test="stepUrl != null" > #{stepUrl}, </if>
 		  <if test="steps != null" > #{steps}, </if>
 		  <if test="fields != null" > #{fields}, </if>
+		  <if test="isUpload != null" > #{isUpload}, </if>
+		  <if test="imagesNum != null" > #{imagesNum}, </if>
 		  <if test="createDate != null" > #{createDate}, </if>
 		  <if test="createdBy != null" > #{createdBy}, </if>
 		  <if test="updateDate != null" > null, </if>
@@ -99,6 +107,8 @@
 			<if test="stepUrl != null"> stepUrl = #{stepUrl}, </if>
 			<if test="steps != null"> steps = #{steps}, </if>
 			<if test="fields != null"> fields = #{fields}, </if>
+			<if test="isUpload != null"> isUpload = #{isUpload}, </if>
+			<if test="imagesNum != null"> imagesNum = #{imagesNum}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
 			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
 		</set>

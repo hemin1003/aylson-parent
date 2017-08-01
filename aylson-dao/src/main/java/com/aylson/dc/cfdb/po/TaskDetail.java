@@ -11,6 +11,8 @@ public class TaskDetail implements Serializable{
 	private String stepUrl;	//详情步骤图Url
 	private String steps;	//动态步骤图组合字段
 	private String fields;	//动态验证组合字段
+	private Integer isUpload;	//是否上传图片
+	private Integer imagesNum;	//上传图片数量
 	private String createDate;
 	private String updateDate;
 	private String createdBy;
@@ -69,5 +71,17 @@ public class TaskDetail implements Serializable{
 	}
 	public void setFields(String fields) {
 		this.fields = fields;
+	}
+	public Integer getIsUpload() {
+		return isUpload;
+	}
+	public void setIsUpload(Integer isUpload) {
+		this.isUpload = isUpload;
+	}
+	public Integer getImagesNum() {
+		return imagesNum;
+	}
+	public void setImagesNum(Integer imagesNum) {
+		this.imagesNum = imagesNum;
 	}
 }
