@@ -77,7 +77,7 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 					imUsersVo.setTotalIncome(String.valueOf(totalIncome-earn));
 					logger.info("用户扣钱后余额=" + (balance-earn) + "。balance=" + balance + ", earn=" + earn);
 				}else {
-					actionFlag = 3;	//未扣钱，直接审批失败
+					actionFlag = 3;	//未扣钱，直接审批失败，不记录收益
 				}
 			}
 			
@@ -89,26 +89,27 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
 			}
 			
-			
-			SessionInfo sessionInfo = (SessionInfo)request.getSession().getAttribute("sessionInfo");
-			//3. 记录用户收益记录情况
-			IncomeHis incomeHis = new IncomeHis();
-			incomeHis.setId(UUIDUtils.create());
-			incomeHis.setPhoneId(userTasklistVo.getPhoneId());
-			incomeHis.setTaskId(userTasklistVo.getTaskId());
-			incomeHis.setLogoUrl(userTasklistVo.getLogoUrl());
-			incomeHis.setTaskName(userTasklistVo.getTaskName());
-			incomeHis.setIncomeTime(cTime);
-			incomeHis.setIncome(userTasklistVo.getIncome());
-			incomeHis.setCreateDate(cTime);
-			incomeHis.setCreatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
-			incomeHis.setUpdateDate(cTime);
-			incomeHis.setFlag(actionFlag);	//1=加钱；2=扣钱
-			incomeHis.setChannel(1);			//1=后台系统广告；2=SDK平台广告
-			boolean flag3 = this.incomeHisDao.insert(incomeHis);				//记录用户收益记录情况
-			if(!flag3) {
-				logger.warn("记录用户收益记录失败，请查核。phoneId=" + userTasklistVo.getPhoneId() 
-						+ ", taskId=" + userTasklistVo.getTaskId());
+			if(actionFlag != 3) {
+				SessionInfo sessionInfo = (SessionInfo)request.getSession().getAttribute("sessionInfo");
+				//3. 记录用户收益记录情况
+				IncomeHis incomeHis = new IncomeHis();
+				incomeHis.setId(UUIDUtils.create());
+				incomeHis.setPhoneId(userTasklistVo.getPhoneId());
+				incomeHis.setTaskId(userTasklistVo.getTaskId());
+				incomeHis.setLogoUrl(userTasklistVo.getLogoUrl());
+				incomeHis.setTaskName(userTasklistVo.getTaskName());
+				incomeHis.setIncomeTime(cTime);
+				incomeHis.setIncome(userTasklistVo.getIncome());
+				incomeHis.setCreateDate(cTime);
+				incomeHis.setCreatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
+				incomeHis.setUpdateDate(cTime);
+				incomeHis.setFlag(actionFlag);	//1=加钱；2=扣钱
+				incomeHis.setChannel(1);			//1=后台系统广告；2=SDK平台广告
+				boolean flag3 = this.incomeHisDao.insert(incomeHis);				//记录用户收益记录情况
+				if(!flag3) {
+					logger.warn("记录用户收益记录失败，请查核。phoneId=" + userTasklistVo.getPhoneId() 
+							+ ", taskId=" + userTasklistVo.getTaskId());
+				}
 			}
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
