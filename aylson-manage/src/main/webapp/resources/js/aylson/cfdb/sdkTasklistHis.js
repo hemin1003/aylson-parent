@@ -129,7 +129,7 @@
 				align : 'center',
 				width : 80,
 				formatter:function(value,row,index){
-					if(value == '校验成功'){
+					if(value == '校验正确'){
 						return "<font color=green>" + value + "</font>";
 					}else if(value == '校验失败'){
 						return "<font color=red>" + value + "</font>";

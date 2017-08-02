@@ -37,7 +37,7 @@
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
-						return value+".00";
+						return value;
 					}
 				}
 			}, {
@@ -48,7 +48,7 @@
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
-						return value+".00";
+						return value;
 					}
 				}
 			}, {
