@@ -20,7 +20,28 @@ public class SdkTasklistHis implements Serializable{
 	private String appsecret;	//开发者设置的密钥
 	private String checksum;		//签名结果	
 	private String createDate;	//创建时间
+	private String activeNum;	//签到标识
+	private String result;		//md5校验结果
+	private String resultSum;	//MD5校验签名值
 	
+	public String getActiveNum() {
+		return activeNum;
+	}
+	public void setActiveNum(String activeNum) {
+		this.activeNum = activeNum;
+	}
+	public String getResultSum() {
+		return resultSum;
+	}
+	public void setResultSum(String resultSum) {
+		this.resultSum = resultSum;
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
 	public String getHashid() {
 		return hashid;
 	}

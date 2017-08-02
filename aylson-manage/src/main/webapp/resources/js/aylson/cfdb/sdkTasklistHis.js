@@ -123,6 +123,19 @@
 					}
 					return value;
 				}
+			}, {
+				title : '校验结果',
+				field : 'result',
+				align : 'center',
+				width : 80,
+				formatter:function(value,row,index){
+					if(value == '校验成功'){
+						return "<font color=green>" + value + "</font>";
+					}else if(value == '校验失败'){
+						return "<font color=red>" + value + "</font>";
+					}
+					return value;
+				}
 			}
 			] ]
 		});
@@ -131,9 +144,9 @@
 	//查看详情
 	function edit(hashid){
 		win = $("<div></div>").dialog({
-			title:'查看详情',
+			title:'明细数据',
 			width:450,
-			height:'80%',
+			height:'75%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/sdkTasklistHis/admin/toEdit?hashid='+hashid,

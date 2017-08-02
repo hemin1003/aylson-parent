@@ -115,13 +115,38 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th>签名结果：</th>
+						<th>签到标识：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="activeNum" value="${sdkTasklistHisVo.activeNum}"
+								class="easyui-textbox"
+								style="width:95%; text-align:left; "/>
+						</td>
+					</tr>
+					<tr>
+						<th>平台签名值：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="checksum" value="${sdkTasklistHisVo.checksum}"
 								class="easyui-textbox"
 								style="width:95%; text-align:left; "/>
 						</td>
 					</tr>
+					<tr>
+						<th>后台签名值：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="resultSum" value="${sdkTasklistHisVo.resultSum}"
+								class="easyui-textbox"
+								style="width:95%; text-align:left; "/>
+						</td>
+					</tr>
+					<tr>
+						<th>后台验证结果：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="result" value="${sdkTasklistHisVo.result}"
+								class="easyui-textbox"
+								style="width:95%; text-align:left; "/>
+						</td>
+					</tr>
+					
 				</table>
 			</form>
 		</div>
