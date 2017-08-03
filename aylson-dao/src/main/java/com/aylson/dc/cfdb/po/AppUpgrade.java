@@ -8,13 +8,20 @@ public class AppUpgrade implements Serializable{
 	
 	private String id;			//主键
 	private String version;		//版本号
-	private String vdesc;			//版本描述
+	private String vdesc;		//版本描述
+	private String apkUrl;		//包下载地址
 	private Integer status;		//版本状态
 	private String createDate;	//创建时间
 	private String updateDate;	//更新时间
 	private String createdBy;	//创建人
 	private String updatedBy;	//更新人
 	
+	public String getApkUrl() {
+		return apkUrl;
+	}
+	public void setApkUrl(String apkUrl) {
+		this.apkUrl = apkUrl;
+	}
 	public String getId() {
 		return id;
 	}

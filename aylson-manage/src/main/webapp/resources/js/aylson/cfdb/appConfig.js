@@ -18,11 +18,13 @@
 			idField : 'id',
 			singleSelect:true,
 			rownumbers: true,
-			toolbar:[{
-				text:"新增",
-				iconCls : 'icon-add',
-				handler : add
-			},{
+			toolbar:[
+//				{
+//				text:"新增",
+//				iconCls : 'icon-add',
+//				handler : add
+//			},
+			{
 				text:"刷新",
 				iconCls : 'icon-reload',
 				handler : reload
@@ -35,12 +37,17 @@
 				formatter:function(value,row,index){
 					var handleHtml = '';
 					handleHtml += '<a href="javascript:edit(\'' + row.id + '\')">修改</a>&nbsp;';
-					handleHtml += '<a href="javascript:del(\'' + row.id + '\')">删除</a>&nbsp;';
+					//handleHtml += '<a href="javascript:del(\'' + row.id + '\')">删除</a>&nbsp;';
 					return handleHtml;
 				}
 			}, {
-				title : '启动广告图',
-				field : 'logoUrl',
+				title : '常见问题页面配置',
+				field : 'appFaqUrl',
+				align : 'center',
+				width : 200
+			}, {
+				title : '红包攻略图',
+				field : 'appLearnUrl',
 				align : 'center',
 				width : 150,
 				formatter:function(value,row,index){

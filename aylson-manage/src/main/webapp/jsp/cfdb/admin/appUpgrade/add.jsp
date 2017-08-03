@@ -45,9 +45,17 @@ text-align:left!important;
 					<tr>
 						<th>版本描述：</th>
 						<td colspan="3" style="text-align:left">
-							<input name="vdesc" value="${appUpgradeVo.vdesc}" data-options="required:true"
-								class="easyui-textbox"
-								style="width:95%; text-align:left"/>
+							<input name="vdesc" value="${appUpgradeVo.vdesc}" 
+								class="easyui-textbox" data-options="multiline:true, required:true"
+								style="width:95%; height:80px; text-align:left"/>
+						</td>
+					</tr>
+					<tr>
+						<th>安装包下载地址：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="apkUrl" value="${appUpgradeVo.apkUrl}" 
+								class="easyui-textbox" data-options="multiline:true, required:true"
+								style="width:95%; height:80px; text-align:left"/>
 						</td>
 					</tr>
 				</table>

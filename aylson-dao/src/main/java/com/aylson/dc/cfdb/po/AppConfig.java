@@ -7,7 +7,8 @@ public class AppConfig implements Serializable{
 	private static final long serialVersionUID = -3614595731018009677L;
 	
 	private String id;			//主键
-	private String logoUrl;		//广告图Url
+	private String appFaqUrl;	//常见问题页面url
+	private String appLearnUrl;	//红包攻略图url
 	private String createDate;	//创建时间
 	private String updateDate;	//更新时间
 	private String createdBy;	//创建人
@@ -19,11 +20,17 @@ public class AppConfig implements Serializable{
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getLogoUrl() {
-		return logoUrl;
+	public String getAppFaqUrl() {
+		return appFaqUrl;
 	}
-	public void setLogoUrl(String logoUrl) {
-		this.logoUrl = logoUrl;
+	public void setAppFaqUrl(String appFaqUrl) {
+		this.appFaqUrl = appFaqUrl;
+	}
+	public String getAppLearnUrl() {
+		return appLearnUrl;
+	}
+	public void setAppLearnUrl(String appLearnUrl) {
+		this.appLearnUrl = appLearnUrl;
 	}
 	public String getCreateDate() {
 		return createDate;

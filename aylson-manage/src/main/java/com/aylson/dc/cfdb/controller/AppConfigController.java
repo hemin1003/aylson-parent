@@ -42,6 +42,15 @@ public class AppConfigController extends BaseController {
 	}
 	
 	/**
+	 * APP常见问题页面
+	 * @return
+	 */
+	@RequestMapping(value = "/admin/about", method = RequestMethod.GET)
+	public String about() {
+		return "/jsp/cfdb/admin/appConfig/about";
+	}
+	
+	/**
 	 * 获取列表
 	 * @return list
 	 */

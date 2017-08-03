@@ -6,6 +6,7 @@
 		<id column="id" property="id" jdbcType="VARCHAR" />
 		<result column="version" property="version" jdbcType="VARCHAR" />
 		<result column="vdesc" property="vdesc" jdbcType="VARCHAR" />
+		<result column="apkUrl" property="apkUrl" jdbcType="VARCHAR" />
 		<result column="status" property="status" jdbcType="INTEGER" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
@@ -17,6 +18,7 @@
 		cfdb_app_upgrade.id,
 		cfdb_app_upgrade.version,
 		cfdb_app_upgrade.vdesc,
+		cfdb_app_upgrade.apkUrl,
 		cfdb_app_upgrade.status,
 		cfdb_app_upgrade.createDate,
 		cfdb_app_upgrade.updateDate,
@@ -71,6 +73,7 @@
 		  <if test="id != null" > id, </if>
 		  <if test="version != null" > version, </if>
 		  <if test="vdesc != null" > vdesc, </if>
+		  <if test="apkUrl != null" > apkUrl, </if>
 		  <if test="status != null" > status, </if>
 		  <if test="createDate != null" > createDate, </if>
 		  <if test="createdBy != null" > createdBy, </if>
@@ -80,6 +83,7 @@
 		  <if test="id != null" > #{id}, </if>
 		  <if test="version != null" > #{version}, </if>
 		  <if test="vdesc != null" > #{vdesc}, </if>
+		  <if test="apkUrl != null" > #{apkUrl}, </if>
 		  <if test="status != null" > #{status}, </if>
 		  <if test="createDate != null" > #{createDate}, </if>
 		  <if test="createdBy != null" > #{createdBy}, </if>
@@ -94,6 +98,7 @@
 		<set>
 			<if test="version != null"> version = #{version}, </if>
 			<if test="vdesc != null"> vdesc = #{vdesc}, </if>
+			<if test="apkUrl != null"> apkUrl = #{apkUrl}, </if>
 			<if test="status != null"> status = #{status}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
 			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>

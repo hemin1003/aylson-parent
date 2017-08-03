@@ -48,13 +48,19 @@
 				title : '版本号',
 				field : 'version',
 				align : 'center',
-				width : 150,
+				width : 80,
 				sortable:true
 			}, {
 				title : '版本描述',
 				field : 'vdesc',
 				align : 'center',
-				width : 150,
+				width : 200,
+				sortable:true
+			}, {
+				title : '安装包下载地址',
+				field : 'apkUrl',
+				align : 'center',
+				width : 200,
 				sortable:true
 			}, {
 				title : '版本状态',

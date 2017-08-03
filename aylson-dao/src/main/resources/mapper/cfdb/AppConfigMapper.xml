@@ -4,7 +4,8 @@
 
 	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.AppConfigVo">
 		<id column="id" property="id" jdbcType="VARCHAR" />
-		<result column="logoUrl" property="logoUrl" jdbcType="VARCHAR" />
+		<result column="appFaqUrl" property="appFaqUrl" jdbcType="VARCHAR" />
+		<result column="appLearnUrl" property="appLearnUrl" jdbcType="VARCHAR" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
 		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
@@ -13,7 +14,8 @@
 
 	<sql id="DB_Column_List">
 		cfdb_app_config.id,
-		cfdb_app_config.logoUrl,
+		cfdb_app_config.appFaqUrl,
+		cfdb_app_config.appLearnUrl,
 		cfdb_app_config.createDate,
 		cfdb_app_config.updateDate,
 		cfdb_app_config.createdBy,
@@ -64,14 +66,16 @@
 		insert into cfdb_app_config
 		<trim prefix="(" suffix=")" suffixOverrides="," >
 		  <if test="id != null" > id, </if>
-		  <if test="logoUrl != null" > logoUrl, </if>
+		  <if test="appFaqUrl != null" > appFaqUrl, </if>
+		  <if test="appLearnUrl != null" > appLearnUrl, </if>
 		  <if test="createDate != null" > createDate, </if>
 		  <if test="createdBy != null" > createdBy, </if>
 		  <if test="updateDate != null" > updateDate, </if>
 		</trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
 		  <if test="id != null" > #{id}, </if>
-		  <if test="logoUrl != null" > #{logoUrl}, </if>
+		  <if test="appFaqUrl != null" > #{appFaqUrl}, </if>
+		  <if test="appLearnUrl != null" > #{appLearnUrl}, </if>
 		  <if test="createDate != null" > #{createDate}, </if>
 		  <if test="createdBy != null" > #{createdBy}, </if>
 		  <if test="updateDate != null" > null, </if>
@@ -83,7 +87,8 @@
 		update 
 			cfdb_app_config 
 		<set>
-			<if test="logoUrl != null"> logoUrl = #{logoUrl}, </if>
+			<if test="appFaqUrl != null"> appFaqUrl = #{appFaqUrl}, </if>
+			<if test="appLearnUrl != null"> appLearnUrl = #{appLearnUrl}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
 			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
 		</set>
