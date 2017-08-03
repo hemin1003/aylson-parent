@@ -129,7 +129,7 @@
 		win = $("<div></div>").dialog({
 			title:'操作',
 			width:450,
-			height:'65%',
+			height:'70%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/userTasklist/admin/toEdit?id='+id,

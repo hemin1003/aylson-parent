@@ -20,6 +20,11 @@
 		<result column="isChecked" property="isChecked" jdbcType="INTEGER" />
 		<result column="proveDate" property="proveDate" jdbcType="VARCHAR" />
 		<result column="isFirstSuc" property="isFirstSuc" jdbcType="INTEGER" />
+		<result column="proveName" property="proveName" jdbcType="VARCHAR" />
+		<result column="proveMobile" property="proveMobile" jdbcType="VARCHAR" />
+		<result column="proveImagesUrl" property="proveImagesUrl" jdbcType="VARCHAR" />
+		<result column="proveColumn1" property="proveColumn1" jdbcType="VARCHAR" />
+		<result column="proveColumn2" property="proveColumn2" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="DB_Column_List">
@@ -39,7 +44,12 @@
 		cfdb_user_tasklist.updateDate,
 		cfdb_user_tasklist.isChecked,
 		cfdb_user_tasklist.proveDate,
-		cfdb_user_tasklist.isFirstSuc
+		cfdb_user_tasklist.isFirstSuc,
+		cfdb_user_tasklist.proveName,
+		cfdb_user_tasklist.proveMobile,
+		cfdb_user_tasklist.proveImagesUrl,
+		cfdb_user_tasklist.proveColumn1,
+		cfdb_user_tasklist.proveColumn2
 	</sql>
 
 	<sql id="Where_Condition">
@@ -93,6 +103,11 @@
 			<if test="isChecked != null"> isChecked = #{isChecked}, </if>
 			<if test="proveDate != null"> proveDate = #{proveDate}, </if>
 			<if test="isFirstSuc != null"> isFirstSuc = #{isFirstSuc}, </if>
+			<if test="proveName != null"> proveName = #{proveName}, </if>
+			<if test="proveMobile != null"> proveMobile = #{proveMobile}, </if>
+			<if test="proveImagesUrl != null"> proveImagesUrl = #{proveImagesUrl}, </if>
+			<if test="proveColumn1 != null"> proveColumn1 = #{proveColumn1}, </if>
+			<if test="proveColumn2 != null"> proveColumn2 = #{proveColumn2}, </if>
 		</set>
 		where id = #{id} 
 	</update>

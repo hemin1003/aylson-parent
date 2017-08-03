@@ -23,6 +23,11 @@ public class UserTasklist implements Serializable{
 	private Integer isChecked;	//是否查看过
 	private String proveDate;	//审核完成时间
 	private Integer isFirstSuc;	//是否有过成功审核标识，1=否；2=是
+	private String proveName;	//待审批姓名
+	private String proveMobile;	//待审批手机号码
+	private String proveImagesUrl;	//待审批图片
+	private String proveColumn1;		//扩展字段1
+	private String proveColumn2;		//扩展字段2
 	
 	public String getId() {
 		return id;
@@ -125,5 +130,35 @@ public class UserTasklist implements Serializable{
 	}
 	public void setIsFirstSuc(Integer isFirstSuc) {
 		this.isFirstSuc = isFirstSuc;
+	}
+	public String getProveName() {
+		return proveName;
+	}
+	public void setProveName(String proveName) {
+		this.proveName = proveName;
+	}
+	public String getProveMobile() {
+		return proveMobile;
+	}
+	public void setProveMobile(String proveMobile) {
+		this.proveMobile = proveMobile;
+	}
+	public String getProveImagesUrl() {
+		return proveImagesUrl;
+	}
+	public void setProveImagesUrl(String proveImagesUrl) {
+		this.proveImagesUrl = proveImagesUrl;
+	}
+	public String getProveColumn1() {
+		return proveColumn1;
+	}
+	public void setProveColumn1(String proveColumn1) {
+		this.proveColumn1 = proveColumn1;
+	}
+	public String getProveColumn2() {
+		return proveColumn2;
+	}
+	public void setProveColumn2(String proveColumn2) {
+		this.proveColumn2 = proveColumn2;
 	}
 }

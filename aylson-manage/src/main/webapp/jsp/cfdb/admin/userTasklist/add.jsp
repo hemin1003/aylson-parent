@@ -105,6 +105,46 @@ text-align:left!important;
 							</select>
 						</td>
 					</tr>
+					<tr>
+						<th>待审批姓名：</th>
+						<td colspan="3" style="text-align:left">
+							<input value="${userTasklistVo.proveName}"
+								class="easyui-textbox"
+								style="width:95%; text-align:left" readOnly=true/>
+						</td>
+					</tr>
+					<tr>
+						<th>待审批手机号码：</th>
+						<td colspan="3" style="text-align:left">
+							<input value="${userTasklistVo.proveMobile}"
+								class="easyui-textbox"
+								style="width:95%; text-align:left" readOnly=true/>
+						</td>
+					</tr>
+					<tr>
+						<th>待审批图片：</th>
+						<td colspan="3" style="text-align:left">
+							<input value="${userTasklistVo.proveImagesUrl}"
+								class="easyui-textbox"
+								style="width:95%; text-align:left" readOnly=true/>
+						</td>
+					</tr>
+					<tr>
+						<th>扩展信息1：</th>
+						<td colspan="3" style="text-align:left">
+							<input value="${userTasklistVo.proveColumn1}"
+								class="easyui-textbox"
+								style="width:95%; text-align:left" readOnly=true/>
+						</td>
+					</tr>
+					<tr>
+						<th>扩展信息2：</th>
+						<td colspan="3" style="text-align:left">
+							<input value="${userTasklistVo.proveColumn2}"
+								class="easyui-textbox"
+								style="width:95%; text-align:left" readOnly=true/>
+						</td>
+					</tr>
 				</table>
 				<input name="id" type="hidden" value="${userTasklistVo.id}"/>
 				<input name="taskId" type="hidden" value="${userTasklistVo.taskId}"/>
