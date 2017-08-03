@@ -50,14 +50,14 @@ public class WithdrawHisServiceImpl extends BaseServiceImpl<WithdrawHis, Withdra
 			//2. 如果失败，则需要增加用户收益金额
 			ImUsersVo imUsersVo = this.imUsersDao.selectById(withdrawHisVo.getPhoneId());
 			//更新数据
-			int balance = Integer.valueOf(imUsersVo.getBalance());	//原已有余额
+			double balance = Double.valueOf(imUsersVo.getBalance());	//原已有余额
 			//2=支付成功；3=充值成功；；
 			if(withdrawHisVo.getStatusType() == 2 || withdrawHisVo.getStatusType() == 3) {
 				logger.info("用户提现成功，余额=" + (balance));
 				
 			//4=失败则回退用户金额
 			}else if(withdrawHisVo.getStatusType() == 4) {
-				int earn = Integer.valueOf(withdrawHisVo.getIncome());	//提现金额
+				double earn = Double.valueOf(withdrawHisVo.getIncome());	//提现金额
 				imUsersVo.setUpdateDate(cTime);
 				imUsersVo.setBalance(String.valueOf(balance+earn));
 				logger.info("用户提现失败，回滚后余额=" + (balance+earn) + "。balance=" + balance + ", earn=" + earn);

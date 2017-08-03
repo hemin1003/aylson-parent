@@ -60,9 +60,9 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 			//2. 如果审批完成，则需要增加或扣减用户收益金额
 			ImUsersVo imUsersVo = this.imUsersDao.selectById(userTasklistVo.getPhoneId());
 			//更新数据
-			int balance = Integer.valueOf(imUsersVo.getBalance());	//原已有余额
-			int totalIncome = Integer.valueOf(imUsersVo.getTotalIncome());	//原累积收入余额
-			int earn = Integer.valueOf(userTasklistVo.getIncome());	//任务收益金额
+			double balance = Double.valueOf(imUsersVo.getBalance());	//原已有余额
+			double totalIncome = Double.valueOf(imUsersVo.getTotalIncome());	//原累积收入余额
+			double earn = Double.valueOf(userTasklistVo.getIncome());	//任务收益金额
 			imUsersVo.setUpdateDate(cTime);
 			//操作标识位，1=加钱，2=扣钱
 			int actionFlag = 0;
