@@ -1,10 +1,14 @@
 package com.aylson.dc.cfdb.service.impl;
 
+import java.text.DecimalFormat;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.aylson.core.frame.dao.BaseDao;
 import com.aylson.core.frame.domain.Result;
 import com.aylson.core.frame.domain.ResultCode;
@@ -66,21 +70,23 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 			imUsersVo.setUpdateDate(cTime);
 			//操作标识位，1=加钱，2=扣钱
 			int actionFlag = 0;
+			//格式化，保留两位小数，四舍五入
+			DecimalFormat dFormat = new DecimalFormat("#.00"); 
 			//审核完成，增加用户金额
 			if(userTasklistVo.getStatusFlag() == 3) {
 				actionFlag = 1;
-				imUsersVo.setBalance(String.valueOf(balance+earn));
-				imUsersVo.setTotalIncome(String.valueOf(totalIncome+earn));
-				logger.info("用户加钱后余额=" + (balance+earn) + "。balance=" + balance + ", earn=" + earn);
+				imUsersVo.setBalance(dFormat.format(balance+earn));
+				imUsersVo.setTotalIncome(dFormat.format(totalIncome+earn));
+				logger.info("用户加钱后余额=" + dFormat.format(balance+earn) + "。balance=" + balance + ", earn=" + earn);
 				userTasklistVo.setIsFirstSuc(2);		//成功审核标识
 				
 			//审核失败，且有成功审核后才扣减用户金额
 			}else if(userTasklistVo.getStatusFlag() == 4) {
 				if(null!=userTasklistVo.getIsFirstSuc() && userTasklistVo.getIsFirstSuc()==2) {
 					actionFlag = 2;
-					imUsersVo.setBalance(String.valueOf(balance-earn));
-					imUsersVo.setTotalIncome(String.valueOf(totalIncome-earn));
-					logger.info("用户扣钱后余额=" + (balance-earn) + "。balance=" + balance + ", earn=" + earn);
+					imUsersVo.setBalance(dFormat.format(balance-earn));
+					imUsersVo.setTotalIncome(dFormat.format(totalIncome-earn));
+					logger.info("用户扣钱后余额=" + dFormat.format(balance-earn) + "。balance=" + balance + ", earn=" + earn);
 				}else {
 					actionFlag = 3;	//未扣钱，直接审批失败，不记录收益
 				}
