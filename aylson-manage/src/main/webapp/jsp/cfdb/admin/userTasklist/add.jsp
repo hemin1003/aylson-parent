@@ -30,10 +30,11 @@ text-align:left!important;
 }
 </style>
 <div align="center" >
-	<div class="easyui-tabs" id="tabActivity" style="width:100%">
-		 <div title="广告任务审批" style="padding:10px;text-align:center">
-		 	<form id="userTasklistConfigForm" method="post">
-				<table class="tableForm" style="width:99%;">
+	<div id="tabActivity" style="width:99%">
+		 <form id="userTasklistConfigForm" method="post">
+		 <fieldset style="width:95%;">
+		    <legend>任务信息</legend>
+		    <table class="tableForm" style="width:95%;">
 					<tr>
 						<th>手机标识码：</th>
 						<td colspan="3" style="text-align:left">
@@ -90,6 +91,11 @@ text-align:left!important;
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
 					</tr>
+				</table>
+			 </fieldset>
+			 <fieldset style="width:95%;">
+			    <legend>审批信息</legend>
+				<table class="tableForm" style="width:95%;">
 					<tr>
 						<th><font color="red">*</font>广告任务状态：</th>
 						<td colspan="3" style="text-align:left">
@@ -124,9 +130,8 @@ text-align:left!important;
 					<tr>
 						<th>待审批图片：</th>
 						<td colspan="3" style="text-align:left">
-							<input value="${userTasklistVo.proveImagesUrl}"
-								class="easyui-textbox"
-								style="width:95%; text-align:left" readOnly=true/>
+							<input id="proveImagesUrl" value="${userTasklistVo.proveImagesUrl}" type="hidden"/>
+							<div id="imagesUrlDiv"></div>
 						</td>
 					</tr>
 					<tr>
@@ -153,7 +158,7 @@ text-align:left!important;
 				<input name="statusFlagOld" id="statusFlagOld" type="hidden" value="${userTasklistVo.statusFlag}"/>
 				<input name="proveDate" type="hidden" value="${userTasklistVo.proveDate}"/>
 				<input name="isFirstSuc" type="hidden" value="${userTasklistVo.isFirstSuc}"/>
-				
+			</fieldset>
 			</form>
 		</div>
 	</div> 
@@ -167,6 +172,53 @@ $(function(){
 	        select.options[i].selected = true;  
 	        break;  
 	    }  
-	}  
+	}
+	
+	//处理审批图片
+	var proveImagesUrl = $('#proveImagesUrl').val();
+	if(proveImagesUrl){
+		var arrays = proveImagesUrl.split("#");
+		for(var i=0; i<arrays.length; i++){  
+			addElementImg("imagesUrlDiv", arrays[i], i);
+		}
+	}
 });
+
+//动态附加html元素
+function addElementImg(obj, url, id) {
+	var ul = document.getElementById(obj);
+	var li = document.createElement("li");
+	//添加 img
+	var img = document.createElement("img");
+	img.setAttribute("style", "width:40px;height:40px");
+	img.src = url;
+	li.appendChild(img);
+	//添加 a
+	var a = document.createElement("a");
+	a.innerText = "查看大图";
+	a.setAttribute("href","javascript:preview(" + id + ")");
+	li.appendChild(a);
+	//添加 hidden
+	var input = document.createElement("input");
+	input.type = 'hidden';
+	input.setAttribute("id", id);
+	input.setAttribute("value", url);
+	li.appendChild(input);
+	ul.appendChild(li);
+}
+
+function preview(id){
+	var simg = $("#" + id + "").val();
+    wins = $("<div align='center' style='text-align:center; background:#90A4AE'><img id='simg'/></div>").dialog({
+		title:'大图预览',
+		width:'95%',
+		height:'95%',
+		maximizable:true,
+		modal:true,
+		onClose:function(){
+	    		$(this).dialog("destroy");
+	    },
+	});
+    $("#simg").attr("src",simg);  
+}
 </script>

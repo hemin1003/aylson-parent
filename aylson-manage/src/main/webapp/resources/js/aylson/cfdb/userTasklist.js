@@ -32,7 +32,8 @@
 					var handleHtml = '';
 					//审核中的状态才需要审核
 					if(row.statusFlag == 2 || row.statusFlag == 3 || row.statusFlag == 4){
-						handleHtml += '<a href="javascript:edit(\'' + row.id + '\')">审批</a>&nbsp;';
+						handleHtml += '<a href="javascript:edit(\'' + row.id + '\')">查看</a>&nbsp;';
+						handleHtml += '<a href="javascript:prove(\'' + row.id + '\')">审批</a>&nbsp;';
 					}
 					return handleHtml;
 				}
@@ -124,11 +125,33 @@
 		$(".datagrid-body").css("overflow-x","scroll");
 	});
 	
-	//修改
+	//查看
 	function edit(id){
 		win = $("<div></div>").dialog({
-			title:'操作',
-			width:450,
+			title:'查看',
+			width:480,
+			height:'70%',
+			maximizable:true,
+			modal:true,
+			href:projectName+'/cfdb/userTasklist/admin/toEdit?id='+id,
+			onClose:function(){
+		    		$(this).dialog("destroy");
+		    },
+			buttons:[{
+					 text:'取消',
+				     iconCls:'icon-cancel',  
+				 	 handler:function(){
+				 		 win.dialog('destroy');
+				 	 }   
+				  }]
+		});
+	}
+	
+	//审批
+	function prove(id){
+		win = $("<div></div>").dialog({
+			title:'审批',
+			width:480,
 			height:'70%',
 			maximizable:true,
 			modal:true,

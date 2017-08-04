@@ -67,7 +67,7 @@ $("#tabActivity").tabs({
 })
 
 function preview(){  
-    var simg = $('#stepUrl').val();;  
+    var simg = $('#stepUrl').val();
     wins = $("<div align='center' style='text-align:center; background:#90A4AE'><img id='simg'/></div>").dialog({
 		title:'大图预览',
 		width:'95%',

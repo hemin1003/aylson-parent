@@ -15,6 +15,10 @@
 						<td class="tal" >
 							<input class="easyui-textbox" name="phoneIdLike" prompt="模糊查询"/>
 						</td> 
+						<td class="tar" >手机号码：</td>
+						<td class="tal" >
+							<input class="easyui-textbox" name="phoneNumLike" prompt="模糊查询"/>
+						</td> 
 					    <td style="padding-left:20px">
 							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch()">搜索</a>
 							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" style="width:80px" onclick="reset()">重置</a>

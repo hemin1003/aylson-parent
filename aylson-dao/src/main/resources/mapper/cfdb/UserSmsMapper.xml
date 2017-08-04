@@ -30,6 +30,7 @@
 				<!-- 匹配查询 -->
 				<!-- 模糊查询 -->
 				<if test="phoneIdLike != null and phoneIdLike != ''"> and cfdb_user_sms.phoneId like CONCAT('%',#{phoneIdLike},'%') </if>
+				<if test="phoneNumLike != null and phoneNumLike != ''"> and cfdb_user_sms.phoneNum like CONCAT('%',#{phoneNumLike},'%') </if>
 			</trim>
 		</where>
 	</sql>
