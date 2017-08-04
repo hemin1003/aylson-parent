@@ -2,6 +2,11 @@ package com.aylson.dc.cfdb.po;
 
 import java.io.Serializable;
 
+/**
+ * 短信历史记录
+ * @author Minbo
+ *
+ */
 public class UserSms implements Serializable{
 	
 	private static final long serialVersionUID = 5213205893092406637L;
