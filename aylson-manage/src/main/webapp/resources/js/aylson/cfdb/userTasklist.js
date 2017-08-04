@@ -130,7 +130,7 @@
 		win = $("<div></div>").dialog({
 			title:'查看',
 			width:480,
-			height:'70%',
+			height:'85%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/userTasklist/admin/toEdit?id='+id,
@@ -152,7 +152,7 @@
 		win = $("<div></div>").dialog({
 			title:'审批',
 			width:480,
-			height:'70%',
+			height:'85%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/userTasklist/admin/toEdit?id='+id,
