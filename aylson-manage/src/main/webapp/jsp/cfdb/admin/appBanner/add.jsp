@@ -3,10 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/plugs/kindeditor/kindeditor-4.1.10/themes/default/default.css" />
-<link rel="stylesheet" href="<%=request.getContextPath()%>/resources/plugs/kindeditor/kindeditor-4.1.10/plugins/code/prettify.css" />
-<script charset="utf-8" src="<%=request.getContextPath()%>/resources/plugs/kindeditor/kindeditor-4.1.10/kindeditor.js"></script>
-<script charset="utf-8" src="<%=request.getContextPath()%>/resources/plugs/kindeditor/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <style>
 .param_th{
 text-align:center!important;
@@ -29,6 +25,22 @@ padding:5px;
 text-align:left!important;
 }
 </style>
+<script type="text/javascript">
+function preview(){  
+    var simg = $('#url').val();;  
+    wins = $("<div align='center' style='text-align:center; background:#90A4AE'><img id='simg'/></div>").dialog({
+		title:'大图预览',
+		width:'95%',
+		height:'95%',
+		maximizable:true,
+		modal:true,
+		onClose:function(){
+	    		$(this).dialog("destroy");
+	    },
+	});
+    $("#simg").attr("src",simg);  
+}
+</script>
 <div align="center" >
 	<div class="easyui-tabs" id="tabActivity" style="width:100%">
 		 <div title="广告Banner配置" style="padding:10px;text-align:center">
@@ -43,11 +55,17 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th>图片Url：</th>
+						<th>
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-large-picture',size:'large',iconAlign:'top'" 
+								onclick="uploadImg('img','url','yfax-test')" id="uploadImg" style="margin-bottom:10px;">上传图片</a>
+						</th>
 						<td colspan="3" style="text-align:left">
-							<input name="url" value="${appBannerVo.url}" data-options="required:true"
-								class="easyui-textbox"
-								style="width:95%; text-align:left"/>
+							<div style="width:240px;height:120px">
+								<c:if test="${not empty appBannerVo.url}"><img id="img" src="${appBannerVo.url}" style="width:120px;height:120px"/></c:if>
+								<c:if test="${empty appBannerVo.url }"><img id="img" src="" style="width:120px;height:120px"/></c:if>
+								<input id="url" name="url" value="${appBannerVo.url}" type="hidden"/>
+							</div>
+							<c:if test="${not empty appBannerVo.url}"><a href="javascript:preview()">查看大图</a></c:if>
 						</td>
 					</tr>
 					<tr>

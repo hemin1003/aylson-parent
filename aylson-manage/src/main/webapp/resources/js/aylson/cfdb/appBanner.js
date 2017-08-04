@@ -45,11 +45,18 @@
 				width : 150,
 				sortable:true
 			}, {
-				title : '图片Url',
+				title : '图片',
 				field : 'url',
 				align : 'center',
 				width : 150,
-				sortable:true
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value){
+						var handleHtml = '';
+						handleHtml += '<img src=\'' + value + '\' style="width:70px;height:70px"/>';
+						return handleHtml;
+					}
+				}
 			}, {
 				title : '排序编号',
 				field : 'orderNo',
