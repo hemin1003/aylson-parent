@@ -181,6 +181,8 @@ $(function(){
 		for(var i=0; i<arrays.length; i++){  
 			addElementImg("imagesUrlDiv", arrays[i], i);
 		}
+	}else{
+		$('#imagesUrlDiv').html('无图');
 	}
 });
 
