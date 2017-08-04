@@ -37,6 +37,7 @@
 					
 					if(row.status == 2){
 						handleHtml += '<a href="javascript:changeStatus(\'' + row.id + '\',1)">下线</a>&nbsp;';
+						handleHtml += '<a href="javascript:query(\'' + row.id + '\')">查看</a>&nbsp;';
 					}else{
 						handleHtml += '<a href="javascript:changeStatus(\'' + row.id + '\',2)">上线</a>&nbsp;';
 						handleHtml += '<a href="javascript:edit(\'' + row.id + '\')">修改</a>&nbsp;';
@@ -49,12 +50,6 @@
 				field : 'version',
 				align : 'center',
 				width : 80,
-				sortable:true
-			}, {
-				title : '版本描述',
-				field : 'vdesc',
-				align : 'center',
-				width : 200,
 				sortable:true
 			}, {
 				title : '安装包下载地址',
@@ -110,8 +105,8 @@
 		var win;
 		win = $("<div></div>").dialog({
 			title:'新增',
-			width:450,
-			height:'60%',
+			width:830,
+			height:'75%',
 			modal:true,
 			href:projectName+'/cfdb/appUpgrade/admin/toAdd',
 			onClose:function(){
@@ -121,6 +116,8 @@
 				text:'确定',
 			    iconCls:'icon-ok',
 			    handler:function(){
+				    	//处理富文本编辑的内容
+				    	$("#vdesc").val($('#summernote').summernote('code'));
 				    	$("#appUpgradeConfigForm").form('submit',{
 				    		 type:'POST',
 				    		 url : projectName+'/cfdb/appUpgrade/admin/add',
@@ -146,12 +143,34 @@
 		});
 	}
 	
+	//查询
+	function query(id){
+		win = $("<div></div>").dialog({
+			title:'查询',
+			width:830,
+			height:'75%',
+			maximizable:true,
+			modal:true,
+			href:projectName+'/cfdb/appUpgrade/admin/toEdit?id='+id,
+			onClose:function(){
+		    		$(this).dialog("destroy");
+		    },
+			buttons:[{
+					 text:'取消',
+				     iconCls:'icon-cancel',  
+				 	 handler:function(){
+				 		 win.dialog('destroy');
+				 	 }   
+				  }]
+		});
+	}
+	
 	//修改
 	function edit(id){
 		win = $("<div></div>").dialog({
 			title:'修改',
-			width:450,
-			height:'60%',
+			width:830,
+			height:'75%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/appUpgrade/admin/toEdit?id='+id,
@@ -162,6 +181,8 @@
 					text:'确定',
 				    iconCls:'icon-ok',
 				    handler:function(){
+				     	//处理富文本编辑的内容
+				    		$("#vdesc").val($('#summernote').summernote('code'));
 					    	$("#appUpgradeConfigForm").form('submit',{
 					    		 type:'POST',
 					    		 url : projectName+'/cfdb/appUpgrade/admin/update',

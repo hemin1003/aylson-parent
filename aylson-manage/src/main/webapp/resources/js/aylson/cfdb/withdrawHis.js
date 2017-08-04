@@ -118,7 +118,7 @@
 		win = $("<div></div>").dialog({
 			title:'提现处理',
 			width:450,
-			height:'65%',
+			height:'52%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/cfdb/withdrawHis/admin/toEdit?id='+id,
