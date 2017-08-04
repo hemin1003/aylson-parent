@@ -62,7 +62,26 @@ public class StringUtil {
 		}else{
 			StringUtil.parseRichContent(content);
 		}
-		
 	}
 
+	/**
+	 * 如果为.00，则处理成0.00：
+	 * @param str
+	 * @return
+	 */
+	public static String zero2Str(String str){
+		return (null2Str(str).equals(".00")?"0.00":str);
+	}
+	
+	/**
+	 * 1.将null对象返回空字符串-“""”<br>
+	 * 2.若非null对象返回toString()及trim字符串<br>
+	 * 
+	 * @param origin
+	 *            String
+	 * @return String
+	 */
+	public static String null2Str(Object origin) {
+		return (origin == null ? "" : origin.toString().trim()).replace("null", "");
+	}
 }

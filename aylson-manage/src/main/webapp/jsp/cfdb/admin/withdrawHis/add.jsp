@@ -100,7 +100,8 @@ text-align:left!important;
 					</tr>
 					<tr>
 						<td colspan=4>
-							<font color=blue size=1>说明：当审核失败时，系统会自动回款，不能再审核</font>
+							<br/>
+							<font color=red size=2>特殊说明：当审核失败时，系统会自动回款，不能再审核!</font>
 						</td>
 					</tr>
 				</table>

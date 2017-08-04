@@ -26,6 +26,7 @@ import com.aylson.dc.cfdb.vo.TasklistVo;
 import com.aylson.dc.cfdb.vo.UserTasklistVo;
 import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
+import com.aylson.utils.StringUtil;
 import com.aylson.utils.UUIDUtils;
 
 @Service
@@ -75,18 +76,20 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 			//审核完成，增加用户金额
 			if(userTasklistVo.getStatusFlag() == 3) {
 				actionFlag = 1;
-				imUsersVo.setBalance(dFormat.format(balance+earn));
-				imUsersVo.setTotalIncome(dFormat.format(totalIncome+earn));
-				logger.info("用户加钱后余额=" + dFormat.format(balance+earn) + "。balance=" + balance + ", earn=" + earn);
+				imUsersVo.setBalance(StringUtil.zero2Str(dFormat.format(balance+earn)));
+				imUsersVo.setTotalIncome(StringUtil.zero2Str(dFormat.format(totalIncome+earn)));
+				logger.info("用户加钱后余额=" + StringUtil.zero2Str(dFormat.format(balance+earn)) 
+					+ "。balance=" + balance + ", earn=" + earn);
 				userTasklistVo.setIsFirstSuc(2);		//成功审核标识
 				
 			//审核失败，且有成功审核后才扣减用户金额
 			}else if(userTasklistVo.getStatusFlag() == 4) {
 				if(null!=userTasklistVo.getIsFirstSuc() && userTasklistVo.getIsFirstSuc()==2) {
 					actionFlag = 2;
-					imUsersVo.setBalance(dFormat.format(balance-earn));
-					imUsersVo.setTotalIncome(dFormat.format(totalIncome-earn));
-					logger.info("用户扣钱后余额=" + dFormat.format(balance-earn) + "。balance=" + balance + ", earn=" + earn);
+					imUsersVo.setBalance(StringUtil.zero2Str(dFormat.format(balance-earn)));
+					imUsersVo.setTotalIncome(StringUtil.zero2Str(dFormat.format(totalIncome-earn)));
+					logger.info("用户扣钱后余额=" + StringUtil.zero2Str(dFormat.format(balance-earn)) 
+						+ "。balance=" + balance + ", earn=" + earn);
 				}else {
 					actionFlag = 3;	//未扣钱，直接审批失败，不记录收益
 				}

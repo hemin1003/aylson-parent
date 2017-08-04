@@ -21,6 +21,7 @@ import com.aylson.dc.cfdb.vo.ImUsersVo;
 import com.aylson.dc.cfdb.vo.WithdrawHisVo;
 import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
+import com.aylson.utils.StringUtil;
 
 
 @Service
@@ -63,8 +64,9 @@ public class WithdrawHisServiceImpl extends BaseServiceImpl<WithdrawHis, Withdra
 				DecimalFormat dFormat = new DecimalFormat("#.00"); 
 				double earn = Double.valueOf(withdrawHisVo.getIncome());	//提现金额
 				imUsersVo.setUpdateDate(cTime);
-				imUsersVo.setBalance(dFormat.format(balance+earn));
-				logger.info("用户提现失败，回滚后余额=" + dFormat.format(balance+earn) + "。balance=" + balance + ", earn=" + earn);
+				imUsersVo.setBalance(StringUtil.zero2Str(dFormat.format(balance+earn)));
+				logger.info("用户提现失败，回滚后余额=" + StringUtil.zero2Str(dFormat.format(balance+earn)) 
+					+ "。balance=" + balance + ", earn=" + earn);
 				
 			}
 			
