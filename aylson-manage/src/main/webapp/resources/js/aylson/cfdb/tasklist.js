@@ -3,6 +3,7 @@
 	 */
 	var datagrid;
 	var editor;
+	var finalStepUrl='';
 	
 	$(function() { 
 		datagrid = $('#datagrid').datagrid({
@@ -267,7 +268,7 @@
 					text:'确定',
 				    iconCls:'icon-ok',
 				    handler:function(){
-				    	
+				    		$('#stepUrl').val(finalStepUrl);
 				     	//处理富文本编辑的内容
 					    	$("#taskDesc").val($('#summernote').summernote('code'));
 					    	$("#fields").val($.trim(editor.getValue()));
