@@ -66,6 +66,14 @@ text-align:left!important;
 								style="width:95%; text-align:left"/>
 						</td>
 					</tr>
+					<tr>
+						<th>优先级：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="orderNo" value="${sdkChannelConfigVo.orderNo}" data-options="required:true"
+								class="easyui-numberbox"
+								style="width:95%; text-align:left"/>
+						</td>
+					</tr>
 				</table>
 				<input name="id" type="hidden" value="${sdkChannelConfigVo.id}"/>
 			</form>

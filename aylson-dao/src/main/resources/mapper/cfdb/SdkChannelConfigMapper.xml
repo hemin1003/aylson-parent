@@ -8,6 +8,7 @@
 		<result column="channelName" property="channelName" jdbcType="VARCHAR" />
 		<result column="cRate" property="cRate" jdbcType="VARCHAR" />
 		<result column="sRate" property="sRate" jdbcType="VARCHAR" />
+		<result column="orderNo" property="orderNo" jdbcType="INTEGER" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
@@ -20,6 +21,7 @@
 		cfdb_sdk_channel_config.channelName,
 		cfdb_sdk_channel_config.cRate,
 		cfdb_sdk_channel_config.sRate,
+		cfdb_sdk_channel_config.orderNo,
 		cfdb_sdk_channel_config.createDate,
 		cfdb_sdk_channel_config.createdBy,
 		cfdb_sdk_channel_config.updateDate,
@@ -74,6 +76,7 @@
 		  <if test="channelName != null" > channelName, </if>
 		  <if test="cRate != null" > cRate, </if>
 		  <if test="sRate != null" > sRate, </if>
+		  <if test="orderNo != null" > orderNo, </if>
 		  <if test="createDate != null" > createDate, </if>
 		  <if test="createdBy != null" > createdBy, </if>
 		  <if test="updateDate != null" > updateDate, </if>
@@ -84,6 +87,7 @@
 		  <if test="channelName != null" > #{channelName}, </if>
 		  <if test="cRate != null" > #{cRate}, </if>
 		  <if test="sRate != null" > #{sRate}, </if>
+		  <if test="orderNo != null" > #{orderNo}, </if>
 		  <if test="createDate != null" > #{createDate}, </if>
 		  <if test="createdBy != null" > #{createdBy}, </if>
 		  <if test="updateDate != null" > null, </if>
@@ -99,6 +103,7 @@
 			<if test="channelName != null"> channelName = #{channelName}, </if>
 			<if test="cRate != null"> cRate = #{cRate}, </if>
 			<if test="sRate != null"> sRate = #{sRate}, </if>
+			<if test="orderNo != null"> orderNo = #{orderNo}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
 			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
 		</set>

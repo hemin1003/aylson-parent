@@ -59,6 +59,11 @@
 				align : 'center',
 				width : 100
 			}, {
+				title : '优先级',
+				field : 'orderNo',
+				align : 'center',
+				width : 100
+			}, {
 				title : '创建时间',
 				field : 'createDate',
 				align : 'center',
