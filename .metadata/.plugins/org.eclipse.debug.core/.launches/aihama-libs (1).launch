@@ -6,11 +6,12 @@
 <booleanAttribute key="M2_OFFLINE" value="false"/>
 <stringAttribute key="M2_PROFILES" value=""/>
 <listAttribute key="M2_PROPERTIES"/>
-<stringAttribute key="M2_RUNTIME" value="Maven"/>
+<stringAttribute key="M2_RUNTIME" value="bin"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
 <intAttribute key="M2_THREADS" value="1"/>
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
 <stringAttribute key="M2_USER_SETTINGS" value=""/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
+<booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${project_loc:aihama-libs}"/>
 </launchConfiguration>
