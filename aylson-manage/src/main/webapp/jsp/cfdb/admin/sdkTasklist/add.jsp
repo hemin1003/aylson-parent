@@ -31,6 +31,14 @@ text-align:left!important;
 		 	<form id="sdkTasklistConfigForm" method="post">
 				<table class="tableForm" style="width:99%;">
 					<tr>
+						<th>广告渠道来源：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="sdkType" value="${sdkTasklistVo.sdkType}" 
+								class="easyui-textbox"
+								style="width:95%; text-align:left"/>
+						</td>
+					</tr>
+					<tr>
 						<th>广告ID：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="adid" value="${sdkTasklistVo.adid}" 

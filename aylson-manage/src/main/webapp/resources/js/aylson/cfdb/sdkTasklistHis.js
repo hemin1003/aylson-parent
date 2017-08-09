@@ -90,12 +90,20 @@
 				formatter:function(value,row,index){
 					if(value == 'dianru'){
 						return '点入';
+					}else if(value == 'youmi'){
+						return '有米';
 					}
 					return value;
 				}
 			}, {
 				title : '奖励积分',
 				field : 'point',
+				align : 'center',
+				width : 80,
+				sortable:true
+			}, {
+				title : '奖励金额',
+				field : 'price',
 				align : 'center',
 				width : 80,
 				sortable:true

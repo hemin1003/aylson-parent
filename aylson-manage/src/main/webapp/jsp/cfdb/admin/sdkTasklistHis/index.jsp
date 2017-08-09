@@ -14,7 +14,15 @@
 						<td class="tar" >手机IMEI账户：</td>
 						<td class="tal" >
 							<input class="easyui-textbox" name="deviceidLike" prompt="模糊查询"/>
-						</td> 
+						</td>
+						<td class="tar" >广告渠道来源：</td>
+						<td class="tal" >
+							<select name="source" class="easyui-combobox"  style="width: 120px;" editable=false>
+								<option value="">全部</option>
+								<option value="dianru">点入</option>
+								<option value="youmi">有米</option>
+							</select>
+						</td>
 					    <td style="padding-left:20px">
 							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch()">搜索</a>
 							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" style="width:80px" onclick="reset()">重置</a>

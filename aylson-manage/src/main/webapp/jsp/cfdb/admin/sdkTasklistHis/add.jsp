@@ -103,6 +103,14 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
+						<th>奖励金额：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="price" value="${sdkTasklistHisVo.price}"
+								class="easyui-textbox"
+								style="width:95%; text-align:left; "/>
+						</td>
+					</tr>
+					<tr>
 						<th>平台回调时间：</th>
 						<td colspan="3" style="text-align:left">
 							<input name="timeStr" value="${sdkTasklistHisVo.timeStr}"

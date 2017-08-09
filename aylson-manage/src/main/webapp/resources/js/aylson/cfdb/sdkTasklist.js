@@ -46,6 +46,20 @@
 					return handleHtml;
 				}
 			}, {
+				title : '广告渠道来源',
+				field : 'sdkType',
+				align : 'center',
+				width : 80,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value == 'dianru'){
+						return '点入';
+					}else if(value == 'youmi'){
+						return '有米';
+					}
+					return value;
+				}
+			}, {
 				title : '广告名称',
 				field : 'title',
 				align : 'center',

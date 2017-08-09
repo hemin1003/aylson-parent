@@ -12,6 +12,7 @@
 		<result column="deviceid" property="deviceid" jdbcType="VARCHAR" />
 		<result column="source" property="source" jdbcType="VARCHAR" />
 		<result column="point" property="point" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="VARCHAR" />
 		<result column="time" property="time" jdbcType="VARCHAR" />
 		<result column="timeStr" property="timeStr" jdbcType="VARCHAR" />
 		<result column="checksum" property="checksum" jdbcType="VARCHAR" />
@@ -31,6 +32,7 @@
 		cfdb_adv_his.deviceid,
 		cfdb_adv_his.source,
 		cfdb_adv_his.point,
+		cfdb_adv_his.price,
 		cfdb_adv_his.time,
 		cfdb_adv_his.timeStr,
 		cfdb_adv_his.checksum,
@@ -44,6 +46,7 @@
 		<where>
 			<trim prefixOverrides="and">
 				<!-- 匹配查询 -->
+				<if test="source != null and source != ''">and cfdb_adv_his.source = #{source}</if>
 				<!-- 模糊查询 -->
 				<if test="deviceidLike != null and deviceidLike != ''"> and cfdb_adv_his.deviceid like CONCAT('%',#{deviceidLike},'%') </if>
 			</trim>

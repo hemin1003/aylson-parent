@@ -14,7 +14,8 @@ public class SdkTasklistHis implements Serializable{
 	private String mac;		//mac地址
 	private String deviceid;	//设备唯一标识(IMEI)
 	private String source;	//渠道来源
-	private String point;	//积分
+	private String point;	//奖励积分
+	private String price;	//奖励金额
 	private String time;		//时间戳
 	private String timeStr;	//转译后时间戳
 	private String appsecret;	//开发者设置的密钥
@@ -126,4 +127,11 @@ public class SdkTasklistHis implements Serializable{
 	public void setDeviceid(String deviceid) {
 		this.deviceid = deviceid;
 	}
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	
 }
