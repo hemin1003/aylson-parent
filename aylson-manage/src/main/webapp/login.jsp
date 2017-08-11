@@ -133,7 +133,7 @@
 		   	<span id="lblMsg" class="red"></span>
            </div>
            <input  id="userName" name="userName" value="test001"  prompt="用户名" placeholder="输入可搜索" pattern="输入可搜索"  class="easyui-textbox"  style="width: 300px;height:40px;padding:8px 9px;font-size:16px;"/><br/>
-		   <input type="password" id="password" name="pwd" prompt="密码" class="input-block-level" value = "000000"  placeholder="密码" autocomplete="off" style="margin-top:15px;">
+		   <input type="password" id="password" name="pwd" prompt="密码" class="input-block-level" value = ""  placeholder="密码" autocomplete="off" style="margin-top:15px;">
 		   <input type="text" id="validateCode" name="validateCode"  class="input-block-level" value="开发" placeholder="验证码" maxlength="4" autocomplete="off" />
 		   <img src="<%=request.getContextPath()%>/captchaImage"  height="45" id="kaptchaImage"/>   
 		   <label class="checkbox">

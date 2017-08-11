@@ -10,6 +10,7 @@
 		<result column="taskName" property="taskName" jdbcType="VARCHAR" />
 		<result column="incomeTime" property="incomeTime" jdbcType="VARCHAR" />
 		<result column="income" property="income" jdbcType="VARCHAR" />
+		<result column="sysIncome" property="sysIncome" jdbcType="VARCHAR" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
 		<result column="flag" property="flag" jdbcType="INTEGER" />
@@ -26,6 +27,7 @@
 		cfdb_income_his.taskName,
 		cfdb_income_his.incomeTime,
 		cfdb_income_his.income,
+		cfdb_income_his.sysIncome,
 		cfdb_income_his.createDate,
 		cfdb_income_his.updateDate,
 		cfdb_income_his.flag,
@@ -38,6 +40,7 @@
 		<where>
 			<trim prefixOverrides="and">
 				<!-- 匹配查询 -->
+				<if test="channel != null">and cfdb_income_his.channel = #{channel}</if>
 				<!-- 模糊查询 -->
 				<if test="phoneIdLike != null and phoneIdLike != ''"> and cfdb_income_his.phoneId like CONCAT('%',#{phoneIdLike},'%') </if>
 			</trim>
@@ -77,6 +80,7 @@
 		  <if test="taskName != null" > taskName, </if>
 		  <if test="incomeTime != null" > incomeTime, </if>
 		  <if test="income != null" > income, </if>
+		  <if test="sysIncome != null" > sysIncome, </if>
 		  <if test="createDate != null" > createDate, </if>
 		  <if test="createdBy != null" > createdBy, </if>
 		  <if test="updateDate != null" > updateDate, </if>
@@ -92,6 +96,7 @@
 		  <if test="taskName != null" > #{taskName}, </if>
 		  <if test="incomeTime != null" > #{incomeTime}, </if>
 		  <if test="income != null" > #{income}, </if>
+		  <if test="sysIncome != null" > #{sysIncome}, </if>
 		  <if test="createDate != null" > #{createDate}, </if>
 		  <if test="createdBy != null" > #{createdBy}, </if>
 		  <if test="updateDate != null" > null, </if>

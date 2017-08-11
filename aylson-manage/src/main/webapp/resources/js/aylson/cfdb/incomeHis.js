@@ -77,22 +77,33 @@
 					}
 				}
 			}, {
-				title : '广告渠道标识',
+				title : '收益渠道来源',
 				field : 'channel',
 				align : 'center',
 				width : 120,
 				sortable:true,
 				formatter:function(value,row,index){
 					if(value == 1){
-						return "后台系统广告";
+						return "后台系统任务";
 					}else if(value == 2){
-						return "SDK平台广告";
+						return "抢红包";
+					}else if(value == 3){
+						return "邀请";
+					}else if(value == 4){
+						return "点入平台";
+					}else if(value == 5){
+						return "有米平台";
 					}
-					return value;
+					return "未知渠道";
 				}
 			}, {
-				title : '收益金额',
+				title : '用户收益金额',
 				field : 'income',
+				align : 'center',
+				width : 80
+			}, {
+				title : '平台收益金额',
+				field : 'sysIncome',
 				align : 'center',
 				width : 80
 			}, {
@@ -102,10 +113,11 @@
 				width : 120,
 				sortable:true,
 				formatter:function(value,row,index){
-					if(value){
+					//仅显示后台任务的时间
+					if(row.channel == 1){
 						return value.substring(0,19);
 					}
-					return value;
+					return '';
 				}
 			}
 			, {

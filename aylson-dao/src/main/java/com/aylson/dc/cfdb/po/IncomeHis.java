@@ -16,11 +16,12 @@ public class IncomeHis implements Serializable {
 	private String logoUrl;
 	private String taskName;
 	private String incomeTime;
-	private String income;
+	private String income;		//用户收益金额
+	private String sysIncome;	//平台收益金额
 	private String createDate;
 	private String updateDate;
-	private int flag;	//1=加钱；2=扣钱
-	private int channel;		//1=后台系统广告；2=SDK平台广告
+	private Integer flag;	//1=加钱；2=扣钱
+	private Integer channel;	
 	private String createdBy;	//创建人
 	private String updatedBy;	//更新人
 	
@@ -78,18 +79,6 @@ public class IncomeHis implements Serializable {
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
-	public int getFlag() {
-		return flag;
-	}
-	public void setFlag(int flag) {
-		this.flag = flag;
-	}
-	public int getChannel() {
-		return channel;
-	}
-	public void setChannel(int channel) {
-		this.channel = channel;
-	}
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -101,5 +90,23 @@ public class IncomeHis implements Serializable {
 	}
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+	public String getSysIncome() {
+		return sysIncome;
+	}
+	public void setSysIncome(String sysIncome) {
+		this.sysIncome = sysIncome;
+	}
+	public Integer getFlag() {
+		return flag;
+	}
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
+	public Integer getChannel() {
+		return channel;
+	}
+	public void setChannel(Integer channel) {
+		this.channel = channel;
 	}
 }

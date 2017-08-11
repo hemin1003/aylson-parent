@@ -14,7 +14,18 @@
 						<td class="tar" >手机IMEI账户：</td>
 						<td class="tal" >
 							<input class="easyui-textbox" name="phoneIdLike" prompt="模糊查询"/>
-						</td> 
+						</td>
+						<td class="tar" >收益渠道：</td>
+						<td class="tal" >
+							<select name="channel" class="easyui-combobox"  style="width: 120px;" editable=false>
+								<option value="">全部</option>
+								<option value="1">后台任务</option>
+								<option value="2">抢红包</option>
+								<option value="3">邀请</option>
+								<option value="4">点入平台</option>
+								<option value="5">有米平台</option>
+							</select>
+						</td>
 					    <td style="padding-left:20px">
 							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch()">搜索</a>
 							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-clear'" style="width:80px" onclick="reset()">重置</a>
