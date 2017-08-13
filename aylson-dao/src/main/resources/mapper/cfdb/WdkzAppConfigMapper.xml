@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.cfdb.po.WdkzAppConfig">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.cfdb.vo.WdkzAppConfigVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="versionDesc" property="versionDesc" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="isEnabled" property="isEnabled" jdbcType="INTEGER" />
+		<result column="displayFlag" property="displayFlag" jdbcType="INTEGER" />
+		<result column="bannerFlag" property="bannerFlag" jdbcType="INTEGER" />
+		<result column="videoFlag" property="videoFlag" jdbcType="INTEGER" />
+		<result column="awardFlag" property="awardFlag" jdbcType="INTEGER" />
+		<result column="nosenseFlag" property="nosenseFlag" jdbcType="INTEGER" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
+		<result column="updatedBy" property="updatedBy" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		wdkz_app_config.id,
+		wdkz_app_config.version,
+		wdkz_app_config.versionDesc, 
+		wdkz_app_config.status,
+		wdkz_app_config.isEnabled,
+		wdkz_app_config.displayFlag,
+		wdkz_app_config.bannerFlag,
+		wdkz_app_config.videoFlag,
+		wdkz_app_config.awardFlag,
+		wdkz_app_config.nosenseFlag,
+		wdkz_app_config.createDate,
+		wdkz_app_config.updateDate,
+		wdkz_app_config.createdBy,
+		wdkz_app_config.updatedBy
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from wdkz_app_config
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from wdkz_app_config
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by wdkz_app_config.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from wdkz_app_config
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.cfdb.po.WdkzAppConfig">
+		insert into wdkz_app_config
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="version != null" > version, </if>
+		  <if test="versionDesc != null" > versionDesc, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="isEnabled != null" > isEnabled, </if>
+		  <if test="displayFlag != null" > displayFlag, </if>
+		  <if test="bannerFlag != null" > bannerFlag, </if>
+		  <if test="videoFlag != null" > videoFlag, </if>
+		  <if test="awardFlag != null" > awardFlag, </if>
+		  <if test="nosenseFlag != null" > nosenseFlag, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="createdBy != null" > createdBy, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="version != null" > #{version}, </if>
+		  <if test="versionDesc != null" > #{versionDesc}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="isEnabled != null" > #{isEnabled}, </if>
+		  <if test="displayFlag != null" > #{displayFlag}, </if>
+		  <if test="bannerFlag != null" > #{bannerFlag}, </if>
+		  <if test="videoFlag != null" > #{videoFlag}, </if>
+		  <if test="awardFlag != null" > #{awardFlag}, </if>
+		  <if test="nosenseFlag != null" > #{nosenseFlag}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="createdBy != null" > #{createdBy}, </if>
+		  <if test="updateDate != null" > null, </if>
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.cfdb.po.WdkzAppConfig">
+		update 
+			wdkz_app_config 
+		<set>
+			<if test="version != null"> version = #{version}, </if>
+			<if test="versionDesc != null"> versionDesc = #{versionDesc}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="isEnabled != null"> isEnabled = #{isEnabled}, </if>
+			<if test="displayFlag != null"> displayFlag = #{displayFlag}, </if>
+			<if test="bannerFlag != null"> bannerFlag = #{bannerFlag}, </if>
+			<if test="videoFlag != null"> videoFlag = #{videoFlag}, </if>
+			<if test="awardFlag != null"> awardFlag = #{awardFlag}, </if>
+			<if test="nosenseFlag != null"> nosenseFlag = #{nosenseFlag}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from wdkz_app_config
+		where id = #{id}
+	</delete>
+	
+</mapper>
