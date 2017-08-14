@@ -61,7 +61,7 @@ public class WithdrawHisServiceImpl extends BaseServiceImpl<WithdrawHis, Withdra
 			//4=失败则回退用户金额
 			}else if(withdrawHisVo.getStatusType() == 4) {
 				//格式化，保留两位小数，四舍五入
-				DecimalFormat dFormat = new DecimalFormat("#.00"); 
+				DecimalFormat dFormat = new DecimalFormat("#0.000"); 
 				double earn = Double.valueOf(withdrawHisVo.getIncome());	//提现金额
 				imUsersVo.setUpdateDate(cTime);
 				imUsersVo.setBalance(StringUtil.zero2Str(dFormat.format(balance+earn)));

@@ -15,14 +15,14 @@
 	
 	<!-- 当日做任务总人数 -->
 	<select id="selectUserCountOfTask" resultMap="ResultMap" parameterType="java.util.Map">
-		select '当日做任务总人数' as name,count(1) as value from (select distinct phoneid from cfdb_user_tasklist 
+		select '当日做任务总人数' as name,count(1) as value from (select distinct deviceid from cfdb_adv_his 
 			where date_format(createDate,'%Y-%m-%d')=#{currentTime}) as a
 	</select>
 	
 	<!-- 当日完成任务总数 -->
 	<select id="selectTaskCountOfFinished" resultMap="ResultMap" parameterType="java.util.Map">
-		select '当日完成任务总数' as name,count(1) as value from (select distinct taskId from cfdb_user_tasklist 
-			where date_format(createDate,'%Y-%m-%d')=#{currentTime} and statusFlag=3) as a
+		select '当日完成任务总数' as name,count(1) as value from (select distinct adid,deviceid from cfdb_adv_his 
+			where date_format(createDate,'%Y-%m-%d')=#{currentTime}) as a
 	</select>
 	
 	<!-- 当日用户总收入 -->

@@ -1,5 +1,6 @@
 package com.aylson.dc.cfdb.controller;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,8 +66,14 @@ public class SysReportInfoController extends BaseController {
 					sysReportInfoVo = this.sysReportInfoService.selectTaskCountOfFinished(params);
 				}else if(sysReportInfoSearch.getType() == 104) {
 					sysReportInfoVo = this.sysReportInfoService.selectUserIncomeOfDay(params);
+					//格式化，保留三位小数，四舍五入
+					DecimalFormat dFormat = new DecimalFormat("#0.000");
+					sysReportInfoVo.setValue(dFormat.format(Double.valueOf(sysReportInfoVo.getValue())));
 				}else if(sysReportInfoSearch.getType() == 105) {
 					sysReportInfoVo = this.sysReportInfoService.selectSysIncomeOfDay(params);
+					//格式化，保留三位小数，四舍五入
+					DecimalFormat dFormat = new DecimalFormat("#0.000");
+					sysReportInfoVo.setValue(dFormat.format(Double.valueOf(sysReportInfoVo.getValue())));
 				}
 				list.add(sysReportInfoVo);
 			}

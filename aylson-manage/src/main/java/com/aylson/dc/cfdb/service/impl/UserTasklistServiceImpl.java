@@ -72,7 +72,7 @@ public class UserTasklistServiceImpl  extends BaseServiceImpl<UserTasklist, User
 			//操作标识位，1=加钱，2=扣钱
 			int actionFlag = 0;
 			//格式化，保留两位小数，四舍五入
-			DecimalFormat dFormat = new DecimalFormat("#.00"); 
+			DecimalFormat dFormat = new DecimalFormat("#0.000"); 
 			//审核完成，增加用户金额
 			if(userTasklistVo.getStatusFlag() == 3) {
 				actionFlag = 1;
