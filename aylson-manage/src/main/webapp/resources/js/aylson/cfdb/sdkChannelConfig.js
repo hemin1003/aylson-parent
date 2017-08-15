@@ -52,17 +52,22 @@
 				title : '换算比例',
 				field : 'cRate',
 				align : 'center',
-				width : 100
+				width : 60
 			}, {
 				title : '分成比例',
 				field : 'sRate',
 				align : 'center',
-				width : 100
+				width : 60
 			}, {
 				title : '优先级',
 				field : 'orderNo',
 				align : 'center',
-				width : 100
+				width : 50
+			}, {
+				title : '平台回调秘钥',
+				field : 'sdkPwd',
+				align : 'center',
+				width : 150
 			}, {
 				title : '创建时间',
 				field : 'createDate',

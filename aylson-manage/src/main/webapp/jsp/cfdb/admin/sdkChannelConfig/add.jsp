@@ -70,6 +70,14 @@ text-align:left!important;
 								style="width:95%; text-align:left"/>
 						</td>
 					</tr>
+					<tr>
+						<th>平台回调秘钥：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="sdkPwd" value="${sdkChannelConfigVo.sdkPwd}" data-options="required:true"
+								class="easyui-textbox"
+								style="width:95%; text-align:left"/>
+						</td>
+					</tr>
 				</table>
 				<input name="id" type="hidden" value="${sdkChannelConfigVo.id}"/>
 			</form>
