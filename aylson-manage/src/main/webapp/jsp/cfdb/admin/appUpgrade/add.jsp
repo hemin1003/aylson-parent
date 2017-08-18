@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Access-Control-Allow-Origin" content="*">
+</head>
 <%@ page language="java" pageEncoding="UTF-8"
 	contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -74,10 +79,24 @@ $("#tabActivity").tabs({
 								style="width:95%; height:80px; text-align:left"/>
 						</td>
 					</tr>
+					<tr>
+						<th>广告渠道组合：</th>
+						<td colspan="3" style="text-align:left">
+							<div id="editor" style="width:90%;height:220px;">
+								${appUpgradeVo.fields}
+							</div>
+						</td>
+					</tr>
 				</table>
 				<input name="vdesc" id="vdesc" type="hidden" value=""/>
 				<input name="id" type="hidden" value="${appUpgradeVo.id}"/>
+				<input name="fields" id="fields" type="hidden" value=""/>
 			</form>
 		</div>
 	</div> 
 </div>
+<script>
+var editor = ace.edit("editor");
+editor.setTheme("ace/theme/monokai");
+editor.getSession().setMode("ace/mode/javascript");
+</script>

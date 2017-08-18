@@ -11,11 +11,18 @@ public class AppUpgrade implements Serializable{
 	private String vdesc;		//版本描述
 	private String apkUrl;		//包下载地址
 	private Integer status;		//版本状态
+	private String fields;		//广告渠道动态组合字段，0=打开;1=关闭
 	private String createDate;	//创建时间
 	private String updateDate;	//更新时间
 	private String createdBy;	//创建人
 	private String updatedBy;	//更新人
 	
+	public String getFields() {
+		return fields;
+	}
+	public void setFields(String fields) {
+		this.fields = fields;
+	}
 	public String getApkUrl() {
 		return apkUrl;
 	}

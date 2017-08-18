@@ -118,6 +118,7 @@
 			    handler:function(){
 				    	//处理富文本编辑的内容
 				    	$("#vdesc").val($('#summernote').summernote('code'));
+				    	$("#fields").val($.trim(editor.getValue()));
 				    	$("#appUpgradeConfigForm").form('submit',{
 				    		 type:'POST',
 				    		 url : projectName+'/cfdb/appUpgrade/admin/add',
@@ -183,6 +184,7 @@
 				    handler:function(){
 				     	//处理富文本编辑的内容
 				    		$("#vdesc").val($('#summernote').summernote('code'));
+				    	 	$("#fields").val($.trim(editor.getValue()));
 					    	$("#appUpgradeConfigForm").form('submit',{
 					    		 type:'POST',
 					    		 url : projectName+'/cfdb/appUpgrade/admin/update',
