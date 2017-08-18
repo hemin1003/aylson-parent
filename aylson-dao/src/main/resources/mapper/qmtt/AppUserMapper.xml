@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.qmtt.po.AppUser">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.qmtt.vo.AppUserVo">
+		<id column="phoneNum" property="phoneNum" jdbcType="VARCHAR" />
+		<result column="userPwd" property="userPwd" jdbcType="VARCHAR" />
+		<result column="gold" property="gold" jdbcType="VARCHAR" />
+		<result column="balance" property="balance" jdbcType="VARCHAR" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="wechat" property="wechat" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="registerDate" property="registerDate" jdbcType="VARCHAR" />
+		<result column="lastLoginDate" property="lastLoginDate" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		qmtt_app_user.phoneNum,
+		qmtt_app_user.userPwd,
+		qmtt_app_user.gold, 
+		qmtt_app_user.balance,
+		qmtt_app_user.userName,
+		qmtt_app_user.address,
+		qmtt_app_user.wechat,
+		qmtt_app_user.qq,
+		qmtt_app_user.email,
+		qmtt_app_user.registerDate,
+		qmtt_app_user.lastLoginDate,
+		qmtt_app_user.updateDate
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+				<if test="phoneNumLike != null and phoneNumLike != ''"> and qmtt_app_user.phoneNum like CONCAT('%',#{phoneNumLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(phoneNum) from qmtt_app_user
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from qmtt_app_user
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by qmtt_app_user.registerDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+</mapper>

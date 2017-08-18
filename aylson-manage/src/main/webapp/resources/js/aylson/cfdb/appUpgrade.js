@@ -71,6 +71,12 @@
 					}
 				}
 			}, {
+				title : '渠道标识',
+				field : 'platform',
+				align : 'center',
+				width : 110,
+				sortable:true
+			}, {
 				title : '创建时间',
 				field : 'createDate',
 				align : 'center',

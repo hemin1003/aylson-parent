@@ -87,6 +87,14 @@ $("#tabActivity").tabs({
 							</div>
 						</td>
 					</tr>
+					<tr>
+						<th>广告平台标识：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="platform" value="${appUpgradeVo.platform}"
+								class="easyui-textbox"
+								style="width:95%; text-align:left"/>
+						</td>
+					</tr>
 				</table>
 				<input name="vdesc" id="vdesc" type="hidden" value=""/>
 				<input name="id" type="hidden" value="${appUpgradeVo.id}"/>
