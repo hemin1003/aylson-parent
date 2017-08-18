@@ -78,9 +78,37 @@ text-align:left!important;
 								style="width:95%; text-align:left"/>
 						</td>
 					</tr>
+					<tr>
+						<th>是否启用：</th>
+						<td colspan="3" style="text-align:left">
+							<select id="isEnabledFlag" name="isEnabledFlag" class="easyui-combobox" 
+								data-options=" 
+								onSelect:function(data){
+									$('#isEnabled').val(data.value);
+								}" 
+								style="width:95%; text-align:left" editable=false>
+								<option value="1">禁用</option>
+								<option value="2">启用</option>
+							</select>
+						</td>
+					</tr>
 				</table>
 				<input name="id" type="hidden" value="${sdkChannelConfigVo.id}"/>
+				<input name="isEnabled" id="isEnabled" type="hidden" value="${sdkChannelConfigVo.isEnabled}"/>
 			</form>
 		</div>
 	</div> 
 </div>
+<script type="text/javascript">
+$(function(){
+	var select = document.getElementById("isEnabledFlag");  
+	var value = $('#isEnabled').val();  
+	for(var i=0; i<select.options.length; i++){  
+		//alert('value='+select.options[i].value+', value='+value);
+	    if(select.options[i].value == value){
+	        select.options[i].selected = true;  
+	        break;  
+	    }  
+	}
+});
+</script>

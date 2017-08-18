@@ -69,6 +69,20 @@
 				align : 'center',
 				width : 150
 			}, {
+				title : '是否启用',
+				field : 'isEnabled',
+				align : 'center',
+				width : 60,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value == 2){
+						return "<font color=green>启用</font>";
+					}else if(value == 1){
+						return "<font color=red>禁用</font>";
+					}
+					return '';
+				}
+			}, {
 				title : '创建时间',
 				field : 'createDate',
 				align : 'center',

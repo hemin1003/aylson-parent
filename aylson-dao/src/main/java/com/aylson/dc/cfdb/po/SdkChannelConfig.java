@@ -13,11 +13,18 @@ public class SdkChannelConfig implements Serializable{
 	private String sRate;		//分成比例
 	private Integer orderNo;		//排序编号
 	private String sdkPwd;		//平台回调秘钥
+	private Integer isEnabled;	//是否启用
 	private String createDate;	//创建时间
 	private String createdBy;	//创建人
 	private String updateDate;	//更新时间
 	private String updatedBy;	//更新人
 	
+	public Integer getIsEnabled() {
+		return isEnabled;
+	}
+	public void setIsEnabled(Integer isEnabled) {
+		this.isEnabled = isEnabled;
+	}
 	public String getSdkPwd() {
 		return sdkPwd;
 	}

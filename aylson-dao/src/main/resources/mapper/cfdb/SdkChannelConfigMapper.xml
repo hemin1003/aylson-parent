@@ -10,6 +10,7 @@
 		<result column="sRate" property="sRate" jdbcType="VARCHAR" />
 		<result column="orderNo" property="orderNo" jdbcType="INTEGER" />
 		<result column="sdkPwd" property="sdkPwd" jdbcType="VARCHAR" />
+		<result column="isEnabled" property="isEnabled" jdbcType="INTEGER" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
@@ -24,6 +25,7 @@
 		cfdb_sdk_channel_config.sRate,
 		cfdb_sdk_channel_config.orderNo,
 		cfdb_sdk_channel_config.sdkPwd,
+		cfdb_sdk_channel_config.isEnabled,
 		cfdb_sdk_channel_config.createDate,
 		cfdb_sdk_channel_config.createdBy,
 		cfdb_sdk_channel_config.updateDate,
@@ -80,6 +82,7 @@
 		  <if test="sRate != null" > sRate, </if>
 		  <if test="orderNo != null" > orderNo, </if>
 		  <if test="sdkPwd != null" > sdkPwd, </if>
+		  <if test="isEnabled != null" > isEnabled, </if>
 		  <if test="createDate != null" > createDate, </if>
 		  <if test="createdBy != null" > createdBy, </if>
 		  <if test="updateDate != null" > updateDate, </if>
@@ -92,6 +95,7 @@
 		  <if test="sRate != null" > #{sRate}, </if>
 		  <if test="orderNo != null" > #{orderNo}, </if>
 		  <if test="sdkPwd != null" > #{sdkPwd}, </if>
+		  <if test="isEnabled != null" > #{isEnabled}, </if>
 		  <if test="createDate != null" > #{createDate}, </if>
 		  <if test="createdBy != null" > #{createdBy}, </if>
 		  <if test="updateDate != null" > null, </if>
@@ -109,6 +113,7 @@
 			<if test="sRate != null"> sRate = #{sRate}, </if>
 			<if test="orderNo != null"> orderNo = #{orderNo}, </if>
 			<if test="sdkPwd != null"> sdkPwd = #{sdkPwd}, </if>
+			<if test="isEnabled != null"> isEnabled = #{isEnabled}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
 			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
 		</set>
