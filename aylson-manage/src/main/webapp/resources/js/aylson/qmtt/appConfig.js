@@ -1,5 +1,5 @@
 	/**
-	 * 用户信息管理
+	 * 全局信息配置
 	 */
 	var datagrid;
 	var editor;
@@ -7,7 +7,7 @@
 	$(function() { 
 		datagrid = $('#datagrid').datagrid({
 			method:'get',
-			url : projectName+'/qmtt/appUser/admin/list?v_date=' + new Date(),
+			url : projectName+'/qmtt/appConfig/admin/list?v_date=' + new Date(),
 			pagination : true,
 			pageSize : 20,
 			pageList : [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 ],
@@ -15,7 +15,7 @@
 			fitColumns : false,
 			nowrap : false,
 			border : false,
-			idField : 'phoneNum',
+			idField : 'id',
 			singleSelect:true,
 			rownumbers: true,
 			toolbar:[{
@@ -23,57 +23,74 @@
 				iconCls : 'icon-reload',
 				handler : reload
 			}],
- 			frozenColumns : [[{
-				title : '手机号码',
-				field : 'phoneNum',
-				align : 'center',
-				width : 80,
-				sortable:true
-			}, {
-				title : '姓名',
-				field : 'userName',
-				align : 'center',
-				width : 60,
-				sortable:true
-			}, {
-				title : '金币余额',
-				field : 'gold',
-				align : 'center',
-				width : 60,
-				sortable:true
-			}, {
-				title : '零钱余额',
-				field : 'balance',
-				align : 'center',
-				width : 60,
-				sortable:true
-			}, {
-				title : '住址',
-				field : 'address',
-				align : 'center',
-				width : 150,
-				sortable:true
-			}, {
-				title : '微信号',
-				field : 'wechat',
-				align : 'center',
-				width : 80,
-				sortable:true
-			}, {
-				title : 'QQ号',
-				field : 'qq',
-				align : 'center',
-				width : 80,
-				sortable:true
-			}, {
-				title : '邮箱地址',
-				field : 'email',
+ 			frozenColumns : [[{ 
+				field : 'opt',
+				title : '操作选项',
 				align : 'center',
 				width : 100,
+	 			formatter:function(value,row,index){
+					var handleHtml = '';
+					handleHtml += '<a href="javascript:query(\'' + row.id + '\')">查看</a>&nbsp;';
+					handleHtml += '<a href="javascript:edit(\'' + row.id + '\')">修改</a>&nbsp;';
+					return handleHtml;
+				}
+			}, {
+				title : '每日金币领取上限',
+				field : 'goldLimit',
+				align : 'center',
+				width : 110,
 				sortable:true
 			}, {
-				title : '注册时间',
-				field : 'registerDate',
+				title : '自动转换金币阈值',
+				field : 'goldAuto',
+				align : 'center',
+				width : 110,
+				sortable:true
+			}, {
+				title : '阅读金币随机范围',
+				field : 'goldRange',
+				align : 'center',
+				width : 110,
+				sortable:true
+			}, {
+				title : '首次阅读奖励金币',
+				field : 'firstReadGold',
+				align : 'center',
+				width : 110,
+				sortable:true
+			}, {
+				title : '首次分享奖励金币',
+				field : 'firstShareGold',
+				align : 'center',
+				width : 110,
+				sortable:true
+			}, {
+				title : '首次邀请奖励金币',
+				field : 'firstInviteGold',
+				align : 'center',
+				width : 110,
+				sortable:true
+			}, {
+				title : '安卓分享链接Url',
+				field : 'androidUrl',
+				align : 'center',
+				width : 110,
+				sortable:true,
+				formatter:function(value,row,index){
+					return '<a href="javascript:window.open(\'' + value + '\',\'_blank\')">查看</a>&nbsp;';
+				}
+			}, {
+				title : '苹果分享链接Url',
+				field : 'iphoneUrl',
+				align : 'center',
+				width : 110,
+				sortable:true,
+				formatter:function(value,row,index){
+					return '<a href="javascript:window.open(\'' + value + '\',\'_blank\')">查看</a>&nbsp;';
+				}
+			}, {
+				title : '创建时间',
+				field : 'createDate',
 				align : 'center',
 				width : 120,
 				sortable:true,
@@ -94,17 +111,6 @@
 					}
 					return value;
 				}
-			}, {
-				title : '最后一次登录时间',
-				field : 'lastLoginDate',
-				align : 'center',
-				width : 120,
-				formatter:function(value,row,index){
-					if(value){
-						return value.substring(0,19);
-					}
-					return value;
-				}
 			}
 			] ]
 		});
@@ -117,9 +123,9 @@
 		win = $("<div></div>").dialog({
 			title:'新增',
 			width:450,
-			height:'60%',
+			height:'70%',
 			modal:true,
-			href:projectName+'/qmtt/appUser/admin/toAdd',
+			href:projectName+'/qmtt/appConfig/admin/toAdd',
 			onClose:function(){
 				$(this).dialog("destroy");
 			},
@@ -127,9 +133,9 @@
 				text:'确定',
 			    iconCls:'icon-ok',
 			    handler:function(){
-				    	$("#appUserConfigForm").form('submit',{
+				    	$("#appConfigConfigForm").form('submit',{
 				    		 type:'POST',
-				    		 url : projectName+'/qmtt/appUser/admin/add',
+				    		 url : projectName+'/qmtt/appConfig/admin/add',
 				    		 success:function(responseData){
 				    			 if(responseData){
 				    				var data = $.parseJSON(responseData);
@@ -152,15 +158,37 @@
 		});
 	}
 	
+	//查看
+	function query(id){
+		win = $("<div></div>").dialog({
+			title:'查看',
+			width:450,
+			height:'70%',
+			maximizable:true,
+			modal:true,
+			href:projectName+'/qmtt/appConfig/admin/toEdit?id='+id,
+			onClose:function(){
+		    		$(this).dialog("destroy");
+		    },
+			buttons:[{
+					 text:'取消',
+				     iconCls:'icon-cancel',  
+				 	 handler:function(){
+				 		 win.dialog('destroy');
+				 	 }   
+				  }]
+		});
+	}
+	
 	//修改
 	function edit(id){
 		win = $("<div></div>").dialog({
 			title:'修改',
 			width:450,
-			height:'60%',
+			height:'70%',
 			maximizable:true,
 			modal:true,
-			href:projectName+'/qmtt/appUser/admin/toEdit?id='+id,
+			href:projectName+'/qmtt/appConfig/admin/toEdit?id='+id,
 			onClose:function(){
 		    		$(this).dialog("destroy");
 		    },
@@ -168,9 +196,9 @@
 					text:'确定',
 				    iconCls:'icon-ok',
 				    handler:function(){
-					    	$("#appUserConfigForm").form('submit',{
+					    	$("#appConfigConfigForm").form('submit',{
 					    		 type:'POST',
-					    		 url : projectName+'/qmtt/appUser/admin/update',
+					    		 url : projectName+'/qmtt/appConfig/admin/update',
 					    		 success:function(responseData){
 					    			 win.dialog('destroy');
 					    			 if(responseData){
@@ -199,7 +227,7 @@
 			if(r){
 				$.ajax({
 					type:"POST",
-					url:projectName+'/qmtt/appUser/admin/deleteById?id=' + id,
+					url:projectName+'/qmtt/appConfig/admin/deleteById?id=' + id,
 					dataType:"json",
 					success:function(data){
 						if(data){
@@ -214,6 +242,34 @@
 		});
 	}
 	
+	//发布
+	function changeStatus(id, status){
+		var tip = "";
+		if(status == 1){
+			tip = "确定下线吗？";
+			
+		}else if(status == 2){
+			tip = "确定上线吗？";
+		}
+		$.messager.confirm("提示",tip,function(r){
+			if(r){
+				$.ajax({
+					type:"POST",
+					url:projectName+'/qmtt/appConfig/admin/changeStatus?id=' + id+'&status='+status,
+					dataType:"json",
+					success:function(data){
+						if(data){
+		    					$.messager.show({"title":"系统提示","msg":data.message,"timeout":1000});
+			    				if(data.success){
+			    					$("#datagrid").datagrid("reload");
+			    				}
+		    			 	}
+					}
+				});
+			}
+		});
+	}
+	
 	//刷新
 	function reload(){
 		$("#datagrid").datagrid("reload");
@@ -221,11 +277,11 @@
 	
 	//搜索
 	function doSearch(){
-		$("#datagrid").datagrid("load", serializeObject($("#appUserForm")));
+		$("#datagrid").datagrid("load", serializeObject($("#appConfigForm")));
 	}
 	
 	//重置
 	function reset(){
-		$("#appUserForm").form("reset");
+		$("#appConfigForm").form("reset");
 	}
 	
