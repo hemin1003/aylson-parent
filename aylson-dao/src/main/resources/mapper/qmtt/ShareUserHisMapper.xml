@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.qmtt.po.ShareUserHis">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.qmtt.vo.ShareUserHisVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="masterPhoneNum" property="masterPhoneNum" jdbcType="VARCHAR" />
+		<result column="studentPhoneNum" property="studentPhoneNum" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="updatedBy" property="updatedBy" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		qmtt_shareuser_his.id,
+		qmtt_shareuser_his.masterPhoneNum,
+		qmtt_shareuser_his.studentPhoneNum, 
+		qmtt_shareuser_his.createDate,
+		qmtt_shareuser_his.createdBy,
+		qmtt_shareuser_his.updateDate,
+		qmtt_shareuser_his.updatedBy
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+				<if test="masterPhoneNumLike != null and masterPhoneNumLike != ''"> and qmtt_shareuser_his.masterPhoneNum like CONCAT('%',#{masterPhoneNumLike},'%') </if>
+				<if test="studentPhoneNumLike != null and studentPhoneNumLike != ''"> and qmtt_shareuser_his.studentPhoneNum like CONCAT('%',#{studentPhoneNumLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from qmtt_shareuser_his
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from qmtt_shareuser_his
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by qmtt_shareuser_his.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from qmtt_shareuser_his
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.qmtt.vo.ShareUserHisVo">
+		insert into qmtt_shareuser_his
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="masterPhoneNum != null" > masterPhoneNum, </if>
+		  <if test="studentPhoneNum != null" > studentPhoneNum, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="createdBy != null" > createdBy, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="masterPhoneNum != null" > #{masterPhoneNum}, </if>
+		  <if test="studentPhoneNum != null" > #{studentPhoneNum}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="createdBy != null" > #{createdBy}, </if>
+		  <if test="updateDate != null" > null, </if>
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.qmtt.vo.ShareUserHisVo">
+		update 
+			qmtt_shareuser_his 
+		<set>
+			<if test="masterPhoneNum != null"> masterPhoneNum = #{masterPhoneNum}, </if>
+			<if test="studentPhoneNum != null"> studentPhoneNum = #{studentPhoneNum}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from qmtt_shareuser_his
+		where id = #{id}
+	</delete>
+	
+</mapper>

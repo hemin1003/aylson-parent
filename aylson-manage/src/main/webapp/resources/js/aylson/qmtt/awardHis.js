@@ -1,5 +1,5 @@
 	/**
-	 * 初始化配置
+	 * 金币奖励记录
 	 */
 	var datagrid;
 	var editor;
@@ -7,7 +7,7 @@
 	$(function() { 
 		datagrid = $('#datagrid').datagrid({
 			method:'get',
-			url : projectName+'/qmtt/initConfig/admin/list?v_date=' + new Date(),
+			url : projectName+'/qmtt/awardHis/admin/list?v_date=' + new Date(),
 			pagination : true,
 			pageSize : 20,
 			pageList : [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 ],
@@ -23,72 +23,38 @@
 				iconCls : 'icon-reload',
 				handler : reload
 			}],
- 			frozenColumns : [[{ 
-				field : 'opt',
-				title : '操作选项',
+ 			frozenColumns : [[{
+				title : '手机号码',
+				field : 'phoneNum',
 				align : 'center',
-				width : 100,
-	 			formatter:function(value,row,index){
-					var handleHtml = '';
-					handleHtml += '<a href="javascript:query(\'' + row.id + '\')">查看</a>&nbsp;';
-					handleHtml += '<a href="javascript:edit(\'' + row.id + '\')">修改</a>&nbsp;';
-					return handleHtml;
-				}
-			}, {
-				title : '常见问题页面url',
-				field : 'faqUrl',
-				align : 'center',
-				width : 100,
+				width : 120,
 				sortable:true
 			}, {
-				title : '邀请规则说明图',
-				field : 'inviteUrl',
+				title : '奖励类型',
+				field : 'awardName',
+				align : 'center',
+				width : 150,
+				sortable:true
+			}, {
+				title : '金币值',
+				field : 'gold',
 				align : 'center',
 				width : 120,
 				sortable:true,
 				formatter:function(value,row,index){
-					if(value){
-						var handleHtml = '';
-						handleHtml += '<img src=\'' + value + '\' style="width:70px;height:70px"/>';
-						return handleHtml;
+					if(value.substr(0, 1) == '+'){
+						return "<font color=green>" + value + "</font>";
+					}else if(value.substr(0, 1) == '-'){
+						return "<font color=red>" + value + "</font>";
 					}
+					return "";
 				}
 			}, {
-				title : '注册用户协议页面url',
-				field : 'registerInfoUrl',
-				align : 'center',
-				width : 125,
-				sortable:true
-			}, {
-				title : '阅读文章控制时长',
-				field : 'duration',
-				align : 'center',
-				width : 120,
-				sortable:true
-			}, {
-				title : '阅读文章拖动次数',
-				field : 'frequency',
-				align : 'center',
-				width : 120,
-				sortable:true
-			}, {
-				title : '创建时间',
+				title : '记录时间',
 				field : 'createDate',
 				align : 'center',
 				width : 120,
 				sortable:true,
-				formatter:function(value,row,index){
-					if(value){
-						return value.substring(0,19);
-					}
-					return value;
-				}
-			}
-			, {
-				title : '更新时间',
-				field : 'updateDate',
-				align : 'center',
-				width : 120,
 				formatter:function(value,row,index){
 					if(value){
 						return value.substring(0,19);
@@ -107,9 +73,9 @@
 		win = $("<div></div>").dialog({
 			title:'新增',
 			width:450,
-			height:'70%',
+			height:'50%',
 			modal:true,
-			href:projectName+'/qmtt/initConfig/admin/toAdd',
+			href:projectName+'/qmtt/awardHis/admin/toAdd',
 			onClose:function(){
 				$(this).dialog("destroy");
 			},
@@ -117,9 +83,9 @@
 				text:'确定',
 			    iconCls:'icon-ok',
 			    handler:function(){
-				    	$("#initConfigConfigForm").form('submit',{
+				    	$("#awardHisConfigForm").form('submit',{
 				    		 type:'POST',
-				    		 url : projectName+'/qmtt/initConfig/admin/add',
+				    		 url : projectName+'/qmtt/awardHis/admin/add',
 				    		 success:function(responseData){
 				    			 if(responseData){
 				    				var data = $.parseJSON(responseData);
@@ -147,10 +113,10 @@
 		win = $("<div></div>").dialog({
 			title:'查看',
 			width:450,
-			height:'70%',
+			height:'50%',
 			maximizable:true,
 			modal:true,
-			href:projectName+'/qmtt/initConfig/admin/toEdit?id='+id,
+			href:projectName+'/qmtt/awardHis/admin/toEdit?id='+id,
 			onClose:function(){
 		    		$(this).dialog("destroy");
 		    },
@@ -169,10 +135,10 @@
 		win = $("<div></div>").dialog({
 			title:'修改',
 			width:450,
-			height:'70%',
+			height:'50%',
 			maximizable:true,
 			modal:true,
-			href:projectName+'/qmtt/initConfig/admin/toEdit?id='+id,
+			href:projectName+'/qmtt/awardHis/admin/toEdit?id='+id,
 			onClose:function(){
 		    		$(this).dialog("destroy");
 		    },
@@ -180,9 +146,9 @@
 					text:'确定',
 				    iconCls:'icon-ok',
 				    handler:function(){
-					    	$("#initConfigConfigForm").form('submit',{
+					    	$("#awardHisConfigForm").form('submit',{
 					    		 type:'POST',
-					    		 url : projectName+'/qmtt/initConfig/admin/update',
+					    		 url : projectName+'/qmtt/awardHis/admin/update',
 					    		 success:function(responseData){
 					    			 win.dialog('destroy');
 					    			 if(responseData){
@@ -211,7 +177,7 @@
 			if(r){
 				$.ajax({
 					type:"POST",
-					url:projectName+'/qmtt/initConfig/admin/deleteById?id=' + id,
+					url:projectName+'/qmtt/awardHis/admin/deleteById?id=' + id,
 					dataType:"json",
 					success:function(data){
 						if(data){
@@ -239,7 +205,7 @@
 			if(r){
 				$.ajax({
 					type:"POST",
-					url:projectName+'/qmtt/initConfig/admin/changeStatus?id=' + id+'&status='+status,
+					url:projectName+'/qmtt/awardHis/admin/changeStatus?id=' + id+'&status='+status,
 					dataType:"json",
 					success:function(data){
 						if(data){
@@ -261,11 +227,11 @@
 	
 	//搜索
 	function doSearch(){
-		$("#datagrid").datagrid("load", serializeObject($("#initConfigForm")));
+		$("#datagrid").datagrid("load", serializeObject($("#awardHisForm")));
 	}
 	
 	//重置
 	function reset(){
-		$("#initConfigForm").form("reset");
+		$("#awardHisForm").form("reset");
 	}
 	

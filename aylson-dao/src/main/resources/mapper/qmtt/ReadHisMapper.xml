@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.qmtt.po.ReadHis">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.qmtt.vo.ReadHisVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="phoneNum" property="phoneNum" jdbcType="VARCHAR" />
+		<result column="data" property="data" jdbcType="VARCHAR" />
+		<result column="primaryKey" property="primaryKey" jdbcType="VARCHAR" />
+		<result column="isAward" property="isAward" jdbcType="INTEGER" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="updatedBy" property="updatedBy" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		qmtt_read_his.id,
+		qmtt_read_his.phoneNum,
+		qmtt_read_his.data, 
+		qmtt_read_his.primaryKey,
+		qmtt_read_his.isAward,
+		qmtt_read_his.createDate,
+		qmtt_read_his.createdBy,
+		qmtt_read_his.updateDate,
+		qmtt_read_his.updatedBy
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+				<if test="phoneNumLike != null and phoneNumLike != ''"> and qmtt_read_his.phoneNum like CONCAT('%',#{phoneNumLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from qmtt_read_his
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from qmtt_read_his
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by qmtt_read_his.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from qmtt_read_his
+		where id = #{id}
+	</select>
+	
+</mapper>

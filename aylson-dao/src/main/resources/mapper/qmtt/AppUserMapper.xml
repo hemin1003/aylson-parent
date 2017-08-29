@@ -15,6 +15,13 @@
 		<result column="registerDate" property="registerDate" jdbcType="VARCHAR" />
 		<result column="lastLoginDate" property="lastLoginDate" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="blackList" property="blackList" jdbcType="INTEGER" />
+		<result column="shareCount" property="shareCount" jdbcType="INTEGER" />
+		<result column="firstShare" property="firstShare" jdbcType="INTEGER" />
+		<result column="firstInvite" property="firstInvite" jdbcType="INTEGER" />
+		<result column="firstRead" property="firstRead" jdbcType="INTEGER" />
+		<result column="students" property="students" jdbcType="INTEGER" />
+		<result column="dailyCheckIn" property="dailyCheckIn" jdbcType="INTEGER" />
 	</resultMap>
 
 	<sql id="DB_Column_List">
@@ -29,7 +36,14 @@
 		qmtt_app_user.email,
 		qmtt_app_user.registerDate,
 		qmtt_app_user.lastLoginDate,
-		qmtt_app_user.updateDate
+		qmtt_app_user.updateDate,
+		qmtt_app_user.blackList,
+		qmtt_app_user.shareCount,
+		qmtt_app_user.firstShare,
+		qmtt_app_user.firstInvite,
+		qmtt_app_user.firstRead,
+		qmtt_app_user.students,
+		qmtt_app_user.dailyCheckIn
 	</sql>
 
 	<sql id="Where_Condition">
@@ -62,6 +76,14 @@
             	limit #{offset}, #{limit}
         	</if>
 		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from qmtt_app_user
+		where phoneNum = #{phoneNum}
 	</select>
 	
 </mapper>

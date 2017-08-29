@@ -26,6 +26,22 @@ padding:5px;
 text-align:left!important;
 }
 </style>
+<script type="text/javascript">
+function preview(){  
+    var simg = $('#inviteUrl').val();;  
+    wins = $("<div align='center' style='text-align:center; background:#90A4AE'><img id='simg'/></div>").dialog({
+		title:'大图预览',
+		width:'95%',
+		height:'95%',
+		maximizable:true,
+		modal:true,
+		onClose:function(){
+	    		$(this).dialog("destroy");
+	    },
+	});
+    $("#simg").attr("src",simg);  
+}
+</script>
 <div align="center" >
 	<div class="easyui-tabs" id="tabActivity" style="width:100%">
 		 <div title="初始化配置" style="padding:10px;text-align:center">
@@ -40,11 +56,17 @@ text-align:left!important;
 						</td>
 					</tr>
 					<tr>
-						<th>邀请规则说明页面url：</th>
+						<th>
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-large-picture',size:'large',iconAlign:'top'" 
+								onclick="uploadImg('img','inviteUrl','yfax-test')" id="uploadImg" style="margin-bottom:10px;">上传邀请规则说明图</a>
+						</th>
 						<td colspan="3" style="text-align:left">
-							<input name="inviteUrl" value="${initConfigVo.inviteUrl}" data-options="required:true"
-								class="easyui-textbox"
-								style="width:95%; text-align:left"/>
+							<div style="width:240px;height:120px">
+								<c:if test="${not empty initConfigVo.inviteUrl}"><img id="img" src="${initConfigVo.inviteUrl}" style="width:120px;height:120px"/></c:if>
+								<c:if test="${empty initConfigVo.inviteUrl }"><img id="img" src="" style="width:120px;height:120px"/></c:if>
+								<input id="inviteUrl" name="inviteUrl" value="${initConfigVo.inviteUrl}" type="hidden"/>
+							</div>
+							<c:if test="${not empty initConfigVo.inviteUrl}"><a href="javascript:preview()">查看大图</a></c:if>
 						</td>
 					</tr>
 					<tr>

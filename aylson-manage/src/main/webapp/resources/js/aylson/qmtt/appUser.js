@@ -23,7 +23,17 @@
 				iconCls : 'icon-reload',
 				handler : reload
 			}],
- 			frozenColumns : [[{
+ 			frozenColumns : [[{ 
+				field : 'opt',
+				title : '操作选项',
+				align : 'center',
+				width : 100,
+	 			formatter:function(value,row,index){
+					var handleHtml = '';
+					handleHtml += '<a href="javascript:query(\'' + row.phoneNum + '\')">查看详情</a>&nbsp;';
+					return handleHtml;
+				}
+			}, {
 				title : '手机号码',
 				field : 'phoneNum',
 				align : 'center',
@@ -48,29 +58,77 @@
 				width : 60,
 				sortable:true
 			}, {
-				title : '住址',
-				field : 'address',
-				align : 'center',
-				width : 150,
-				sortable:true
-			}, {
-				title : '微信号',
-				field : 'wechat',
+				title : '已分享次数',
+				field : 'shareCount',
 				align : 'center',
 				width : 80,
 				sortable:true
 			}, {
-				title : 'QQ号',
-				field : 'qq',
+				title : '首次分享标识',
+				field : 'firstShare',
 				align : 'center',
 				width : 80,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value == 1){
+						return value;
+					}
+					return "";
+				}
+			}, {
+				title : '首次邀请成功标识',
+				field : 'firstInvite',
+				align : 'center',
+				width : 110,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value == 1){
+						return value;
+					}
+					return "";
+				}
+			}, {
+				title : '首次阅读标识',
+				field : 'firstRead',
+				align : 'center',
+				width : 80,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value == 1){
+						return value;
+					}
+					return "";
+				}
+			}, {
+				title : '是否黑名单',
+				field : 'blackList',
+				align : 'center',
+				width : 80,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value == 1){
+						return "<font color=red>是</font>";
+					}
+					return "";
+				}
+			}, {
+				title : '徒弟数',
+				field : 'students',
+				align : 'center',
+				width : 60,
 				sortable:true
 			}, {
-				title : '邮箱地址',
-				field : 'email',
+				title : '今日签到标识',
+				field : 'dailyCheckIn',
 				align : 'center',
-				width : 100,
-				sortable:true
+				width : 80,
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value == 1){
+						return value;
+					}
+					return "";
+				}
 			}, {
 				title : '注册时间',
 				field : 'registerDate',
@@ -88,6 +146,7 @@
 				field : 'updateDate',
 				align : 'center',
 				width : 120,
+				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
 						return value.substring(0,19);
@@ -99,6 +158,7 @@
 				field : 'lastLoginDate',
 				align : 'center',
 				width : 120,
+				sortable:true,
 				formatter:function(value,row,index){
 					if(value){
 						return value.substring(0,19);
@@ -184,6 +244,28 @@
 					    	 });
 				     }   
 				   },{
+					 text:'取消',
+				     iconCls:'icon-cancel',  
+				 	 handler:function(){
+				 		 win.dialog('destroy');
+				 	 }   
+				  }]
+		});
+	}
+	
+	//查看
+	function query(phoneNum){
+		win = $("<div></div>").dialog({
+			title:'查看',
+			width:450,
+			height:'60%',
+			maximizable:true,
+			modal:true,
+			href:projectName+'/qmtt/appUser/admin/toEdit?phoneNum='+phoneNum,
+			onClose:function(){
+		    		$(this).dialog("destroy");
+		    },
+			buttons:[{
 					 text:'取消',
 				     iconCls:'icon-cancel',  
 				 	 handler:function(){
