@@ -82,6 +82,10 @@ public class DateUtil2 {
 		public static String getCurrentDateTime() {
 			return new SimpleDateFormat(DATETIME_FORMAT).format(DateUtils.addHours(new Date(), DATE_NUM));
 		}
+		
+		public static String getCurrentDateByNum(int amount) {
+			return new SimpleDateFormat(DATE_FORMAT).format(DateUtils.addDays(new Date(), amount));
+		}
 
 		/**
 		 * Convert time to string like "HH:mm".

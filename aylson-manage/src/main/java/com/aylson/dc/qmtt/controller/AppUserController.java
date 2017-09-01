@@ -15,10 +15,6 @@ import com.aylson.core.frame.domain.ResultCode;
 import com.aylson.dc.qmtt.search.AppUserSearch;
 import com.aylson.dc.qmtt.service.AppUserService;
 import com.aylson.dc.qmtt.vo.AppUserVo;
-import com.aylson.dc.qmtt.vo.AppUserVo;
-import com.aylson.dc.sys.common.SessionInfo;
-import com.aylson.utils.DateUtil2;
-import com.aylson.utils.UUIDUtils;
 
 /**
  * 用户信息管理

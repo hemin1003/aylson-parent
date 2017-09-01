@@ -1,4 +1,4 @@
-package com.aylson.dc.cfdb.controller;
+package com.aylson.dc.qmtt.controller;
 
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -12,25 +12,25 @@ import com.aylson.core.easyui.EasyuiDataGridJson;
 import com.aylson.core.frame.controller.BaseController;
 import com.aylson.core.frame.domain.Result;
 import com.aylson.core.frame.domain.ResultCode;
-import com.aylson.dc.cfdb.search.WdkzAppConfigSearch;
-import com.aylson.dc.cfdb.service.WdkzAppConfigService;
-import com.aylson.dc.cfdb.vo.WdkzAppConfigVo;
+import com.aylson.dc.qmtt.search.QmttAppVersionSearch;
+import com.aylson.dc.qmtt.service.QmttAppVersionService;
+import com.aylson.dc.qmtt.vo.QmttAppVersionVo;
 import com.aylson.dc.sys.common.SessionInfo;
 import com.aylson.utils.DateUtil2;
 import com.aylson.utils.UUIDUtils;
 
 /**
- * 微多开助手，app版本信息配置
+ * APK渠道版本配置
  * @author Minbo
  */
 @Controller
-@RequestMapping("/cfdb/wdkzAppConfig")
-public class WdkzAppConfigController extends BaseController {
+@RequestMapping("/qmtt/qmttAppVersion")
+public class QmttAppVersionController extends BaseController {
 	
-	protected static final Logger logger = Logger.getLogger(WdkzAppConfigController.class);
+	protected static final Logger logger = Logger.getLogger(QmttAppVersionController.class);
 
 	@Autowired
-	private WdkzAppConfigService wdkzAppConfigService;
+	private QmttAppVersionService qmttAppVersionService;
 	
 	/**
 	 * 后台-首页
@@ -38,7 +38,7 @@ public class WdkzAppConfigController extends BaseController {
 	 */
 	@RequestMapping(value = "/admin/toIndex", method = RequestMethod.GET)
 	public String toIndex() {
-		return "/jsp/cfdb/admin/wdkzAppConfig/index";
+		return "/jsp/qmtt/admin/qmttAppVersion/index";
 	}
 	
 	/**
@@ -47,12 +47,12 @@ public class WdkzAppConfigController extends BaseController {
 	 */
 	@RequestMapping(value = "/admin/list", method = RequestMethod.GET)
 	@ResponseBody
-	public EasyuiDataGridJson list(WdkzAppConfigSearch wdkzAppConfigSearch){
+	public EasyuiDataGridJson list(QmttAppVersionSearch qmttAppVersionSearch){
 		EasyuiDataGridJson result = new EasyuiDataGridJson();//页面DataGrid结果集
 		try{
-			wdkzAppConfigSearch.setIsPage(true);
-			List<WdkzAppConfigVo> list = this.wdkzAppConfigService.getList(wdkzAppConfigSearch);
-			result.setTotal(this.wdkzAppConfigService.getRowCount(wdkzAppConfigSearch));
+			qmttAppVersionSearch.setIsPage(true);
+			List<QmttAppVersionVo> list = this.qmttAppVersionService.getList(qmttAppVersionSearch);
+			result.setTotal(this.qmttAppVersionService.getRowCount(qmttAppVersionSearch));
 			result.setRows(list);
 			return result;
 		}catch(Exception e){
@@ -63,32 +63,32 @@ public class WdkzAppConfigController extends BaseController {
 	
 	/**
 	 * 后台-添加页面
-	 * @param wdkzAppConfigVo
+	 * @param qmttAppVersionVo
 	 * @return
 	 */
 	@RequestMapping(value = "/admin/toAdd", method = RequestMethod.GET)
-	public String toAdd(WdkzAppConfigVo wdkzAppConfigVo) {
-		this.request.setAttribute("wdkzAppConfigVo", wdkzAppConfigVo);
-		return "/jsp/cfdb/admin/wdkzAppConfig/add";
+	public String toAdd(QmttAppVersionVo qmttAppVersionVo) {
+		this.request.setAttribute("qmttAppVersionVo", qmttAppVersionVo);
+		return "/jsp/qmtt/admin/qmttAppVersion/add";
 	}
 	
 	/**
 	 * 后台-添加保存
-	 * @param wdkzAppConfigVo
+	 * @param qmttAppVersionVo
 	 * @return
 	 */
 	@RequestMapping(value = "/admin/add", method = RequestMethod.POST)
 	@ResponseBody
-	public Result add(WdkzAppConfigVo wdkzAppConfigVo) {
+	public Result add(QmttAppVersionVo qmttAppVersionVo) {
 		Result result = new Result();
 		try{
 			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
-			wdkzAppConfigVo.setId(UUIDUtils.create());
+			qmttAppVersionVo.setId(UUIDUtils.create());
 			String cTime = DateUtil2.getCurrentLongDateTime();
-			wdkzAppConfigVo.setCreatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
-			wdkzAppConfigVo.setCreateDate(cTime);
-			wdkzAppConfigVo.setUpdateDate(cTime);
-			Boolean flag = this.wdkzAppConfigService.add(wdkzAppConfigVo);
+			qmttAppVersionVo.setCreatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
+			qmttAppVersionVo.setCreateDate(cTime);
+			qmttAppVersionVo.setUpdateDate(cTime);
+			Boolean flag = this.qmttAppVersionService.add(qmttAppVersionVo);
 			if(flag){
 				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
 			}else{
@@ -109,26 +109,26 @@ public class WdkzAppConfigController extends BaseController {
 	@RequestMapping(value = "/admin/toEdit", method = RequestMethod.GET)
 	public String toEdit(String id) {
 		if(id != null){
-			WdkzAppConfigVo wdkzAppConfigVo = this.wdkzAppConfigService.getById(id);
-			this.request.setAttribute("wdkzAppConfigVo", wdkzAppConfigVo);
+			QmttAppVersionVo qmttAppVersionVo = this.qmttAppVersionService.getById(id);
+			this.request.setAttribute("qmttAppVersionVo", qmttAppVersionVo);
 		}
-		return "/jsp/cfdb/admin/wdkzAppConfig/add";
+		return "/jsp/qmtt/admin/qmttAppVersion/add";
 	}
 	
 	/**
 	 * 后台-编辑保存
-	 * @param wdkzAppConfigVo
+	 * @param qmttAppVersionVo
 	 * @return
 	 */
 	@RequestMapping(value = "/admin/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Result update(WdkzAppConfigVo wdkzAppConfigVo) {
+	public Result update(QmttAppVersionVo qmttAppVersionVo) {
 		Result result = new Result();
 		try {
 			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
-			wdkzAppConfigVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
-			wdkzAppConfigVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
-			Boolean flag = this.wdkzAppConfigService.edit(wdkzAppConfigVo);
+			qmttAppVersionVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
+			qmttAppVersionVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
+			Boolean flag = this.qmttAppVersionService.edit(qmttAppVersionVo);
 			if(flag){
 				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
 			}else{
@@ -151,38 +151,13 @@ public class WdkzAppConfigController extends BaseController {
 	public Result deleteById(String id) {
 		Result result = new Result();
 		try{
-			Boolean flag = this.wdkzAppConfigService.deleteById(id);
+			Boolean flag = this.qmttAppVersionService.deleteById(id);
 			if(flag){
 				result.setOK(ResultCode.CODE_STATE_200, "删除成功");
 			}else{
 				result.setError(ResultCode.CODE_STATE_4006, "删除失败");
 			}
 		}catch(Exception e){
-			logger.error(e.getMessage(), e);
-			result.setError(ResultCode.CODE_STATE_500, e.getMessage());
-		}
-		return result;
-	}
-	
-	@RequestMapping(value = "/admin/changeStatus", method = RequestMethod.POST)
-	@ResponseBody
-	public Result changeStatus(WdkzAppConfigVo wdkzAppConfigVo) {
-		Result result = new Result();
-		try {
-			if(wdkzAppConfigVo.getStatus() == null){
-				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
-				return result;
-			}
-			SessionInfo sessionInfo = (SessionInfo)this.request.getSession().getAttribute("sessionInfo");
-			wdkzAppConfigVo.setUpdatedBy(sessionInfo.getUser().getUserName() + "/" + sessionInfo.getUser().getRoleName());
-			wdkzAppConfigVo.setUpdateDate(DateUtil2.getCurrentLongDateTime());
-			Boolean flag = this.wdkzAppConfigService.edit(wdkzAppConfigVo);
-			if(flag){
-				result.setOK(ResultCode.CODE_STATE_200, "操作成功");
-			}else{
-				result.setError(ResultCode.CODE_STATE_4006, "操作失败");
-			}
-		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			result.setError(ResultCode.CODE_STATE_500, e.getMessage());
 		}

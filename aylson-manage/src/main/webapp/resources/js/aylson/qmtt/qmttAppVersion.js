@@ -1,5 +1,5 @@
 	/**
-	 * 统计报表数据查询
+	 * APP渠道版本配置
 	 */
 	var datagrid;
 	var editor;
@@ -7,7 +7,7 @@
 	$(function() { 
 		datagrid = $('#datagrid').datagrid({
 			method:'get',
-			url : projectName+'/cfdb/sysReportInfo/admin/list?v_date=' + new Date(),
+			url : projectName+'/qmtt/qmttAppVersion/admin/list?v_date=' + new Date(),
 			pagination : true,
 			pageSize : 20,
 			pageList : [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 ],
@@ -15,52 +15,59 @@
 			fitColumns : false,
 			nowrap : false,
 			border : false,
-			idField : 'name',
+			idField : 'id',
 			singleSelect:true,
 			rownumbers: true,
 			toolbar:[{
-				text:"详细列表"
+				text:"新增",
+				iconCls : 'icon-add',
+				handler : add
 			},{
 				text:"刷新",
 				iconCls : 'icon-reload',
 				handler : reload
 			}],
- 			frozenColumns : [[ {
-				title : '日期',
-				field : 'name',
+ 			frozenColumns : [[{ 
+				field : 'opt',
+				title : '操作选项',
 				align : 'center',
-				width : 200,
+				width : 100,
+				formatter:function(value,row,index){
+					var handleHtml = '';
+					handleHtml += '<a href="javascript:edit(\'' + row.id + '\')">修改</a>&nbsp;';
+					handleHtml += '<a href="javascript:del(\'' + row.id + '\')">删除</a>&nbsp;';
+					return handleHtml;
+				}
+			}, {
+				title : '配置名称',
+				field : 'configName',
+				align : 'center',
+				width : 150,
 				sortable:true
 			}, {
-				title : '新增用户数',
-				field : 'value',
+				title : '创建时间',
+				field : 'createDate',
 				align : 'center',
 				width : 120,
-				sortable:true
-			}, {
-				title : '做任务总人数',
-				field : 'value',
+				sortable:true,
+				formatter:function(value,row,index){
+					if(value){
+						return value.substring(0,19);
+					}
+					return value;
+				}
+			}
+			, {
+				title : '更新时间',
+				field : 'updateDate',
 				align : 'center',
 				width : 120,
-				sortable:true
-			}, {
-				title : '完成任务总数',
-				field : 'value',
-				align : 'center',
-				width : 120,
-				sortable:true
-			}, {
-				title : '用户总收入',
-				field : 'value',
-				align : 'center',
-				width : 120,
-				sortable:true
-			}, {
-				title : '公司总收入',
-				field : 'value',
-				align : 'center',
-				width : 120,
-				sortable:true
+				formatter:function(value,row,index){
+					if(value){
+						return value.substring(0,19);
+					}
+					return value;
+				}
 			}
 			] ]
 		});
@@ -72,10 +79,10 @@
 		var win;
 		win = $("<div></div>").dialog({
 			title:'新增',
-			width:450,
-			height:'60%',
+			width:830,
+			height:'95%',
 			modal:true,
-			href:projectName+'/cfdb/sysReportInfo/admin/toAdd',
+			href:projectName+'/qmtt/qmttAppVersion/admin/toAdd',
 			onClose:function(){
 				$(this).dialog("destroy");
 			},
@@ -83,9 +90,11 @@
 				text:'确定',
 			    iconCls:'icon-ok',
 			    handler:function(){
-				    	$("#sysReportInfoConfigForm").form('submit',{
+				    	//处理富文本编辑的内容
+				    	$("#configData").val($.trim(editor.getValue()));
+				    	$("#qmttAppVersionConfigForm").form('submit',{
 				    		 type:'POST',
-				    		 url : projectName+'/cfdb/sysReportInfo/admin/add',
+				    		 url : projectName+'/qmtt/qmttAppVersion/admin/add',
 				    		 success:function(responseData){
 				    			 if(responseData){
 				    				var data = $.parseJSON(responseData);
@@ -112,11 +121,11 @@
 	function edit(id){
 		win = $("<div></div>").dialog({
 			title:'修改',
-			width:450,
-			height:'60%',
+			width:830,
+			height:'95%',
 			maximizable:true,
 			modal:true,
-			href:projectName+'/cfdb/sysReportInfo/admin/toEdit?id='+id,
+			href:projectName+'/qmtt/qmttAppVersion/admin/toEdit?id='+id,
 			onClose:function(){
 		    		$(this).dialog("destroy");
 		    },
@@ -124,9 +133,11 @@
 					text:'确定',
 				    iconCls:'icon-ok',
 				    handler:function(){
-					    	$("#sysReportInfoConfigForm").form('submit',{
+					    	//处理富文本编辑的内容
+					    	$("#configData").val($.trim(editor.getValue()));
+					    	$("#qmttAppVersionConfigForm").form('submit',{
 					    		 type:'POST',
-					    		 url : projectName+'/cfdb/sysReportInfo/admin/update',
+					    		 url : projectName+'/qmtt/qmttAppVersion/admin/update',
 					    		 success:function(responseData){
 					    			 win.dialog('destroy');
 					    			 if(responseData){
@@ -155,7 +166,7 @@
 			if(r){
 				$.ajax({
 					type:"POST",
-					url:projectName+'/cfdb/sysReportInfo/admin/deleteById?id=' + id,
+					url:projectName+'/qmtt/qmttAppVersion/admin/deleteById?id=' + id,
 					dataType:"json",
 					success:function(data){
 						if(data){
@@ -177,11 +188,11 @@
 	
 	//搜索
 	function doSearch(){
-		$("#datagrid").datagrid("load", serializeObject($("#sysReportInfoForm")));
+		$("#datagrid").datagrid("load", serializeObject($("#qmttAppVersionForm")));
 	}
 	
 	//重置
 	function reset(){
-		$("#sysReportInfoForm").form("reset");
+		$("#qmttAppVersionForm").form("reset");
 	}
 	
