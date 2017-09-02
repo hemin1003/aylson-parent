@@ -9,6 +9,7 @@
 		<result column="registerInfoUrl" property="registerInfoUrl" jdbcType="VARCHAR" />
 		<result column="duration" property="duration" jdbcType="VARCHAR" />
 		<result column="frequency" property="frequency" jdbcType="INTEGER" />
+		<result column="appInviteUrl" property="appInviteUrl" jdbcType="VARCHAR" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
@@ -22,6 +23,7 @@
 		qmtt_init_config.registerInfoUrl,
 		qmtt_init_config.duration,
 		qmtt_init_config.frequency,
+		qmtt_init_config.appInviteUrl,
 		qmtt_init_config.createDate,
 		qmtt_init_config.createdBy,
 		qmtt_init_config.updateDate,
@@ -77,6 +79,7 @@
 		  <if test="registerInfoUrl != null" > registerInfoUrl, </if>
 		  <if test="duration != null" > duration, </if>
 		  <if test="frequency != null" > frequency, </if>
+		  <if test="appInviteUrl != null" > appInviteUrl, </if>
 		  <if test="createDate != null" > createDate, </if>
 		  <if test="createdBy != null" > createdBy, </if>
 		  <if test="updateDate != null" > updateDate, </if>
@@ -88,6 +91,7 @@
 		  <if test="registerInfoUrl != null" > #{registerInfoUrl}, </if>
 		  <if test="duration != null" > #{duration}, </if>
 		  <if test="frequency != null" > #{frequency}, </if>
+		  <if test="appInviteUrl != null" > #{appInviteUrl}, </if>
 		  <if test="createDate != null" > #{createDate}, </if>
 		  <if test="createdBy != null" > #{createdBy}, </if>
 		  <if test="updateDate != null" > null, </if>
@@ -104,6 +108,7 @@
 			<if test="registerInfoUrl != null"> registerInfoUrl = #{registerInfoUrl}, </if>
 			<if test="duration != null"> duration = #{duration}, </if>
 			<if test="frequency != null"> frequency = #{frequency}, </if>
+			<if test="appInviteUrl != null"> appInviteUrl = #{appInviteUrl}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
 			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
 		</set>

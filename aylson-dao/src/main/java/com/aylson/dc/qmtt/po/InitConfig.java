@@ -12,11 +12,18 @@ public class InitConfig implements Serializable{
 	private String registerInfoUrl;	//注册用户协议页面url
 	private String duration;			//阅读文章控制时长
 	private Integer frequency;		//阅读文章拖动次数
+	private String appInviteUrl;		//APP生成的分享邀请链接
 	private String createDate;	//创建时间
 	private String createdBy;	//创建人
 	private String updateDate;	//更新时间
 	private String updatedBy;	//更新人
 	
+	public String getAppInviteUrl() {
+		return appInviteUrl;
+	}
+	public void setAppInviteUrl(String appInviteUrl) {
+		this.appInviteUrl = appInviteUrl;
+	}
 	public String getDuration() {
 		return duration;
 	}

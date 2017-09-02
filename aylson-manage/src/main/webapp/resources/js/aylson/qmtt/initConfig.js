@@ -72,6 +72,12 @@
 				width : 120,
 				sortable:true
 			}, {
+				title : 'APP分享邀请动态链接Url',
+				field : 'appInviteUrl',
+				align : 'left',
+				width : 150,
+				sortable:true
+			}, {
 				title : '创建时间',
 				field : 'createDate',
 				align : 'center',
@@ -147,7 +153,7 @@
 		win = $("<div></div>").dialog({
 			title:'查看',
 			width:450,
-			height:'70%',
+			height:'85%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/qmtt/initConfig/admin/toEdit?id='+id,
@@ -169,7 +175,7 @@
 		win = $("<div></div>").dialog({
 			title:'修改',
 			width:450,
-			height:'70%',
+			height:'85%',
 			maximizable:true,
 			modal:true,
 			href:projectName+'/qmtt/initConfig/admin/toEdit?id='+id,

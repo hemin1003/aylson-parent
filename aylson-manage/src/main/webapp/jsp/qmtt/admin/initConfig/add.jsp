@@ -93,6 +93,14 @@ function preview(){
 								style="width:95%; text-align:left"/>
 						</td>
 					</tr>
+					<tr>
+						<th>APP分享邀请动态链接Url：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="appInviteUrl" value="${initConfigVo.appInviteUrl}" 
+								class="easyui-textbox" data-options="multiline:true"
+								style="width:95%; height:60px; text-align:left"/>
+						</td>
+					</tr>
 				</table>
 				<input name="id" type="hidden" value="${initConfigVo.id}"/>
 			</form>
