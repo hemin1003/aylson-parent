@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.qmtt.vo.QmttSysReportInfoVo">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.qmtt.vo.QmttSysReportInfoVo">
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="value" property="value" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 当日新增用户数 -->
+	<select id="selectNewUserOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		select '当日新增用户数' as name,count(1) as value from qmtt_app_user 
+			where date_format(registerDate,'%Y-%m-%d')=#{currentTime}
+	</select>
+	
+	<!-- 用户金币余额 -->
+	<select id="selectUserGoldOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		select '用户金币余额' as name,sum(gold) as value from qmtt_app_user 
+			where date_format(registerDate,'%Y-%m-%d')=#{currentTime}
+	</select>
+	
+	<!-- 用户零钱金额 -->
+	<select id="selectUserBalanceOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		select '用户零钱金额' as name,sum(balance) as value from qmtt_app_user 
+			where date_format(registerDate,'%Y-%m-%d')=#{currentTime}
+	</select>
+	
+	<!-- 用户提现金额 -->
+	<select id="selectUserWithdrawOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		select '用户提现金额' as name,sum(income) as value from qmtt_withdraw_his 
+			where date_format(withdrawTime,'%Y-%m-%d')=#{currentTime}
+	</select>
+	
+	<!-- 用户浏览新闻数 -->
+	<select id="selectUserAllRead" resultMap="ResultMap" parameterType="java.util.Map">
+		select '用户浏览新闻数' as name,sum(1) as value from qmtt_read_his 
+			where date_format(createDate,'%Y-%m-%d')=#{currentTime}
+	</select>
+	
+	<!-- 用户总金币余额 -->
+	<select id="selectAllGold" resultMap="ResultMap" parameterType="java.util.Map">
+		select '用户总金币余额' as name,sum(gold) as value from qmtt_app_user
+	</select>
+	
+	<!-- 用户总零钱余额 -->
+	<select id="selectAllBalance" resultMap="ResultMap" parameterType="java.util.Map">
+		select '用户总零钱余额' as name,sum(balance) as value from qmtt_app_user
+	</select>
+	
+</mapper>

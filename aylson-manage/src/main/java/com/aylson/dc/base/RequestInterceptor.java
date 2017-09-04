@@ -104,7 +104,6 @@ public class RequestInterceptor implements HandlerInterceptor{
 		//系统初始化
 		//SystemInitializeJob.start();
 		String servletPath = request.getServletPath();  //获取访问链接
-		System.out.println("================"+servletPath+"================");
 		if (unsign(servletPath)){ return true;}   //开始匹配
 		if (unfilter(servletPath)){ return true;} //完全匹配
 		String clientId = request.getParameter("clientId"); //前端请求标识

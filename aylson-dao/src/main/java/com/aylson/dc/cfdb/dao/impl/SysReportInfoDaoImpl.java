@@ -34,8 +34,18 @@ public class SysReportInfoDaoImpl extends BaseDaoImpl<SysReportInfo, SysReportIn
 	}
 
 	@Override
+	public SysReportInfoVo selectAllUserIncomeOfDay() {
+		return this.sqlSessionTemplate.selectOne(this.getSqlName("selectAllUserIncomeOfDay"));
+	}
+	
+	@Override
 	public SysReportInfoVo selectSysIncomeOfDay(Map<String, Object> params) {
 		return this.sqlSessionTemplate.selectOne(this.getSqlName("selectSysIncomeOfDay"), params);
+	}
+	
+	@Override
+	public SysReportInfoVo selectAllSysIncomeOfDay() {
+		return this.sqlSessionTemplate.selectOne(this.getSqlName("selectAllSysIncomeOfDay"));
 	}
 
 }

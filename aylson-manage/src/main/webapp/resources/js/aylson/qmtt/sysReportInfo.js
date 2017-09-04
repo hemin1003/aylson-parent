@@ -7,7 +7,7 @@
 	$(function() { 
 		datagrid = $('#datagrid').datagrid({
 			method:'get',
-			url : projectName+'/cfdb/sysReportInfo/admin/list?num=7',
+			url : projectName+'/qmtt/qmttSysReportInfo/admin/list?num=7',
 			pagination : true,
 			pageSize : 30,
 			pageList : [ 30, 60, 90 ],
@@ -36,23 +36,23 @@
 				align : 'center',
 				width : 120
 			}, {
-				title : '做任务总人数',
-				field : 'userCountOfTask',
+				title : '用户金币余额',
+				field : 'userGoldOfDay',
 				align : 'center',
 				width : 120
 			}, {
-				title : '完成任务总数',
-				field : 'taskCountOfFinished',
+				title : '用户零钱金额',
+				field : 'userBalanceOfDay',
 				align : 'center',
 				width : 120
 			}, {
-				title : '用户总收入',
+				title : '用户提现金额',
 				field : 'userIncomeOfDay',
 				align : 'center',
 				width : 120
 			}, {
-				title : '公司总收入',
-				field : 'sysIncomeOfDay',
+				title : '用户浏览新闻数',
+				field : 'userReadOfDay',
 				align : 'center',
 				width : 120
 			}
@@ -69,7 +69,7 @@
 			width:450,
 			height:'60%',
 			modal:true,
-			href:projectName+'/cfdb/sysReportInfo/admin/toAdd',
+			href:projectName+'/qmtt/qmttSysReportInfo/admin/toAdd',
 			onClose:function(){
 				$(this).dialog("destroy");
 			},
@@ -77,9 +77,9 @@
 				text:'确定',
 			    iconCls:'icon-ok',
 			    handler:function(){
-				    	$("#sysReportInfoConfigForm").form('submit',{
+				    	$("#qmttSysReportInfoConfigForm").form('submit',{
 				    		 type:'POST',
-				    		 url : projectName+'/cfdb/sysReportInfo/admin/add',
+				    		 url : projectName+'/qmtt/qmttSysReportInfo/admin/add',
 				    		 success:function(responseData){
 				    			 if(responseData){
 				    				var data = $.parseJSON(responseData);
@@ -110,7 +110,7 @@
 			height:'60%',
 			maximizable:true,
 			modal:true,
-			href:projectName+'/cfdb/sysReportInfo/admin/toEdit?id='+id,
+			href:projectName+'/qmtt/qmttSysReportInfo/admin/toEdit?id='+id,
 			onClose:function(){
 		    		$(this).dialog("destroy");
 		    },
@@ -118,9 +118,9 @@
 					text:'确定',
 				    iconCls:'icon-ok',
 				    handler:function(){
-					    	$("#sysReportInfoConfigForm").form('submit',{
+					    	$("#qmttSysReportInfoConfigForm").form('submit',{
 					    		 type:'POST',
-					    		 url : projectName+'/cfdb/sysReportInfo/admin/update',
+					    		 url : projectName+'/qmtt/qmttSysReportInfo/admin/update',
 					    		 success:function(responseData){
 					    			 win.dialog('destroy');
 					    			 if(responseData){
@@ -149,7 +149,7 @@
 			if(r){
 				$.ajax({
 					type:"POST",
-					url:projectName+'/cfdb/sysReportInfo/admin/deleteById?id=' + id,
+					url:projectName+'/qmtt/qmttSysReportInfo/admin/deleteById?id=' + id,
 					dataType:"json",
 					success:function(data){
 						if(data){
@@ -174,7 +174,7 @@
 		getMapData(num);
 		//查询参数直接添加在queryParams中     
         $('#datagrid').datagrid({  
-        		url : projectName+'/cfdb/sysReportInfo/admin/list?num=' + num
+        		url : projectName+'/qmtt/qmttSysReportInfo/admin/list?num=' + num
         })  
         var queryParams =$('#datagrid').datagrid('options').queryParams;  
         getQueryParams(queryParams);  
@@ -184,6 +184,6 @@
 	
 	//重置
 	function reset(){
-		$("#sysReportInfoForm").form("reset");
+		$("#qmttSysReportInfoForm").form("reset");
 	}
 	

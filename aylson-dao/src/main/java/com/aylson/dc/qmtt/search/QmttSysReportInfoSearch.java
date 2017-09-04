@@ -1,8 +1,8 @@
-package com.aylson.dc.cfdb.search;
+package com.aylson.dc.qmtt.search;
 
 import com.aylson.core.frame.search.BaseSearch;
 
-public class SysReportInfoSearch  extends BaseSearch{
+public class QmttSysReportInfoSearch  extends BaseSearch{
 
 	private static final long serialVersionUID = -8715608164019757829L;
 

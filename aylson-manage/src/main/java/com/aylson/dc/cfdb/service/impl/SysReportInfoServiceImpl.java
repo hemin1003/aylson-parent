@@ -53,9 +53,23 @@ public class SysReportInfoServiceImpl  extends BaseServiceImpl<SysReportInfo, Sy
 	}
 	
 	/**
+	 * 用户总收入
+	 */
+	public SysReportInfoVo selectAllUserIncomeOfDay() {
+		return this.sysReportInfoDao.selectAllUserIncomeOfDay();
+	}
+	
+	/**
 	 * 今日公司总收入
 	 */
 	public SysReportInfoVo selectSysIncomeOfDay(Map<String, Object> params) {
 		return this.sysReportInfoDao.selectSysIncomeOfDay(params);
+	}
+	
+	/**
+	 * 公司总收入
+	 */
+	public SysReportInfoVo selectAllSysIncomeOfDay() {
+		return this.sysReportInfoDao.selectAllSysIncomeOfDay();
 	}
 }

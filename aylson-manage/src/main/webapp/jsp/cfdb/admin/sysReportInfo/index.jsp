@@ -15,17 +15,17 @@
 			<form id="sysReportInfoForm"  method="post">
 				<table class="table_content" border="0" >
 					<tr>
-						<td class="tar" >今日收入：</td>
+						<td class="tar" >公司今日收入：</td>
 						<td class="tal" >
-							<input class="easyui-textbox" name="todayIncome"/>
+							<input class="easyui-textbox" name="todayIncome" id="todayIncome"/>
 						</td>
-						<td class="tar" >昨日收入：</td>
+						<td class="tar" >公司昨日收入：</td>
 						<td class="tal" >
-							<input class="easyui-textbox" name="yesterdayIncome"/>
+							<input class="easyui-textbox" name="yesterdayIncome" id="yesterdayIncome"/>
 						</td>
-						<td class="tar" >总收入：</td>
+						<td class="tar" >公司总收入：</td>
 						<td class="tal" >
-							<input class="easyui-textbox" name="totalIncome"/>
+							<input class="easyui-textbox" name="allIncome" id="allIncome"/>
 						</td>
 					</tr>
 					<tr>
@@ -35,16 +35,16 @@
 						</td> 
 					    <td class="tar" colspan="3">
 					    		<br /><br />
-							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch()">7天</a>
-							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch()">30天</a>
-							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch()">60天</a>
+							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch(7)">7天</a>
+							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch(30)">30天</a>
+							<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick="doSearch(60)">60天</a>
 						</td> 
 					</tr>
 				</table>
 			</form>
 		</div>
 	</div>
-	<div data-options="region:'center'" border="false" style="overflow: hidden;width:85%">
+	<div data-options="region:'center'" border="false" style="overflow: hidden;width:85%;">
 		<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     		<div id="main" style="width: 100%; height: 320px;"></div>
     		<div style="width: 100%;height: 50%;">
@@ -120,39 +120,51 @@
       	    ]
       	};
       
-      myChart.showLoading();
-   	// 异步加载数据
-      $.get(projectName+'/cfdb/sysReportInfo/admin/listMap').done(function (data) {
-      		myChart.hideLoading();
-      		var dataObj = jQuery.parseJSON(data);
-          // 填入数据
-          myChart.setOption({
-              xAxis: {
-                  data: dataObj.categories
-              },
-              series: [{
-   	            name : '新增用户数',
-   	            data : dataObj.value1
-   	        },
-   	        {
-   	            name : '做任务总人数',
-   	            data : dataObj.value2
-   	        },
-   	        {
-   	            name : '完成任务总数',
-   	            data : dataObj.value3
-   	        },
-   	        {
-   	            name : '用户总收入',
-   	            data : dataObj.value4
-   	        },
-   	        {
-   	            name : '公司总收入',
-   	            data : dataObj.value5
-   	        }]
+      //获取折图形数据
+      function getMapData(num){
+    	  	  myChart.showLoading();
+       	  // 异步加载数据
+          $.get(projectName+'/cfdb/sysReportInfo/admin/listMap?num=' + num).done(function (data) {
+          		myChart.hideLoading();
+          		var dataObj = jQuery.parseJSON(data);
+    	          // 填入数据
+    	          myChart.setOption({
+    	              xAxis: {
+    	                  data: dataObj.categories
+    	              },
+    	              series: [{
+    	   	            name : '新增用户数',
+    	   	            data : dataObj.value1
+    	   	        },
+    	   	        {
+    	   	            name : '做任务总人数',
+    	   	            data : dataObj.value2
+    	   	        },
+    	   	        {
+    	   	            name : '完成任务总数',
+    	   	            data : dataObj.value3
+    	   	        },
+    	   	        {
+    	   	            name : '用户总收入',
+    	   	            data : dataObj.value4
+    	   	        },
+    	   	        {
+    	   	            name : '公司总收入',
+    	   	            data : dataObj.value5
+    	   	        }]
+    	          });
           });
+      }
+   	  
+      // 异步加载数据
+      $.get(projectName+'/cfdb/sysReportInfo/admin/listTop').done(function (data) {
+      		var dataObj = jQuery.parseJSON(data);
+      		$("#todayIncome").textbox('setValue', dataObj.todayIncome);
+      		$("#yesterdayIncome").textbox('setValue', dataObj.yesterdayIncome);
+      		$("#allIncome").textbox('setValue', dataObj.allIncome);
       });
 
+      getMapData(7);
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
   </script>

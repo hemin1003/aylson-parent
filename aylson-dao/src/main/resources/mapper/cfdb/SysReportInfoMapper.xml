@@ -32,11 +32,26 @@
 			where date_format(incomeTime,'%Y-%m-%d')=#{currentTime} and flag=2),0) as value
 	</select>
 	
+	<!-- 用户总收入 -->
+	<select id="selectAllUserIncomeOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		select '当日用户总收入' as name, ifnull((select sum(income) from cfdb_income_his 
+			where flag=1),0) - ifnull((select sum(income) from cfdb_income_his 
+			where flag=2),0) as value
+	</select>
+	
 	<!-- 当日公司总收入 -->
 	<select id="selectSysIncomeOfDay" resultMap="ResultMap" parameterType="java.util.Map">
 		select '当日公司总收入' as name, ifnull((select sum(sysincome) from cfdb_income_his 
 			where date_format(incomeTime,'%Y-%m-%d')=#{currentTime} and flag=1),0) - ifnull((select sum(sysincome) from cfdb_income_his 
 			where date_format(incomeTime,'%Y-%m-%d')=#{currentTime} and flag=2),0)
+ 		as value
+	</select>
+	
+	<!-- 公司总收入 -->
+	<select id="selectAllSysIncomeOfDay" resultMap="ResultMap" parameterType="java.util.Map">
+		select '当日公司总收入' as name, ifnull((select sum(sysincome) from cfdb_income_his 
+			where flag=1),0) - ifnull((select sum(sysincome) from cfdb_income_his 
+			where flag=2),0)
  		as value
 	</select>
 	

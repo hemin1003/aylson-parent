@@ -30,7 +30,17 @@ public interface SysReportInfoDao extends BaseDao<SysReportInfo, SysReportInfoSe
 	public SysReportInfoVo selectUserIncomeOfDay(Map<String, Object> params);
 	
 	/**
+	 * 用户总收入
+	 */
+	public SysReportInfoVo selectAllUserIncomeOfDay();
+	
+	/**
 	 * 当日公司总收入
 	 */
 	public SysReportInfoVo selectSysIncomeOfDay(Map<String, Object> params);
+	
+	/**
+	 * 公司总收入
+	 */
+	public SysReportInfoVo selectAllSysIncomeOfDay();
 }
