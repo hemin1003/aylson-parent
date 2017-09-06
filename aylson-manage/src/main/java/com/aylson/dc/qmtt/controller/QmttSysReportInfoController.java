@@ -213,11 +213,14 @@ public class QmttSysReportInfoController extends BaseController {
 		//格式化，保留三位小数，四舍五入
 		DecimalFormat dFormat = new DecimalFormat("#0.000");
 		QmttSysReportInfoVo qmttSysReportInfoVo = new QmttSysReportInfoVo();
+		String result = "";
 		switch (type) {
 			case 101:
-				return this.qmttSysReportInfoService.selectNewUserOfDay(params).getValue();
+				result = this.qmttSysReportInfoService.selectNewUserOfDay(params).getValue();
+				return StrUtil.null2Str(result).equals("")?"0":result;
 			case 102:
-				return this.qmttSysReportInfoService.selectUserGoldOfDay(params).getValue();	
+				result = this.qmttSysReportInfoService.selectUserGoldOfDay(params).getValue();
+				return StrUtil.null2Str(result).equals("")?"0":result;	
 			case 103:
 				qmttSysReportInfoVo = this.qmttSysReportInfoService.selectUserBalanceOfDay(params);
 				if(!StrUtil.null2Str(qmttSysReportInfoVo.getValue()).equals("")) {
@@ -235,13 +238,18 @@ public class QmttSysReportInfoController extends BaseController {
 				}
 				return qmttSysReportInfoVo.getValue();
 			case 105:
-				return this.qmttSysReportInfoService.selectUserAllRead(params).getValue();
+				result = this.qmttSysReportInfoService.selectUserAllRead(params).getValue();
+				return StrUtil.null2Str(result).equals("")?"0":result;
 			case 106:
-				return this.qmttSysReportInfoService.selectAllGold().getValue();
+				result = this.qmttSysReportInfoService.selectAllGold().getValue();
+				return StrUtil.null2Str(result).equals("")?"0":result;
 			case 107:
 				qmttSysReportInfoVo = this.qmttSysReportInfoService.selectAllBalance();
-				qmttSysReportInfoVo.setValue(dFormat.format(Double.valueOf(qmttSysReportInfoVo.getValue())));
-				return qmttSysReportInfoVo.getValue();
+				if(!StrUtil.null2Str(qmttSysReportInfoVo.getValue()).equals("")) {
+					qmttSysReportInfoVo.setValue(dFormat.format(Double.valueOf(qmttSysReportInfoVo.getValue())));
+				}else {
+					qmttSysReportInfoVo.setValue("0.0");
+				}
 			default:
 				throw new RuntimeException("错误类型，请检查。day=" + day + ", type=" + type);
 		}
