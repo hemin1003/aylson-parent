@@ -16,12 +16,19 @@ public class QmttAppConfig implements Serializable{
 	private Integer firstInviteGold;		//首次邀请奖励金币
 	private String androidUrl;			//安卓分享下载链接Url
 	private String iphoneUrl;			//苹果分享下载链接Url
+	private String regGoldRange;			//注册金币随机范围
 	
 	private String createDate;	//创建时间
 	private String createdBy;	//创建人
 	private String updateDate;	//更新时间
 	private String updatedBy;	//更新人
 	
+	public String getRegGoldRange() {
+		return regGoldRange;
+	}
+	public void setRegGoldRange(String regGoldRange) {
+		this.regGoldRange = regGoldRange;
+	}
 	public String getId() {
 		return id;
 	}

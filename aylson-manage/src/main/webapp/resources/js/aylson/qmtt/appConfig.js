@@ -89,6 +89,12 @@
 					return '<a href="javascript:window.open(\'' + value + '\',\'_blank\')">查看</a>&nbsp;';
 				}
 			}, {
+				title : '注册金币随机范围',
+				field : 'regGoldRange',
+				align : 'center',
+				width : 110,
+				sortable:true
+			}, {
 				title : '创建时间',
 				field : 'createDate',
 				align : 'center',

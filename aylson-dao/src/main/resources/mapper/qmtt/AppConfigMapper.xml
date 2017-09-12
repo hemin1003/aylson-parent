@@ -12,6 +12,7 @@
 		<result column="firstInviteGold" property="firstInviteGold" jdbcType="INTEGER" />
 		<result column="androidUrl" property="androidUrl" jdbcType="VARCHAR" />
 		<result column="iphoneUrl" property="iphoneUrl" jdbcType="VARCHAR" />
+		<result column="regGoldRange" property="regGoldRange" jdbcType="VARCHAR" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
@@ -28,6 +29,7 @@
 		qmtt_app_config.firstInviteGold,
 		qmtt_app_config.androidUrl,
 		qmtt_app_config.iphoneUrl,
+		qmtt_app_config.regGoldRange,
 		qmtt_app_config.createDate,
 		qmtt_app_config.createdBy,
 		qmtt_app_config.updateDate,
@@ -86,6 +88,7 @@
 			<if test="firstInviteGold != null"> firstInviteGold = #{firstInviteGold}, </if>
 			<if test="androidUrl != null"> androidUrl = #{androidUrl}, </if>
 			<if test="iphoneUrl != null"> iphoneUrl = #{iphoneUrl}, </if>
+			<if test="regGoldRange != null"> regGoldRange = #{regGoldRange}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
 			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
 		</set>

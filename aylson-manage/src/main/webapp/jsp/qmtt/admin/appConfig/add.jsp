@@ -94,6 +94,14 @@ text-align:left!important;
 								style="width:95%; height:80px; text-align:left"/>
 						</td>
 					</tr>
+					<tr>
+						<th>注册金币随机范围：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="regGoldRange" value="${appConfigVo.regGoldRange}" data-options="required:true"
+								class="easyui-textbox"
+								style="width:95%; text-align:left"/>
+						</td>
+					</tr>
 				</table>
 				<input name="id" type="hidden" value="${appConfigVo.id}"/>
 			</form>
