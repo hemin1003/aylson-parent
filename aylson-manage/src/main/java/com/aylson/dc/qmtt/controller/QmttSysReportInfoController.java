@@ -250,6 +250,7 @@ public class QmttSysReportInfoController extends BaseController {
 				}else {
 					qmttSysReportInfoVo.setValue("0.0");
 				}
+				return qmttSysReportInfoVo.getValue();
 			default:
 				throw new RuntimeException("错误类型，请检查。day=" + day + ", type=" + type);
 		}
