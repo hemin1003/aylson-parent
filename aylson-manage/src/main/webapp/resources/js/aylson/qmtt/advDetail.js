@@ -1,5 +1,5 @@
 	/**
-	 * 广告来源管理
+	 * 广告详情管理
 	 */
 	var datagrid;
 	var editor;
@@ -7,7 +7,7 @@
 	$(function() { 
 		datagrid = $('#datagrid').datagrid({
 			method:'get',
-			url : projectName+'/qmtt/advList/admin/list?v_date=' + new Date(),
+			url : projectName+'/qmtt/advDetail/admin/list?v_date=' + new Date(),
 			pagination : true,
 			pageSize : 20,
 			pageList : [ 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 ],
@@ -60,14 +60,40 @@
 					return "<font color=red>下线</font>";
 				}
 			}, {
-				title : '唯一标识',
-				field : 'advFlag',
+				title : '标题',
+				field : 'advTitle',
+				align : 'center',
+				width : 300,
+				sortable:true
+			}, {
+				title : '跳转链接url',
+				field : 'advUrl',
+				align : 'center',
+				width : 80,
+				formatter:function(value,row,index){
+					return '<a href="javascript:window.open(\'' + value + '\',\'_blank\')">查看</a>&nbsp;';
+				}
+			}, {
+				title : '出现概率',
+				field : 'showRate',
+				align : 'center',
+				width : 70,
+				sortable:true
+			}, {
+				title : '排序编号',
+				field : 'orderNum',
+				align : 'center',
+				width : 70,
+				sortable:true
+			}, {
+				title : '广告来源名',
+				field : 'advName',
 				align : 'center',
 				width : 100,
 				sortable:true
 			}, {
-				title : '渠道名称',
-				field : 'advName',
+				title : '新闻Tab标识名',
+				field : 'tagName',
 				align : 'center',
 				width : 100,
 				sortable:true
@@ -83,8 +109,7 @@
 					}
 					return value;
 				}
-			}
-			, {
+			}, {
 				title : '更新时间',
 				field : 'updateDate',
 				align : 'center',
@@ -98,7 +123,6 @@
 			}
 			] ]
 		});
-		
 	});
 	
 	//新增
@@ -109,7 +133,7 @@
 			width:450,
 			height:'50%',
 			modal:true,
-			href:projectName+'/qmtt/advList/admin/toAdd',
+			href:projectName+'/qmtt/advDetail/admin/toAdd',
 			onClose:function(){
 				$(this).dialog("destroy");
 			},
@@ -117,9 +141,9 @@
 				text:'确定',
 			    iconCls:'icon-ok',
 			    handler:function(){
-				    	$("#advListConfigForm").form('submit',{
+				    	$("#advDetailConfigForm").form('submit',{
 				    		 type:'POST',
-				    		 url : projectName+'/qmtt/advList/admin/add',
+				    		 url : projectName+'/qmtt/advDetail/admin/add',
 				    		 success:function(responseData){
 				    			 if(responseData){
 				    				var data = $.parseJSON(responseData);
@@ -150,7 +174,7 @@
 			height:'50%',
 			maximizable:true,
 			modal:true,
-			href:projectName+'/qmtt/advList/admin/toEdit?id='+id,
+			href:projectName+'/qmtt/advDetail/admin/toEdit?id='+id,
 			onClose:function(){
 		    		$(this).dialog("destroy");
 		    },
@@ -172,7 +196,7 @@
 			height:'50%',
 			maximizable:true,
 			modal:true,
-			href:projectName+'/qmtt/advList/admin/toEdit?id='+id,
+			href:projectName+'/qmtt/advDetail/admin/toEdit?id='+id,
 			onClose:function(){
 		    		$(this).dialog("destroy");
 		    },
@@ -180,9 +204,9 @@
 					text:'确定',
 				    iconCls:'icon-ok',
 				    handler:function(){
-					    	$("#advListConfigForm").form('submit',{
+					    	$("#advDetailConfigForm").form('submit',{
 					    		 type:'POST',
-					    		 url : projectName+'/qmtt/advList/admin/update',
+					    		 url : projectName+'/qmtt/advDetail/admin/update',
 					    		 success:function(responseData){
 					    			 win.dialog('destroy');
 					    			 if(responseData){
@@ -211,7 +235,7 @@
 			if(r){
 				$.ajax({
 					type:"POST",
-					url:projectName+'/qmtt/advList/admin/deleteById?id=' + id,
+					url:projectName+'/qmtt/advDetail/admin/deleteById?id=' + id,
 					dataType:"json",
 					success:function(data){
 						if(data){
@@ -239,7 +263,7 @@
 			if(r){
 				$.ajax({
 					type:"POST",
-					url:projectName+'/qmtt/advList/admin/changeStatus?id=' + id+'&status='+status,
+					url:projectName+'/qmtt/advDetail/admin/changeStatus?id=' + id+'&status='+status,
 					dataType:"json",
 					success:function(data){
 						if(data){
@@ -261,11 +285,11 @@
 	
 	//搜索
 	function doSearch(){
-		$("#datagrid").datagrid("load", serializeObject($("#advListForm")));
+		$("#datagrid").datagrid("load", serializeObject($("#advDetailForm")));
 	}
 	
 	//重置
 	function reset(){
-		$("#advListForm").form("reset");
+		$("#advDetailForm").form("reset");
 	}
 	

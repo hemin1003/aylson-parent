@@ -28,7 +28,7 @@ text-align:left!important;
 </style>
 <div align="center" >
 	<div class="easyui-tabs" id="tabActivity" style="width:100%">
-		 <div title="广告信息管理" style="padding:10px;text-align:center">
+		 <div title="广告来源管理" style="padding:10px;text-align:center">
 		 	<form id="advListConfigForm" method="post">
 				<table class="tableForm" style="width:99%;">
 					<tr>

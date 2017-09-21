@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.qmtt.po.AdvDetail">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.qmtt.vo.AdvDetailVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="advTitle" property="advTitle" jdbcType="VARCHAR" />
+		<result column="advImgs" property="advImgs" jdbcType="VARCHAR" />
+		<result column="advUrl" property="advUrl" jdbcType="VARCHAR" />
+		<result column="showRate" property="showRate" jdbcType="INTEGER" />
+		<result column="orderNum" property="orderNum" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="updatedBy" property="updatedBy" jdbcType="VARCHAR" />
+		<result column="advFkid" property="advFkid" jdbcType="VARCHAR" />
+		<result column="tagName" property="tagName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		qmtt_adv_detail.id,
+		qmtt_adv_detail.advTitle,
+		qmtt_adv_detail.advImgs,
+		qmtt_adv_detail.advUrl,
+		qmtt_adv_detail.showRate,
+		qmtt_adv_detail.orderNum,
+		qmtt_adv_detail.status,
+		qmtt_adv_detail.createDate,
+		qmtt_adv_detail.createdBy,
+		qmtt_adv_detail.updateDate,
+		qmtt_adv_detail.updatedBy,
+		qmtt_adv_detail.advFkid,
+		qmtt_adv_detail.tagName
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<if test="advFkid != null">and advFkid = #{advFkid}</if>
+				<!-- 模糊查询 -->
+				<if test="tagNameLike != null and tagNameLike != ''"> and tagName like CONCAT('%',#{tagNameLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from qmtt_adv_detail
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select * from (select a.*,b.advFlag,b.advName from qmtt_adv_detail a 
+		inner join qmtt_adv_list b on a.advFkid=b.id) c
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from qmtt_adv_detail
+		where id = #{id}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.aylson.dc.qmtt.vo.AdvDetailVo">
+		insert into qmtt_adv_detail
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > id, </if>
+		  <if test="advTitle != null" > advTitle, </if>
+		  <if test="advImgs != null" > advImgs, </if>
+		  <if test="advUrl != null" > advUrl, </if>
+		  <if test="showRate != null" > showRate, </if>
+		  <if test="orderNum != null" > orderNum, </if>
+		  <if test="status != null" > status, </if>
+		  <if test="createDate != null" > createDate, </if>
+		  <if test="createdBy != null" > createdBy, </if>
+		  <if test="updateDate != null" > updateDate, </if>
+		  <if test="advFkid != null" > advFkid, </if>
+		  <if test="tagName != null" > tagName, </if>
+		</trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" > #{id}, </if>
+		  <if test="advTitle != null" > #{advTitle}, </if>
+		  <if test="advImgs != null" > #{advImgs}, </if>
+		  <if test="advUrl != null" > #{advUrl}, </if>
+		  <if test="showRate != null" > #{showRate}, </if>
+		  <if test="orderNum != null" > #{orderNum}, </if>
+		  <if test="status != null" > #{status}, </if>
+		  <if test="createDate != null" > #{createDate}, </if>
+		  <if test="createdBy != null" > #{createdBy}, </if>
+		  <if test="updateDate != null" > null, </if>
+		  <if test="advFkid != null" > #{advFkid}, </if>
+		  <if test="tagName != null" > #{tagName}, </if>
+        </trim>
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.qmtt.vo.AdvDetailVo">
+		update 
+			qmtt_adv_detail 
+		<set>
+			<if test="advTitle != null"> advTitle = #{advTitle}, </if>
+			<if test="advImgs != null"> advImgs = #{advImgs}, </if>
+			<if test="advUrl != null"> advUrl = #{advUrl}, </if>
+			<if test="showRate != null"> showRate = #{showRate}, </if>
+			<if test="orderNum != null"> orderNum = #{orderNum}, </if>
+			<if test="status != null"> status = #{status}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
+			<if test="advFkid != null"> advFkid = #{advFkid}, </if>
+			<if test="tagName != null"> tagName = #{tagName}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from qmtt_adv_detail
+		where id = #{id}
+	</delete>
+	
+</mapper>
