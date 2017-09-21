@@ -116,12 +116,18 @@ text-align:left!important;
 <script type="text/javascript">
 $(function(){
 	var select = document.getElementById("tagNameFlag");  
-	var value = $('#tagName').val();  
+	var value = $('#tagName').val();
+	var flag = 0;
 	for(var i=0; i<select.options.length; i++){  
 	    if(select.options[i].innerHTML == value){
-	        select.options[i].selected = true;  
+	        select.options[i].selected = true;
+	        flag = 1;
 	        break;  
-	    }  
+	    }
+	}
+	//默认首次值为头条
+	if(flag == 0){
+		$('#tagName').val('头条');
 	}
 });
 </script>
