@@ -17,7 +17,21 @@ public class InitConfig implements Serializable{
 	private String createdBy;	//创建人
 	private String updateDate;	//更新时间
 	private String updatedBy;	//更新人
+	private String pageUrl;			//h5下载显示界面
+	private String downloadUrl;		//apk下载跳转接口
 	
+	public String getPageUrl() {
+		return pageUrl;
+	}
+	public void setPageUrl(String pageUrl) {
+		this.pageUrl = pageUrl;
+	}
+	public String getDownloadUrl() {
+		return downloadUrl;
+	}
+	public void setDownloadUrl(String downloadUrl) {
+		this.downloadUrl = downloadUrl;
+	}
 	public String getAppInviteUrl() {
 		return appInviteUrl;
 	}

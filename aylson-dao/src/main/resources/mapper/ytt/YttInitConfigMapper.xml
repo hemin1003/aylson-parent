@@ -10,6 +10,8 @@
 		<result column="duration" property="duration" jdbcType="VARCHAR" />
 		<result column="frequency" property="frequency" jdbcType="INTEGER" />
 		<result column="appInviteUrl" property="appInviteUrl" jdbcType="VARCHAR" />
+		<result column="pageUrl" property="pageUrl" jdbcType="VARCHAR" />
+		<result column="downloadUrl" property="downloadUrl" jdbcType="VARCHAR" />
 		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
 		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
 		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
@@ -24,6 +26,8 @@
 		ytt_init_config.duration,
 		ytt_init_config.frequency,
 		ytt_init_config.appInviteUrl,
+		ytt_init_config.pageUrl,
+		ytt_init_config.downloadUrl,
 		ytt_init_config.createDate,
 		ytt_init_config.createdBy,
 		ytt_init_config.updateDate,
@@ -80,6 +84,8 @@
 		  <if test="duration != null" > duration, </if>
 		  <if test="frequency != null" > frequency, </if>
 		  <if test="appInviteUrl != null" > appInviteUrl, </if>
+		  <if test="pageUrl != null" > pageUrl, </if>
+		  <if test="downloadUrl != null" > downloadUrl, </if>
 		  <if test="createDate != null" > createDate, </if>
 		  <if test="createdBy != null" > createdBy, </if>
 		  <if test="updateDate != null" > updateDate, </if>
@@ -92,6 +98,8 @@
 		  <if test="duration != null" > #{duration}, </if>
 		  <if test="frequency != null" > #{frequency}, </if>
 		  <if test="appInviteUrl != null" > #{appInviteUrl}, </if>
+		  <if test="pageUrl != null" > #{pageUrl}, </if>
+		  <if test="downloadUrl != null" > #{downloadUrl}, </if>
 		  <if test="createDate != null" > #{createDate}, </if>
 		  <if test="createdBy != null" > #{createdBy}, </if>
 		  <if test="updateDate != null" > null, </if>
@@ -109,6 +117,8 @@
 			<if test="duration != null"> duration = #{duration}, </if>
 			<if test="frequency != null"> frequency = #{frequency}, </if>
 			<if test="appInviteUrl != null"> appInviteUrl = #{appInviteUrl}, </if>
+			<if test="pageUrl != null"> pageUrl = #{pageUrl}, </if>
+			<if test="downloadUrl != null"> downloadUrl = #{downloadUrl}, </if>
 			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
 			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
 		</set>

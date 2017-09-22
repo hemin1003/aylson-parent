@@ -101,6 +101,22 @@ function preview(){
 								style="width:95%; height:60px; text-align:left"/>
 						</td>
 					</tr>
+					<tr>
+						<th>h5下载显示Url：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="pageUrl" value="${initConfigVo.pageUrl}" 
+								class="easyui-textbox" data-options="multiline:true"
+								style="width:95%; height:60px; text-align:left"/>
+						</td>
+					</tr>
+					<tr>
+						<th>apk下载跳转接Url：</th>
+						<td colspan="3" style="text-align:left">
+							<input name="downloadUrl" value="${initConfigVo.downloadUrl}" 
+								class="easyui-textbox" data-options="multiline:true"
+								style="width:95%; height:60px; text-align:left"/>
+						</td>
+					</tr>
 				</table>
 				<input name="id" type="hidden" value="${initConfigVo.id}"/>
 			</form>

@@ -6,18 +6,32 @@ public class YttInitConfig implements Serializable{
 	
 	private static final long serialVersionUID = -4066660374449732089L;
 	
-	private String id;			//主键
+	private String id;				//主键
 	private String faqUrl;			//常见问题页面url
 	private String inviteUrl;		//邀请规则说明页面url
 	private String registerInfoUrl;	//注册用户协议页面url
 	private String duration;			//阅读文章控制时长
 	private Integer frequency;		//阅读文章拖动次数
 	private String appInviteUrl;		//APP生成的分享邀请链接
-	private String createDate;	//创建时间
-	private String createdBy;	//创建人
-	private String updateDate;	//更新时间
-	private String updatedBy;	//更新人
+	private String createDate;		//创建时间
+	private String createdBy;		//创建人
+	private String updateDate;		//更新时间
+	private String updatedBy;		//更新人
+	private String pageUrl;			//h5下载显示界面
+	private String downloadUrl;		//apk下载跳转接口
 	
+	public String getPageUrl() {
+		return pageUrl;
+	}
+	public void setPageUrl(String pageUrl) {
+		this.pageUrl = pageUrl;
+	}
+	public String getDownloadUrl() {
+		return downloadUrl;
+	}
+	public void setDownloadUrl(String downloadUrl) {
+		this.downloadUrl = downloadUrl;
+	}
 	public String getAppInviteUrl() {
 		return appInviteUrl;
 	}

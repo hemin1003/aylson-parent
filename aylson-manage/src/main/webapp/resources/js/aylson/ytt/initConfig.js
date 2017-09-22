@@ -78,6 +78,18 @@
 				width : 150,
 				sortable:true
 			}, {
+				title : 'h5下载显示Url',
+				field : 'pageUrl',
+				align : 'left',
+				width : 150,
+				sortable:true
+			}, {
+				title : 'apk下载跳转接Url',
+				field : 'downloadUrl',
+				align : 'left',
+				width : 150,
+				sortable:true
+			}, {
 				title : '创建时间',
 				field : 'createDate',
 				align : 'center',
