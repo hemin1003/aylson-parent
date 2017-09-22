@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.ytt.po.YttAppUser">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.ytt.vo.YttAppUserVo">
+		<id column="phoneNum" property="phoneNum" jdbcType="VARCHAR" />
+		<result column="userPwd" property="userPwd" jdbcType="VARCHAR" />
+		<result column="gold" property="gold" jdbcType="VARCHAR" />
+		<result column="balance" property="balance" jdbcType="VARCHAR" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="wechat" property="wechat" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="registerDate" property="registerDate" jdbcType="VARCHAR" />
+		<result column="lastLoginDate" property="lastLoginDate" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="blackList" property="blackList" jdbcType="INTEGER" />
+		<result column="shareCount" property="shareCount" jdbcType="INTEGER" />
+		<result column="firstShare" property="firstShare" jdbcType="INTEGER" />
+		<result column="firstInvite" property="firstInvite" jdbcType="INTEGER" />
+		<result column="firstRead" property="firstRead" jdbcType="INTEGER" />
+		<result column="students" property="students" jdbcType="INTEGER" />
+		<result column="dailyCheckIn" property="dailyCheckIn" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		ytt_app_user.phoneNum,
+		ytt_app_user.userPwd,
+		ytt_app_user.gold, 
+		ytt_app_user.balance,
+		ytt_app_user.userName,
+		ytt_app_user.address,
+		ytt_app_user.wechat,
+		ytt_app_user.qq,
+		ytt_app_user.email,
+		ytt_app_user.registerDate,
+		ytt_app_user.lastLoginDate,
+		ytt_app_user.updateDate,
+		ytt_app_user.blackList,
+		ytt_app_user.shareCount,
+		ytt_app_user.firstShare,
+		ytt_app_user.firstInvite,
+		ytt_app_user.firstRead,
+		ytt_app_user.students,
+		ytt_app_user.dailyCheckIn
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+				<if test="phoneNumLike != null and phoneNumLike != ''"> and ytt_app_user.phoneNum like CONCAT('%',#{phoneNumLike},'%') </if>
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(phoneNum) from ytt_app_user
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from ytt_app_user
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by ytt_app_user.registerDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from ytt_app_user
+		where phoneNum = #{phoneNum}
+	</select>
+	
+</mapper>

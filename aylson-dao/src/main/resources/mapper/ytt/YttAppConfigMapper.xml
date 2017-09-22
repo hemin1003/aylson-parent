@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aylson.dc.ytt.po.YttAppConfig">
+
+	<resultMap id="ResultMap" type="com.aylson.dc.ytt.vo.YttAppConfigVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="goldLimit" property="goldLimit" jdbcType="INTEGER" />
+		<result column="goldAuto" property="goldAuto" jdbcType="INTEGER" />
+		<result column="goldRange" property="goldRange" jdbcType="VARCHAR" />
+		<result column="firstReadGold" property="firstReadGold" jdbcType="INTEGER" />
+		<result column="firstShareGold" property="firstShareGold" jdbcType="INTEGER" />
+		<result column="firstInviteGold" property="firstInviteGold" jdbcType="INTEGER" />
+		<result column="androidUrl" property="androidUrl" jdbcType="VARCHAR" />
+		<result column="iphoneUrl" property="iphoneUrl" jdbcType="VARCHAR" />
+		<result column="regGoldRange" property="regGoldRange" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="VARCHAR" />
+		<result column="createdBy" property="createdBy" jdbcType="VARCHAR" />
+		<result column="updateDate" property="updateDate" jdbcType="VARCHAR" />
+		<result column="updatedBy" property="updatedBy" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="DB_Column_List">
+		ytt_app_config.id,
+		ytt_app_config.goldLimit,
+		ytt_app_config.goldAuto, 
+		ytt_app_config.goldRange,
+		ytt_app_config.firstReadGold,
+		ytt_app_config.firstShareGold,
+		ytt_app_config.firstInviteGold,
+		ytt_app_config.androidUrl,
+		ytt_app_config.iphoneUrl,
+		ytt_app_config.regGoldRange,
+		ytt_app_config.createDate,
+		ytt_app_config.createdBy,
+		ytt_app_config.updateDate,
+		ytt_app_config.updatedBy
+	</sql>
+
+	<sql id="Where_Condition">
+		<where>
+			<trim prefixOverrides="and">
+				<!-- 匹配查询 -->
+				<!-- 模糊查询 -->
+			</trim>
+		</where>
+	</sql>
+
+	<!-- 查询总数 -->
+	<select id="selectCount" resultType="java.lang.Long"
+		parameterType="java.util.Map">
+		select count(id) from ytt_app_config
+		<include refid="Where_Condition" />
+	</select>
+
+	<!-- 查询 -->
+	<select id="select" resultMap="ResultMap" parameterType="java.util.Map">
+		select
+		<include refid="DB_Column_List" />
+		from ytt_app_config
+		<include refid="Where_Condition" />
+		<if test="sort == null">order by ytt_app_config.createDate desc </if>
+        <if test="sort != null">order by ${sort} ${order}</if>
+		<if test="isPage == true">
+			<if test="offset != null and limit != null">
+            	limit #{offset}, #{limit}
+        	</if>
+		</if>
+	</select>
+	
+	<!-- 根据ID查询 -->
+	<select id="selectById" resultMap="ResultMap" parameterType="java.lang.String">
+		select
+		<include refid="DB_Column_List" />
+		from ytt_app_config
+		where id = #{id}
+	</select>
+	
+	<!-- 更新 -->
+	<update id="updateById" parameterType="com.aylson.dc.ytt.vo.YttAppConfigVo">
+		update 
+			ytt_app_config 
+		<set>
+			<if test="goldLimit != null"> goldLimit = #{goldLimit}, </if>
+			<if test="goldAuto != null"> goldAuto = #{goldAuto}, </if>
+			<if test="goldRange != null"> goldRange = #{goldRange}, </if>
+			<if test="firstReadGold != null"> firstReadGold = #{firstReadGold}, </if>
+			<if test="firstShareGold != null"> firstShareGold = #{firstShareGold}, </if>
+			<if test="firstInviteGold != null"> firstInviteGold = #{firstInviteGold}, </if>
+			<if test="androidUrl != null"> androidUrl = #{androidUrl}, </if>
+			<if test="iphoneUrl != null"> iphoneUrl = #{iphoneUrl}, </if>
+			<if test="regGoldRange != null"> regGoldRange = #{regGoldRange}, </if>
+			<if test="updateDate != null"> updateDate = #{updateDate}, </if>
+			<if test="updatedBy != null"> updatedBy = #{updatedBy}, </if>
+		</set>
+		where id = #{id} 
+	</update>
+</mapper>
