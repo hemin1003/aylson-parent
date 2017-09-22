@@ -37,7 +37,7 @@ text-align:left!important;
 <div align="center" >
 	<div class="easyui-tabs" id="tabActivity" style="width:100%">
 		 <div title="渠道版本配置" style="padding:10px;text-align:center">
-		 	<form id="qmttAppVersionConfigForm" method="post">
+		 	<form id="yttAppVersionConfigForm" method="post">
 				<table class="tableForm" style="width:99%;">
 					<tr>
 						<th>配置名称：</th>
@@ -51,12 +51,12 @@ text-align:left!important;
 						<th>渠道明细配置：</th>
 						<td colspan="3" style="text-align:left">
 							<div id="editor" style="width:90%;height:500px;">
-								${qmttAppVersionVo.configData}
+								${yttAppVersionVo.configData}
 							</div>
 						</td>
 					</tr>
 				</table>
-				<input name="id" type="hidden" value="${qmttAppVersionVo.id}"/>
+				<input name="id" type="hidden" value="${yttAppVersionVo.id}"/>
 				<input name="configData" id="configData" type="hidden" value=""/>
 			</form>
 		</div>

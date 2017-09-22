@@ -29,12 +29,12 @@ text-align:left!important;
 <div align="center" >
 	<div class="easyui-tabs" id="tabActivity" style="width:100%">
 		 <div title="提现金额配置" style="padding:10px;text-align:center">
-		 	<form id="qmttIncomeSetConfigForm" method="post">
+		 	<form id="yttIncomeSetConfigForm" method="post">
 				<table class="tableForm" style="width:99%;">
 					<tr>
 						<th>提现金额：</th>
 						<td colspan="3" style="text-align:left">
-							<input name="income" value="${qmttIncomeSetVo.income}" data-options="required:true"
+							<input name="income" value="${yttIncomeSetVo.income}" data-options="required:true"
 								class="easyui-numberbox"
 								style="width:95%; text-align:left"/>
 						</td>
@@ -55,8 +55,8 @@ text-align:left!important;
 						</td>
 					</tr>
 				</table>
-				<input id="saleFlag" name="saleFlag" type="hidden" value="${qmttIncomeSetVo.saleFlag}"/>
-				<input name="id" type="hidden" value="${qmttIncomeSetVo.id}"/>
+				<input id="saleFlag" name="saleFlag" type="hidden" value="${yttIncomeSetVo.saleFlag}"/>
+				<input name="id" type="hidden" value="${yttIncomeSetVo.id}"/>
 			</form>
 		</div>
 	</div> 

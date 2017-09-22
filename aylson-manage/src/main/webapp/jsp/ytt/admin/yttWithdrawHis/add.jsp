@@ -28,12 +28,12 @@ text-align:left!important;
 <div align="center" >
 	<div class="easyui-tabs" id="tabActivity" style="width:100%">
 		 <div title="提现操作" style="padding:10px;text-align:center">
-		 	<form id="qmttWithdrawHisConfigForm" method="post">
+		 	<form id="yttWithdrawHisConfigForm" method="post">
 				<table class="tableForm" style="width:99%;">
 					<tr>
 						<th>手机号码：</th>
 						<td colspan="3" style="text-align:left">
-							<input name="phoneNum" value="${qmttWithdrawHisVo.phoneNum}"
+							<input name="phoneNum" value="${yttWithdrawHisVo.phoneNum}"
 								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -41,7 +41,7 @@ text-align:left!important;
 					<tr>
 						<th>提现类型：</th>
 						<td colspan="3" style="text-align:left">
-							<input name="withdrawName" value="${qmttWithdrawHisVo.withdrawName}"
+							<input name="withdrawName" value="${yttWithdrawHisVo.withdrawName}"
 								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -49,7 +49,7 @@ text-align:left!important;
 					<tr>
 						<th>姓名：</th>
 						<td colspan="3" style="text-align:left">
-							<input name="name" value="${qmttWithdrawHisVo.name}"
+							<input name="name" value="${yttWithdrawHisVo.name}"
 								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -57,7 +57,7 @@ text-align:left!important;
 					<tr>
 						<th>账户名：</th>
 						<td colspan="3" style="text-align:left">
-							<input name="account" value="${qmttWithdrawHisVo.account}"
+							<input name="account" value="${yttWithdrawHisVo.account}"
 								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -65,7 +65,7 @@ text-align:left!important;
 					<tr>
 						<th>提现金额：</th>
 						<td colspan="3" style="text-align:left">
-							<input name="income" value="${qmttWithdrawHisVo.income}"
+							<input name="income" value="${yttWithdrawHisVo.income}"
 								class="easyui-textbox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -73,7 +73,7 @@ text-align:left!important;
 					<tr>
 						<th>提现发起时间：</th>
 						<td colspan="3" style="text-align:left">
-							<input name="withdrawTime" value="${qmttWithdrawHisVo.withdrawTime}"
+							<input name="withdrawTime" value="${yttWithdrawHisVo.withdrawTime}"
 								class="easyui-datetimebox"
 								style="width:95%; text-align:left" readOnly=true/>
 						</td>
@@ -81,7 +81,7 @@ text-align:left!important;
 					<tr>
 						<th><font color="red">*</font>提现状态：</th>
 						<td colspan="3" style="text-align:left">
-							<select id="statusType" name="statusType" class="easyui-combobox" value="${qmttWithdrawHisVo.statusType}" 
+							<select id="statusType" name="statusType" class="easyui-combobox" value="${yttWithdrawHisVo.statusType}" 
 								data-options=" 
 								onSelect:function(data){
 									$('#status').val(data.text);
@@ -101,10 +101,10 @@ text-align:left!important;
 						</td>
 					</tr>
 				</table>
-				<input name="id" type="hidden" value="${qmttWithdrawHisVo.id}"/>
-				<input name="status" id="status" value="${qmttWithdrawHisVo.status}" type="hidden"/>
-				<input name="withdrawType" value="${qmttWithdrawHisVo.withdrawType}" type="hidden"/>
-				<input name="statusTypeOld" id="statusTypeOld" value="${qmttWithdrawHisVo.statusType}" type="hidden"/>
+				<input name="id" type="hidden" value="${yttWithdrawHisVo.id}"/>
+				<input name="status" id="status" value="${yttWithdrawHisVo.status}" type="hidden"/>
+				<input name="withdrawType" value="${yttWithdrawHisVo.withdrawType}" type="hidden"/>
+				<input name="statusTypeOld" id="statusTypeOld" value="${yttWithdrawHisVo.statusType}" type="hidden"/>
 				
 			</form>
 		</div>
