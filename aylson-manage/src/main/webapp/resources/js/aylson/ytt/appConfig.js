@@ -27,10 +27,10 @@
 				field : 'opt',
 				title : '操作选项',
 				align : 'center',
-				width : 100,
+				width : 110,
 	 			formatter:function(value,row,index){
 					var handleHtml = '';
-					handleHtml += '<a href="javascript:query(\'' + row.id + '\')">查看</a>&nbsp;';
+					handleHtml += '<a href="javascript:query(\'' + row.id + '\')">查看更多</a>&nbsp;';
 					handleHtml += '<a href="javascript:edit(\'' + row.id + '\')">修改</a>&nbsp;';
 					return handleHtml;
 				}
@@ -128,7 +128,7 @@
 		var win;
 		win = $("<div></div>").dialog({
 			title:'新增',
-			width:450,
+			width:830,
 			height:'70%',
 			modal:true,
 			href:projectName+'/ytt/appConfig/admin/toAdd',
@@ -168,7 +168,7 @@
 	function query(id){
 		win = $("<div></div>").dialog({
 			title:'查看',
-			width:450,
+			width:830,
 			height:'70%',
 			maximizable:true,
 			modal:true,
@@ -190,7 +190,7 @@
 	function edit(id){
 		win = $("<div></div>").dialog({
 			title:'修改',
-			width:450,
+			width:830,
 			height:'70%',
 			maximizable:true,
 			modal:true,
@@ -202,6 +202,8 @@
 					text:'确定',
 				    iconCls:'icon-ok',
 				    handler:function(){
+					    	//处理富文本编辑的内容
+					    	$("#checkInConfig").val($.trim(editor.getValue()));
 					    	$("#appConfigConfigForm").form('submit',{
 					    		 type:'POST',
 					    		 url : projectName+'/ytt/appConfig/admin/update',
