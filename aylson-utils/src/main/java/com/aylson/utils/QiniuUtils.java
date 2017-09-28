@@ -18,11 +18,11 @@ import com.qiniu.util.StringMap;
 public class QiniuUtils {
 	
 	//七牛云账号的AK和SK，以及配置域名
-//	private static final String  AK = "Qs-_4ZUu6Jt6KZ4jyGN_T4Ypqox0EY3W8rYzVP8V";
-//	private static final String  SK = "7FXGxk1ZuB2gUE-NbjurKBYskdmgyYTonZgW-aOO";
+//	private static final String  AK = "xxx";
+//	private static final String  SK = "xxx";
 	
-	private static final String  AK = "MFv1TjQdSjRBiaysUu7MjXOI1GxQPCnZJRFvmcsd";
-	private static final String  SK = "s6NV2UFhPtY0TvBPcHVdujwPxTYSZlDjRefZRi9m";
+	private static final String  AK = "xxx";
+	private static final String  SK = "xxx";
 	
 	public static final int UPLOAD_SIMPLE = 1;           //简单上传
 	public static final int UPLOAD_OVER = 2;             //上传覆盖
