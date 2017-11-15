@@ -6,5 +6,5 @@ WX20171115-170301.png# 后台管理系统源码
 
 体验账号/密码，test1001/a12345678
 
-新增爬虫项目统计信息：
+新增爬虫项目统计信息(抓取今日头条数据，测试用)，基于[二次JAVA开发爬虫项目](https://github.com/hemin1003/java-spider)实现
 ![image](./aylson-manage/src/main/webapp/resources/images/WX20171115-170301.png)
