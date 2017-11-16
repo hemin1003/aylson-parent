@@ -16,7 +16,7 @@
 
 # 配套的前端API实现项目实战
 
-基于SpringBoot实现，集成了拦截器，日志处理，mysql，mybatis, oauth2.0, spring secutity等功能，已投入生产线上使用
+基于SpringBoot实现的接口API系统，集成了拦截器，日志处理，mysql，mybatis, oauth2.0, spring secutity等功能，已投入生产线上使用
 
 接口API系统源码：https://github.com/hemin1003/yfax-parent
 
