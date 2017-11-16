@@ -14,6 +14,12 @@
 
 ![image](./aylson-manage/src/main/webapp/resources/images/WX20171115-170301.png)
 
+# 配套的前端API实现项目实战
+
+基于SpringBoot实现，集成了拦截器，日志处理，mysql，mybatis, oauth2.0, spring secutity等功能，已投入生产线上使用
+
+接口API系统源码：https://github.com/hemin1003/yfax-parent
+
 ## [关于我](http://heminit.com/about/)
 
 欢迎交流问题，可加QQ469580884，一起探讨交流问题
