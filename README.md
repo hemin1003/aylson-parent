@@ -27,3 +27,7 @@
 [我的博客地址](http://blog.csdn.net/hemin1003)
 
 [个人域名](http://heminit.com)
+
+
+2018/04/08更新：
+简洁版源码库：[点击前往](https://github.com/hemin1003/aylson-parent-new)
