@@ -7,7 +7,7 @@
 
 ## 后台管理系统源码
 
-基于SpringMVC4+EasyUI开发的后台管理系统，已投入生产线上使用
+基于SpringMVC4+EasyUI开发的后台管理系统，已投入生产线上使用（注：首次打开页面时会加载有点慢，不是白屏，知悉）
 
 体验系统地址：http://wuyangshiye.cn:8280/manage/login.jsp
 
