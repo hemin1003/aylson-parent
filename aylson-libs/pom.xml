@@ -9,7 +9,7 @@
 	<description>艾臣项目依赖管理</description>
 
 	<properties>
-		<spring.version>4.2.5.RELEASE</spring.version>
+		<spring.version>5.2.7.RELEASE</spring.version>
 		<fasterxml.jackson.version>2.7.3</fasterxml.jackson.version>
 	</properties>
 
